@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "chat-ui": ["./packages/chat-ui/src"]
+    },
+    "jsx": "preserve"
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
