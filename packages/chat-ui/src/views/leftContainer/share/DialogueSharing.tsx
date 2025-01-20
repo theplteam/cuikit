@@ -1,0 +1,84 @@
+import * as React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import { useChatSlots } from '../../ChatGlobalContext';
+import { ChatModel } from '../../../models/ChatModel';
+import { ChatDialogue } from '../../../models/ChatDialogue';
+import { useObserverValue } from '../../hooks/useObserverValue';
+import MdButton from '../../../ui/MdButton';
+import { lng } from '../../../utils/lng';
+import { useSnackbar } from '../../hooks/useSnackbar';
+
+type Props = {
+  chat: ChatModel;
+};
+
+const DialogueSharing: React.FC<Props> = ({ chat }) => {
+  const [dialogueEditable, setDialogue] = React.useState<ChatDialogue | undefined>();
+  const shareItem = useObserverValue(chat.actions.shareItem);
+  const tariffsRef = React.useRef({ tariffs: [] });
+  const slots = useChatSlots();
+  const snackbar = useSnackbar();
+
+  const handleClose = () => {
+    chat.actions.shareItem.value = undefined;
+  }
+
+  const handleSave = async () => {
+    handleClose();
+    if (dialogueEditable) {
+      const res = await dialogueEditable.edit({
+        ...dialogueEditable.data.copyData(),
+        tariffs: tariffsRef.current.tariffs,
+      });
+
+      if (res.success) {
+        snackbar.show(['Вы поделились диалогом', 'You successfully shared the dialogue'])
+      }
+    }
+
+  }
+
+  React.useEffect(() => {
+    if (!!shareItem) {
+      setDialogue(shareItem);
+    }
+  }, [shareItem])
+
+  return (
+    <Dialog
+      maxWidth={'sm'}
+      open={!!shareItem}
+      onClose={handleClose}
+    >
+      <DialogTitle>
+        {lng(['Поделиться', 'Share'])}
+      </DialogTitle>
+      <DialogContent>
+        {!!dialogueEditable && (
+          <slots.popups.sharing.content
+            dialogue={dialogueEditable}
+            tariffsRef={tariffsRef}
+          />
+        )}
+      </DialogContent>
+      <DialogActions>
+        <MdButton
+          onClick={handleClose}
+        >
+          {['Нет', 'No']}
+        </MdButton>
+        <MdButton
+          onClick={handleSave}
+          color={'primary'}
+        >
+          {['Применить', 'Apply']}
+        </MdButton>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default DialogueSharing;
