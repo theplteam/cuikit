@@ -7,7 +7,9 @@ import Chat from './views/Chat';
 import { ChatDialogue } from './models/ChatDialogue'
 import { ChatMessage } from './models/ChatMessage'
 import { ChatModel } from './models/ChatModel'
-import { ChatDialogueTypeEnum, DialogueData, DChatDialogue } from './models/DialogueData'
+import { ChatDialogueTypeEnum, DialogueData, DChatDialogue } from './models/DialogueData';
+import { NewChatButton, NewChatIconButton, useChatContext } from './views';
+import { useDialogueContext } from './views/DialogueContext';
 
 type CustomTheme = {
   m3: {
@@ -62,5 +64,6 @@ declare module '@mui/material/styles' {
 
 export {
   Chat, ChatDialogue, ChatMessage, ChatModel,
-  ChatDialogueTypeEnum, DialogueData, type DChatDialogue
+  ChatDialogueTypeEnum, DialogueData, type DChatDialogue,
+  NewChatButton, NewChatIconButton, useChatContext, useDialogueContext
 };

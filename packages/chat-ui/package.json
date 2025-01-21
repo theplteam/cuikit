@@ -1,6 +1,6 @@
 {
   "name": "@chat-ui-root/chat",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,10 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mui/icons-material": "^5.11.0",
-    "@mui/system": "^5.15.14",
+    "@babel/runtime": "^7.26.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/system": "^5.15.14",
     "@mui/utils": "^5.15.14",
     "clsx": "^2.1.0",
     "hex-to-rgba": "^2.0.1",

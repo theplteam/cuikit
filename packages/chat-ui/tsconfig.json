@@ -14,13 +14,9 @@
     "isolatedModules": true,
     "moduleResolution": "node",
     "baseUrl": "./src",
-    "target": "es2015",
-    "lib": [
-      "es6",
-      "dom",
-      "es2019"
-    ],
-    "jsx": "preserve",
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react",
     "module": "esnext",
     "rootDir": "./src/",
     "esModuleInterop": true,
