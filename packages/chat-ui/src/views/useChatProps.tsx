@@ -7,18 +7,22 @@ type RequiredProps = {
   readonly dialogues: readonly ChatDialogue[];
   dialogue: ChatDialogue;
   setDialogue: (dialogue: ChatDialogue) => void;
-  model?: ChatModel;
 };
 
+// используется внутри библиотеки
 export type ChatPropsTypes = {
   slots: ChatSlotsType,
   loading: boolean;
   modelProps?: ChatModelProps;
+  model?: ChatModel;
+  assistantActions?: React.ReactElement[];
 } & RequiredProps;
 
+// что передает пользователь
 export type ChatUsersProps = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
-} & RequiredProps & { [key in keyof Omit<ChatPropsTypes, keyof RequiredProps>]?: Partial<ChatPropsTypes[key]> };
+  slots?: Partial<ChatSlotsType>;
+} & RequiredProps & Partial<Omit<ChatPropsTypes, 'slots' | keyof RequiredProps>>;
 
 export const useChatProps = (userProps: ChatUsersProps): ChatPropsTypes => {
   const slots = useChatPropsSlots(userProps.slots);
@@ -31,5 +35,7 @@ export const useChatProps = (userProps: ChatUsersProps): ChatPropsTypes => {
     loading: userProps.loading ?? false,
     model: userProps.model,
     modelProps: userProps.modelProps,
+    assistantActions: userProps.assistantActions,
+    // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
   }), [slots, userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues]);
 }

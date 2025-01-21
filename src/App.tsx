@@ -6,6 +6,7 @@ import testData from './test/testMessages.json';
 import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import { useCustomAssistantActions } from './customAssistantActions';
 
 function App() {
   const testArray = [
@@ -26,6 +27,8 @@ function App() {
     )
   ];
 
+  const customActions = useCustomAssistantActions();
+
   return (
     <Root>
       <Stack
@@ -45,6 +48,7 @@ function App() {
             slots={{
               list: LeftContainerPortal
             }}
+            assistantActions={customActions}
           />
         </Box>
       </Stack>

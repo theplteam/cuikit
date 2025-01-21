@@ -2,15 +2,15 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
 import { ChatMessage } from '../../../models/ChatMessage';
-import { ChatDialogue } from '../../../models/ChatDialogue';
+import { useChatContext } from '../../ChatGlobalContext';
 
 type Props = {
   message: ChatMessage;
-  dialogue: ChatDialogue;
   className: string;
 };
 
-const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
+const MessageActionsAssistant: React.FC<Props> = ({ message, className }) => {
+  const { actionsAssistant } = useChatContext();
   return (
     <Stack
       direction={'row'}
@@ -19,6 +19,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       className={className}
     >
       <MessageActionCopy message={message} />
+      {actionsAssistant}
     </Stack>
   );
 }

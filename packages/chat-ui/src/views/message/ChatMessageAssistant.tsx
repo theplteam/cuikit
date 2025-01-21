@@ -90,7 +90,12 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     >
       {blockText}
       <ChatMessageAssistantProgress message={message} />
-      {(!typing && !!text && enableAssistantActions) && <MessageActionsAssistant message={message} className={actionsClassName} dialogue={dialogue} />}
+      {(!typing && !!text && enableAssistantActions) && (
+        <MessageActionsAssistant
+          message={message}
+          className={actionsClassName}
+        />
+      )}
       {!!message.messageFilters && <MdTextUi variant={'body.small'} style={{ wordWrap: 'break-word' }}>{message.messageFilters}</MdTextUi>}
     </ChatMessageContainerStyled>
   );

@@ -7,11 +7,11 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-export type ChatModelProps = {
-  openNew?: () => void;
-  deleteDialogue?: (dialogue: ChatDialogue) => void;
-  openDialogue?: (dialogue: ChatDialogue) => void;
-};
+export type ChatModelProps = Partial<{
+  openNew: () => void;
+  deleteDialogue: (dialogue: ChatDialogue) => void;
+  openDialogue: (dialogue: ChatDialogue) => void;
+}>;
 
 export class ChatModel {
   openNew: () => void;
