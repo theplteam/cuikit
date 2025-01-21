@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ChatSlotsType, useChatPropsSlots } from './useChatPropsSlots';
 import { ChatDialogue } from '../models/ChatDialogue';
 import { ChatModel, ChatModelProps } from '../models/ChatModel';
+import { ChatMessage } from '../models/ChatMessage';
 
 type RequiredProps = {
   readonly dialogues: readonly ChatDialogue[];
@@ -15,7 +16,7 @@ export type ChatPropsTypes = {
   loading: boolean;
   modelProps?: ChatModelProps;
   model?: ChatModel;
-  assistantActions?: React.ReactElement[];
+  assistantActions?: React.JSXElementConstructor<{ message: ChatMessage, dialogue: ChatDialogue }>[];
 } & RequiredProps;
 
 // что передает пользователь

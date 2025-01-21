@@ -11,7 +11,7 @@ type ChatGlobalContextType = {
   dialogues: ArrayType<ChatDialogue>;
   setDialogue: (dialogue: ChatDialogue) => void;
   loading: boolean;
-  actionsAssistant: React.ReactElement[];
+  actionsAssistant: { element: Exclude<ChatPropsTypes['assistantActions'], undefined>[number] }[];
 };
 
 const Context = React.createContext<ChatGlobalContextType | undefined>(undefined);
@@ -32,7 +32,7 @@ const ChatGlobalProvider: React.FC<React.PropsWithChildren<{ props: ChatPropsTyp
     setDialogue: props.setDialogue,
     slots: props.slots,
     loading: props.loading,
-    actionsAssistant: props.assistantActions ?? [],
+    actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
   }), [model, props.slots, props.loading, props.dialogue, props.dialogues]);
 
   return (

@@ -7,6 +7,8 @@ import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useCustomAssistantActions } from './customAssistantActions';
+import { HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.tsx';
+import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 
 function App() {
   const testArray = [
@@ -29,16 +31,19 @@ function App() {
 
   const customActions = useCustomAssistantActions();
 
+  const isMobile = useMobile();
   return (
     <Root>
       <Stack
         direction={'row'}
         height={'100%'}
       >
-        <LeftContainer />
+        <HiddenMobile>
+          <LeftContainer />
+        </HiddenMobile>
         <Box
           width={'100%'}
-          maxWidth={700}
+          maxWidth={isMobile ? '100dvw' : 700}
           height={'100%'}
         >
           <Chat
@@ -46,7 +51,7 @@ function App() {
             dialogues={testArray}
             setDialogue={() => {}}
             slots={{
-              list: LeftContainerPortal
+              list: isMobile ? HiddenContent : LeftContainerPortal
             }}
             assistantActions={customActions}
           />

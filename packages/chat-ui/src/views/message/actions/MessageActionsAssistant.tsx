@@ -3,13 +3,15 @@ import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
 import { ChatMessage } from '../../../models/ChatMessage';
 import { useChatContext } from '../../ChatGlobalContext';
+import { ChatDialogue } from '../../../models/ChatDialogue';
 
 type Props = {
   message: ChatMessage;
+  dialogue: ChatDialogue;
   className: string;
 };
 
-const MessageActionsAssistant: React.FC<Props> = ({ message, className }) => {
+const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
   const { actionsAssistant } = useChatContext();
   return (
     <Stack
@@ -19,7 +21,13 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, className }) => {
       className={className}
     >
       <MessageActionCopy message={message} />
-      {actionsAssistant}
+      {actionsAssistant?.map((component, k) => (
+        <component.element
+          dialogue={dialogue}
+          message={message}
+          key={k}
+        />
+      ))}
     </Stack>
   );
 }

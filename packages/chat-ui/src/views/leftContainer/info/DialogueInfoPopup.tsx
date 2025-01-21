@@ -39,7 +39,7 @@ const DialogueInfoPopup: React.FC<Props> = ({ chat }) => {
         {lng(['Информация', 'Info'])}
       </DialogTitle>
       <DialogContent>
-        {!!dialogue && <slots.popups.info.content dialogue={dialogue} />}
+        {!!dialogue && <slots.popupsInfoContent dialogue={dialogue} />}
       </DialogContent>
       <DialogActions>
         <MdButton

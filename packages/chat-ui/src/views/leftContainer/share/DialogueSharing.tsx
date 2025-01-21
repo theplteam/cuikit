@@ -58,7 +58,7 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
       </DialogTitle>
       <DialogContent>
         {!!dialogueEditable && (
-          <slots.popups.sharing.content
+          <slots.popupsSharingContent
             dialogue={dialogueEditable}
             tariffsRef={tariffsRef}
           />
