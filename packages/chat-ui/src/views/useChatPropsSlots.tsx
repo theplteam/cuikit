@@ -3,47 +3,34 @@ import HiddenContent from './HiddenContent';
 import { MockComponent, MockRequiredComponent } from './utils/MockComponent';
 import { ChatDialogue } from '../models/ChatDialogue';
 import RootMock from './message/RootMock';
-
-type SlotsKeys = 'dialogue' | 'list' | 'listDriver';
+import { FlattenObject, UnionToIntersection } from '../types/FlattenObject';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
-type PartialRecursive<T> = T extends SlotValue ? T : { [key in keyof T]?: PartialRecursive<T[key]> };
-
-export type ChatSlotsType = Record<SlotsKeys, SlotValue> & {
+type ChatSlotsObjectType = {
+  dialogue: SlotValue;
+  list: SlotValue;
+  listDriver: SlotValue;
   firstMessage: SlotValue<{ dialogue: ChatDialogue }>;
   popups: {
     sharing: {
-      content: SlotValue<{
-        dialogue: ChatDialogue;
-        tariffsRef: React.RefObject<{ tariffs: number[] }>
-      }>;
+      content: SlotValue<{ dialogue: ChatDialogue; tariffsRef: React.RefObject<{ tariffs: number[] }> }>;
     };
     info: {
-      content: SlotValue<{
-        dialogue: ChatDialogue;
-      }>;
+      content: SlotValue<{ dialogue: ChatDialogue; }>;
     };
   };
 };
 
-export const useChatPropsSlots = (slots?: PartialRecursive<ChatSlotsType>): ChatSlotsType => {
-  const getValue = React.useCallback((key: SlotsKeys, defaultSlot: SlotValue) => {
-    return slots ? slots[key] ?? defaultSlot : defaultSlot;
-  }, [slots]);
+export type ChatSlotsType = UnionToIntersection<FlattenObject<ChatSlotsObjectType>>;
 
+export const useChatPropsSlots = (slots?: Partial<ChatSlotsType>): ChatSlotsType => {
   return React.useMemo(() => ({
     firstMessage: slots?.firstMessage ?? MockComponent,
-    dialogue: getValue('dialogue', RootMock),
-    list: getValue('list', HiddenContent),
-    listDriver: getValue('listDriver', React.Fragment),
-    popups: {
-      sharing: {
-        content: slots?.popups?.sharing?.content ?? MockRequiredComponent('slots?.popups?.sharing?.content'),
-      },
-      info: {
-        content: slots?.popups?.info?.content ?? MockRequiredComponent('slots?.popups?.info?.content'),
-      },
-    },
+    dialogue: slots?.dialogue ?? RootMock,
+    list: slots?.list ?? HiddenContent,
+    listDriver: slots?.listDriver ?? React.Fragment,
+    popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
+    popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
   }), [slots]);
 }
