@@ -1,5 +1,5 @@
 {
-  "name": "@chat-ui-root/chat",
+  "name": "@chat-ui/chat",
   "version": "1.0.18",
   "main": "./dist/index.js",
   "scripts": {

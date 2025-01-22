@@ -1,5 +1,5 @@
 {
-  "name": "@chat-ui-root/monorepo",
+  "name": "@chat-ui/monorepo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
