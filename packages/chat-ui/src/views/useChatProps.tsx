@@ -3,6 +3,8 @@ import { ChatSlotsType, useChatPropsSlots } from './useChatPropsSlots';
 import { ChatDialogue } from '../models/ChatDialogue';
 import { ChatModel, ChatModelProps } from '../models/ChatModel';
 import { ChatMessage } from '../models/ChatMessage';
+import { LangKeys } from '../models/ChatApp';
+import { useLangInit } from './useLangInit';
 
 type RequiredProps<D extends ChatDialogue> = {
   readonly dialogues: readonly D[];
@@ -23,9 +25,11 @@ export type ChatPropsTypes<D extends ChatDialogue = ChatDialogue> = {
 export type ChatUsersProps<D extends ChatDialogue> = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
   slots?: Partial<ChatSlotsType>;
+  lang?: 'en' | 'ru' | LangKeys;
 } & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
 
 export const useChatProps = <D extends ChatDialogue>(userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
+  useLangInit(userProps.lang as LangKeys | undefined);
   const slots = useChatPropsSlots(userProps.slots);
 
   return React.useMemo(() => ({

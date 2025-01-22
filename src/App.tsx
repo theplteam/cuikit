@@ -49,6 +49,7 @@ function App() {
         >
           <Chat
             dialogue={dialogue}
+            lang={'ru'}
             dialogues={testArray}
             setDialogue={setDialogue}
             scrollerRef={ref}
