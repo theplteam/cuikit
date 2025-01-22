@@ -9,9 +9,11 @@ import Box from '@mui/material/Box';
 import { useCustomAssistantActions } from './customAssistantActions';
 import { HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.tsx';
 import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
+import * as React from 'react';
+import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
 
 function App() {
-  const testArray = testDialogues.map(v => new ChatDialogue(
+  const testArray = React.useMemo(() => testDialogues.map(v => new ChatDialogue(
     v as DChatDialogue,
     NOOP,
     {
@@ -19,15 +21,23 @@ function App() {
       authCode: '',
       openDialogue: NOOP,
     }
-  ));
+  )), []);
+
+  const [dialogue, setDialogue] = React.useState(testArray[0]);
+
   const customActions = useCustomAssistantActions();
+
+  const ref = useElementRef();
 
   const isMobile = useMobile();
   return (
     <Root>
       <Stack
         direction={'row'}
-        height={'100%'}
+        height={'inherit'}
+        overflow={'scroll'}
+        position={'relative'}
+        ref={ref}
       >
         <HiddenMobile>
           <LeftContainer />
@@ -38,9 +48,10 @@ function App() {
           height={'100%'}
         >
           <Chat
-            dialogue={testArray[0]}
+            dialogue={dialogue}
             dialogues={testArray}
-            setDialogue={() => {}}
+            setDialogue={setDialogue}
+            scrollerRef={ref}
             slots={{
               list: isMobile ? HiddenContent : LeftContainerPortal
             }}

@@ -10,20 +10,17 @@ const NOOP = (name?: string) => () => {
 export type ChatModelProps<T extends ChatDialogue> = Partial<{
   openNew: () => void;
   deleteDialogue: (dialogue: T) => void;
-  openDialogue: (dialogue: T) => void;
 }>;
 
 export class ChatModel<T extends ChatDialogue = ChatDialogue> {
   openNew: () => void;
   deleteDialogue: (dialogue: T) => void;
-  openDialogue: (dialogue: T) => void;
 
   readonly actions = new ChatActions();
 
   constructor(props?: ChatModelProps<T>) {
     this.openNew = props?.openNew ?? NOOP('openNew');
     this.deleteDialogue = props?.deleteDialogue ?? NOOP('deleteDialogue');
-    this.openDialogue = props?.openDialogue ?? NOOP('openDialogue');
   }
 
   init = () => {

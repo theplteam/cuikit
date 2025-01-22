@@ -83,7 +83,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat }) => {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
 
-  const { dialogue: currentDialogue } = useChatContext();
+  const { dialogue: currentDialogue, setDialogue } = useChatContext();
 
   const isEmpty = useObserverValue(dialogue.isEmpty);
   const title = useObserverValue(dialogue.data.observableTitle);
@@ -95,7 +95,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat }) => {
   return (
     <>
       <BoxStyled
-        onClick={() => chat.openDialogue(dialogue)}
+        onClick={() => setDialogue(dialogue)}
         className={selected ? classSelected : undefined}
       >
         <MdListItemText

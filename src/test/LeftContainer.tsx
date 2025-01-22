@@ -8,6 +8,8 @@ const LeftContainer = () => (
   <Box
     minWidth={300}
     maxWidth={360}
+    position={'sticky'}
+    top={0}
     sx={{
       background: "#F1F4F9",
     }}
