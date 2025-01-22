@@ -65,13 +65,13 @@ export const useDialogueGroupedList = (dialogues: ArrayType<ChatDialogue>) => {
           id: monthEn,
         };
       } else {
-        const year = moment.unix(timestamp)
+        const year = moment.unix(timestamp).startOf('year');
         const yearLang = year.format('YYYY');
         const yearKey = `year${yearLang}`;
 
         results[yearKey] = {
           label: [yearLang, yearLang],
-          timestamp,
+          timestamp: year.unix(),
           id: yearKey,
         };
       }
