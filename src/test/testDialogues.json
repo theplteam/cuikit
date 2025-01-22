@@ -1,0 +1,742 @@
+[
+  {
+    "id": "1",
+    "title": "Exclusive Daily Important",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hi! Do you know anything about traveling to Japan?",
+        "owner": "user",
+        "userId": 123,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hi! Yes, I know a bit. What specifically do you want to know? Transportation, culture, or something else?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I'm curious about transportation. How does the train system work?",
+        "owner": "user",
+        "userId": 123,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Japan has an excellent train system. There are high-speed trains called Shinkansen connecting major cities, and regional lines are great for shorter trips.",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "That sounds amazing. Do I need to buy tickets in advance?",
+        "owner": "user",
+        "userId": 123,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "Yes, it's a good idea to reserve tickets for Shinkansen, especially during holidays. For regional trains, you can usually buy tickets at the station.",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-11-16 08:07:54"
+  },
+  {
+    "id": "2",
+    "title": "Report Exclusive",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hey! Do you have any tips for starting a fitness routine?",
+        "owner": "user",
+        "userId": 456,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hi! Sure, the first step is setting clear and realistic goals. What do you want to achieve with your fitness routine?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I’d like to lose some weight and improve my overall energy levels.",
+        "owner": "user",
+        "userId": 456,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Great goals! Start with a mix of cardio, like jogging or cycling, and strength training. Aim for at least 30 minutes a day, 3-5 times a week.",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "That sounds doable. Do you recommend any specific diet to go along with it?",
+        "owner": "user",
+        "userId": 456,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "A balanced diet is key. Focus on whole foods like lean proteins, vegetables, whole grains, and healthy fats. Also, try to reduce processed foods and sugary snacks.",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-02 21:52:13"
+  },
+  {
+    "id": "3",
+    "title": "Insight Report Feature",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Good afternoon! Are you ready to begin the exam on quantum entanglement?",
+        "owner": "assistant",
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Good afternoon! Yes, I am ready.",
+        "owner": "user",
+        "userId": 789,
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "Great. Let's start with the basics. Can you explain what quantum entanglement is?",
+        "owner": "assistant",
+        "parentId": "2",
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Quantum entanglement is a phenomenon where two or more particles become interconnected such that the quantum state of one particle is dependent on the state of the other, no matter the distance between them.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "Excellent explanation. Can you describe how Bell's theorem relates to entanglement?",
+        "owner": "assistant",
+        "parentId": "4",
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "Bell's theorem demonstrates that the predictions of quantum mechanics are inconsistent with local hidden variable theories. It provides a way to test whether entanglement can be explained through classical mechanics or requires a fundamentally quantum explanation.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "Very good. Now, what is the significance of the EPR paradox in the context of quantum entanglement?",
+        "owner": "assistant",
+        "parentId": "6",
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "The EPR paradox, proposed by Einstein, Podolsky, and Rosen, highlighted the apparent contradictions in quantum mechanics. They argued that quantum entanglement implies instantaneous communication, which seemed to violate the theory of relativity. This paradox raised fundamental questions about the completeness of quantum mechanics.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Impressive! One final question: How is quantum entanglement being applied in modern technology?",
+        "owner": "assistant",
+        "parentId": "8",
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "Quantum entanglement has applications in quantum computing, where it enables qubits to perform complex calculations efficiently. It's also used in quantum cryptography for secure communication and in quantum teleportation experiments to transfer information over long distances.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "9",
+        "time": 1673788845000
+      },
+      {
+        "id": "11",
+        "text": "Outstanding answers! You have demonstrated a deep understanding of the topic. Well done!",
+        "owner": "assistant",
+        "parentId": "10",
+        "time": 1673788850000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-03 06:11:53"
+  },
+  {
+    "id": "4",
+    "title": "Report Exclusive",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Good morning! Are you ready to discuss the topic of climate change and its impact on ecosystems?",
+        "owner": "assistant",
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Good morning! Yes, I’ve prepared for this topic.",
+        "owner": "user",
+        "userId": 789,
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "Great! Let's start with a fundamental question. What is climate change, and what causes it?",
+        "owner": "assistant",
+        "parentId": "2",
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Climate change refers to long-term shifts in temperature and weather patterns, primarily caused by human activities such as burning fossil fuels, deforestation, and industrial processes that increase greenhouse gas emissions.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "Excellent. Can you explain how climate change affects marine ecosystems?",
+        "owner": "assistant",
+        "parentId": "4",
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "Climate change impacts marine ecosystems through rising ocean temperatures, which disrupt marine species' habitats and migration patterns. Ocean acidification, caused by increased CO2 absorption, damages coral reefs and affects shell-forming organisms.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "Very thorough! Now, how does deforestation contribute to climate change?",
+        "owner": "assistant",
+        "parentId": "6",
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "Deforestation reduces the number of trees available to absorb CO2 from the atmosphere. It also releases stored carbon when trees are burned or decomposed, contributing significantly to greenhouse gas levels.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Spot on! Lastly, what are some solutions to mitigate the effects of climate change?",
+        "owner": "assistant",
+        "parentId": "8",
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "Solutions include transitioning to renewable energy sources like wind and solar, reforestation, promoting energy efficiency, and implementing policies to reduce greenhouse gas emissions globally.",
+        "owner": "user",
+        "userId": 789,
+        "parentId": "9",
+        "time": 1673788845000
+      },
+      {
+        "id": "11",
+        "text": "Fantastic answers! You’ve demonstrated a comprehensive understanding of the topic. Great work!",
+        "owner": "assistant",
+        "parentId": "10",
+        "time": 1673788850000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-04 03:01:05"
+  },
+  {
+    "id": "5",
+    "title": "Headline Important",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hi! Why is the sky blue?",
+        "owner": "user",
+        "userId": 3,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hello! The sky looks blue because of something called scattering. The sunlight hits tiny bits of air in the sky, and blue light gets scattered the most, so we see it as blue.",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "Oh! Does the sun make the blue?",
+        "owner": "user",
+        "userId": 3,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "That’s a great question! The sun gives off all the colors of light, like a rainbow, but the air spreads the blue color more. That’s why the sky looks blue!",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "Can I touch the blue?",
+        "owner": "user",
+        "userId": 3,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "The blue is in the air, so you can’t really touch it. But you can feel the air when you wave your hand around!",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "Wow! I like the sky!",
+        "owner": "user",
+        "userId": 3,
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "Me too! The sky is amazing, isn’t it? Keep asking questions—they’re so fun to answer!",
+        "owner": "assistant",
+        "parentId": "7",
+        "time": 1673788835000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-06 22:54:07"
+  },
+  {
+    "id": "6",
+    "title": "Report Breaking Headline",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hi there! Can you help me plan a weekend trip to the mountains?",
+        "owner": "user",
+        "userId": 101,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Of course! Do you already have a specific destination in mind, or should I suggest some options?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I’m thinking about a place with good hiking trails and nice views.",
+        "owner": "user",
+        "userId": 101,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Great choice! How about the Rocky Mountains? They have fantastic trails, ranging from easy walks to challenging hikes, and the scenery is stunning.",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "That sounds perfect! What should I pack for the trip?",
+        "owner": "user",
+        "userId": 101,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "You’ll need sturdy hiking boots, weather-appropriate clothing, a water bottle, snacks, a first aid kit, and sunscreen. Don’t forget a camera to capture the views!",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "Thanks! How’s the weather there in October?",
+        "owner": "user",
+        "userId": 101,
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "In October, it’s usually cool and crisp, with temperatures ranging from 40°F to 60°F during the day. It can get colder at night, so bring a warm jacket.",
+        "owner": "assistant",
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Sounds good. Thanks for the advice!",
+        "owner": "user",
+        "userId": 101,
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "You’re welcome! Have a fantastic trip and enjoy the mountains!",
+        "owner": "assistant",
+        "parentId": "9",
+        "time": 1673788845000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-16 08:20:53"
+  },
+  {
+    "id": "7",
+    "title": "Breaking Daily Report",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hello ChatGPT, I'm thinking about starting to learn how to play the guitar. Any advice?",
+        "owner": "user",
+        "userId": 202,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hi there! That's a great idea. The first step is to choose the right guitar for you. Are you leaning towards an acoustic or electric guitar?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I'm not sure yet. What are the differences?",
+        "owner": "user",
+        "userId": 202,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Acoustic guitars are great for portability and don't require extra equipment. Electric guitars offer a wider range of sounds and effects, but you'll need an amplifier and cables. It really depends on the style of music you're interested in.",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "I like rock music, so maybe an electric guitar would be better.",
+        "owner": "user",
+        "userId": 202,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "That sounds like a good choice! I'd recommend starting with a beginner-friendly electric guitar kit. It usually comes with an amplifier and all necessary accessories.",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "Great, I'll look into that. What should I practice first as a beginner?",
+        "owner": "user",
+        "userId": 202,
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "Start with basic chords and simple strumming patterns. Learn to switch between chords smoothly, and practice scales to build finger strength and dexterity.",
+        "owner": "assistant",
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Thanks! Any good resources you recommend for beginners?",
+        "owner": "user",
+        "userId": 202,
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "There are plenty of online tutorials, courses, and apps. Websites like JustinGuitar and Fender Play offer structured lessons for beginners. YouTube also has many free lessons.",
+        "owner": "assistant",
+        "parentId": "9",
+        "time": 1673788845000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-16 21:35:32"
+  },
+  {
+    "id": "8",
+    "title": "Daily Trending Headline",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hey ChatGPT, I've been feeling a bit stressed lately. Do you have any tips on how to relax?",
+        "owner": "user",
+        "userId": 303,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hi there! I'm sorry to hear that. There are many relaxation techniques you can try. Have you ever practiced mindfulness or meditation?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I've heard of meditation, but never really tried it. How do I start?",
+        "owner": "user",
+        "userId": 303,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Meditation is a great way to relax. Start by finding a quiet space and sitting comfortably. Close your eyes, take deep breaths, and focus on the sensation of breathing. Try to clear your mind of distractions. Even a few minutes a day can help.",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "That sounds doable. Any apps or resources you recommend for beginners?",
+        "owner": "user",
+        "userId": 303,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "Sure! Apps like Headspace, Calm, and Insight Timer offer guided meditations for beginners. They can help you get started with structured sessions.",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "I'll give those a try. Are there other ways to relax besides meditation?",
+        "owner": "user",
+        "userId": 303,
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "Absolutely! You can try deep breathing exercises, yoga, listening to calming music, reading a book, or taking a walk in nature. The key is to find what works best for you.",
+        "owner": "assistant",
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Thanks, that's really helpful. I'll experiment with these ideas.",
+        "owner": "user",
+        "userId": 303,
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "You're welcome! Remember to take it slow and be patient with yourself. Relaxation is a journey. I'm here if you have more questions.",
+        "owner": "assistant",
+        "parentId": "9",
+        "time": 1673788845000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-25 19:58:06"
+  },
+  {
+    "id": "9",
+    "title": "Insight Headline Feature",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hello ChatGPT, I'm planning a dinner party and need some advice on menu planning. Can you help?",
+        "owner": "user",
+        "userId": 404,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hi! I'd be happy to help. What type of cuisine are you considering, or would you like some suggestions?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I'm thinking of Italian food. It seems like a safe and enjoyable choice for most guests.",
+        "owner": "user",
+        "userId": 404,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Italian is a great choice! You can create a menu with antipasti, pasta, a main course, and dessert. Do you need help choosing specific dishes?",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "Yes, please. What would you recommend for each course?",
+        "owner": "user",
+        "userId": 404,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "For antipasti, consider a simple bruschetta or a charcuterie board with Italian cheeses and meats. For pasta, a classic spaghetti carbonara or penne arrabbiata can be crowd-pleasers. As a main course, you could serve chicken cacciatore or eggplant parmesan. For dessert, tiramisu or panna cotta would be delightful.",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "These sound perfect! How about drinks?",
+        "owner": "user",
+        "userId": 404,
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "You can serve a selection of Italian wines such as Chianti or Pinot Grigio, and perhaps a non-alcoholic sparkling water with lemon. For dessert, an espresso or limoncello could be a nice finishing touch.",
+        "owner": "assistant",
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Great suggestions! How should I arrange the seating to encourage conversation?",
+        "owner": "user",
+        "userId": 404,
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "Consider a round table setup if possible, or a U-shaped arrangement. This allows everyone to see each other and join conversations easily. Adding place cards can also help guests find their seats and spark conversation topics.",
+        "owner": "assistant",
+        "parentId": "9",
+        "time": 1673788845000
+      }
+    ],
+    "authorId": 1,
+    "date": "2024-12-28 23:23:34"
+  },
+  {
+    "id": "10",
+    "title": "Update Headline Trending",
+    "dialogType": "newsList",
+    "messages": [
+      {
+        "id": "1",
+        "text": "Hey ChatGPT, I'm thinking of adopting a pet. Can you give me some advice?",
+        "owner": "user",
+        "userId": 505,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "text": "Hello! Adopting a pet is a wonderful idea. What kind of pet are you considering?",
+        "owner": "assistant",
+        "parentId": "1",
+        "time": 1673788805000
+      },
+      {
+        "id": "3",
+        "text": "I'm leaning towards getting a dog. What should I know before adopting one?",
+        "owner": "user",
+        "userId": 505,
+        "time": 1673788810000
+      },
+      {
+        "id": "4",
+        "text": "Dogs are amazing companions! Before adopting a dog, consider factors like the breed's energy level, size, and temperament, as well as your living situation and schedule. Also, be prepared for training, exercise, and veterinary care.",
+        "owner": "assistant",
+        "parentId": "3",
+        "time": 1673788815000
+      },
+      {
+        "id": "5",
+        "text": "That makes sense. How do I choose the right breed for my lifestyle?",
+        "owner": "user",
+        "userId": 505,
+        "time": 1673788820000
+      },
+      {
+        "id": "6",
+        "text": "Think about how much time you can dedicate to exercise and training. For an active lifestyle, breeds like Border Collies or Labrador Retrievers might be a good fit. For a calmer environment, consider smaller or more low-energy breeds like Bulldogs or Basset Hounds. Research breed characteristics to match your lifestyle.",
+        "owner": "assistant",
+        "parentId": "5",
+        "time": 1673788825000
+      },
+      {
+        "id": "7",
+        "text": "Got it. What are the first things I should do once I bring my new dog home?",
+        "owner": "user",
+        "userId": 505,
+        "time": 1673788830000
+      },
+      {
+        "id": "8",
+        "text": "Prepare your home by getting necessary supplies like a dog bed, leash, food, bowls, and toys. Also, introduce your dog gradually to its new environment, establish a routine for feeding and bathroom breaks, and begin basic training to set boundaries.",
+        "owner": "assistant",
+        "parentId": "7",
+        "time": 1673788835000
+      },
+      {
+        "id": "9",
+        "text": "Thank you! I feel more prepared now. Any final tips?",
+        "owner": "user",
+        "userId": 505,
+        "time": 1673788840000
+      },
+      {
+        "id": "10",
+        "text": "You're welcome! Be patient and give your new pet time to adjust. Consistent training, love, and attention will help build a strong bond. And don't hesitate to reach out to a vet or pet experts if you have questions along the way.",
+        "owner": "assistant",
+        "parentId": "9",
+        "time": 1673788845000
+      }
+    ],
+    "authorId": 1,
+    "date": "2025-01-13 14:10:18"
+  }
+]

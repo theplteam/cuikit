@@ -1,8 +1,8 @@
 import './App.css'
-import { Chat, ChatDialogue, ChatDialogueTypeEnum, DChatDialogue } from 'chat-ui';
+import { Chat, ChatDialogue, DChatDialogue } from 'chat-ui';
 import { NOOP } from '../packages/chat-ui/src/utils/NOOP.ts';
 import Root from './test/Root.tsx';
-import testData from './test/testMessages.json';
+import testDialogues from './test/testDialogues.json';
 import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -11,24 +11,15 @@ import { HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.t
 import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 
 function App() {
-  const testArray = [
-    new ChatDialogue(
-      {
-        id: '1-2-3',
-        title: 'testDialogue',
-        dialogType: ChatDialogueTypeEnum.NEWS_LIST,
-        messages: testData as DChatDialogue['messages'],
-        authorId: 1,
-      },
-      NOOP,
-      {
-        getMessageUrl: () => '',
-        authCode: '',
-        openDialogue: NOOP,
-      }
-    )
-  ];
-
+  const testArray = testDialogues.map(v => new ChatDialogue(
+    v as DChatDialogue,
+    NOOP,
+    {
+      getMessageUrl: () => '',
+      authCode: '',
+      openDialogue: NOOP,
+    }
+  ));
   const customActions = useCustomAssistantActions();
 
   const isMobile = useMobile();

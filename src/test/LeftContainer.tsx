@@ -8,6 +8,9 @@ const LeftContainer = () => (
   <Box
     minWidth={300}
     maxWidth={360}
+    sx={{
+      background: "#F1F4F9",
+    }}
     id={containerId}
   />
 );
