@@ -9,13 +9,15 @@ import DialoguesList from './leftContainer/DialoguesList';
 import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatTheme } from './ChatTheme';
+import { ChatDialogue } from '../models/ChatDialogue';
 
-const Chat: React.FC<React.PropsWithChildren<ChatUsersProps>> = (usersProps) => {
+const Chat = <D extends ChatDialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
   const props = useChatProps(usersProps);
 
   return (
     <ChatTheme>
-      <ChatGlobalProvider props={props}>
+      {/** TODO: #ANY */}
+      <ChatGlobalProvider props={props as any}>
         <props.slots.listDriver>
           <HiddenDesktop>
             <ChatAppDriver>

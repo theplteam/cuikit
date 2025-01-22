@@ -6,9 +6,10 @@ import { ChatModel } from '../../models/ChatModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import MdIconButton from '../../ui/MdIconButton';
 import MdButton from '../../ui/MdButton';
+import { ChatDialogue } from '../../models/ChatDialogue';
 
-type Props = {
-  chat: ChatModel;
+type Props<D extends ChatDialogue> = {
+  chat: ChatModel<D>;
 };
 
 const useDisabled = () => {
@@ -17,7 +18,7 @@ const useDisabled = () => {
   return (isEmpty && !dialogue.data.filters);
 }
 
-export const NewChatIconButton: React.FC<Props> = ({ chat }) => {
+export const NewChatIconButton = <D extends ChatDialogue>({ chat }: Props<D>) => {
   const disabled = useDisabled();
   return (
     <MdIconButton
@@ -30,7 +31,7 @@ export const NewChatIconButton: React.FC<Props> = ({ chat }) => {
   );
 };
 
-const NewChatButton: React.FC<Props> = ({ chat }) => {
+const NewChatButton = <D extends ChatDialogue>({ chat }: Props<D>) => {
   const disabled = useDisabled();
   return (
     <Box

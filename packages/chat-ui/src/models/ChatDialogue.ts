@@ -48,9 +48,9 @@ export class ChatDialogue {
    */
   constructor(
     _data: DChatDialogue,
-    public touch: (dialogue: ChatDialogue) => void,
+    public touch: <T extends ChatDialogue>(dialogue: T) => void,
     readonly options: {
-      openDialogue: (dialogue: ChatDialogue) => void,
+      openDialogue: <T extends ChatDialogue>(dialogue: T) => void,
       getUserId?: () => number;
       // Следующие функции для заглушек, т.е. временно
       // TODO: временно ANY, т.к. нам сюда вообще не надо передавать edit
