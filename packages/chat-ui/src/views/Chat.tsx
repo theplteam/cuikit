@@ -35,6 +35,7 @@ const Chat = <D extends ChatDialogue>(usersProps: React.PropsWithChildren<ChatUs
             contentRef={usersProps.scrollerRef}
           />
         </props.slots.dialogue>
+        {usersProps.children}
       </ChatGlobalProvider>
       <ChatSnackbar />
     </ChatTheme>

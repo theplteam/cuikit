@@ -1,5 +1,5 @@
 import './App.css'
-import { Chat, ChatDialogue, DChatDialogue } from 'chat-ui';
+import { Chat, ChatDialogue, ChatDialogueTypeEnum, DChatDialogue } from 'chat-ui';
 import { NOOP } from '../packages/chat-ui/src/utils/NOOP.ts';
 import Root from './test/Root.tsx';
 import testDialogues from './test/testDialogues.json';
@@ -53,6 +53,27 @@ function App() {
             dialogues={testArray}
             setDialogue={setDialogue}
             scrollerRef={ref}
+            modelProps={{
+              openNew: () => {
+                const newDialogue = new ChatDialogue(
+                  {
+                    id: '1-2-3',
+                    title: 'newDialogue',
+                    messages: [],
+                    authorId: 1,
+                    dialogType: ChatDialogueTypeEnum.NEWS_LIST,
+                  },
+                  NOOP,
+                  {
+                    getMessageUrl: () => '',
+                    authCode: '',
+                    openDialogue: NOOP,
+                  }
+                );
+
+                setDialogue(newDialogue);
+              },
+            }}
             slots={{
               list: isMobile ? HiddenContent : LeftContainerPortal
             }}
