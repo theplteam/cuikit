@@ -14,7 +14,7 @@ import DelayRenderer from '../../ui/DelayRenderer';
 type Props = {};
 
 const ChatDialoguesListBlock: React.FC<Props> = () => {
-  const { loading, model: chat, dialogues } = useChatContext();
+  const { loading, model: chat, dialogues, dialogue: currentDialogue, setDialogue } = useChatContext();
   const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(dialogues);
   return (
     <>
@@ -33,7 +33,12 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
                   if (groupKey !== group.id) return null;
                   return (
                     <Box key={dialogue.id}>
-                      <DialogueListItem dialogue={dialogue} chat={chat} />
+                      <DialogueListItem
+                        currentDialogue={currentDialogue}
+                        setDialogue={setDialogue}
+                        dialogue={dialogue}
+                        chat={chat}
+                      />
                     </Box>
                   );
                 })}

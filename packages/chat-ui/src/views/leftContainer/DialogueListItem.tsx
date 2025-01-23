@@ -4,7 +4,6 @@ import DialogueListItemMenu from './DialogueListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
-import { useChatContext } from '../ChatGlobalContext';
 import { ChatDialogue } from '../../models/ChatDialogue';
 import { ChatModel } from '../../models/ChatModel';
 import MdIconButton, { iconButtonClasses } from '../../ui/MdIconButton';
@@ -15,6 +14,8 @@ import MdListItemText from '../../ui/list/MdListItemText';
 type Props = {
   chat: ChatModel;
   dialogue: ChatDialogue;
+  currentDialogue: ChatDialogue;
+  setDialogue: (dialogue: ChatDialogue) => void;
 };
 
 const classSelected = 'boxSelected';
@@ -78,12 +79,10 @@ const MdIconButtonStyled = styled(MdIconButton)(({ theme }) => ({
   transform: 'translateY(-50%)',
 }));
 
-const DialogueListItem: React.FC<Props> = ({ dialogue, chat }) => {
+const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, setDialogue }) => {
   const {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
-
-  const { dialogue: currentDialogue, setDialogue } = useChatContext();
 
   const isEmpty = useObserverValue(dialogue.isEmpty);
   const title = useObserverValue(dialogue.data.observableTitle);
@@ -125,4 +124,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat }) => {
   );
 };
 
-export default DialogueListItem;
+export default React.memo(DialogueListItem, (prevProps, nextProps) => {
+  return (prevProps.dialogue.id === prevProps.currentDialogue.id) === (nextProps.dialogue.id === nextProps.currentDialogue.id)
+    && prevProps.dialogue.id === nextProps.dialogue.id;
+});

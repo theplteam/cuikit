@@ -2,7 +2,7 @@ import './App.css'
 import { Chat, ChatDialogue, ChatDialogueTypeEnum, DChatDialogue } from 'chat-ui';
 import { NOOP } from '../packages/chat-ui/src/utils/NOOP.ts';
 import Root from './test/Root.tsx';
-import testDialogues from './test/testDialogues.json';
+import dialogues from './test/dialogues.json';
 import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -13,8 +13,8 @@ import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
 
 function App() {
-  const testArray = React.useMemo(() => testDialogues.map(v => new ChatDialogue(
-    v as DChatDialogue,
+  const testArray = React.useMemo(() => (dialogues as DChatDialogue[]).map(v => new ChatDialogue(
+    v,
     NOOP,
     {
       getMessageUrl: () => '',
