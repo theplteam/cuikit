@@ -91,10 +91,15 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, se
 
   const selected = currentDialogue?.id === dialogue.id;
 
+  const handleClickListItem = () => {
+    chat.actions.menuDriverOpen.value = false;
+    setDialogue(dialogue);
+  }
+
   return (
     <>
       <BoxStyled
-        onClick={() => setDialogue(dialogue)}
+        onClick={handleClickListItem}
         className={selected ? classSelected : undefined}
       >
         <MdListItemText

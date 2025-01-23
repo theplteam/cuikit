@@ -42,7 +42,6 @@ export class DialogueMessages {
 
     // реакция на пополнение в массиве всех сообщений, чтобы обновить ветку
     this.allMessages.subscribe(() => {
-      console.log('new messages');
       const newObject = this._createNewMap(this.allMessagesArray);
       const map = new Map(Object.entries(newObject));
 

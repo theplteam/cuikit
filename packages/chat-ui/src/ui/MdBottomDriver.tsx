@@ -13,6 +13,7 @@ type Props = React.PropsWithChildren<{
   onClose: () => void;
   title?: string | string[];
   disableCustomScrollbar?: boolean;
+  keepMounted?: boolean;
 }>;
 
 const DrawerStyled = styled(Drawer)(({ theme }) => ({
@@ -23,7 +24,7 @@ const DrawerStyled = styled(Drawer)(({ theme }) => ({
   // zIndex: theme.zIndex.drawer + theme.zIndex.modal,
 }));
 
-const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar }) => {
+const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar, keepMounted }) => {
   const container = React.useRef<HTMLDivElement | null>(null);
 
   const height = 500;
@@ -34,6 +35,7 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
         open={open}
         onClose={onClose}
         container={() => container.current}
+        keepMounted={keepMounted}
       >
         <Stack pt={0.5}>
           <Stack px={0.5} direction={'row'} alignItems={'center'}>

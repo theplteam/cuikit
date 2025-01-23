@@ -14,6 +14,7 @@ const ChatAppDriver: React.FC<Props> = ({ children }) => {
       open={open}
       onClose={() => chat.actions.menuDriverOpen.value = false}
       title={['История', 'History']}
+      keepMounted
     >
       {children}
     </MdBottomDriver>
