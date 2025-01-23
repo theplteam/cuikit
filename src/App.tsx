@@ -7,10 +7,11 @@ import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useCustomAssistantActions } from './customAssistantActions';
-import { HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.tsx';
+import { HiddenDesktop, HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.tsx';
 import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
+import MobileAppBar from './appBar/MobileAppBar.tsx';
 
 function App() {
   const testArray = React.useMemo(() => (dialogues as DChatDialogue[]).map(v => new ChatDialogue(
@@ -78,7 +79,11 @@ function App() {
               list: isMobile ? HiddenContent : LeftContainerPortal
             }}
             assistantActions={customActions}
-          />
+          >
+            <HiddenDesktop>
+              <MobileAppBar />
+            </HiddenDesktop>
+          </Chat>
         </Box>
       </Stack>
     </Root>
