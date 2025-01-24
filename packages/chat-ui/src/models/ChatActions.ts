@@ -1,5 +1,5 @@
 import { ChatDialogue } from './ChatDialogue';
-import { ObservableReactValue } from './observers/ObservableReactValue';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 
 export class ChatActions {
   readonly menuDriverOpen = new ObservableReactValue(false);

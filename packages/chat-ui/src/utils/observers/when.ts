@@ -1,5 +1,5 @@
 import { ObservableReactValue } from './ObservableReactValue';
-import { FnType } from '../types';
+import { FnType } from '../../models/types';
 import { reaction } from './reaction';
 
 export const when = <T>(

@@ -1,4 +1,4 @@
-import { randomId } from '../../utils/numberUtils/randomInt';
+import { randomId } from '../numberUtils/randomInt';
 
 type CallbackFnType = () => void;
 

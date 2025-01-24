@@ -1,5 +1,5 @@
 import { DChatMessage } from './ChatMessage';
-import { ObservableReactValue } from './observers/ObservableReactValue';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { MakeReadonlyValuesExcept } from './types';
 
 export enum ChatDialogueTypeEnum {

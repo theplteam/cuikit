@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ObservableReactValue } from '../../models/observers/ObservableReactValue';
+import { ObservableReactValue } from '../../utils/observers/ObservableReactValue';
 import { useObserverValue } from './useObserverValue';
 import { lng } from '../../utils/lng';
 

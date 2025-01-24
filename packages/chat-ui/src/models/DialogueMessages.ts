@@ -1,5 +1,5 @@
 import { ChatMessage } from './ChatMessage';
-import { ObservableReactValue } from './observers/ObservableReactValue';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { PromiseUtils } from '../utils/PromiseUtils';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { sortByDesc } from '../utils/arrayUtils/arraySort';

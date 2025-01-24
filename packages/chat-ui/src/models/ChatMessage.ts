@@ -1,6 +1,6 @@
 import { ForceStream } from './ForceStream';
 import { lng } from '../utils/lng';
-import { ObservableReactValue } from './observers/ObservableReactValue';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { UserIdType } from './ChatApp';
 
 export enum ChatMessageOwner {

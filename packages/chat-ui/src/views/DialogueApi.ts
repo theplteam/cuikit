@@ -1,4 +1,4 @@
-import { ObservableReactValue } from '../models/observers/ObservableReactValue';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { ChatMessage } from '../models/ChatMessage';
 import { DialogueMessages } from '../models/DialogueMessages';
 

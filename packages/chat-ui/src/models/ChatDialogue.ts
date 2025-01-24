@@ -4,7 +4,7 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { DialogueMessages } from './DialogueMessages';
 import { DChatDialogue, DialogueData } from './DialogueData';
-import { ObservableReactValue } from './observers/ObservableReactValue';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { PartialExcept } from './types';
 import { ChatApp } from './ChatApp';
@@ -23,8 +23,6 @@ export class ChatDialogue {
   readonly messages = new DialogueMessages();
 
   readonly data: DialogueData;
-
-  readonly isFull = true;
 
   readonly isTyping = new ObservableReactValue(false);
 

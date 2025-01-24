@@ -1,4 +1,4 @@
-import { ObservableReactValue } from '../../models/observers/ObservableReactValue';
+import { ObservableReactValue } from '../../utils/observers/ObservableReactValue';
 import { useSyncExternalStore } from 'react';
 import { NOOP } from '../../utils/NOOP';
 

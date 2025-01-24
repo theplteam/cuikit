@@ -3,7 +3,7 @@ import { ChatViewConstants } from '../ChatViewConstants';
 import { ChatScrollerType } from './ChatScrollerType';
 import { useTheme } from '@mui/material/styles';
 import { useDialogueContext } from '../DialogueContext';
-import { when } from '../../models/observers/when';
+import { when } from '../../utils/observers/when';
 import { ChatMessage } from '../../models/ChatMessage';
 import { useObserverValue } from '../hooks/useObserverValue';
 
