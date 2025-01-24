@@ -1,6 +1,7 @@
 import { ForceStream } from './ForceStream';
 import { lng } from '../utils/lng';
 import { ObservableReactValue } from './observers/ObservableReactValue';
+import { UserIdType } from './ChatApp';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -20,7 +21,7 @@ export type DChatMessage = {
   id: string;
   text: string;
   owner: ChatMessageOwner;
-  userId?: number;
+  userId?: UserIdType;
   userName?: string;
   info?: string;
   parentId?: string;

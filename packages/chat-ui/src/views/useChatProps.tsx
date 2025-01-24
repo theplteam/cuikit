@@ -3,8 +3,9 @@ import { ChatSlotsType, useChatPropsSlots } from './useChatPropsSlots';
 import { ChatDialogue } from '../models/ChatDialogue';
 import { ChatModel, ChatModelProps } from '../models/ChatModel';
 import { ChatMessage } from '../models/ChatMessage';
-import { LangKeys } from '../models/ChatApp';
+import { LangKeys, UserIdType } from '../models/ChatApp';
 import { useLangInit } from './useLangInit';
+import { useUserInit } from './useUserInit';
 
 type RequiredProps<D extends ChatDialogue> = {
   readonly dialogues: readonly D[];
@@ -19,6 +20,7 @@ export type ChatPropsTypes<D extends ChatDialogue = ChatDialogue> = {
   modelProps?: ChatModelProps<D>;
   model?: ChatModel<D>;
   assistantActions?: React.JSXElementConstructor<{ message: ChatMessage, dialogue: D }>[];
+  userId?: UserIdType;
 } & RequiredProps<D>;
 
 // что передает пользователь
@@ -30,6 +32,8 @@ export type ChatUsersProps<D extends ChatDialogue> = {
 
 export const useChatProps = <D extends ChatDialogue>(userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
   useLangInit(userProps.lang as LangKeys | undefined);
+  useUserInit(userProps.userId);
+
   const slots = useChatPropsSlots(userProps.slots);
 
   return React.useMemo(() => ({

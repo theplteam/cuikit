@@ -54,6 +54,7 @@ function App() {
             dialogues={testArray}
             setDialogue={setDialogue}
             scrollerRef={ref}
+            userId={20}
             modelProps={{
               openNew: () => {
                 const newDialogue = new ChatDialogue(

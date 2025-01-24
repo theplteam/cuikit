@@ -7,6 +7,7 @@ import { DChatDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from './observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { PartialExcept } from './types';
+import { ChatApp } from './ChatApp';
 
 export type NewMessageResponse = {
   user: DChatMessage,
@@ -51,7 +52,6 @@ export class ChatDialogue {
     public touch: <T extends ChatDialogue>(dialogue: T) => void,
     readonly options: {
       openDialogue: <T extends ChatDialogue>(dialogue: T) => void,
-      getUserId?: () => number;
       // Следующие функции для заглушек, т.е. временно
       // TODO: временно ANY, т.к. нам сюда вообще не надо передавать edit
       edit?: (newData: PartialExcept<DChatDialogue, 'id'>) => any,
@@ -78,7 +78,7 @@ export class ChatDialogue {
   }
 
   get isOwner() {
-    return this.data.authorId === this.options.getUserId?.();
+    return this.data.authorId === ChatApp.userId;
   }
 
   edit = (newData: DChatDialogue) => {
@@ -189,7 +189,7 @@ export class ChatDialogue {
       id: uuidv4(),
       text,
       owner: ChatMessageOwner.USER,
-      userId: this.options.getUserId?.(),
+      userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
     });
