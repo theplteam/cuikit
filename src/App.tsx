@@ -24,7 +24,7 @@ function App() {
     }
   )), []);
 
-  const [dialogue, setDialogue] = React.useState(testArray[0]);
+  const [dialogue, setDialogue] = React.useState(([...testArray].sort((a,b) => b.timestamp.value - a.timestamp.value))[0]);
 
   const customActions = useCustomAssistantActions();
 

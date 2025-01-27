@@ -31,7 +31,7 @@ const MdIconButtonStyled = styled(MdIconButton)(({ theme }) => ({
 
 const MessagePagination: React.FC<Props> = ({ message, classes, disabled }) => {
   const { dialogueApi } = useDialogueContext();
-  const messages = useObserverValue(dialogueApi.current?.getListener('branch'), []);
+  const messages = useObserverValue(dialogueApi.current?.getListener('allMessages'), []);
   const branches = messages?.filter(v => v.parentId === message.parentId && v.isUser) ?? [];
 
   const height = 30;

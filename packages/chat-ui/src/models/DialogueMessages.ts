@@ -121,9 +121,15 @@ export class DialogueMessages {
   private _createTree = (lastItem: ChatMessage, messages: Readonly<ChatMessage[]>) => {
     messages = sortByDesc([...messages], 'time');
 
-    const newerMessageParentId = lastItem?.parentId;
+    let userMessage: ChatMessage | undefined;
 
-    let userMessage = messages.find(m => m.id === newerMessageParentId);
+    if (lastItem.isUser) {
+      userMessage = lastItem;
+    } else {
+      const newerMessageParentId = lastItem?.parentId;
+
+      userMessage = messages.find(m => m.id === newerMessageParentId);
+    }
 
     const branch: ChatMessage[] = [];
 
@@ -145,9 +151,13 @@ export class DialogueMessages {
         userMessage = undefined;
       }
     }
-
-    // Возвращаем ветку в обратном порядке
-    return branch.reverse();
+    return branch
+      // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
+      /*.filter((message, index) => {
+        return !index || message.isUser !== branch[index - 1].isUser
+      })*/
+      // Возвращаем ветку в обратном порядке
+      .reverse();
   }
 
   private _createNewMap = (messages: Readonly<ChatMessage[]>) => {
