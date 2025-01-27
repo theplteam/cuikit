@@ -31,6 +31,7 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
     if (dialogueEditable) {
       const res = await dialogueEditable.edit({
         ...dialogueEditable.data.copyData(),
+        messages: [],
         tariffs: tariffsRef.current.tariffs,
       });
 

@@ -61,9 +61,9 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
 
   const [text, setText] = React.useState('');
 
-  const messages = dialogueApi.current?.branch ?? [];
 
   const onSendMessage = async () => {
+    const messages = dialogueApi.current?.branch.value ?? [];
     if (text && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
       dialogue.messages.startNewMessageProcess();

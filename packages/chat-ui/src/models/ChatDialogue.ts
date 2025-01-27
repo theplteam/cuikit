@@ -191,7 +191,7 @@ export class ChatDialogue {
     this.closeConnection = sendMessageController.close;
   }
 
-  private _createPair = (text: string, parentMessage: ChatMessage | undefined) => {
+  protected _createPair = (text: string, parentMessage: ChatMessage | undefined) => {
     const userMessage = new ChatMessage({
       id: uuidv4(),
       text,

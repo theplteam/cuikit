@@ -3,6 +3,7 @@ import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../ChatGlobalContext';
 import { ChatMessage } from '../../models/ChatMessage';
 import { ChatDialogue } from '../../models/ChatDialogue';
+import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {
   messages: ChatMessage[];
@@ -31,5 +32,6 @@ const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
 }
 
 export default React.memo(MessagesList, (prevProps, nextProps) => {
-  return prevProps.messages.length === nextProps.messages.length && prevProps.dialogue.id === nextProps.dialogue.id;
+  return prevProps.dialogue.id === nextProps.dialogue.id
+    && arrayPluck(prevProps.messages, 'id').join() === arrayPluck(nextProps.messages, 'id').join('');
 });

@@ -31,8 +31,8 @@ const DialogueProvider: React.FC<Props> = ({ children, dialogue, dialogueRef }) 
     if (dialogue) {
       const messages = dialogue.messages;
       apiRef.current = {
-        allMessages: messages.allMessages.value,
-        branch: messages.currentMessages.value,
+        allMessages: messages.allMessages,
+        branch: messages.currentMessages,
         getListener: getDialogueListeners(dialogue),
         handleChangeBranch: messages.handleChangeBranch,
       };

@@ -9,15 +9,15 @@ export type DialogueListenersMap = {
 };
 
 export type DialogueApi = {
-  allMessages: Readonly<ChatMessage[]>;
-  branch: Readonly<ChatMessage[]>;
+  allMessages: ObservableReactValue<Readonly<ChatMessage[]>>;
+  branch: ObservableReactValue<Readonly<ChatMessage[]>>;
   getListener: <K extends keyof DialogueListenersMap>(key: K) => DialogueListenersMap[K] | undefined;
   handleChangeBranch: DialogueMessages['handleChangeBranch'];
 };
 
 export const getDialogueMockApi = (): DialogueApi => ({
-  allMessages: [],
-  branch: [],
+  allMessages: new ObservableReactValue([]),
+  branch: new ObservableReactValue([]),
   handleChangeBranch: (message) => {},
   getListener: (key) => undefined,
 });
