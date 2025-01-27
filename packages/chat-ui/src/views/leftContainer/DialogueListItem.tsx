@@ -14,7 +14,7 @@ import MdListItemText from '../../ui/list/MdListItemText';
 type Props = {
   chat: ChatModel;
   dialogue: ChatDialogue;
-  currentDialogue: ChatDialogue;
+  currentDialogue: ChatDialogue | undefined;
   setDialogue: (dialogue: ChatDialogue) => void;
 };
 
@@ -130,6 +130,6 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, se
 };
 
 export default React.memo(DialogueListItem, (prevProps, nextProps) => {
-  return (prevProps.dialogue.id === prevProps.currentDialogue.id) === (nextProps.dialogue.id === nextProps.currentDialogue.id)
+  return (prevProps.dialogue.id === prevProps.currentDialogue?.id) === (nextProps.dialogue.id === nextProps.currentDialogue?.id)
     && prevProps.dialogue.id === nextProps.dialogue.id;
 });

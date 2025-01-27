@@ -7,7 +7,7 @@ import { ChatDialogue } from '../models/ChatDialogue';
 type ChatGlobalContextType = {
   model: ChatModel<ChatDialogue>;
   slots: ChatPropsTypes['slots'];
-  dialogue: ChatDialogue;
+  dialogue: ChatDialogue | undefined;
   dialogues: ArrayType<ChatDialogue>;
   setDialogue: (dialogue: ChatDialogue) => void;
   loading: boolean;

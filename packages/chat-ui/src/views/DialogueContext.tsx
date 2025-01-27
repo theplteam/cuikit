@@ -6,7 +6,7 @@ import { getDialogueListeners } from './utils/getDialogueListeners';
 import { ChatDialogue } from '../models/ChatDialogue';
 
 type DialogueContextType = {
-  dialogue: ChatDialogue;
+  dialogue: ChatDialogue | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
   dialogueApi: React.RefObject<DialogueApi>;
@@ -14,7 +14,7 @@ type DialogueContextType = {
 
 type Props = {
   children: React.ReactNode;
-  dialogue: ChatDialogue;
+  dialogue: ChatDialogue | undefined;
   dialogueRef: React.MutableRefObject<DialogueApi | undefined>;
 };
 
@@ -26,15 +26,17 @@ const DialogueProvider: React.FC<Props> = ({ children, dialogue, dialogueRef }) 
   const messageMode = useMessagesMode();
 
   React.useMemo(() => {
-    dialogue.messages.init();
+    dialogue?.messages.init();
 
-    const messages = dialogue.messages;
-    apiRef.current = {
-      allMessages: messages.allMessages.value,
-      branch: messages.currentMessages.value,
-      getListener: getDialogueListeners(dialogue),
-      handleChangeBranch: messages.handleChangeBranch,
-    };
+    if (dialogue) {
+      const messages = dialogue.messages;
+      apiRef.current = {
+        allMessages: messages.allMessages.value,
+        branch: messages.currentMessages.value,
+        getListener: getDialogueListeners(dialogue),
+        handleChangeBranch: messages.handleChangeBranch,
+      };
+    }
 
     if (dialogueRef) {
       dialogueRef.current = apiRef.current;

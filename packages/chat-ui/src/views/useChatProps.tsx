@@ -9,7 +9,7 @@ import { useUserInit } from './useUserInit';
 
 type RequiredProps<D extends ChatDialogue> = {
   readonly dialogues: readonly D[];
-  dialogue: D;
+  dialogue: D | undefined;
   setDialogue: (dialogue: D) => void;
 };
 

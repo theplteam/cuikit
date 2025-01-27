@@ -14,8 +14,8 @@ type Props<D extends ChatDialogue> = {
 
 const useDisabled = () => {
   const { dialogue } = useChatContext();
-  const isEmpty = useObserverValue(dialogue.isEmpty) as boolean;
-  return (isEmpty && !dialogue.data.filters);
+  const isEmpty = useObserverValue(dialogue?.isEmpty) as boolean;
+  return (isEmpty && !dialogue?.data.filters);
 }
 
 export const NewChatIconButton = <D extends ChatDialogue>({ chat }: Props<D>) => {

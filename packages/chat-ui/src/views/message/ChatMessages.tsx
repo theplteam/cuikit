@@ -21,7 +21,7 @@ const ChatMessages: React.FC<Props> = () => {
       width={'100%'}
       id={ChatViewConstants.MESSAGE_BOX_ID}
     >
-      <MessagesList dialogue={dialogue} messages={messages ?? []} />
+      {!!dialogue && <MessagesList dialogue={dialogue} messages={messages ?? []}/>}
     </Stack>
   );
 };
