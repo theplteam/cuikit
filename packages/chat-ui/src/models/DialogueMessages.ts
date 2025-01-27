@@ -151,13 +151,9 @@ export class DialogueMessages {
         userMessage = undefined;
       }
     }
-    return branch
-      // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
-      /*.filter((message, index) => {
-        return !index || message.isUser !== branch[index - 1].isUser
-      })*/
-      // Возвращаем ветку в обратном порядке
-      .reverse();
+
+    // Возвращаем ветку в обратном порядке
+    return branch.reverse();
   }
 
   private _createNewMap = (messages: Readonly<ChatMessage[]>) => {

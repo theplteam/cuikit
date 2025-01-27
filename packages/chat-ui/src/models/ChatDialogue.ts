@@ -8,6 +8,7 @@ import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { PartialExcept } from './types';
 import { ChatApp } from './ChatApp';
+import { sortBy } from '../utils/arrayUtils/arraySort';
 
 export type NewMessageResponse = {
   user: DChatMessage,
@@ -58,7 +59,15 @@ export class ChatDialogue {
     },
   ) {
     this.data = new DialogueData(_data);
-    this.messages.allMessages.value = _data.messages.map(v => new ChatMessage(v));
+
+    const messages = sortBy(_data.messages.map(v => new ChatMessage(v)), 'time');
+
+    this.messages.allMessages.value = messages
+      // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
+      .filter((message, index) => {
+        const nextMessage = messages[index + 1];
+        return !nextMessage || message.isUser !== nextMessage.isUser
+      });
     this.isEmpty.value = !!_data.isNew;
     this.timestamp = new ObservableReactValue(moment(_data.date).unix());
   }

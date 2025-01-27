@@ -30,7 +30,7 @@ export class DialogueData {
     newsDataset: 0,
   });
 
-  constructor(private data: MakeReadonlyValuesExcept<DChatDialogue, 'usage' | 'tariffs' | 'id' | 'filters'>) {
+  constructor(private data: MakeReadonlyValuesExcept<Omit<DChatDialogue, 'messages'>, 'usage' | 'tariffs' | 'id' | 'filters'>) {
     this.observableTitle.value = data.title;
   }
 
