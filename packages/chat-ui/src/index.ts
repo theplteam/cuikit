@@ -1,13 +1,13 @@
 import Chat from './views/Chat';
-import { ChatDialogue } from './models/ChatDialogue'
-import { ChatMessage } from './models/ChatMessage'
+import { Dialogue } from './models/Dialogue'
+import { Message } from './models/Message'
 import { ChatModel } from './models/ChatModel'
-import { ChatDialogueTypeEnum, DialogueData, DChatDialogue } from './models/DialogueData';
+import { DialogueData, DDialogue } from './models/DialogueData';
 import { NewChatButton, NewChatIconButton, useChatContext } from './views';
 import { useDialogueContext } from './views/DialogueContext';
 
 export {
-  Chat, ChatDialogue, ChatMessage, ChatModel,
-  ChatDialogueTypeEnum, DialogueData, type DChatDialogue,
+  Chat, Dialogue, Message, ChatModel,
+  DialogueData, type DDialogue,
   NewChatButton, NewChatIconButton, useChatContext, useDialogueContext
 };

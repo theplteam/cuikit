@@ -2,6 +2,7 @@ import { ForceStream } from './ForceStream';
 import { lng } from '../utils/lng';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { UserIdType } from './ChatApp';
+import { IdType } from 'types';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -17,18 +18,17 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-export type DChatMessage = {
-  id: string;
+export type DMessage = {
+  id: IdType;
   text: string;
   owner: ChatMessageOwner;
   userId?: UserIdType;
-  userName?: string;
   info?: string;
-  parentId?: string;
+  parentId?: IdType;
   time: number;
 }
 
-export class ChatMessage {
+export class Message {
   readonly observableText = new ObservableReactValue('');
 
   typing = new ObservableReactValue(false);
@@ -43,7 +43,7 @@ export class ChatMessage {
   private streamHeaders: string[] = [];
   private headersTimeout?: NodeJS.Timeout;*/
 
-  constructor(private _data: DChatMessage) {
+  constructor(private _data: DMessage) {
     this.observableText.value = _data.text;
     this.messageFilters = _data.info;
   }
@@ -56,7 +56,7 @@ export class ChatMessage {
     return this._data.parentId;
   }
 
-  set parentId(val: string|undefined) {
+  set parentId(val: IdType|undefined) {
     this._data.parentId = val;
   }
 

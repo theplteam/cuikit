@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'chat-ui': path.resolve(__dirname, './packages/chat-ui/src')
+      'chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
+      'models': path.resolve(__dirname, './packages/chat-ui/src/models'),
     }
   }
 })

@@ -2,12 +2,12 @@ import * as React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { MessagesModeType } from '../../hooks/useMessagesMode';
-import { ChatMessage } from '../../../../models/ChatMessage';
+import { Message } from 'models/Message';
 import MdMenuItem from '../../../../ui/menu/MdMenuItem';
 import { useSnackbar } from '../../../hooks/useSnackbar';
 
 type Props = {
-  message: ChatMessage;
+  message: Message;
   modeManager: MessagesModeType;
   onClose: () => void;
 };

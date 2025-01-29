@@ -1,36 +1,19 @@
-import { DChatMessage } from './ChatMessage';
+import { DMessage } from 'models/Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { MakeReadonlyValuesExcept } from './types';
+import { IdType } from '../types';
 
-export enum ChatDialogueTypeEnum {
-  NEWS_LIST = 'newsList',
-  NEWS_COLLECTION = 'newsCollection',
-  SINGLE_NEWS = 'singleNews',
-}
-
-export type DChatDialogue = {
-  id: string;
+export type DDialogue = {
+  id: IdType;
   title: string;
   date?: string;
-  filters?: string;
   authorId: number;
-  newsFound?: number;
-  newsDataset?: number;
-  usage?: number;
-  messages: DChatMessage[];
-  dialogType: ChatDialogueTypeEnum;
-  tariffs?: number[];
+  messages: DMessage[];
 } & { isNew?: boolean };
 
-export class DialogueData {
+export class DialogueData<Data extends DDialogue> {
   readonly observableTitle = new ObservableReactValue('');
 
-  readonly observableNewsCount = new ObservableReactValue({
-    newsFound: 0,
-    newsDataset: 0,
-  });
-
-  constructor(private data: MakeReadonlyValuesExcept<Omit<DChatDialogue, 'messages'>, 'usage' | 'tariffs' | 'id' | 'filters'>) {
+  constructor(private data: Readonly<Omit<Data, 'messages'>> & { id: IdType }) {
     this.observableTitle.value = data.title;
   }
 
@@ -38,7 +21,7 @@ export class DialogueData {
     return this.data.id;
   }
 
-  setId = (value: string) => {
+  setId = (value: IdType) => {
     this.data.id = value;
   }
 
@@ -54,44 +37,8 @@ export class DialogueData {
     return this.data.date;
   }
 
-  get filters() {
-    return this.data.filters;
-  }
-
-  set filters(value) {
-    this.data.filters = value;
-  }
-
   get authorId() {
     return this.data.authorId;
-  }
-
-  get newsFound() {
-    return this.data.newsFound;
-  }
-
-  get newsDataset() {
-    return this.data.newsDataset;
-  }
-
-  get tokensUsage() {
-    return this.data.usage ?? 0;
-  }
-
-  set tokensUsage(value) {
-    this.data.usage = value;
-  }
-
-  get dialogType() {
-    return this.data.dialogType;
-  }
-
-  get tariffs() {
-    return this.data.tariffs;
-  }
-
-  set tariffs(value) {
-    this.data.tariffs = value;
   }
 
   get isNew() {

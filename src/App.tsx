@@ -1,24 +1,26 @@
 import './App.css'
-import { Chat, ChatDialogue, ChatDialogueTypeEnum, DChatDialogue } from 'chat-ui';
+import { Chat } from 'chat-ui';
 import { NOOP } from '../packages/chat-ui/src/utils/NOOP.ts';
 import Root from './test/Root.tsx';
 import dialogues from './test/dialogues.json';
 import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { useCustomAssistantActions } from './customAssistantActions';
+import { useCustomAssistantActions } from './views/customAssistantActions';
 import { HiddenDesktop, HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.tsx';
 import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
-import MobileAppBar from './appBar/MobileAppBar.tsx';
+import MobileAppBar from './views/appBar/MobileAppBar.tsx';
+import { CustomDialogue, DCustomDialogue } from './models/CustomDialogue.ts';
 
 function App() {
-  const testArray = React.useMemo(() => (dialogues as DChatDialogue[]).map(v => new ChatDialogue(
+  const dd: DCustomDialogue[] = dialogues as DCustomDialogue[];
+
+  const testArray = React.useMemo(() => dd.map(v => new CustomDialogue(
     v,
     NOOP,
     {
-      getMessageUrl: () => '',
       authCode: '',
       openDialogue: NOOP,
     }
@@ -57,17 +59,15 @@ function App() {
             userId={20}
             modelProps={{
               openNew: () => {
-                const newDialogue = new ChatDialogue(
+                const newDialogue = new CustomDialogue(
                   {
                     id: '1-2-3',
                     title: 'newDialogue',
                     messages: [],
                     authorId: 1,
-                    dialogType: ChatDialogueTypeEnum.NEWS_LIST,
                   },
                   NOOP,
                   {
-                    getMessageUrl: () => '',
                     authCode: '',
                     openDialogue: NOOP,
                   }

@@ -9,8 +9,8 @@ import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
 import { NOOP } from '../../utils/NOOP';
-import { ChatMessage } from '../../models/ChatMessage';
-import { ChatDialogue } from '../../models/ChatDialogue';
+import { Message } from 'models/Message';
+import { Dialogue } from 'models/Dialogue';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';
@@ -19,9 +19,9 @@ import { MdTextUi } from '../../ui/TextUi';
 import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
-  message: ChatMessage;
+  message: Message;
   enableAssistantActions?: boolean;
-  dialogue: ChatDialogue;
+  dialogue: Dialogue;
   isLatest?: boolean;
   elevation?: boolean;
 };

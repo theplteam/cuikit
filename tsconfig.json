@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "chat-ui": ["./packages/chat-ui/src"]
+      "chat-ui": ["./packages/chat-ui/src"],
     },
     "jsx": "preserve"
   },

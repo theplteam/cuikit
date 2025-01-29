@@ -3,10 +3,10 @@ import { MobileMessageActionsType, useMobileMessageActions } from './message/hoo
 import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
 import { DialogueApi, getDialogueMockApi } from './DialogueApi';
 import { getDialogueListeners } from './utils/getDialogueListeners';
-import { ChatDialogue } from '../models/ChatDialogue';
+import { Dialogue } from 'models/Dialogue';
 
 type DialogueContextType = {
-  dialogue: ChatDialogue | undefined;
+  dialogue: Dialogue | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
   dialogueApi: React.RefObject<DialogueApi>;
@@ -14,7 +14,7 @@ type DialogueContextType = {
 
 type Props = {
   children: React.ReactNode;
-  dialogue: ChatDialogue | undefined;
+  dialogue: Dialogue | undefined;
   dialogueRef: React.MutableRefObject<DialogueApi | undefined>;
 };
 

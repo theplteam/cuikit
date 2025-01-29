@@ -1,4 +1,4 @@
-import { ChatMessage } from './ChatMessage';
+import { Message } from 'models/Message';
 
 export class ChatMessageStreamingModel {
   private _chunks: string[][] = [];
@@ -9,7 +9,7 @@ export class ChatMessageStreamingModel {
 
   private _timeoutMs = 20;
 
-  constructor(private message: ChatMessage) {}
+  constructor(private message: Message) {}
 
   push = (textPart: string) => {
     this._chunks.push(textPart.split(' '));

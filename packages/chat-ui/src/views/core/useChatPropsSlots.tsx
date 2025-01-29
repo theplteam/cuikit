@@ -1,7 +1,7 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
 import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
-import { ChatDialogue } from '../../models/ChatDialogue';
+import { Dialogue } from 'models/Dialogue';
 import RootMock from '../message/RootMock';
 import { FlattenObject, UnionToIntersection } from '../../types/FlattenObject';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
@@ -14,13 +14,13 @@ type ChatSlotsObjectType = {
   dialogue: SlotValue;
   list: SlotValue;
   listDriver: SlotValue;
-  firstMessage: SlotValue<{ dialogue: ChatDialogue }>;
+  firstMessage: SlotValue<{ dialogue: Dialogue }>;
   popups: {
     sharing: {
-      content: SlotValue<{ dialogue: ChatDialogue; tariffsRef: React.RefObject<{ tariffs: number[] }> }>;
+      content: SlotValue<{ dialogue: Dialogue; tariffsRef: React.RefObject<{ tariffs: number[] }> }>;
     };
     info: {
-      content: SlotValue<{ dialogue: ChatDialogue; }>;
+      content: SlotValue<{ dialogue: Dialogue; }>;
     };
   };
 };

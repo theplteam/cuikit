@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
-import { ChatMessage } from '../../../models/ChatMessage';
+import { Message } from 'models/Message';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import { ChatDialogue } from '../../../models/ChatDialogue';
+import { Dialogue } from 'models/Dialogue';
 
 type Props = {
-  message: ChatMessage;
-  dialogue: ChatDialogue;
+  message: Message;
+  dialogue: Dialogue;
   className: string;
 };
 

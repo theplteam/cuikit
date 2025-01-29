@@ -22,7 +22,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "models": "./models"
+    }
   },
   "include": [
     "./src/**/*"

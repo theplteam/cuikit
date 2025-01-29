@@ -1,16 +1,16 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { ChatMessage } from '../models/ChatMessage';
+import { Message } from 'models/Message';
 import { DialogueMessages } from '../models/DialogueMessages';
 
 export type DialogueListenersMap = {
-  allMessages: ObservableReactValue<ChatMessage[]>;
-  branch: ObservableReactValue<ChatMessage[]>;
+  allMessages: ObservableReactValue<Message[]>;
+  branch: ObservableReactValue<Message[]>;
   isTyping: ObservableReactValue<boolean>;
 };
 
 export type DialogueApi = {
-  allMessages: ObservableReactValue<Readonly<ChatMessage[]>>;
-  branch: ObservableReactValue<Readonly<ChatMessage[]>>;
+  allMessages: ObservableReactValue<Readonly<Message[]>>;
+  branch: ObservableReactValue<Readonly<Message[]>>;
   getListener: <K extends keyof DialogueListenersMap>(key: K) => DialogueListenersMap[K] | undefined;
   handleChangeBranch: DialogueMessages['handleChangeBranch'];
 };

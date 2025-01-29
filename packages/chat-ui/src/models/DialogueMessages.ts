@@ -1,19 +1,22 @@
-import { ChatMessage } from './ChatMessage';
+import { Message } from 'models/Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { PromiseUtils } from '../utils/PromiseUtils';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { sortByDesc } from '../utils/arrayUtils/arraySort';
 import { isDefined } from '../utils/isDefined';
+import { IdType } from '../types';
 
 
-type ParentMapValue = { messages: ChatMessage[] };
+type ParentMapValue = { messages: Message[] };
+
+type MesagesMapType = Map<IdType, ParentMapValue>;
 
 const rootMessageHash = 'rootMessage';
 
 export class DialogueMessages {
-  allMessages = new ObservableReactValue<ChatMessage[]>([], true);
+  allMessages = new ObservableReactValue<Message[]>([], true);
 
-  currentMessages = new ObservableReactValue<ChatMessage[]>([]);
+  currentMessages = new ObservableReactValue<Message[]>([]);
 
   // Если нужно подождать пока новое сообщение появится в ветке
   private _newMessageProcess?: PromiseUtils<boolean>;
@@ -27,7 +30,7 @@ export class DialogueMessages {
   }
 
   // запомнить в какой ветке остановились, чтобы при повторном входе в диалог снова открыть её
-  private _lastMessage?: ChatMessage;
+  private _lastMessage?: Message;
 
   private _callbackInitiated = false;
 
@@ -45,16 +48,16 @@ export class DialogueMessages {
       const newObject = this._createNewMap(this.allMessagesArray);
       const map = new Map(Object.entries(newObject));
 
-      this._updateBranch(map, arrayLast(this.allMessagesArray as ChatMessage[]));
+      this._updateBranch(map, arrayLast(this.allMessagesArray as Message[]));
       this._newMessageProcess?.resolve(true);
     });
   }
 
-  handleChangeBranch = (message: ChatMessage) => {
+  handleChangeBranch = (message: Message) => {
     const parentId = message.parentId ?? rootMessageHash;
 
     const newObject = this._createNewMap(this.allMessagesArray);
-    const map = new Map(Object.entries(newObject));
+    const map = new Map<IdType, ParentMapValue>(Object.entries(newObject));
     map.set(parentId, { messages: [message] });
     // console.log(message, messagesParentMap);
 
@@ -65,11 +68,11 @@ export class DialogueMessages {
     this._newMessageProcess = new PromiseUtils();
   }
 
-  private _updateBranch = (map: Map<string, ParentMapValue>, startFrom?: ChatMessage) => {
+  private _updateBranch = (map: MesagesMapType, startFrom?: Message) => {
     if (!startFrom) startFrom = this._lastMessage;
     const rootMessages = startFrom ? [startFrom] : map.get(rootMessageHash)?.messages ?? [];
 
-    const branches: ChatMessage[][] = [];
+    const branches: Message[][] = [];
 
     for (const rootMessage of rootMessages) {
       branches.push(this._getBranchRecursive(rootMessage, map));
@@ -101,7 +104,7 @@ export class DialogueMessages {
     return this._lastMessage;
   }
 
-  private _getBranchRecursive = (parent: ChatMessage, map: Map<string, ParentMapValue>) => {
+  private _getBranchRecursive = (parent: Message, map: MesagesMapType) => {
     const branch = [parent];
 
     const parentMap = map.get(parent.id);
@@ -118,10 +121,10 @@ export class DialogueMessages {
     return branch;
   }
 
-  private _createTree = (lastItem: ChatMessage, messages: Readonly<ChatMessage[]>) => {
+  private _createTree = (lastItem: Message, messages: Readonly<Message[]>) => {
     messages = sortByDesc([...messages], 'time');
 
-    let userMessage: ChatMessage | undefined;
+    let userMessage: Message | undefined;
 
     if (lastItem.isUser) {
       userMessage = lastItem;
@@ -131,7 +134,7 @@ export class DialogueMessages {
       userMessage = messages.find(m => m.id === newerMessageParentId);
     }
 
-    const branch: ChatMessage[] = [];
+    const branch: Message[] = [];
 
     // console.log({ lastText: lastItem.text, lastId: lastItem.id, pid: lastItem.parentId }, { parentText: userMessage?.text, id: userMessage?.id });
     while (userMessage) {
@@ -156,7 +159,7 @@ export class DialogueMessages {
     return branch.reverse();
   }
 
-  private _createNewMap = (messages: Readonly<ChatMessage[]>) => {
+  private _createNewMap = (messages: Readonly<Message[]>) => {
     const newObject: { [key: string]: ParentMapValue } = {};
 
     for (const message of messages) {
@@ -170,7 +173,7 @@ export class DialogueMessages {
     return newObject;
   }
 
-  push = (...newMessages: ChatMessage[]) => {
+  push = (...newMessages: Message[]) => {
     this.allMessages.setValue([
       ...this.allMessages.value,
       ...newMessages,

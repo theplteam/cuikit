@@ -1,29 +1,30 @@
-import { ChatMessage, ChatMessageOwner, DChatMessage } from './ChatMessage';
+import { Message, ChatMessageOwner, DMessage } from 'models/Message';
 import { ChatSendMessage } from './ChatSendMessage';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { DialogueMessages } from './DialogueMessages';
-import { DChatDialogue, DialogueData } from './DialogueData';
+import { DDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { PartialExcept } from './types';
 import { ChatApp } from './ChatApp';
 import { sortBy } from '../utils/arrayUtils/arraySort';
+import { IdType } from '../types';
 
 export type NewMessageResponse = {
-  user: DChatMessage,
-  assistant: DChatMessage,
+  user: DMessage,
+  assistant: DMessage,
 };
 
 type ApiMethodPromise<T> = Promise<{ data?: T }>
 
-export class ChatDialogue {
+export class Dialogue<Data extends DDialogue = DDialogue> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
   readonly messages = new DialogueMessages();
 
-  readonly data: DialogueData;
+  readonly data: DialogueData<Data>;
 
   readonly isTyping = new ObservableReactValue(false);
 
@@ -33,13 +34,15 @@ export class ChatDialogue {
 
   scrollY = -1;
 
-  private _dialogCreating?: ApiMethodPromise<{ dialogue: DChatDialogue }>;
+  private _dialogCreating?: ApiMethodPromise<{ dialogue: DDialogue }>;
 
   // диалог уже создан на сервере, но пользователь ещё не отправил ни одного сообщения.
   // Установим этот ID сразу после отправки сообщения
-  private potentialId?: string;
+  private potentialId?: IdType;
 
   readonly timestamp: ObservableReactValue<number>;
+
+  get messageUrl(){ return 'no url' };
 
   /**
    * @param _data
@@ -47,20 +50,19 @@ export class ChatDialogue {
    * @param options
    */
   constructor(
-    _data: DChatDialogue,
-    public touch: <T extends ChatDialogue>(dialogue: T) => void,
+    _data: Data,
+    public touch: <T extends Dialogue<Data>>(dialogue: T) => void,
     readonly options: {
-      openDialogue: <T extends ChatDialogue>(dialogue: T) => void,
+      openDialogue: <T extends Dialogue<Data>>(dialogue: T) => void,
       // Следующие функции для заглушек, т.е. временно
       // TODO: временно ANY, т.к. нам сюда вообще не надо передавать edit
-      edit?: (newData: PartialExcept<DChatDialogue, 'id'>) => any,
-      getMessageUrl: (type: DChatDialogue['dialogType']) => string,
+      edit?: (newData: PartialExcept<DDialogue, 'id'>) => any,
       authCode: string,
     },
   ) {
     this.data = new DialogueData(_data);
 
-    const messages = sortBy(_data.messages.map(v => new ChatMessage(v)), 'time');
+    const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
 
     this.messages.allMessages.value = messages
       // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
@@ -88,15 +90,8 @@ export class ChatDialogue {
     return this.data.authorId === ChatApp.userId;
   }
 
-  edit = (newData: DChatDialogue) => {
-    this.data.title = newData.title;
-    this.data.tariffs = newData.tariffs;
-    const { id, title, tariffs } = this.data;
-    return this.options.edit?.({ id, title, tariffs });
-  }
-
-  createInstance = async (method: () => ApiMethodPromise<{ dialogue: DChatDialogue }>) => {
-    let res: { data?: { dialogue: DChatDialogue } } | undefined;
+  createInstance = async (method: () => ApiMethodPromise<{ dialogue: DDialogue }>) => {
+    let res: { data?: { dialogue: DDialogue } } | undefined;
 
     this._dialogCreating = method();
     res = await this._dialogCreating;
@@ -104,16 +99,12 @@ export class ChatDialogue {
     // тут не нужно ставить id или менять страничку, т.к. диалог создается сразу как мы в него входим
     if (res?.data) {
       this.potentialId = res.data.dialogue.id;
-      this.data.observableNewsCount.setValue({
-        newsDataset: res.data.dialogue.newsDataset ?? 0,
-        newsFound: res.data.dialogue.newsFound ?? 120,
-      });
     }
 
     this._dialogCreating = undefined;
   }
 
-  editMessage = (messageEdit: ChatMessage, newText: string) => {
+  editMessage = (messageEdit: Message, newText: string) => {
     const parentMessage = this.messagesArray.find(v => v.id === messageEdit.parentId);
     this.isTyping.value = true;
 
@@ -121,7 +112,7 @@ export class ChatDialogue {
 
     this.messages.push(userMessage, assistantMessage);
 
-    const url = this.options.getMessageUrl(this.data.dialogType);
+    const url = this.messageUrl;
 
     const sendMessageController = new ChatSendMessage(this, userMessage, assistantMessage);
     const promise = sendMessageController.sendMessage(
@@ -147,7 +138,7 @@ export class ChatDialogue {
     return userMessage;
   }
 
-  sendMessage = async (lastMessage: ChatMessage | undefined, text: string) => {
+  sendMessage = async (lastMessage: Message | undefined, text: string) => {
     this.isTyping.value = true;
 
     const { userMessage, assistantMessage } = this._createPair(text, lastMessage);
@@ -167,7 +158,7 @@ export class ChatDialogue {
       }
     }
 
-    const url = this.options.getMessageUrl(this.data.dialogType);
+    const url = this.messageUrl;
 
     const sendMessageController = new ChatSendMessage(this, userMessage, assistantMessage);
 
@@ -191,8 +182,8 @@ export class ChatDialogue {
     this.closeConnection = sendMessageController.close;
   }
 
-  protected _createPair = (text: string, parentMessage: ChatMessage | undefined) => {
-    const userMessage = new ChatMessage({
+  protected _createPair = (text: string, parentMessage: Message | undefined) => {
+    const userMessage = new Message({
       id: uuidv4(),
       text,
       owner: ChatMessageOwner.USER,
@@ -201,7 +192,7 @@ export class ChatDialogue {
       parentId: parentMessage?.id,
     });
 
-    const assistantMessage = new ChatMessage({
+    const assistantMessage = new Message({
       id: 'NEW_MESSAGE_' + randomId(),
       text: '',
       owner: ChatMessageOwner.ASSISTANT,

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { ChatMessage, StreamResponseState } from '../../models/ChatMessage';
+import { Message, StreamResponseState } from 'models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { MdTextUi } from '../../ui/TextUi';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
-  message: ChatMessage;
+  message: Message;
 };
 
 const palette = materialDesignSysPalette;

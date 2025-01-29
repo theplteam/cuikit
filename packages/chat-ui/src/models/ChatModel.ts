@@ -1,4 +1,4 @@
-import { ChatDialogue } from './ChatDialogue';
+import { Dialogue } from 'models/Dialogue';
 import { ChatActions } from './ChatActions';
 
 const NOOP = (name?: string) => () => {
@@ -7,12 +7,12 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-export type ChatModelProps<D extends ChatDialogue = ChatDialogue> = Partial<{
+export type ChatModelProps<D extends Dialogue = Dialogue> = Partial<{
   openNew: () => void;
   deleteDialogue: (dialogue: D) => void;
 }>;
 
-export class ChatModel<D extends ChatDialogue = ChatDialogue> {
+export class ChatModel<D extends Dialogue = Dialogue> {
   openNew: () => void;
   deleteDialogue: (dialogue: D) => void;
 

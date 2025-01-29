@@ -1,7 +1,7 @@
-import { ChatMessage, StreamResponseState } from './ChatMessage';
-import { ChatDialogue } from './ChatDialogue';
+import { Message, StreamResponseState } from 'models/Message';
+import { Dialogue } from 'models/Dialogue';
 import { ChatMessageStreamingModel } from './ChatMessageStreamingModel';
-import { DChatDialogue } from './DialogueData';
+import { DDialogue } from './DialogueData';
 import { ChatApp } from './ChatApp';
 
 enum StreamResponseKeys {
@@ -38,7 +38,7 @@ type StreamResponse = {
 } | {
   type: StreamResponseKeys.FINAL | StreamResponseKeys.INFO,
   content: {
-    dialogue: DChatDialogue;
+    dialogue: DDialogue;
     // TODO #ANY
     limits: any;
     messageId: string;
@@ -56,9 +56,9 @@ export class ChatSendMessage {
   private _closeConnection?: () => void;
 
   constructor(
-    private dialogue: ChatDialogue,
-    private userMessage: ChatMessage,
-    private assistantMessage: ChatMessage,
+    private dialogue: Dialogue,
+    private userMessage: Message,
+    private assistantMessage: Message,
   ) {
     this._streamingModel = new ChatMessageStreamingModel(assistantMessage);
   }
@@ -213,7 +213,7 @@ export class ChatSendMessage {
           this._streamingModel.faster();
           const { answerId, dialogue, info } = jsonObject.content;
           // appModel.chat.limits = limits;
-          this.dialogue.data.tokensUsage  = dialogue.usage ?? 0;
+          // this.dialogue.data.tokensUsage  = dialogue.usage ?? 0;
           this.dialogue.data.title  = dialogue.title;
           // генерируем в клиенте
           // this.userMessage.setId(messageId);

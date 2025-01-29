@@ -4,7 +4,7 @@ import DialogueListItemMenu from './DialogueListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
-import { ChatDialogue } from '../../models/ChatDialogue';
+import { Dialogue } from 'models/Dialogue';
 import { ChatModel } from '../../models/ChatModel';
 import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -15,9 +15,9 @@ import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   chat: ChatModel;
-  dialogue: ChatDialogue;
-  currentDialogue: ChatDialogue | undefined;
-  setDialogue: (dialogue: ChatDialogue) => void;
+  dialogue: Dialogue;
+  currentDialogue: Dialogue | undefined;
+  setDialogue: (dialogue: Dialogue) => void;
 };
 
 const classSelected = 'boxSelected';

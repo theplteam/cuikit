@@ -2,13 +2,13 @@ import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
 import { ArrayType } from '../../models/types';
 import { ChatModel } from '../../models/ChatModel';
-import { ChatDialogue } from '../../models/ChatDialogue';
+import { Dialogue } from 'models/Dialogue';
 
 type ChatGlobalContextType = {
-  model: ChatModel<ChatDialogue>;
-  dialogue: ChatDialogue | undefined;
-  dialogues: ArrayType<ChatDialogue>;
-  setDialogue: (dialogue: ChatDialogue) => void;
+  model: ChatModel<Dialogue>;
+  dialogue: Dialogue | undefined;
+  dialogues: ArrayType<Dialogue>;
+  setDialogue: (dialogue: Dialogue) => void;
   loading: boolean;
   actionsAssistant: { element: Exclude<ChatPropsTypes['assistantActions'], undefined>[number] }[];
 };
