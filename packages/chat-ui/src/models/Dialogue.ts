@@ -51,12 +51,12 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
    */
   constructor(
     _data: Data,
-    public touch: <T extends Dialogue<Data>>(dialogue: T) => void,
+    public touch: (dialogue: Dialogue<Data>) => void,
     readonly options: {
-      openDialogue: <T extends Dialogue<Data>>(dialogue: T) => void,
+      openDialogue: (dialogue: Dialogue<Data>) => void,
       // Следующие функции для заглушек, т.е. временно
       // TODO: временно ANY, т.к. нам сюда вообще не надо передавать edit
-      edit?: (newData: PartialExcept<DDialogue, 'id'>) => any,
+      edit?: (newData: PartialExcept<Data, 'id'>, dialogue: Dialogue<Data>) => any,
       authCode: string,
     },
   ) {

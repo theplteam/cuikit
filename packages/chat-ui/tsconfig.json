@@ -24,7 +24,7 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "models": "./models"
+      "models": ["./models"]
     }
   },
   "include": [

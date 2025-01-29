@@ -47,7 +47,7 @@ type StreamResponse = {
   },
 };
 
-export class ChatSendMessage {
+export class ChatSendMessage<Data extends DDialogue> {
   private _error = false;
 
   // дополнительный стрим, чтобы печатание было более плавным, вместо рывков с большими кусками
@@ -56,7 +56,7 @@ export class ChatSendMessage {
   private _closeConnection?: () => void;
 
   constructor(
-    private dialogue: Dialogue,
+    private dialogue: Dialogue<Data>,
     private userMessage: Message,
     private assistantMessage: Message,
   ) {

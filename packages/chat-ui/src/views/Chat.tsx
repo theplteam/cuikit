@@ -8,19 +8,17 @@ import ChatDialoguesListBlock from './leftContainer/ChatDialoguesListBlock';
 import DialoguesList from './leftContainer/DialoguesList';
 import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
-import { Dialogue } from '../models/Dialogue';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { useChatPropsSlots } from './core/useChatPropsSlots';
 import { DDialogue } from '../models/DialogueData';
 
-const Chat = <DialogueData extends DDialogue, D extends Dialogue<DialogueData>>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
+const Chat = <Data extends DDialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<Data>>) => {
   const props = useChatProps(usersProps);
   const slots = useChatPropsSlots(usersProps.slots);
 
   return (
     <>
-        {/** TODO: ANY */}
-        <ChatGlobalProvider props={props as any}>
+        <ChatGlobalProvider props={props}>
           <ChatSlotsProvider props={slots}>
             <slots.listDriver>
               <HiddenDesktop>

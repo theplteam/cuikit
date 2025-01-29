@@ -13,7 +13,7 @@ export type DDialogue = {
 export class DialogueData<Data extends DDialogue> {
   readonly observableTitle = new ObservableReactValue('');
 
-  constructor(private data: Readonly<Omit<Data, 'messages'>> & { id: IdType }) {
+  constructor(readonly data: Omit<Data, 'messages'>) {
     this.observableTitle.value = data.title;
   }
 

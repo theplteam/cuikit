@@ -31,7 +31,7 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
       const res = await dialogueEditable.options.edit?.({
         ...dialogueEditable.data.copyData(),
         messages: [],
-      });
+      }, dialogueEditable);
 
       if (res.success) {
         snackbar.show(['Вы поделились диалогом', 'You successfully shared the dialogue'])

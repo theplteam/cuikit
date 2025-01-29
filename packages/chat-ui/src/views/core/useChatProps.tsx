@@ -6,30 +6,31 @@ import { Message } from 'models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
+import { DDialogue } from '../../models/DialogueData';
 
-type RequiredProps<D extends Dialogue> = {
-  readonly dialogues: readonly D[];
-  dialogue: D | undefined;
-  setDialogue: (dialogue: D) => void;
+type RequiredProps<Data extends DDialogue = DDialogue> = {
+  readonly dialogues: readonly Dialogue<Data>[];
+  dialogue: Dialogue<Data> | undefined;
+  setDialogue: (dialogue: Dialogue<Data>) => void;
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<D extends Dialogue = Dialogue> = {
+export type ChatPropsTypes<Data extends DDialogue = DDialogue> = {
   loading: boolean;
-  modelProps?: ChatModelProps<D>;
-  model?: ChatModel<D>;
-  assistantActions?: React.JSXElementConstructor<{ message: Message, dialogue: D }>[];
+  modelProps?: ChatModelProps<Data>;
+  model?: ChatModel<Data>;
+  assistantActions?: React.JSXElementConstructor<{ message: Message, dialogue: Dialogue<Data> }>[];
   userId?: UserIdType;
-} & RequiredProps<D>;
+} & RequiredProps<Data>;
 
 // что передает пользователь
-export type ChatUsersProps<D extends Dialogue> = {
+export type ChatUsersProps<Data extends DDialogue = DDialogue> = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
   slots?: Partial<ChatSlotsType>;
   lang?: 'en' | 'ru' | LangKeys;
-} & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
+} & RequiredProps<Data> & Partial<Omit<ChatPropsTypes<Data>, 'slots' | keyof RequiredProps<Data>>>;
 
-export const useChatProps = <D extends Dialogue>(userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
+export const useChatProps = <Data extends DDialogue = DDialogue> (userProps: ChatUsersProps<Data>): ChatPropsTypes<Data> => {
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 

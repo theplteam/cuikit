@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "chat-ui": ["./packages/chat-ui/src"],
+      "models": ["./packages/chat-ui/src/models"],
     },
     "jsx": "preserve"
   },

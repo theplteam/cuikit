@@ -12,7 +12,7 @@ type Props = {
   chat: ChatModel;
 };
 
-const ChatLeftContainer: React.FC<Props> = ({chat}) => {
+const ChatLeftContainer: React.FC<Props> = ({ chat }) => {
   const { ref, height } = useThrottledResizeObserver(1000);
 
   return (
