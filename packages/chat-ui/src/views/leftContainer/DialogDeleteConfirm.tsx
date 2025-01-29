@@ -8,7 +8,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { lng } from '../../utils/lng';
 import { MdTextUi } from '../../ui/TextUi';
 import { useSnackbar } from '../hooks/useSnackbar';
-import { useChatCoreSlots } from '../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   chat: ChatModel;

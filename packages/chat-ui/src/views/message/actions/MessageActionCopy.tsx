@@ -8,7 +8,7 @@ import { ChatMessage } from '../../../models/ChatMessage';
 import { usePopoverState } from '../../hooks/usePopoverState';
 import { lng } from '../../../utils/lng';
 import MdMenu from '../../../ui/menu/MdMenu';
-import { useChatCoreSlots } from '../../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 
 
 type Props = {

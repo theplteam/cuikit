@@ -3,12 +3,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { useChatSlots } from '../../core/ChatGlobalContext';
 import { ChatModel } from '../../../models/ChatModel';
 import { ChatDialogue } from '../../../models/ChatDialogue';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
 import { useSnackbar } from '../../hooks/useSnackbar';
+import { useChatSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   chat: ChatModel;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChatSlotsType, useChatPropsSlots } from './useChatPropsSlots';
+import { ChatSlotsType } from './useChatPropsSlots';
 import { ChatDialogue } from '../../models/ChatDialogue';
 import { ChatModel, ChatModelProps } from '../../models/ChatModel';
 import { ChatMessage } from '../../models/ChatMessage';
@@ -15,7 +15,6 @@ type RequiredProps<D extends ChatDialogue> = {
 
 // используется внутри библиотеки
 export type ChatPropsTypes<D extends ChatDialogue = ChatDialogue> = {
-  slots: ChatSlotsType,
   loading: boolean;
   modelProps?: ChatModelProps<D>;
   model?: ChatModel<D>;
@@ -34,10 +33,7 @@ export const useChatProps = <D extends ChatDialogue>(userProps: ChatUsersProps<D
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 
-  const slots = useChatPropsSlots(userProps.slots);
-
   return React.useMemo(() => ({
-    slots,
     dialogues: userProps.dialogues,
     dialogue: userProps.dialogue,
     setDialogue: userProps.setDialogue,
@@ -46,5 +42,5 @@ export const useChatProps = <D extends ChatDialogue>(userProps: ChatUsersProps<D
     modelProps: userProps.modelProps,
     assistantActions: userProps.assistantActions,
     // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
-  }), [slots, userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues]);
+  }), [userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues]);
 }

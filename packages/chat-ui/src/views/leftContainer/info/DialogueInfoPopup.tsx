@@ -7,7 +7,7 @@ import { ChatDialogue } from '../../../models/ChatDialogue';
 import { ChatModel } from '../../../models/ChatModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
-import { useChatSlots } from '../../core/ChatGlobalContext';
+import { useChatSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   chat: ChatModel;

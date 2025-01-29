@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ChatMessageComponent from './ChatMessageComponent';
-import { useChatSlots } from '../core/ChatGlobalContext';
+import { useChatSlots } from '../core/ChatSlotsContext';
 import { ChatMessage } from '../../models/ChatMessage';
 import { ChatDialogue } from '../../models/ChatDialogue';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';

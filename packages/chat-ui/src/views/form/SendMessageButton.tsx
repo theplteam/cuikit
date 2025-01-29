@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import StopIcon from '@mui/icons-material/Stop';
 import { ChatDialogue } from '../../models/ChatDialogue';
-import { useChatCoreSlots } from '../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   dialogue: ChatDialogue | undefined;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageUserEditorTextfield from './MessageUserEditorTextfield';
-import { useChatCoreSlots } from '../../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   text: string;

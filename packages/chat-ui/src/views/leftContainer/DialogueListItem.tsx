@@ -11,6 +11,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatCoreSlots } from '../../views/core/ChatSlotsContext';
+import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   chat: ChatModel;
@@ -37,13 +38,13 @@ const BoxStyled = styled(Box)(({ theme }) => {
     [`& .${iconButtonClasses.root}`]: {
       [theme.breakpoints.up('md')]: {
         opacity: 0,
-        transition: theme.transitions.create('opacity', { duration: '150ms' }),
+        transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
       },
     },
     '&:hover': {
-      background: theme.palette.grey[300],
+      background: materialDesignSysPalette.surfaceContainerHigh,
       [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient(theme.palette.grey[300]),
+        backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerHigh),
       },
       [`& .${iconButtonClasses.root}`]: {
         opacity: 1,

@@ -9,7 +9,7 @@ import { useDialogueContext } from '../../DialogueContext';
 import { ChatMessage } from '../../../models/ChatMessage';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { MdText } from '../../../ui/TextUi';
-import { useChatCoreSlots } from '../../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { materialTheme } from '../../../utils/materialDesign/materialTheme';
 
 type Props = {

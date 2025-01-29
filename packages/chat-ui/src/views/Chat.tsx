@@ -10,35 +10,37 @@ import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatDialogue } from '../models/ChatDialogue';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
+import { useChatPropsSlots } from './core/useChatPropsSlots';
 
 const Chat = <D extends ChatDialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
   const props = useChatProps(usersProps);
+  const slots = useChatPropsSlots(usersProps.slots);
 
   return (
     <>
-      <ChatSlotsProvider props={props.slots}>
         {/** TODO: ANY */}
         <ChatGlobalProvider props={props as any}>
-          <props.slots.listDriver>
-            <HiddenDesktop>
-              <ChatAppDriver>
-                <Box display={'flex'} flexDirection={'column'} height={500}>
-                  <ChatDialoguesListBlock />
-                </Box>
-              </ChatAppDriver>
-            </HiddenDesktop>
-          </props.slots.listDriver>
-          <props.slots.list>
-            <DialoguesList />
-          </props.slots.list>
-          <props.slots.dialogue>
-            <ChatDialogueComponent
-              contentRef={usersProps.scrollerRef}
-            />
-          </props.slots.dialogue>
-          {usersProps.children}
+          <ChatSlotsProvider props={slots}>
+            <slots.listDriver>
+              <HiddenDesktop>
+                <ChatAppDriver>
+                  <Box display={'flex'} flexDirection={'column'} height={500}>
+                    <ChatDialoguesListBlock />
+                  </Box>
+                </ChatAppDriver>
+              </HiddenDesktop>
+            </slots.listDriver>
+            <slots.list>
+              <DialoguesList />
+            </slots.list>
+            <slots.dialogue>
+              <ChatDialogueComponent
+                contentRef={usersProps.scrollerRef}
+              />
+            </slots.dialogue>
+            {usersProps.children}
+          </ChatSlotsProvider>
         </ChatGlobalProvider>
-      </ChatSlotsProvider>
       <ChatSnackbar />
     </>
   );

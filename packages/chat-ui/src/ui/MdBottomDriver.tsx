@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Scrollbar from './Scrollbar';
 import { MdTextUi } from './TextUi';
-import { useChatCoreSlots } from '../views/core/ChatGlobalContext';
+import { useChatCoreSlots } from '../views/core/ChatSlotsContext';
 import { materialDesignSysPalette } from '../utils/materialDesign/palette';
 
 type Props = React.PropsWithChildren<{

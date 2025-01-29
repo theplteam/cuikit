@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import { lng } from '../../../utils/lng';
-import { useChatCoreSlots } from '../../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   className: string;

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
-import { useChatContext, useChatCoreSlots } from '../core/ChatGlobalContext';
+import { useChatContext } from '../core/ChatGlobalContext';
+import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { ChatModel } from '../../models/ChatModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ChatDialogue } from '../../models/ChatDialogue';

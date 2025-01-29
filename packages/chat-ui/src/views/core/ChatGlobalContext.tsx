@@ -6,7 +6,6 @@ import { ChatDialogue } from '../../models/ChatDialogue';
 
 type ChatGlobalContextType = {
   model: ChatModel<ChatDialogue>;
-  slots: ChatPropsTypes['slots'];
   dialogue: ChatDialogue | undefined;
   dialogues: ArrayType<ChatDialogue>;
   setDialogue: (dialogue: ChatDialogue) => void;
@@ -30,10 +29,9 @@ const ChatGlobalProvider: React.FC<React.PropsWithChildren<{ props: ChatPropsTyp
     dialogue: props.dialogue,
     dialogues: props.dialogues,
     setDialogue: props.setDialogue,
-    slots: props.slots,
     loading: props.loading,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
-  }), [model, props.slots, props.loading, props.dialogue, props.dialogues]);
+  }), [model, props.loading, props.dialogue, props.dialogues]);
 
   return (
     <Context.Provider value={value}>
@@ -53,7 +51,5 @@ const useChatContext = (): ChatGlobalContextType => {
 };
 
 const useChatModel = () => useChatContext().model;
-const useChatSlots = () => useChatContext().slots;
-const useChatCoreSlots = () => useChatContext().slots.core;
 
-export { ChatGlobalProvider, useChatContext, useChatModel, useChatSlots, useChatCoreSlots };
+export { ChatGlobalProvider, useChatContext, useChatModel };

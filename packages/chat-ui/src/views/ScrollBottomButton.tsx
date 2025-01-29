@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import { useChatCoreSlots } from './core/ChatGlobalContext';
+import { useChatCoreSlots } from './core/ChatSlotsContext';
 
 type Props = {
   enabled: boolean;
