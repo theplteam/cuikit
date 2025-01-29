@@ -4,13 +4,16 @@ import Box from '@mui/material/Box';
 import { ChatMessage, StreamResponseState } from '../../models/ChatMessage';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { MdTextUi } from '../../ui/TextUi';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
   message: ChatMessage;
 };
 
+const palette = materialDesignSysPalette;
+
 const keyframeName = 'pl-analyze-await';
-const BoxStyled = styled(Box)(({ theme: { m3: { sys: { palette } } } }) => ({
+const BoxStyled = styled(Box)(() => ({
   [`@keyframes ${keyframeName}`]: {
     from: {
       backgroundPosition: '-100% top'

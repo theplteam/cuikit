@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ChatSlotsType, useChatPropsSlots } from './useChatPropsSlots';
-import { ChatDialogue } from '../models/ChatDialogue';
-import { ChatModel, ChatModelProps } from '../models/ChatModel';
-import { ChatMessage } from '../models/ChatMessage';
-import { LangKeys, UserIdType } from '../models/ChatApp';
+import { ChatDialogue } from '../../models/ChatDialogue';
+import { ChatModel, ChatModelProps } from '../../models/ChatModel';
+import { ChatMessage } from '../../models/ChatMessage';
+import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
 

@@ -8,7 +8,7 @@ import TimeGroupItem from './TimeGroupItem';
 import Box from '@mui/material/Box';
 import DialogueListItem from './DialogueListItem';
 import { useDialogueGroupedList } from './useDialogueGroupedList';
-import { useChatContext } from '../ChatGlobalContext';
+import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 
 type Props = {};

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useChatModel } from '../ChatGlobalContext';
+import { useChatModel } from '../core/ChatGlobalContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 import MdBottomDriver from '../../ui/MdBottomDriver';
 

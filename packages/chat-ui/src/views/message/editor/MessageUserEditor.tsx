@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageUserEditorTextfield from './MessageUserEditorTextfield';
-import MdButton from '../../../ui/MdButton';
+import { useChatCoreSlots } from '../../core/ChatGlobalContext';
 
 type Props = {
   text: string;
@@ -11,6 +11,7 @@ type Props = {
 
 const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel }) => {
   const [newText, setNewText] = React.useState(text);
+  const coreSlots = useChatCoreSlots();
 
   const onClick = () => {
     if (text !== newText && !!newText) {
@@ -30,19 +31,19 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
         onEnterPress={onClick}
       />
       <Stack gap={1.5} direction={'row'}>
-        <MdButton
+        <coreSlots.button
           onClick={onClickCancel}
           variant={'outlined'}
         >
           {['Отменить', 'Cancel']}
-        </MdButton>
-        <MdButton
+        </coreSlots.button>
+        <coreSlots.button
           onClick={onClick}
           disabled={text === newText || !newText}
           variant={'contained'}
         >
           {['Отправить', 'Send']}
-        </MdButton>
+        </coreSlots.button>
       </Stack>
     </Stack>
   );

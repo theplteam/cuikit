@@ -5,6 +5,7 @@ import hexToRgba from 'hex-to-rgba';
 import { LangReplaceType } from '../utils/lng';
 import { translateStringNode } from './TextUi';
 import MdCircularProgress from './MdCircularProgress';
+import { materialDesignSysPalette } from '../utils/materialDesign/palette';
 
 export type MdButtonProps = {
   replace?: LangReplaceType;
@@ -12,10 +13,12 @@ export type MdButtonProps = {
   loading?: boolean;
 } & Omit<ButtonProps, 'className' | 'classes' | 'disableElevation'>;
 
-const ButtonStyled = styled(Button)(({ theme }) => ({
+const customTextPrimaryClass = 'ChatUi-MuiButton-textPrimary';
+
+const ButtonStyled = styled(Button)(() => ({
   height: 40,
   padding: 0,
-  color: theme.m3.sys.palette.onSurfaceVariant,
+  color: materialDesignSysPalette.onSurfaceVariant,
   gap: 8,
   fontSize: '0.875rem',
   fontStyle: 'normal',
@@ -23,13 +26,13 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   letterSpacing: 0.1,
   borderRadius: 20,
   '&.MuiButton-outlined': {
-    border: `1px solid ${theme.m3.sys.palette.outlineVariant}`,
+    border: `1px solid ${materialDesignSysPalette.outlineVariant}`,
     ':hover': {
-      border: `1px solid ${theme.m3.sys.palette.outline}`,
+      border: `1px solid ${materialDesignSysPalette.outline}`,
     },
   },
-  '&.MuiButton-outlinedPrimary, &.Playliner-MuiButton-textPrimary': {
-    color: theme.m3.sys.palette.primary,
+  [`&.MuiButton-outlinedPrimary, &.${customTextPrimaryClass}`]: {
+    color: materialDesignSysPalette.primary,
   },
   '& .MuiButton-endIcon, .MuiButton-startIcon': {
     margin: 0,
@@ -39,24 +42,24 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
     fontSize: 18,
   },
   '&.MuiButton-contained': {
-    backgroundColor: theme.m3.sys.palette.secondaryContainer,
-    color: theme.m3.sys.palette.onSecondaryContainer,
+    backgroundColor: materialDesignSysPalette.secondaryContainer,
+    color: materialDesignSysPalette.onSecondaryContainer,
     ':hover': {
-      backgroundColor: theme.m3.sys.palette.secondaryFixedDim,
+      backgroundColor: materialDesignSysPalette.secondaryFixedDim,
     },
     [`&.${buttonClasses.disabled}`]: {
-      backgroundColor: hexToRgba(theme.m3.sys.palette.onSurface, 0.12),
-      color: hexToRgba(theme.m3.sys.palette.onSurface, 0.38),
+      backgroundColor: hexToRgba(materialDesignSysPalette.onSurface, 0.12),
+      color: hexToRgba(materialDesignSysPalette.onSurface, 0.38),
     }
   },
   '&.MuiButton-textSecondary': {
-    color: theme.m3.sys.palette.secondary,
+    color: materialDesignSysPalette.secondary,
   },
   '&.MuiButton-containedSecondary': {
-    backgroundColor: theme.m3.sys.palette.secondary,
-    color: theme.m3.sys.palette.onSecondary,
+    backgroundColor: materialDesignSysPalette.secondary,
+    color: materialDesignSysPalette.onSecondary,
     ':hover': {
-      backgroundColor: theme.m3.sys.palette.onSecondaryContainer,
+      backgroundColor: materialDesignSysPalette.onSecondaryContainer,
     },
   },
 }));
@@ -92,7 +95,7 @@ const MdButton: React.FC<MdButtonProps> = ({ children, replace, onClick: onClick
         whiteSpace: noWrap ? 'nowrap' : undefined,
       }}
       classes={{
-        textPrimary: props.color === 'primary' ? 'Playliner-MuiButton-textPrimary' : undefined,
+        textPrimary: props.color === 'primary' ? customTextPrimaryClass : undefined,
       }}
     >
       {loading

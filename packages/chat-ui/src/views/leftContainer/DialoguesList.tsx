@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
 import ChatDialoguesListBlock from './ChatDialoguesListBlock';
-import { useChatModel } from '../ChatGlobalContext';
+import { useChatModel } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import Scrollbar from '../../ui/Scrollbar';

@@ -1,39 +1,36 @@
 import * as React from 'react';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import { styled } from '@mui/material/styles';
-import MdIconButton from '../ui/MdIconButton';
+import { useChatCoreSlots } from './core/ChatGlobalContext';
 
 type Props = {
   enabled: boolean;
   onClick: () => void;
 };
 
-const MdIconButtonStyled = styled(MdIconButton)(({ theme }) => ({
-  position: 'absolute',
-  top: -64,
-  left: '50%',
-  transition: theme.transitions.create(['opacity', 'box-shadow'], { duration: '200ms' }),
-  transform: 'translateX(-50%)',
-  zIndex: 1,
-  background: theme.palette.background.paper,
-  boxShadow: theme.m3.elevation.elevation6,
-  '&:hover': {
-    background: theme.palette.background.paper,
-    boxShadow: theme.m3.elevation.elevation8,
-  },
-}));
-
 const ScrollBottomButton: React.FC<Props> = ({ enabled, onClick }) => {
+  const coreSlots = useChatCoreSlots();
   return (
-    <MdIconButtonStyled
+    <coreSlots.iconButton
       sx={{
         opacity: enabled ? 1 : 0,
+        position: 'absolute',
+        top: -64,
+        left: '50%',
+        transition: (theme) => theme.transitions.create(['opacity', 'box-shadow'], { duration: '200ms' }),
+        transform: 'translateX(-50%)',
+        zIndex: 1,
+        background: (theme) => theme.palette.background.paper,
+        boxShadow: '0px 1px 18px rgba(0, 0, 0, 0.12), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 3px 5px rgba(0, 0, 0, 0.2);',
+        '&:hover': {
+          background: (theme) => theme.palette.background.paper,
+          boxShadow: '0px 3px 14px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.14), 0px 5px 5px rgba(0, 0, 0, 0.2);',
+        },
       }}
       size={'small'}
       onClick={onClick}
     >
       <ArrowDropDown />
-    </MdIconButtonStyled>
+    </coreSlots.iconButton>
   );
 }
 

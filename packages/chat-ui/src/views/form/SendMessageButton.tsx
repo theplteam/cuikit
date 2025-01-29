@@ -2,9 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import StopIcon from '@mui/icons-material/Stop';
-import { styled } from '@mui/material/styles';
-import MdIconButton from '../../ui/MdIconButton';
 import { ChatDialogue } from '../../models/ChatDialogue';
+import { useChatCoreSlots } from '../core/ChatGlobalContext';
 
 type Props = {
   dialogue: ChatDialogue | undefined;
@@ -13,17 +12,10 @@ type Props = {
   onSendMessage: () => void;
 };
 
-const MdIconButtonStyled = styled(MdIconButton)(({ theme }) => ({
-  position: 'absolute',
-  left: '50%',
-  top: '50%',
-  transform: 'translate(-50%, -50%)',
-  height: '48px',
-  transition: theme.transitions.create('color', { duration: theme.m3.sys.motion.duration.short4 }),
-}));
 
 const SendMessageButton: React.FC<Props> = ({ dialogue, text, onSendMessage, isTyping }) => {
   const disabled = !isTyping && !text;
+  const coreSlots = useChatCoreSlots();
 
   const onClick = () => {
     if (isTyping) {
@@ -40,12 +32,20 @@ const SendMessageButton: React.FC<Props> = ({ dialogue, text, onSendMessage, isT
       height={40}
       position={'relative'}
     >
-      <MdIconButtonStyled
+      <coreSlots.iconButton
         disabled={disabled}
         onClick={onClick}
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          height: '48px',
+          transition: (theme) => theme.transitions.create('color', { duration: '200ms' }),
+        }}
       >
         {!!isTyping ? <StopIcon /> : <ArrowUpwardIcon/>}
-      </MdIconButtonStyled>
+      </coreSlots.iconButton>
     </Box>
   );
 };

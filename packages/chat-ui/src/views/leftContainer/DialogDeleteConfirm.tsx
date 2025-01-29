@@ -7,8 +7,8 @@ import { ChatModel } from '../../models/ChatModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { lng } from '../../utils/lng';
 import { MdTextUi } from '../../ui/TextUi';
-import MdButton from '../../ui/MdButton';
 import { useSnackbar } from '../hooks/useSnackbar';
+import { useChatCoreSlots } from '../core/ChatGlobalContext';
 
 type Props = {
   chat: ChatModel;
@@ -16,6 +16,7 @@ type Props = {
 
 const DialogDeleteConfirm: React.FC<Props> = ({ chat }) => {
   const deleteItem = useObserverValue(chat.actions.deleteItem);
+  const coreSlots = useChatCoreSlots();
   const [title, setTitle] = React.useState('');
   const snackbar = useSnackbar();
 
@@ -53,17 +54,17 @@ const DialogDeleteConfirm: React.FC<Props> = ({ chat }) => {
         </MdTextUi>
       </DialogContent>
       <DialogActions>
-        <MdButton
+        <coreSlots.button
           onClick={handleClose}
         >
           {['Нет', 'No']}
-        </MdButton>
-        <MdButton
+        </coreSlots.button>
+        <coreSlots.button
           onClick={handleDelete}
           color={'primary'}
         >
           {['Да', 'Yes']}
-        </MdButton>
+        </coreSlots.button>
       </DialogActions>
     </Dialog>
   );

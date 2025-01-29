@@ -7,9 +7,10 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../../DialogueContext';
 import { ChatMessage } from '../../../models/ChatMessage';
-import MdIconButton from '../../../ui/MdIconButton';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { MdText } from '../../../ui/TextUi';
+import { useChatCoreSlots } from '../../core/ChatGlobalContext';
+import { materialTheme } from '../../../utils/materialDesign/materialTheme';
 
 type Props = {
   message: ChatMessage;
@@ -24,13 +25,9 @@ const StackStyled = styled(Stack)(() => ({
   paddingRight: 4,
 }));
 
-const MdIconButtonStyled = styled(MdIconButton)(({ theme }) => ({
-  fontSize: theme.m3.materialTheme.body.medium.fontSize,
-  color: theme.m3.sys.palette.outline,
-}));
-
 const MessagePagination: React.FC<Props> = ({ message, classes, disabled }) => {
   const { dialogueApi } = useDialogueContext();
+  const coreSlots = useChatCoreSlots();
   const messages = useObserverValue(dialogueApi.current?.getListener('allMessages'), []);
   const branches = messages?.filter(v => v.parentId === message.parentId && v.isUser) ?? [];
 
@@ -66,14 +63,18 @@ const MessagePagination: React.FC<Props> = ({ message, classes, disabled }) => {
           );
         } else if (type === 'next' || type === 'previous') {
           children = (
-            <MdIconButtonStyled
+            <coreSlots.iconButton
               {...item}
               size={'small'}
               key={type}
               disabled={item.disabled || disabled}
+              sx={{
+                fontSize: materialTheme.body.medium.fontSize,
+                color: (theme) => theme.palette.grey[600],
+              }}
             >
               {type === 'next' ? <ArrowForwardIosIcon fontSize={'inherit'} /> : <ArrowBackIosIcon fontSize={'inherit'} />}
-            </MdIconButtonStyled>
+            </coreSlots.iconButton>
           );
         }
 

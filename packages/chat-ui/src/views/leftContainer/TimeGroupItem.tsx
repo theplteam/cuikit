@@ -4,6 +4,8 @@ import { styled } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import { ListGroupType } from './useDialogueGroupedList';
 import { MdTextUi } from '../../ui/TextUi';
+import { materialTheme } from '../../utils/materialDesign/materialTheme';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
   group?: ListGroupType;
@@ -11,7 +13,7 @@ type Props = {
 };
 
 const SkeletonStyled = styled(Skeleton)(({ theme }) => ({
-  ...theme.m3.materialTheme.title.small,
+  ...materialTheme.title.small,
 }));
 
 const BoxStyled = styled(Box)(({ theme }) => ({
@@ -19,7 +21,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'sticky',
   top: -12,
   left: 0,
-  background: theme.rightBlock.backgroundColor,
+  background: materialDesignSysPalette.surfaceContainerLow,
   zIndex: 1,
   [theme.breakpoints.down('md')]: {
     background: '#fff',

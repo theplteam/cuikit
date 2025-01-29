@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
-import { ArrayType } from '../models/types';
-import { ChatModel } from '../models/ChatModel';
-import { ChatDialogue } from '../models/ChatDialogue';
+import { ArrayType } from '../../models/types';
+import { ChatModel } from '../../models/ChatModel';
+import { ChatDialogue } from '../../models/ChatDialogue';
 
 type ChatGlobalContextType = {
   model: ChatModel<ChatDialogue>;
@@ -54,5 +54,6 @@ const useChatContext = (): ChatGlobalContextType => {
 
 const useChatModel = () => useChatContext().model;
 const useChatSlots = () => useChatContext().slots;
+const useChatCoreSlots = () => useChatContext().slots.core;
 
-export { ChatGlobalProvider, useChatContext, useChatModel, useChatSlots };
+export { ChatGlobalProvider, useChatContext, useChatModel, useChatSlots, useChatCoreSlots };

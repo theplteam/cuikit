@@ -2,11 +2,12 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Skeleton, { SkeletonProps } from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
+import { materialTheme } from '../../utils/materialDesign/materialTheme';
 
 type Props = SkeletonProps;
 
 const ListItemSkeletonStyled = styled(Skeleton)(({ theme }) => ({
-  ...theme.m3.materialTheme.body.large,
+  ...materialTheme.body.large,
 }));
 
 const BoxStyled = styled(Box)(({ theme }) => ({

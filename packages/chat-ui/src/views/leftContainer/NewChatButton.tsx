@@ -1,11 +1,9 @@
 import * as React from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
-import { useChatContext } from '../ChatGlobalContext';
+import { useChatContext, useChatCoreSlots } from '../core/ChatGlobalContext';
 import { ChatModel } from '../../models/ChatModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import MdIconButton from '../../ui/MdIconButton';
-import MdButton from '../../ui/MdButton';
 import { ChatDialogue } from '../../models/ChatDialogue';
 
 type Props<D extends ChatDialogue> = {
@@ -20,19 +18,21 @@ const useDisabled = () => {
 
 export const NewChatIconButton = <D extends ChatDialogue>({ chat }: Props<D>) => {
   const disabled = useDisabled();
+  const coreSlots = useChatCoreSlots();
   return (
-    <MdIconButton
+    <coreSlots.iconButton
       disabled={disabled}
       onClick={chat.openNew}
       size={'small'}
     >
       <AddIcon />
-    </MdIconButton>
+    </coreSlots.iconButton>
   );
 };
 
 const NewChatButton = <D extends ChatDialogue>({ chat }: Props<D>) => {
   const disabled = useDisabled();
+  const coreSlots = useChatCoreSlots();
   return (
     <Box
       pt={1.5}
@@ -40,7 +40,7 @@ const NewChatButton = <D extends ChatDialogue>({ chat }: Props<D>) => {
       width={'100%'}
       boxSizing={'border-box'}
     >
-      <MdButton
+      <coreSlots.button
         disabled={disabled}
         onClick={chat.openNew}
         startIcon={<AddIcon />}
@@ -48,7 +48,7 @@ const NewChatButton = <D extends ChatDialogue>({ chat }: Props<D>) => {
         variant={'outlined'}
       >
         {['Новый чат', 'New chat']}
-      </MdButton>
+      </coreSlots.button>
     </Box>
   );
 };

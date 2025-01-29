@@ -3,10 +3,11 @@ import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
-import MdIconButton from './MdIconButton';
 import Box from '@mui/material/Box';
 import Scrollbar from './Scrollbar';
 import { MdTextUi } from './TextUi';
+import { useChatCoreSlots } from '../views/core/ChatGlobalContext';
+import { materialDesignSysPalette } from '../utils/materialDesign/palette';
 
 type Props = React.PropsWithChildren<{
   open: boolean;
@@ -26,6 +27,7 @@ const DrawerStyled = styled(Drawer)(({ theme }) => ({
 
 const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar, keepMounted }) => {
   const container = React.useRef<HTMLDivElement | null>(null);
+  const coreSlots = useChatCoreSlots();
 
   const height = 500;
   return (
@@ -39,12 +41,12 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
       >
         <Stack pt={0.5}>
           <Stack px={0.5} direction={'row'} alignItems={'center'}>
-            <MdIconButton
-              sx={{ color: (theme) => theme.m3.sys.palette.onSurfaceVariant }}
+            <coreSlots.iconButton
+              sx={{ color: (theme) => materialDesignSysPalette.onSurfaceVariant }}
               onClick={onClose}
             >
               <CloseIcon />
-            </MdIconButton>
+            </coreSlots.iconButton>
             {!!title && (
               <MdTextUi m3typography={'title.large'} color={'onBackground'}>
                 {title}

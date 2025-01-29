@@ -22,6 +22,8 @@ class FollowingClass {
     private _model: ChatMessage,
     private getPosition: ChatScrollerType,
     private scrollTo: (y: number) => void,
+    // TODO: надо убрать
+    /** @deprecated */
     private appBarHeight: number,
   ) {}
 
@@ -143,7 +145,8 @@ export const useMessageFollowing = (
 
   React.useEffect(() => {
     const newModel = lastMessageModel
-      ? (new FollowingClass(lastMessageModel, getPosition, scrollTo, theme.appBar.height)).init()
+      // TODO: hardcode
+      ? (new FollowingClass(lastMessageModel, getPosition, scrollTo, 64)).init()
       : undefined;
 
     setFollowingModel(newModel);

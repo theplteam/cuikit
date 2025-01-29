@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
+import { materialTheme } from '../utils/materialDesign/materialTheme';
+import { materialDesignSysPalette } from '../utils/materialDesign/palette';
 
 export type MdTooltipProps = React.PropsWithChildren<{
   type?: 'light' | 'dark';
@@ -9,14 +11,14 @@ export type MdTooltipProps = React.PropsWithChildren<{
 const TooltipStyled = styled(({ className, children, type, ...props }: MdTooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} children={children} />
 ))(({ theme, type }) => ({
-  fontSize: theme.m3.materialTheme.body.small.fontSize,
+  fontSize: materialTheme.body.small.fontSize,
 
   [`& .${tooltipClasses.tooltip}`]: type === 'light' ? {
     backgroundColor: theme.palette.common.white,
-    color: theme.m3.sys.palette.inverseSurface,
+    color: materialDesignSysPalette.inverseSurface,
     boxShadow: theme.shadows[1],
   } : {
-    color: theme.m3.sys.palette.inverseOnSurface,
+    color: materialDesignSysPalette.inverseOnSurface,
   },
 }));
 

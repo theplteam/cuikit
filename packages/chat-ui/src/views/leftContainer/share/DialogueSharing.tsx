@@ -3,11 +3,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { useChatSlots } from '../../ChatGlobalContext';
+import { useChatSlots } from '../../core/ChatGlobalContext';
 import { ChatModel } from '../../../models/ChatModel';
 import { ChatDialogue } from '../../../models/ChatDialogue';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import MdButton from '../../../ui/MdButton';
 import { lng } from '../../../utils/lng';
 import { useSnackbar } from '../../hooks/useSnackbar';
 
@@ -66,17 +65,17 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
         )}
       </DialogContent>
       <DialogActions>
-        <MdButton
+        <slots.core.button
           onClick={handleClose}
         >
           {['Нет', 'No']}
-        </MdButton>
-        <MdButton
+        </slots.core.button>
+        <slots.core.button
           onClick={handleSave}
           color={'primary'}
         >
           {['Применить', 'Apply']}
-        </MdButton>
+        </slots.core.button>
       </DialogActions>
     </Dialog>
   );

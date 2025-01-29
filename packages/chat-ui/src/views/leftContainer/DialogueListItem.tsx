@@ -6,10 +6,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
 import { ChatDialogue } from '../../models/ChatDialogue';
 import { ChatModel } from '../../models/ChatModel';
-import MdIconButton, { iconButtonClasses } from '../../ui/MdIconButton';
 import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';
-import MdListItemText from '../../ui/list/MdListItemText';
+import { iconButtonClasses } from '@mui/material/IconButton';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import { useChatCoreSlots } from '../../views/core/ChatSlotsContext';
 
 type Props = {
   chat: ChatModel;
@@ -24,8 +25,6 @@ const classShadowRight = 'shadowRight';
 const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${hexToRgba(hex, 0)} 100%)`;
 
 const BoxStyled = styled(Box)(({ theme }) => {
-  const palette = theme.m3.sys.palette;
-
   return {
     height: 56,
     width: '100%',
@@ -38,13 +37,13 @@ const BoxStyled = styled(Box)(({ theme }) => {
     [`& .${iconButtonClasses.root}`]: {
       [theme.breakpoints.up('md')]: {
         opacity: 0,
-        transition: theme.transitions.create('opacity', { duration: theme.m3.sys.motion.duration.short3 }),
+        transition: theme.transitions.create('opacity', { duration: '150ms' }),
       },
     },
     '&:hover': {
-      background: palette.surfaceContainerHigh,
+      background: theme.palette.grey[300],
       [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient(palette.surfaceContainerHigh),
+        backgroundImage: getGradient(theme.palette.grey[300]),
       },
       [`& .${iconButtonClasses.root}`]: {
         opacity: 1,
@@ -66,23 +65,18 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   height: '100%',
   width: 65,
   pointerEvents: 'none',
-  backgroundImage: getGradient(theme.rightBlock.backgroundColor),
+  backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
   [theme.breakpoints.down('md')]: {
     backgroundImage: getGradient('#fff'),
   },
-}));
-
-const MdIconButtonStyled = styled(MdIconButton)(({ theme }) => ({
-  position: 'absolute',
-  right: theme.spacing(1.5),
-  top: '50%',
-  transform: 'translateY(-50%)',
 }));
 
 const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, setDialogue }) => {
   const {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
+
+  const coreSlots = useChatCoreSlots();
 
   const isEmpty = useObserverValue(dialogue.isEmpty);
   const title = useObserverValue(dialogue.data.observableTitle);
@@ -102,7 +96,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, se
         onClick={handleClickListItem}
         className={selected ? classSelected : undefined}
       >
-        <MdListItemText
+        <coreSlots.listItemText
           primary={title ?? 'TITLE'}
           sx={{
             textOverflow: 'ellipsis',
@@ -111,13 +105,19 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, se
           }}
         />
         <BoxShadowStyled className={classShadowRight} />
-        <MdIconButtonStyled
+        <coreSlots.iconButton
           size={'small'}
           onClick={handleClick}
           disabled={!dialogue.isOwner}
+          sx={{
+            position: 'absolute',
+            right: (theme) => theme.spacing(1.5),
+            top: '50%',
+            transform: 'translateY(-50%)',
+          }}
         >
           <MoreVertIcon />
-        </MdIconButtonStyled>
+        </coreSlots.iconButton>
       </BoxStyled>
       <DialogueListItemMenu
         anchorEl={anchorEl}

@@ -3,6 +3,8 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { QuestionTemplateType } from './useQuestionTemplates';
 import { MdText } from '../../ui/TextUi';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   item: QuestionTemplateType;
@@ -11,17 +13,17 @@ type Props = {
 
 const PaperStyled = styled(Paper)(({ theme }) => ({
   borderRadius: 16,
-  border: `1px solid ${theme.m3.sys.palette.outlineVariant}`,
+  border: `1px solid ${materialDesignSysPalette.outlineVariant}`,
   padding: theme.spacing(1),
   width: 133,
   height: 65,
   display: 'flex',
   alignItems: 'center',
   margin: 6,
-  transition: theme.transitions.create('background', { duration: '100ms' }),
+  transition: theme.transitions.create('background', { duration: motion.duration.short2 }),
   cursor: 'pointer',
   '&:hover': {
-    background: theme.m3.sys.palette.surfaceBright,
+    background: materialDesignSysPalette.surfaceBright,
   },
   [theme.breakpoints.down('md')]: {
     margin: 4,

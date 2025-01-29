@@ -16,6 +16,7 @@ import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';
 import PhotoSwipeLightbox from '../photoswipe/PhotoSwipeLightbox';
 import { MdTextUi } from '../../ui/TextUi';
+import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   message: ChatMessage;
@@ -37,7 +38,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   [`&:not(.${latestMessageClassName})`]: {
     [`& .${actionsClassName}`]: {
       opacity: 0,
-      transition: theme.transitions.create('opacity', { duration: theme.m3.sys.motion.duration.short3 }),
+      transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
     },
   },
   [`&.${hoverMessageClassName}`]: {

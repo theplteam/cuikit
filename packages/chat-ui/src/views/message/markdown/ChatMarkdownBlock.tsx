@@ -2,18 +2,20 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ChatMarkdown from './ChatMarkdown';
+import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
+import { materialTheme } from '../../../utils/materialDesign/materialTheme';
 
 type Props = {
   text: string;
   id?: string;
 };
 
-const BoxStyled = styled(Box)(({ theme }) => ({
-  ...theme.m3.materialTheme.body.mediumArticle,
+const BoxStyled = styled(Box)(() => ({
+  ...materialTheme.body.mediumArticle,
   width: '100%',
   wordWrap: 'break-word',
   fontFamily: 'Roboto',
-  color: theme.m3.sys.palette.onSurface,
+  color: materialDesignSysPalette.onSurface,
   '& ol, p, ul': {
     margin: 0,
   },

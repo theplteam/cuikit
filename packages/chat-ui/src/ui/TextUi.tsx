@@ -3,7 +3,7 @@ import Typography, { TypographyProps } from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { extractTypographyText } from '../utils/materialDesign/TypographyUtils';
 import { clsx } from 'clsx';
-import { M3SysPaletteKeys } from '../utils/materialDesign/palette';
+import { M3SysPaletteKeys, materialDesignSysPalette } from '../utils/materialDesign/palette';
 import { TypographyKeys } from '../utils/materialDesign/materialTheme';
 import { LangReplaceType, lng } from '../utils/lng';
 
@@ -29,8 +29,8 @@ export type UiTextProps = TypographyProps<React.ElementType, { component?: React
 const TypographyStyled = styled(Typography, {
   shouldForwardProp: propName => ['m3color', 'm3typography'].indexOf(propName as string) === -1
 })<M3TypographyTypes>(({ theme, m3typography, m3color }) => ({
-  ...(m3typography ? extractTypographyText(theme, m3typography) : undefined),
-  color: m3color ? theme.m3.sys.palette[m3color] : undefined,
+  ...(m3typography ? extractTypographyText(m3typography) : undefined),
+  color: m3color ? materialDesignSysPalette[m3color] : undefined,
 }));
 
 const isLangChildren = (children: React.ReactNode): children is string[] => {

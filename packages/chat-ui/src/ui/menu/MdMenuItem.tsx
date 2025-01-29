@@ -5,6 +5,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import SvgIcon from '@mui/material/SvgIcon';
 import CircularProgress from '@mui/material/CircularProgress';
 import { translateStringNode } from '../TextUi';
+import { materialTheme } from '../../utils/materialDesign/materialTheme';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
   children: string[] | string;
@@ -18,11 +20,11 @@ const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   paddingRight: theme.spacing(1),
   minHeight: '48px !important',
   [`& .${menuItemClasses.root}`]: {
-    ...theme.m3.materialTheme.label.large,
-    color: theme.m3.sys.palette.surfaceVariant,
+    ...materialTheme.label.large,
+    color: materialDesignSysPalette.surfaceVariant,
   },
   '& .MuiSvgIcon-root': {
-    color: theme.m3.sys.palette.onSurfaceVariant,
+    color: materialDesignSysPalette.onSurfaceVariant,
     fontSize: '1.5rem',
   }
 }));

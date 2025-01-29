@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField/TextField';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import useEnterPress, { handleIgnoreEnterPress } from '../../hooks/useEnterPress';
 import { useTablet } from '../../../ui/Responsive';
+import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 
 type Props = {
   newText: string;
@@ -11,17 +12,17 @@ type Props = {
   onEnterPress: () => void;
 };
 
-const TextFieldStyled = styled(TextField)(({ theme }) => ({
+const TextFieldStyled = styled(TextField)(() => ({
   border: 'unset',
   [`& .${outlinedInputClasses.root}`]: {
     '& fieldset': {
-      borderColor: theme.m3.sys.palette.outline,
+      borderColor: materialDesignSysPalette.outline,
     },
     '&:hover fieldset': {
-      borderColor: theme.m3.sys.palette.onSurface,
+      borderColor: materialDesignSysPalette.onSurface,
     },
     [`&.${outlinedInputClasses.focused} fieldset`]: {
-      borderColor: theme.m3.sys.palette.primary,
+      borderColor: materialDesignSysPalette.primary,
     }
   }
 }));

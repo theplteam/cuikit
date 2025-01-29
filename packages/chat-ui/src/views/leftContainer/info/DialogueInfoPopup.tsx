@@ -7,8 +7,7 @@ import { ChatDialogue } from '../../../models/ChatDialogue';
 import { ChatModel } from '../../../models/ChatModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
-import MdButton from '../../../ui/MdButton';
-import { useChatSlots } from '../../ChatGlobalContext';
+import { useChatSlots } from '../../core/ChatGlobalContext';
 
 type Props = {
   chat: ChatModel;
@@ -42,11 +41,11 @@ const DialogueInfoPopup: React.FC<Props> = ({ chat }) => {
         {!!dialogue && <slots.popupsInfoContent dialogue={dialogue} />}
       </DialogContent>
       <DialogActions>
-        <MdButton
+        <slots.core.button
           onClick={handleClose}
         >
           {['Закрыть', 'Close']}
-        </MdButton>
+        </slots.core.button>
       </DialogActions>
     </Dialog>
   );

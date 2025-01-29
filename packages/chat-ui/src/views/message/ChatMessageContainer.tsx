@@ -18,7 +18,7 @@ const ChatMessageContainerStyled = styled(
     padding: theme.spacing(1, 2),
   },
   minHeight: 40,
-  boxShadow: elevation ? theme.m3.elevation.elevation7 : 'none',
+  boxShadow: elevation ? '0px 2px 16px rgba(0, 0, 0, 0.12), 0px 7px 10px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.2);' : 'none',
 }));
 
 const ChatMessageContainer = React.forwardRef((props: BoxProps & Props, ref) => {

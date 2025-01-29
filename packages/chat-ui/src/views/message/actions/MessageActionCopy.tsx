@@ -7,8 +7,8 @@ import MessageCopyMenuItems from './MessageCopyMenuItems';
 import { ChatMessage } from '../../../models/ChatMessage';
 import { usePopoverState } from '../../hooks/usePopoverState';
 import { lng } from '../../../utils/lng';
-import MdIconButton from '../../../ui/MdIconButton';
 import MdMenu from '../../../ui/menu/MdMenu';
+import { useChatCoreSlots } from '../../core/ChatGlobalContext';
 
 
 type Props = {
@@ -17,6 +17,7 @@ type Props = {
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {
   const text = useProcessAssistantText(message.text);
+  const coreSlots = useChatCoreSlots();
 
   const {
     anchorEl, handleClose, handleClick
@@ -28,12 +29,12 @@ const MessageActionCopy: React.FC<Props> = ({ message }) => {
         title={lng(['Скопировать сообщение', 'Copy message'])}
       >
         <Box>
-          <MdIconButton
+          <coreSlots.iconButton
             size={'small'}
             onClick={handleClick}
           >
             <ContentCopyIcon />
-          </MdIconButton>
+          </coreSlots.iconButton>
         </Box>
       </Tooltip>
       <MdMenu

@@ -9,7 +9,7 @@ import MessageSelectedMobile from './message/MessageSelectedMobile';
 import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
 import { DialogueProvider } from './DialogueContext';
 import { DialogueApi } from './DialogueApi';
-import { useChatContext } from './ChatGlobalContext';
+import { useChatContext } from './core/ChatGlobalContext';
 import { NOOP } from '../utils/NOOP';
 
 type Props = {

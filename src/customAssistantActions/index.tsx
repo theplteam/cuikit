@@ -1,7 +1,7 @@
 import * as React from 'react';
-import MdIconButton from '../../packages/chat-ui/src/ui/MdIconButton.tsx';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import BlindIcon from '@mui/icons-material/Blind';
+import IconButton from '@mui/material/IconButton';
 
 const toConstructor = (element: React.ReactElement) => {
   return () => element;
@@ -10,20 +10,20 @@ const toConstructor = (element: React.ReactElement) => {
 export const useCustomAssistantActions = () => {
   return React.useMemo(() => [
     toConstructor(
-      <MdIconButton
+      <IconButton
         onClick={() => console.log('click AcUnitIcon')}
         key={'AcUnitIcon'}
       >
         <AcUnitIcon />
-      </MdIconButton>
+      </IconButton>
     ),
     toConstructor(
-      <MdIconButton
+      <IconButton
         onClick={() => console.log('click BlindIcon')}
         key={'BlindIcon'}
       >
         <BlindIcon />
-      </MdIconButton>
+      </IconButton>
     ),
   ], []);
 }

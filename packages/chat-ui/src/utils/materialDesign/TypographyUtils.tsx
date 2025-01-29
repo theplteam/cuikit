@@ -1,10 +1,9 @@
-import { type MaterialThemeType, TypographyKeys } from './materialTheme';
-import { type Theme } from '@mui/material/styles';
+import { materialTheme, type MaterialThemeType, TypographyKeys } from './materialTheme';
 
 type KeysName = Exclude<keyof MaterialThemeType, 'state'>;
 
-export const extractTypographyText = (theme: Theme, key: TypographyKeys) => {
+export const extractTypographyText = (key: TypographyKeys) => {
   const path = key.split('.');
-  const type = theme.m3.materialTheme[path[0] as KeysName];
+  const type = materialTheme[path[0] as KeysName];
   return type[path[1] as keyof typeof type];
 }

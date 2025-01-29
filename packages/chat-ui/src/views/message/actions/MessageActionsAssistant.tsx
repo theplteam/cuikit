@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
 import { ChatMessage } from '../../../models/ChatMessage';
-import { useChatContext } from '../../ChatGlobalContext';
+import { useChatContext } from '../../core/ChatGlobalContext';
 import { ChatDialogue } from '../../../models/ChatDialogue';
 
 type Props = {

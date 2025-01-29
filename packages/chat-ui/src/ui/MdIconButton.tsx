@@ -1,12 +1,13 @@
 import IconButton, { iconButtonClasses, type IconButtonProps } from '@mui/material/IconButton';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { materialDesignSysPalette } from '../utils/materialDesign/palette';
 
-type Props = {} & IconButtonProps;
+export type MdIconButtonProps = {} & IconButtonProps;
 
 const IconButtonStyled = styled(IconButton)(({ theme }) => ({
   fontSize: '1.5rem',
-  color: theme.m3.sys.palette.onSurfaceVariant,
+  color: materialDesignSysPalette.onSurfaceVariant,
 
   [`&.${iconButtonClasses.root}`]: {
     padding: theme.spacing(1.5),
@@ -20,11 +21,11 @@ const IconButtonStyled = styled(IconButton)(({ theme }) => ({
     color: 'inherit',
   },
   [`&.${iconButtonClasses.colorPrimary}`]: {
-    color: theme.m3.sys.palette.primary,
+    color: materialDesignSysPalette.primary,
   }
 }));
 
-const MdIconButton = React.forwardRef(({ onClick, ...props }: Props, ref) => {
+const MdIconButton = React.forwardRef<HTMLButtonElement | null, MdIconButtonProps>(({ onClick, ...props }, ref) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     onClick?.(e);
   }
@@ -33,6 +34,7 @@ const MdIconButton = React.forwardRef(({ onClick, ...props }: Props, ref) => {
     <IconButtonStyled
       onClick={handleClick}
       {...props}
+      ref={ref}
     />
   );
 });

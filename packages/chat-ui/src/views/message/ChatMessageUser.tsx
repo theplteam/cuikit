@@ -17,6 +17,8 @@ import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   message: ChatMessage;
@@ -34,11 +36,11 @@ const {
 
 const ChatMessageContainerStyled = styled(ChatMessageContainer)(({theme}) => ({
   width: '80%',
-  background: theme.m3.sys.palette.surfaceContainerLow,
+  background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
   [`& .${actionsClassName}`]: {
     opacity: 0,
-    transition: theme.transitions.create('opacity', {duration: theme.m3.sys.motion.duration.short3}),
+    transition: theme.transitions.create('opacity', {duration: motion.duration.short3}),
   },
   [`&.${hoverMessageClassName}`]: {
     [`& .${actionsClassName}`]: {

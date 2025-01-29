@@ -2,13 +2,14 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { ChatViewConstants } from '../../ChatViewConstants';
+import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 
 type Props = React.JSX.IntrinsicElements['img'];
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   marginTop: 8,
   width: '100%',
-  backgroundColor: theme.m3.sys.palette.surfaceBright,
+  backgroundColor: materialDesignSysPalette.surfaceBright,
   position: 'relative',
   '& a': {
     width: 'inherit',

@@ -9,6 +9,8 @@ import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ChatDialogue } from '../../models/ChatDialogue';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   dialogue?: ChatDialogue;
@@ -42,16 +44,16 @@ const DialogueWidthBlockStyled = styled(Box)(({ theme }) => ({
 }));
 
 const InnerStackStyled = styled(Stack)(({ theme }) => ({
-  outline: `1px solid ${theme.m3.sys.palette.outlineVariant}`,
-  borderRadius: theme.m3.sys.shape.corner.superExtraLarge,
+  outline: `1px solid ${materialDesignSysPalette.outlineVariant}`,
+  borderRadius: 32,
   padding: theme.spacing(1),
   transition: theme.transitions.create(
-    ['border-radius', 'outline'], { duration: theme.m3.sys.motion.duration.short2 }),
+    ['border-radius', 'outline'], { duration: motion.duration.short2 }),
   [`&:has(.${inputClasses.multiline})`]: {
     borderRadius: 24,
   },
   [`&:has(.${inputBaseClasses.focused})`]: {
-    outline: `2px solid ${theme.m3.sys.palette.primary}`,
+    outline: `2px solid ${materialDesignSysPalette.primary}`,
   },
 }));
 

@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import { lng } from '../../../utils/lng';
-import MdIconButton from '../../../ui/MdIconButton';
+import { useChatCoreSlots } from '../../core/ChatGlobalContext';
 
 type Props = {
   className: string;
@@ -20,6 +20,7 @@ const RootStyled = styled(Stack)(({ theme }) => ({
 }));
 
 const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled }) => {
+  const coreSlots = useChatCoreSlots();
   return (
     <RootStyled
       direction={'row'}
@@ -31,13 +32,13 @@ const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled 
       <Tooltip
         title={lng(['Отредактировать сообщение', 'Edit message'])}
       >
-        <MdIconButton
+        <coreSlots.iconButton
           size={'small'}
           onClick={onClickEdit}
           disabled={disabled}
         >
           <EditIcon />
-        </MdIconButton>
+        </coreSlots.iconButton>
       </Tooltip>
     </RootStyled>
   );
