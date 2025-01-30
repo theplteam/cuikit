@@ -12,6 +12,7 @@ import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
 import MobileAppBar from './views/appBar/MobileAppBar.tsx';
 import { CustomDialogue, DCustomDialogue } from './models/CustomDialogue.ts';
+import PopupSharingContent from './views/PopupSharingContent.tsx';
 
 function App() {
   const dd: DCustomDialogue[] = dialogues as DCustomDialogue[];
@@ -73,7 +74,8 @@ function App() {
               open: (dialogue) => setDialogue(dialogue),
             }}
             slots={{
-              list: isMobile ? HiddenContent : LeftContainerPortal
+              list: isMobile ? HiddenContent : LeftContainerPortal,
+              popupsSharingContent: PopupSharingContent,
             }}
             assistantActions={customActions}
           >
