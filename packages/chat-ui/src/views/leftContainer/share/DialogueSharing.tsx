@@ -28,9 +28,8 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
   const handleSave = async () => {
     handleClose();
     if (dialogueEditable) {
-      const res = await dialogueEditable.options.edit?.({
+      const res = await chat.dialogueActions.edit?.({
         ...dialogueEditable.data.copyData(),
-        messages: [],
       }, dialogueEditable);
 
       if (res.success) {

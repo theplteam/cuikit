@@ -25,7 +25,7 @@ export type ChatPropsTypes<D extends Dialogue> = {
 // что передает пользователь
 export type ChatUsersProps<D extends Dialogue> = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
-  slots?: Partial<ChatSlotsType<Dialogue>>;
+  slots?: Partial<ChatSlotsType<D>>;
   lang?: 'en' | 'ru' | LangKeys;
 } & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
 
