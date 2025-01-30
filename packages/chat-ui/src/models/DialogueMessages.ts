@@ -1,6 +1,5 @@
 import { Message } from './Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { PromiseUtils } from '../utils/PromiseUtils';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { sortByDesc } from '../utils/arrayUtils/arraySort';
 import { isDefined } from '../utils/isDefined';
@@ -18,15 +17,8 @@ export class DialogueMessages {
 
   currentMessages = new ObservableReactValue<Message[]>([]);
 
-  // Если нужно подождать пока новое сообщение появится в ветке
-  private _newMessageProcess?: PromiseUtils<boolean>;
-
   get allMessagesArray() {
     return this.allMessages.value;
-  }
-
-  get newMessagePromise() {
-    return this._newMessageProcess?.promise;
   }
 
   // запомнить в какой ветке остановились, чтобы при повторном входе в диалог снова открыть её
@@ -49,7 +41,6 @@ export class DialogueMessages {
       const map = new Map(Object.entries(newObject));
 
       this._updateBranch(map, arrayLast(this.allMessagesArray as Message[]));
-      this._newMessageProcess?.resolve(true);
     });
   }
 
@@ -62,10 +53,6 @@ export class DialogueMessages {
     // console.log(message, messagesParentMap);
 
     this._updateBranch(map, message);
-  }
-
-  startNewMessageProcess = () => {
-    this._newMessageProcess = new PromiseUtils();
   }
 
   private _updateBranch = (map: MesagesMapType, startFrom?: Message) => {

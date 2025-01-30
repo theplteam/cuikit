@@ -70,7 +70,6 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
     const messages = dialogueApi.current?.branch.value ?? [];
     if (text && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
-      dialogue.messages.startNewMessageProcess();
       const createdNew = await dialogue.createIfEmpty();
       if (createdNew) {
         chat.dialogueActions.open(dialogue);
@@ -81,7 +80,6 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
         });
 
       setText('');
-      await dialogue.messages.newMessagePromise;
       scroller.handleBottomScroll?.();
     }
   }
