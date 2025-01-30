@@ -1,6 +1,5 @@
 import './App.css'
 import { Chat } from 'chat-ui';
-import { NOOP } from '../packages/chat-ui/src/utils/NOOP.ts';
 import Root from './test/Root.tsx';
 import dialogues from './test/dialogues.json';
 import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
@@ -19,10 +18,8 @@ function App() {
 
   const testArray = React.useMemo(() => dd.map(v => new CustomDialogue(
     v,
-    NOOP,
     {
       authCode: '',
-      openDialogue: NOOP,
     }
   )), []);
 
@@ -66,15 +63,14 @@ function App() {
                     messages: [],
                     authorId: 1,
                   },
-                  NOOP,
                   {
                     authCode: '',
-                    openDialogue: NOOP,
                   }
                 );
 
                 setDialogue(newDialogue);
               },
+              open: (dialogue) => setDialogue(dialogue),
             }}
             slots={{
               list: isMobile ? HiddenContent : LeftContainerPortal

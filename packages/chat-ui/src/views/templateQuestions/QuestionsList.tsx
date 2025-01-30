@@ -4,7 +4,7 @@ import { useQuestionTemplates } from './useQuestionTemplates';
 import QuestionItem from './QuestionItem';
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {

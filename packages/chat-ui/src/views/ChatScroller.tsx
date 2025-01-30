@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useChatScroller } from './utils/useChatScroller';
 import ScrollBottomButton from './ScrollBottomButton';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../models/Dialogue';
 import { BoxRefType } from './hooks/useElementRef';
 
 export type ChatScrollApiRef = {

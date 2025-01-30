@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { Message, StreamResponseState } from 'models/Message';
+import { Message, StreamResponseState } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { MdTextUi } from '../../ui/TextUi';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';

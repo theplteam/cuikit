@@ -3,7 +3,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { ChatModel } from '../../models/ChatModel';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import MdMenu from '../../ui/menu/MdMenu';
 import MdMenuItem from '../../ui/menu/MdMenuItem';
 

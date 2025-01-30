@@ -29,7 +29,7 @@ const DialogDeleteConfirm: React.FC<Props> = ({ chat }) => {
 
   const handleDelete = () => {
     if (deleteItem) {
-      chat.deleteDialogue(deleteItem);
+      chat.dialogueActions.delete(deleteItem);
       snackbar.show(['Диалог удален', 'Dialogue successfully deleted']);
     }
     handleClose();

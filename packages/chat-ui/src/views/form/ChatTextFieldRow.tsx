@@ -8,9 +8,10 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
+import { useChatModel } from '../core/ChatGlobalContext';
 
 type Props = {
   dialogue?: Dialogue;
@@ -59,6 +60,7 @@ const InnerStackStyled = styled(Stack)(({ theme }) => ({
 
 const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const { dialogueApi } = useDialogueContext();
+  const chat = useChatModel();
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const [text, setText] = React.useState('');
@@ -69,7 +71,15 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
     if (text && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
       dialogue.messages.startNewMessageProcess();
-      dialogue.sendMessage(lastMessage, text);
+      const createdNew = await dialogue.createIfEmpty();
+      if (createdNew) {
+        chat.dialogueActions.open(dialogue);
+      }
+      dialogue.sendMessage(lastMessage, text)
+        .then(() => {
+          chat.dialogueActions.touch(dialogue);
+        });
+
       setText('');
       await dialogue.messages.newMessagePromise;
       scroller.handleBottomScroll?.();

@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { ChatSlotsType } from './useChatPropsSlots';
+import { Dialogue } from '../../models/Dialogue';
 
-type ChatSlotsContextType = ChatSlotsType;
+type ChatSlotsContextType = ChatSlotsType<Dialogue>;
 
 const Context = React.createContext<ChatSlotsContextType | undefined>(undefined);
 
-const ChatSlotsProvider: React.FC<React.PropsWithChildren<{ props: ChatSlotsType }>> = ({ props, children }) => {
+type ProviderProps<D extends Dialogue> = React.PropsWithChildren<{ props: ChatSlotsType<D> }>;
+
+const ChatSlotsProvider = <D extends Dialogue>({ props, children }: ProviderProps<D>) => {
   const [value] = React.useState(props);
   return (
-    <Context.Provider value={value}>
+    <Context.Provider value={value as ChatSlotsContextType}>
       {children}
     </Context.Provider>
   );

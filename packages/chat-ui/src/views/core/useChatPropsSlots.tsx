@@ -1,7 +1,7 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
 import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import RootMock from '../message/RootMock';
 import { FlattenObject, UnionToIntersection } from '../../types/FlattenObject';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
@@ -10,17 +10,17 @@ import MdIconButton, { MdIconButtonProps } from '../../ui/MdIconButton';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
-type ChatSlotsObjectType = {
+type ChatSlotsObjectType<D extends Dialogue> = {
   dialogue: SlotValue;
   list: SlotValue;
   listDriver: SlotValue;
-  firstMessage: SlotValue<{ dialogue: Dialogue }>;
+  firstMessage: SlotValue<{ dialogue: D }>;
   popups: {
     sharing: {
-      content: SlotValue<{ dialogue: Dialogue; tariffsRef: React.RefObject<{ tariffs: number[] }> }>;
+      content: SlotValue<{ dialogue: D; tariffsRef: React.RefObject<{ tariffs: number[] }> }>;
     };
     info: {
-      content: SlotValue<{ dialogue: Dialogue; }>;
+      content: SlotValue<{ dialogue: D; }>;
     };
   };
 };
@@ -31,11 +31,11 @@ type ChatCoreSlots = {
   listItemText: SlotValue<ListItemTextProps>;
 };
 
-export type ChatSlotsType = UnionToIntersection<FlattenObject<ChatSlotsObjectType>> & {
+export type ChatSlotsType<D extends Dialogue> = UnionToIntersection<FlattenObject<ChatSlotsObjectType<D>>> & {
   core: ChatCoreSlots;
 };
 
-export const useChatPropsSlots = (slots?: Partial<ChatSlotsType>, coreSlots?: Partial<ChatCoreSlots>): ChatSlotsType => {
+export const useChatPropsSlots = <D extends Dialogue>(slots?: Partial<ChatSlotsType<D>>, coreSlots?: Partial<ChatCoreSlots>): ChatSlotsType<D> => {
   return React.useMemo(() => ({
     firstMessage: slots?.firstMessage ?? MockComponent,
     dialogue: slots?.dialogue ?? RootMock,

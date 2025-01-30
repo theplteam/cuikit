@@ -1,6 +1,6 @@
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from './Dialogue';
 import { ChatActions } from './ChatActions';
-import { DDialogue } from './DialogueData';
+import { PartialExcept } from './types';
 
 const NOOP = (name?: string) => () => {
   if (process.env.NODE_ENV === 'development') {
@@ -8,20 +8,30 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-export type ChatModelProps<Data extends DDialogue = DDialogue> = Partial<{
+type Props<D extends Dialogue> = {
   openNew: () => void;
-  deleteDialogue: (dialogue: Dialogue<Data>) => void;
-}>;
+  delete: (dialogue: D) => void;
+  open: (dialogue: D) => void;
+  touch: (dialogue: D) => void;
+  edit?: (newData: PartialExcept<D['data']['data'], 'id'>, dialogue: D) => any,
+};
 
-export class ChatModel<Data extends DDialogue = DDialogue> {
-  openNew: () => void;
-  deleteDialogue: (dialogue: Dialogue<Data>) => void;
+export type ChatModelProps<D extends Dialogue> = Partial<Props<D>>;
+
+export class ChatModel<D extends Dialogue = Dialogue> {
+  readonly dialogueActions: Props<D>;
 
   readonly actions = new ChatActions();
 
-  constructor(props?: ChatModelProps<Data>) {
-    this.openNew = props?.openNew ?? NOOP('openNew');
-    this.deleteDialogue = props?.deleteDialogue ?? NOOP('deleteDialogue');
+  constructor(props: ChatModelProps<D> | undefined) {
+    this.dialogueActions = {
+      openNew: props?.openNew ?? NOOP('openNew'),
+      delete: props?.delete ?? NOOP('deleteDialogue'),
+      open: props?.open ?? NOOP('openDialogue'),
+      touch: props?.touch ?? NOOP('touchDialogue'),
+      edit: props?.edit ?? NOOP('editDialogue'),
+    };
+
   }
 
   init = () => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useChatScrollFunctions } from './useChatScrollFunctions';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 
 export const useChatScroller = (
   dialogue: Dialogue | undefined,

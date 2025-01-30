@@ -4,7 +4,7 @@ import { useProcessAssistantText } from '../../hooks/useProcessAssistantText';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';
-import { Message } from 'models/Message';
+import { Message } from '../../../models/Message';
 import { usePopoverState } from '../../hooks/usePopoverState';
 import { lng } from '../../../utils/lng';
 import MdMenu from '../../../ui/menu/MdMenu';

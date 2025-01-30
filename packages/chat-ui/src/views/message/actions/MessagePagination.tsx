@@ -6,7 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../../DialogueContext';
-import { Message } from 'models/Message';
+import { Message } from '../../../models/Message';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { MdText } from '../../../ui/TextUi';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';

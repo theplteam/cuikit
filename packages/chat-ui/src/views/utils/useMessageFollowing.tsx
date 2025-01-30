@@ -4,7 +4,7 @@ import { ChatScrollerType } from './ChatScrollerType';
 import { useTheme } from '@mui/material/styles';
 import { useDialogueContext } from '../DialogueContext';
 import { when } from '../../utils/observers/when';
-import { Message } from 'models/Message';
+import { Message } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 class FollowingClass {

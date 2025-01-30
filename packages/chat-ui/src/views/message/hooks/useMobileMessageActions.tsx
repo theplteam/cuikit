@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Dialogue } from 'models/Dialogue';
-import { Message } from 'models/Message';
+import { Dialogue } from '../../../models/Dialogue';
+import { Message } from '../../../models/Message';
 
 export type StateType = {
   element: HTMLDivElement;

@@ -3,7 +3,7 @@ import throttle from 'lodash.throttle';
 import { useMessageFollowing } from './useMessageFollowing';
 import { ChatScrollerType } from './ChatScrollerType';
 import { NOOP } from '../../utils/NOOP';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { useTablet } from '../../ui/Responsive';
 import { isWindowCheck } from '../hooks/useScrollSave';
 

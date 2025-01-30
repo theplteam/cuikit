@@ -1,5 +1,5 @@
-import { Message, StreamResponseState } from 'models/Message';
-import { Dialogue } from 'models/Dialogue';
+import { Message, StreamResponseState } from '../models/Message';
+import { Dialogue } from './Dialogue';
 import { ChatMessageStreamingModel } from './ChatMessageStreamingModel';
 import { DDialogue } from './DialogueData';
 import { ChatApp } from './ChatApp';

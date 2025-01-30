@@ -3,7 +3,7 @@ import { sortByDesc } from '../../utils/arrayUtils/arraySort';
 import { ArrayType } from '../../models/types';
 import moment from 'moment';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 
 export type DialogueGroupType = {
   groupKey: string;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { Message } from 'models/Message';
-import { Dialogue } from 'models/Dialogue';
+import { Message } from '../../models/Message';
+import { Dialogue } from '../../models/Dialogue';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {

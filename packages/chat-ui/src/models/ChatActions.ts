@@ -1,4 +1,4 @@
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../models/Dialogue';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 
 export class ChatActions {

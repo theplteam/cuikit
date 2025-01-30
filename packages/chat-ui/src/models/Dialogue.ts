@@ -1,4 +1,4 @@
-import { Message, ChatMessageOwner, DMessage } from 'models/Message';
+import { Message, ChatMessageOwner, DMessage } from '../models/Message';
 import { ChatSendMessage } from './ChatSendMessage';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,7 +6,6 @@ import { DialogueMessages } from './DialogueMessages';
 import { DDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
-import { PartialExcept } from './types';
 import { ChatApp } from './ChatApp';
 import { sortBy } from '../utils/arrayUtils/arraySort';
 import { IdType } from '../types';
@@ -51,12 +50,9 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
    */
   constructor(
     _data: Data,
-    public touch: (dialogue: Dialogue<Data>) => void,
+    // TODO: убрать
+    /** @deprecated - authCode тут не нужен */
     readonly options: {
-      openDialogue: (dialogue: Dialogue<Data>) => void,
-      // Следующие функции для заглушек, т.е. временно
-      // TODO: временно ANY, т.к. нам сюда вообще не надо передавать edit
-      edit?: (newData: PartialExcept<Data, 'id'>, dialogue: Dialogue<Data>) => any,
       authCode: string,
     },
   ) {
@@ -130,7 +126,6 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
       this.isTyping.value = false;
       this.isEmpty.value = false;
       this.closeConnection = undefined;
-      this.touch(this);
     });
 
     this.closeConnection = sendMessageController.close;
@@ -138,14 +133,12 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
     return userMessage;
   }
 
-  sendMessage = async (lastMessage: Message | undefined, text: string) => {
-    this.isTyping.value = true;
+  /**
+   * Создать новый диалог
+   */
+  createIfEmpty = async () => {
+    let created = false;
 
-    const { userMessage, assistantMessage } = this._createPair(text, lastMessage);
-
-    this.messages.push(userMessage, assistantMessage);
-
-    // Если это новый диалог, подождем создание диалога, т.к. нам необходимо знать его id
     if (this.isEmpty.value) {
       const createResult = await this._dialogCreating;
       if (!this.potentialId && createResult?.data) {
@@ -154,9 +147,20 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
 
       if (this.potentialId) {
         this.data.setId(this.potentialId);
-        this.options.openDialogue(this);
+        created = true;
       }
+      this.isEmpty.value = false;
     }
+
+    return created;
+  }
+
+  sendMessage = (lastMessage: Message | undefined, text: string) => {
+    this.isTyping.value = true;
+
+    const { userMessage, assistantMessage } = this._createPair(text, lastMessage);
+
+    this.messages.push(userMessage, assistantMessage);
 
     const url = this.messageUrl;
 
@@ -175,11 +179,11 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
     promise.then(() => {
       this.isTyping.value = false;
       this.closeConnection = undefined;
-      this.isEmpty.value = false;
-      this.touch(this);
     });
 
     this.closeConnection = sendMessageController.close;
+
+    return promise;
   }
 
   protected _createPair = (text: string, parentMessage: Message | undefined) => {

@@ -1,4 +1,4 @@
-import { DMessage } from 'models/Message';
+import { DMessage } from './Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
 

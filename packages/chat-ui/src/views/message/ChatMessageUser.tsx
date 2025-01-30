@@ -11,14 +11,15 @@ import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../DialogueContext';
-import { Message } from 'models/Message';
-import { Dialogue } from 'models/Dialogue';
+import { Message } from '../../models/Message';
+import { Dialogue } from '../../models/Dialogue';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
+import { useChatModel } from '../core/ChatGlobalContext';
 
 type Props = {
   message: Message;
@@ -59,6 +60,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const { messageMode, dialogueApi } = useDialogueContext();
+  const chatModel = useChatModel();
 
   const mode = messageMode.values[message.id];
 
@@ -72,6 +74,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
     messageMode.view(message.id);
     const newMessage = dialogue.editMessage(message, newText);
     dialogueApi.current?.handleChangeBranch(newMessage);
+    chatModel.dialogueActions.touch(dialogue);
   }
 
   const onClickCancelEdit = () => {

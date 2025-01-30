@@ -1,5 +1,5 @@
 import { DialogueApi } from '../DialogueApi';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 
 export const getDialogueListeners: (dialogue: Dialogue) => DialogueApi['getListener'] = (dialogue) =>
   (key) => {

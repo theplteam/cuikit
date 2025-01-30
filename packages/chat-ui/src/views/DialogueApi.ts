@@ -1,5 +1,5 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { Message } from 'models/Message';
+import { Message } from '../models/Message';
 import { DialogueMessages } from '../models/DialogueMessages';
 
 export type DialogueListenersMap = {

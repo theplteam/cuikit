@@ -1,36 +1,35 @@
 import * as React from 'react';
 import { ChatSlotsType } from './useChatPropsSlots';
-import { Dialogue } from 'models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { ChatModel, ChatModelProps } from '../../models/ChatModel';
-import { Message } from 'models/Message';
+import { Message } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
-import { DDialogue } from '../../models/DialogueData';
 
-type RequiredProps<Data extends DDialogue = DDialogue> = {
-  readonly dialogues: readonly Dialogue<Data>[];
-  dialogue: Dialogue<Data> | undefined;
-  setDialogue: (dialogue: Dialogue<Data>) => void;
+type RequiredProps<D extends Dialogue> = {
+  readonly dialogues: readonly D[];
+  dialogue: D | undefined;
+  setDialogue: (dialogue: D) => void;
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<Data extends DDialogue = DDialogue> = {
+export type ChatPropsTypes<D extends Dialogue> = {
   loading: boolean;
-  modelProps?: ChatModelProps<Data>;
-  model?: ChatModel<Data>;
-  assistantActions?: React.JSXElementConstructor<{ message: Message, dialogue: Dialogue<Data> }>[];
+  modelProps?: ChatModelProps<D>;
+  model?: ChatModel<D>;
+  assistantActions?: React.JSXElementConstructor<{ message: Message, dialogue: D }>[];
   userId?: UserIdType;
-} & RequiredProps<Data>;
+} & RequiredProps<D>;
 
 // что передает пользователь
-export type ChatUsersProps<Data extends DDialogue = DDialogue> = {
+export type ChatUsersProps<D extends Dialogue> = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
-  slots?: Partial<ChatSlotsType>;
+  slots?: Partial<ChatSlotsType<Dialogue>>;
   lang?: 'en' | 'ru' | LangKeys;
-} & RequiredProps<Data> & Partial<Omit<ChatPropsTypes<Data>, 'slots' | keyof RequiredProps<Data>>>;
+} & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
 
-export const useChatProps = <Data extends DDialogue = DDialogue> (userProps: ChatUsersProps<Data>): ChatPropsTypes<Data> => {
+export const useChatProps = <D extends Dialogue> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 

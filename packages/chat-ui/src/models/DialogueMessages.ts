@@ -1,4 +1,4 @@
-import { Message } from 'models/Message';
+import { Message } from './Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { PromiseUtils } from '../utils/PromiseUtils';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
