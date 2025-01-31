@@ -4,7 +4,7 @@ import DialogueListItemMenu from './DialogueListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
-import { Dialogue } from '../../models/Dialogue';
+import { Dialogue } from '../../models/dialogue/Dialogue';
 import { ChatModel } from '../../models/ChatModel';
 import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';

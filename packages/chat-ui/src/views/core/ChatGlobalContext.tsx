@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
 import { ArrayType } from '../../models/types';
 import { ChatModel } from '../../models/ChatModel';
-import { Dialogue } from '../../models/Dialogue';
+import { Dialogue } from '../../models/dialogue/Dialogue';
 
 type ChatGlobalContextType<D extends Dialogue> = {
   model: ChatModel<D>;

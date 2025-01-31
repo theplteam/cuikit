@@ -1,6 +1,6 @@
-import { PromiseUtils } from '../utils/PromiseUtils';
-import { arrayChunk } from '../utils/arrayUtils/arrayChunk';
-import { randomInt } from '../utils/numberUtils/randomInt';
+import { PromiseUtils } from '../../utils/PromiseUtils';
+import { arrayChunk } from '../../utils/arrayUtils/arrayChunk';
+import { randomInt } from '../../utils/numberUtils/randomInt';
 
 
 export class ForceStream {

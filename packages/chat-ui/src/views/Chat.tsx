@@ -10,7 +10,7 @@ import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { useChatPropsSlots } from './core/useChatPropsSlots';
-import { Dialogue } from '../models/Dialogue';
+import { Dialogue } from '../models/dialogue/Dialogue';
 
 const Chat = <D extends Dialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
   const props = useChatProps(usersProps);

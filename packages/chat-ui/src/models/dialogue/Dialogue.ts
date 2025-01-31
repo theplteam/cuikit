@@ -1,14 +1,13 @@
-import { Message, ChatMessageOwner, DMessage } from '../models/Message';
-import { ChatSendMessage } from './ChatSendMessage';
+import { Message, ChatMessageOwner, DMessage } from '../Message';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { DialogueMessages } from './DialogueMessages';
-import { DDialogue, DialogueData } from './DialogueData';
-import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { randomId } from '../utils/numberUtils/randomInt';
-import { ChatApp } from './ChatApp';
-import { sortBy } from '../utils/arrayUtils/arraySort';
-import { IdType } from '../types';
+import { DialogueMessages } from '../DialogueMessages';
+import { DDialogue, DialogueData } from '../DialogueData';
+import { ObservableReactValue } from '../../utils/observers/ObservableReactValue';
+import { randomId } from '../../utils/numberUtils/randomInt';
+import { ChatApp } from '../ChatApp';
+import { sortBy } from '../../utils/arrayUtils/arraySort';
+import { IdType } from '../../types';
 
 export type NewMessageResponse = {
   user: DMessage,
@@ -17,7 +16,7 @@ export type NewMessageResponse = {
 
 type ApiMethodPromise<T> = Promise<{ data?: T }>
 
-export class Dialogue<Data extends DDialogue = DDialogue> {
+export abstract class Dialogue<Data extends DDialogue = DDialogue> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
@@ -41,21 +40,11 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
 
   readonly timestamp: ObservableReactValue<number>;
 
-  get messageUrl(){ return 'no url' };
+  abstract streamMessage: (text: string, userMessage: Message, assistantMessage: Message) => Promise<void>;
 
-  /**
-   * @param _data
-   * @param touch - Аналог touch в Laravel - просто обновить дату
-   * @param options
-   */
-  constructor(
-    _data: Data,
-    // TODO: убрать
-    /** @deprecated - authCode тут не нужен */
-    readonly options: {
-      authCode: string,
-    },
-  ) {
+  protected abstract stopStreaming: () => void;
+
+  constructor(_data: Data) {
     this.data = new DialogueData(_data);
 
     const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
@@ -86,6 +75,16 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
     return this.data.authorId === ChatApp.userId;
   }
 
+  /**
+   * For chat request body
+   */
+  get messagesFormatted() {
+    return this.messages.currentMessages.value.map((message) => ({
+      role: message.owner,
+      content: message.text,
+    }));
+  }
+
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DDialogue }>) => {
     let res: { data?: { dialogue: DDialogue } } | undefined;
 
@@ -98,39 +97,6 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
     }
 
     this._dialogCreating = undefined;
-  }
-
-  editMessage = (messageEdit: Message, newText: string) => {
-    const parentMessage = this.messagesArray.find(v => v.id === messageEdit.parentId);
-    this.isTyping.value = true;
-
-    const { userMessage, assistantMessage } = this._createPair(newText, parentMessage);
-
-    this.messages.push(userMessage, assistantMessage);
-
-    const url = this.messageUrl;
-
-    const sendMessageController = new ChatSendMessage(this, userMessage, assistantMessage);
-    const promise = sendMessageController.sendMessage(
-      url,
-      this.options.authCode,
-      {
-        message: newText,
-        messageEditedId: messageEdit.id,
-        messageId: userMessage.id,
-        dialogueId: this.id,
-        parentId: userMessage.parentId,
-      });
-
-    promise.then(() => {
-      this.isTyping.value = false;
-      this.isEmpty.value = false;
-      this.closeConnection = undefined;
-    });
-
-    this.closeConnection = sendMessageController.close;
-
-    return userMessage;
   }
 
   /**
@@ -155,33 +121,49 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
     return created;
   }
 
-  sendMessage = (lastMessage: Message | undefined, text: string) => {
+  editMessage = (
+    messageEdit: Message,
+    newText: string,
+  ) => {
+    const parentMessage = this.messagesArray.find(v => v.id === messageEdit.parentId);
+    this.isTyping.value = true;
+
+    const { userMessage, assistantMessage } = this._createPair(newText, parentMessage);
+
+    this.messages.push(userMessage, assistantMessage);
+
+    const promise = this.streamMessage(newText, userMessage, assistantMessage);
+
+    promise.then(() => {
+      this.isTyping.value = false;
+      this.isEmpty.value = false;
+      this.closeConnection = undefined;
+    });
+
+    this.closeConnection = this.stopStreaming;
+
+    return userMessage;
+  }
+
+  sendMessage = (
+    lastMessage: Message | undefined,
+    text: string,
+
+  ) => {
     this.isTyping.value = true;
 
     const { userMessage, assistantMessage } = this._createPair(text, lastMessage);
 
     this.messages.push(userMessage, assistantMessage);
 
-    const url = this.messageUrl;
-
-    const sendMessageController = new ChatSendMessage(this, userMessage, assistantMessage);
-
-    const promise = sendMessageController.sendMessage(
-      url,
-      this.options.authCode,
-      {
-        message: text,
-        messageId: userMessage.id,
-        dialogueId: this.id,
-        parentId: userMessage.parentId,
-      });
+    const promise = this.streamMessage(text, userMessage, assistantMessage);
 
     promise.then(() => {
       this.isTyping.value = false;
       this.closeConnection = undefined;
     });
 
-    this.closeConnection = sendMessageController.close;
+    this.closeConnection = this.stopStreaming;
 
     return promise;
   }
@@ -209,20 +191,4 @@ export class Dialogue<Data extends DDialogue = DDialogue> {
       userMessage, assistantMessage,
     };
   }
-
-  /**
-   * Аналог touch в Laravel - просто обновить дату
-   */
-  /*private touch = () => {
-    this.createdTimestamp = moment().unix();
-    const list = appModel.chat.dialoguesList;
-
-    appModel.chat.dialoguesList.dialoguesMap.set(
-      this,
-      {
-        ...list.groups.today,
-        timestamp: this.createdTimestamp,
-      }
-    );
-  }*/
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dialogue } from '../../../models/Dialogue';
+import { Dialogue } from '../../../models/dialogue/Dialogue';
 import { Message } from '../../../models/Message';
 
 export type StateType = {

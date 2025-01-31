@@ -9,5 +9,5 @@ export default defineConfig({
     alias: {
       'chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
     }
-  }
+  },
 })

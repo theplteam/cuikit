@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MessageCopyMenuItems from '../MessageCopyMenuItems';
 import { Message } from '../../../../models/Message';
-import { Dialogue } from '../../../../models/Dialogue';
+import { Dialogue } from '../../../../models/dialogue/Dialogue';
 
 type Props = {
   message: Message;

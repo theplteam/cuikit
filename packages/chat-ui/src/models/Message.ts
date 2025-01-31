@@ -1,4 +1,4 @@
-import { ForceStream } from './ForceStream';
+import { ForceStream } from './stream/ForceStream';
 import { lng } from '../utils/lng';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { UserIdType } from './ChatApp';
@@ -64,12 +64,16 @@ export class Message {
     return this._data.time;
   }
 
+  get owner() {
+    return this._data.owner;
+  }
+
   get isUser() {
-    return this._data.owner === ChatMessageOwner.USER;
+    return this.owner === ChatMessageOwner.USER;
   }
 
   get isAssistant() {
-    return this._data.owner === ChatMessageOwner.ASSISTANT;
+    return this.owner === ChatMessageOwner.ASSISTANT;
   }
 
   /*get user() {

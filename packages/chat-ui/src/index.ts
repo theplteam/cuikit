@@ -1,5 +1,5 @@
 import Chat from './views/Chat';
-import { Dialogue } from './models/Dialogue'
+import { Dialogue } from './models/dialogue/Dialogue'
 import { Message } from './models/Message'
 import { ChatModel } from './models/ChatModel'
 import { DialogueData, DDialogue } from './models/DialogueData';

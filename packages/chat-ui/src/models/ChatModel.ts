@@ -1,4 +1,4 @@
-import { Dialogue } from './Dialogue';
+import { Dialogue } from './dialogue/Dialogue';
 import { ChatActions } from './ChatActions';
 import { PartialExcept } from './types';
 

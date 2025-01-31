@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { CustomDialogue } from '../models/CustomDialogue.ts';
+import { ChatGptDialogue } from '../models/ChatGptDialogue.ts';
 
 type Props = {
-  dialogue: CustomDialogue;
+  dialogue: ChatGptDialogue;
 };
 
 const PopupSharingContent: React.FC<Props> = () => {

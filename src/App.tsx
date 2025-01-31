@@ -11,18 +11,22 @@ import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
 import MobileAppBar from './views/appBar/MobileAppBar.tsx';
-import { CustomDialogue, DCustomDialogue } from './models/CustomDialogue.ts';
 import PopupSharingContent from './views/PopupSharingContent.tsx';
+import { ChatGptDialogue, ChatGptDialogueData } from './models/ChatGptDialogue.ts';
+import OpenAI from 'openai';
 
 function App() {
-  const dd: DCustomDialogue[] = dialogues as DCustomDialogue[];
+  const dd = dialogues as ChatGptDialogueData[];
 
-  const testArray = React.useMemo(() => dd.map(v => new CustomDialogue(
-    v,
-    {
-      authCode: '',
-    }
-  )), []);
+  const openAi = React.useMemo(() => {
+    console.log(import.meta.env.VITE_OPENAI_API_KEY);
+    return new OpenAI({
+      apiKey: import.meta.env.VITE_OPENAI_API_KEY, // This is the default and can be omitted
+      dangerouslyAllowBrowser: true,
+    });
+  }, []);
+
+  const testArray = React.useMemo(() => dd.map(v => new ChatGptDialogue(v, openAi)), []);
 
   const [dialogue, setDialogue] = React.useState(([...testArray].sort((a,b) => b.timestamp.value - a.timestamp.value))[0]);
 
@@ -57,16 +61,14 @@ function App() {
             userId={20}
             modelProps={{
               openNew: () => {
-                const newDialogue = new CustomDialogue(
+                const newDialogue = new ChatGptDialogue(
                   {
                     id: '1-2-3',
                     title: 'newDialogue',
                     messages: [],
                     authorId: 1,
                   },
-                  {
-                    authCode: '',
-                  }
+                  openAi,
                 );
 
                 setDialogue(newDialogue);

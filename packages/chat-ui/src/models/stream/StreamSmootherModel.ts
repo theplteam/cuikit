@@ -1,6 +1,9 @@
-import { Message } from 'models/Message';
+import { StreamSmootherAbstract } from './StreamSmootherAbstract';
 
-export class ChatMessageStreamingModel {
+/**
+ * Сделать стрим текста более плавным, чаты передают текст большими кусками
+ */
+export class StreamSmootherModel extends StreamSmootherAbstract {
   private _chunks: string[][] = [];
 
   private _activeTimeout: Promise<void> | undefined;
@@ -9,7 +12,9 @@ export class ChatMessageStreamingModel {
 
   private _timeoutMs = 20;
 
-  constructor(private message: Message) {}
+  constructor(readonly pushPartFn: (part: string) => void) {
+    super();
+  }
 
   push = (textPart: string) => {
     this._chunks.push(textPart.split(' '));
@@ -40,7 +45,7 @@ export class ChatMessageStreamingModel {
       const timeout = setInterval(() => {
         const isLast = part.length - 1 === key;
         // console.log(part[key]);
-        this.message.text += part[key] + (isLast ? '' : ' ');
+        this.pushPartFn(part[key] + (isLast ? '' : ' '));
 
         if (isLast) {
           clearInterval(timeout);

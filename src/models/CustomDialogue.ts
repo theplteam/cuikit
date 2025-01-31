@@ -7,6 +7,14 @@ export type DCustomDialogue = {
 export class CustomDialogue extends Dialogue<DCustomDialogue> {
   variable = 1;
 
+  stopStreaming = () => {
+    console.log('stopStreaming');
+  }
+
+  streamMessage = async () => {
+    console.log('streamMessage');
+  }
+
   get messageUrl() {
     return 'https://google.com';
   }

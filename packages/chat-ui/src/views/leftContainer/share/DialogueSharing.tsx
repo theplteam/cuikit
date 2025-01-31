@@ -4,7 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { ChatModel } from '../../../models/ChatModel';
-import { Dialogue } from '../../../models/Dialogue';
+import { Dialogue } from '../../../models/dialogue/Dialogue';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
 import { useSnackbar } from '../../hooks/useSnackbar';

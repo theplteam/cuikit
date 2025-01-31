@@ -4,7 +4,7 @@ import ChatMessageAssistant from './ChatMessageAssistant';
 import { ChatViewConstants } from '../ChatViewConstants';
 import Box from '@mui/material/Box';
 import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { Dialogue } from '../../models/dialogue/Dialogue';
 
 type Props = {
   message: Message;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChatSlotsType } from './useChatPropsSlots';
-import { Dialogue } from '../../models/Dialogue';
+import { Dialogue } from '../../models/dialogue/Dialogue';
 
 type ChatSlotsContextType = ChatSlotsType<Dialogue>;
 
