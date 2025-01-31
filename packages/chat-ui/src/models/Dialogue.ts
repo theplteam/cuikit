@@ -1,13 +1,13 @@
-import { Message, ChatMessageOwner, DMessage } from '../Message';
+import { Message, ChatMessageOwner, DMessage } from './Message';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { DialogueMessages } from '../DialogueMessages';
-import { DDialogue, DialogueData } from '../DialogueData';
-import { ObservableReactValue } from '../../utils/observers/ObservableReactValue';
-import { randomId } from '../../utils/numberUtils/randomInt';
-import { ChatApp } from '../ChatApp';
-import { sortBy } from '../../utils/arrayUtils/arraySort';
-import { IdType } from '../../types';
+import { DialogueMessages } from './DialogueMessages';
+import { DDialogue, DialogueData } from './DialogueData';
+import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
+import { randomId } from '../utils/numberUtils/randomInt';
+import { ChatApp } from './ChatApp';
+import { sortBy } from '../utils/arrayUtils/arraySort';
+import { IdType } from '../types';
 
 export type NewMessageResponse = {
   user: DMessage,
@@ -40,7 +40,7 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
   readonly timestamp: ObservableReactValue<number>;
 
-  abstract streamMessage: (text: string, userMessage: Message, assistantMessage: Message) => Promise<void>;
+  abstract streamMessage: (text: string, userMessage: Message, assistantMessage: Message) => Promise<void | boolean | string | number>;
 
   protected abstract stopStreaming: () => void;
 

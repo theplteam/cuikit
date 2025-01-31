@@ -6,7 +6,7 @@ export type MessageStreamManagerOptions = {
   smoother?: boolean | ((message: Message) => StreamSmootherAbstract);
 }
 
-export abstract class MessageStreamManager {
+export class MessageStreamManager {
   // дополнительный стрим, чтобы печатание было более плавным, вместо рывков с большими кусками
   readonly smoother: StreamSmootherAbstract | undefined;
 

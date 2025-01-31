@@ -1,7 +1,7 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
 import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
-import { Dialogue } from '../../models/dialogue/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import RootMock from '../message/RootMock';
 import { FlattenObject, UnionToIntersection } from '../../types/FlattenObject';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';

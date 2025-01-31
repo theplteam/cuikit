@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dialogue } from '../../../models/dialogue/Dialogue';
+import { Dialogue } from '../../../models/Dialogue';
 
 type Props = {
   dialogue: Dialogue;

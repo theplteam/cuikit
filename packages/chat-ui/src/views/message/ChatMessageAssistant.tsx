@@ -10,7 +10,7 @@ import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
 import { NOOP } from '../../utils/NOOP';
 import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/dialogue/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';

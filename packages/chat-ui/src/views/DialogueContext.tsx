@@ -3,7 +3,7 @@ import { MobileMessageActionsType, useMobileMessageActions } from './message/hoo
 import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
 import { DialogueApi, getDialogueMockApi } from './DialogueApi';
 import { getDialogueListeners } from './utils/getDialogueListeners';
-import { Dialogue } from '../models/dialogue/Dialogue';
+import { Dialogue } from '../models/Dialogue';
 
 type DialogueContextType = {
   dialogue: Dialogue | undefined;

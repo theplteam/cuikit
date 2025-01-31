@@ -1,4 +1,4 @@
-import { Dialogue } from '../../packages/chat-ui/src/models/dialogue/Dialogue.ts';
+import { Dialogue } from '../../packages/chat-ui/src/models/Dialogue.ts';
 import { Message } from '../../packages/chat-ui/src/models/Message.ts';
 import { DDialogue } from '../../packages/chat-ui/src/models/DialogueData.ts';
 import OpenAI from 'openai';
