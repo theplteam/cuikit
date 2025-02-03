@@ -16,6 +16,12 @@ export type NewMessageResponse = {
 
 type ApiMethodPromise<T> = Promise<{ data?: T }>
 
+export enum StreamResponseState {
+  START = 'start',
+  TYPING_MESSAGE = 'typingMessage',
+  FINISH_MESSAGE = 'finishMessage',
+}
+
 export abstract class Dialogue<Data extends DDialogue = DDialogue> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
@@ -27,6 +33,8 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
   readonly isTyping = new ObservableReactValue(false);
 
   readonly isEmpty = new ObservableReactValue(false);
+
+  readonly streamState = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
 
   closeConnection?: () => void;
 

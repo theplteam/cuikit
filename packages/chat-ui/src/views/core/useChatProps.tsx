@@ -7,6 +7,7 @@ import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
+import { ApiRefType } from './useInitializeApiRef';
 
 type RequiredProps<D extends Dialogue> = {
   readonly dialogues: readonly D[];
@@ -30,6 +31,7 @@ export type ChatUsersProps<D extends Dialogue> = {
   coreSlots?: Partial<CoreSlots>;
   slotProps?: Partial<SlotPropsType<D>>;
   lang?: 'en' | 'ru' | LangKeys;
+  apiRef?: React.MutableRefObject<ApiRefType>;
 } & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
 
 export const useChatProps = <D extends Dialogue> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {

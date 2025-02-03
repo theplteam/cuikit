@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { MobileMessageActionsType, useMobileMessageActions } from './message/hooks/useMobileMessageActions';
 import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
-import { DialogueApi, getDialogueMockApi } from './DialogueApi';
+import { type DialogueApi, getDialogueMockApi } from './DialogueApi';
 import { getDialogueListeners } from './utils/getDialogueListeners';
 import { Dialogue } from '../models/Dialogue';
+import { useMessageProgressStatus } from './dialogue/useMessageProgressStatus';
+import { ApiRefType } from './core/useInitializeApiRef';
 
 type DialogueContextType = {
   dialogue: Dialogue | undefined;
@@ -15,33 +17,35 @@ type DialogueContextType = {
 type Props = {
   children: React.ReactNode;
   dialogue: Dialogue | undefined;
-  dialogueRef: React.MutableRefObject<DialogueApi | undefined>;
+  apiRef: React.RefObject<ApiRefType>;
 };
 
 const Context = React.createContext<DialogueContextType | undefined>(undefined);
 
-const DialogueProvider: React.FC<Props> = ({ children, dialogue, dialogueRef }) => {
+const DialogueProvider: React.FC<Props> = ({ children, dialogue, apiRef }) => {
   const mobileMessageActions = useMobileMessageActions();
-  const apiRef = React.useRef<DialogueApi>(getDialogueMockApi());
   const messageMode = useMessagesMode();
+  const dialogueApi = React.useRef<DialogueApi>(getDialogueMockApi());
+  const handleChangeStreamStatus = useMessageProgressStatus(dialogue);
 
   React.useMemo(() => {
     dialogue?.messages.init();
 
     if (dialogue) {
       const messages = dialogue.messages;
-      apiRef.current = {
+      dialogueApi.current = {
         allMessages: messages.allMessages,
         branch: messages.currentMessages,
         getListener: getDialogueListeners(dialogue),
         handleChangeBranch: messages.handleChangeBranch,
+        setProgressStatus: handleChangeStreamStatus,
       };
     }
 
-    if (dialogueRef) {
-      dialogueRef.current = apiRef.current;
+    if (apiRef.current) {
+      apiRef.current.dialogue = dialogueApi.current;
     }
-  }, [dialogue]);
+  }, [dialogue, handleChangeStreamStatus]);
 
   /*const [state, setState] = React.useState(0)
 
@@ -53,7 +57,7 @@ const DialogueProvider: React.FC<Props> = ({ children, dialogue, dialogueRef }) 
   console.log(state);*/
 
   const value = React.useMemo(() => ({
-    dialogue, dialogueApi: apiRef, mobileMessageActions, messageMode
+    dialogue, dialogueApi, mobileMessageActions, messageMode
   }), [dialogue, apiRef.current, mobileMessageActions, messageMode]);
 
   return (

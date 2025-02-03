@@ -13,11 +13,13 @@ export type DialogueApi = {
   branch: ObservableReactValue<Readonly<Message[]>>;
   getListener: <K extends keyof DialogueListenersMap>(key: K) => DialogueListenersMap[K] | undefined;
   handleChangeBranch: DialogueMessages['handleChangeBranch'];
+  setProgressStatus: (status: string) => void;
 };
 
 export const getDialogueMockApi = (): DialogueApi => ({
   allMessages: new ObservableReactValue([]),
   branch: new ObservableReactValue([]),
-  handleChangeBranch: (message) => {},
-  getListener: (key) => undefined,
+  handleChangeBranch: () => {},
+  getListener: () => undefined,
+  setProgressStatus: () => {},
 });

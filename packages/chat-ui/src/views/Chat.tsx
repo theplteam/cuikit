@@ -11,8 +11,10 @@ import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
 import { Dialogue } from '../models/Dialogue';
+import { useInitializeApiRef } from './core/useInitializeApiRef';
 
 const Chat = <D extends Dialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
+  const apiRef = useInitializeApiRef(usersProps.apiRef);
   const props = useChatProps(usersProps);
   const { slots, slotProps, coreSlots } = usePropsSlots<D>(usersProps.slots);
 
@@ -34,6 +36,7 @@ const Chat = <D extends Dialogue>(usersProps: React.PropsWithChildren<ChatUsersP
           </slots.list>
           <slots.dialogue>
             <ChatDialogueComponent
+              apiRef={apiRef}
               contentRef={usersProps.scrollerRef}
             />
           </slots.dialogue>

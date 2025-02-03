@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box, { type BoxProps } from '@mui/material/Box';
-import { Message, StreamResponseState } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { Dialogue, StreamResponseState } from '../../models';
 
 type Props = {
-  message: Message;
+  dialogue: Dialogue;
 } & BoxProps;
 
 const palette = materialDesignSysPalette;
@@ -48,37 +48,17 @@ const BoxStyled = styled(Box)(() => ({
   ]
 }));
 
-/*const steps = {
-  [StreamResponseState.START]: [
-    'Обрабатываю запрос...',
-    'Process request',
-  ],
-  [StreamResponseState.ANALYZING_DATASET]: [
-    'Анализирую статьи...',
-    'Analyzing articles...'
-  ],
-  [StreamResponseState.PREPARING_ANSWER]: [
-    'Подготавливаю ответ...',
-    'Preparing an answer...'
-  ],
-};*/
-const steps = {
+
+const steps: Record<string, string[]> = {
   [StreamResponseState.START]: ['Думаю', 'Thinking'],
-  [StreamResponseState.CREATE_DATASET]: ['Формирую список статей для анализа', 'Forming a list of articles for analysis'],
-  [StreamResponseState.ANALYZING_DATASET]: ['Анализ статей...', 'Analyzing articles...'],
-  [StreamResponseState.PREPARING_ANSWER]: ['Подготовка ответа...', 'Preparing an answer...'],
 };
 
-const MessageAssistantProgress: React.FC<Props> = ({ message }) => {
-  const state = useObserverValue(message.streamState);
+const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
+  const state = useObserverValue(dialogue.streamState) as StreamResponseState | string | undefined;
   const { slots, slotProps } = useChatSlots();
-  let text = state ? steps[state as keyof typeof steps] ?? '' : '';
+  const text = (state && steps[state]) ?? state;
 
-  /*if (state === StreamResponseState.ANALYZING_DATASET && message.streamCurrentHeader) {
-    text = capitalizeFirstLetter(message.streamCurrentHeader);
-  }*/
-
-  if (!text) return null;
+  if (!text || state === StreamResponseState.TYPING_MESSAGE || state === StreamResponseState.FINISH_MESSAGE) return null;
 
   return (
     <BoxStyled>

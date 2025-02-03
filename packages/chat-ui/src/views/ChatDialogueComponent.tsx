@@ -8,13 +8,14 @@ import { ChatViewConstants } from './ChatViewConstants';
 import MessageSelectedMobile from './message/MessageSelectedMobile';
 import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
 import { DialogueProvider } from './DialogueContext';
-import { DialogueApi } from './DialogueApi';
 import { useChatContext } from './core/ChatGlobalContext';
 import { NOOP } from '../utils/NOOP';
+import { ApiRefType } from './core/useInitializeApiRef';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
+  apiRef: React.MutableRefObject<ApiRefType>;
 };
 
 const MessagesRowStyled = styled(Stack)(({ theme }) => ({
@@ -38,8 +39,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent: React.FC<Props> = ({ contentRef }) => {
-  const dialogueRef = React.useRef<DialogueApi | undefined>(undefined);
+const ChatDialogueComponent: React.FC<Props> = ({ contentRef, apiRef }) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { dialogue } = useChatContext();
@@ -47,7 +47,7 @@ const ChatDialogueComponent: React.FC<Props> = ({ contentRef }) => {
   return (
     <DialogueProvider
       dialogue={dialogue}
-      dialogueRef={dialogueRef}
+      apiRef={apiRef}
     >
       <MessagesRowStyled
         justifyContent={!!dialogue?.messages.length ? 'stretch' : 'center'}
