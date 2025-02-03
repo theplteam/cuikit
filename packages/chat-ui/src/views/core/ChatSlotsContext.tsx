@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { SlotsType } from './usePropsSlots';
+import { CoreSlots, SlotsType } from './usePropsSlots';
 import { Dialogue } from '../../models/Dialogue';
 import { SlotPropsType } from './SlotPropsType';
 
 type ChatSlotsContextType<D extends Dialogue> = {
   slots: SlotsType<D>;
+  coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<D>>;
 };
 
@@ -12,10 +13,11 @@ const Context = React.createContext<ChatSlotsContextType<any> | undefined>(undef
 
 type ProviderProps<D extends Dialogue> = React.PropsWithChildren<{
   slots: SlotsType<D>;
+  coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<D>>;
 }>;
 
-const ChatSlotsProvider = <D extends Dialogue>({ slots, slotProps, children }: ProviderProps<D>) => {
+const ChatSlotsProvider = <D extends Dialogue>({ slots, coreSlots, slotProps, children }: ProviderProps<D>) => {
   const [value] = React.useState({ slots, slotProps });
   return (
     <Context.Provider value={value as ChatSlotsContextType<D>}>
@@ -34,6 +36,6 @@ const useChatSlots = (): ChatSlotsContextType<Dialogue> => {
   return context;
 };
 
-const useChatCoreSlots = () => useChatSlots().slots.core;
+const useChatCoreSlots = () => useChatSlots().coreSlots;
 
 export { ChatSlotsProvider, useChatSlots, useChatCoreSlots };

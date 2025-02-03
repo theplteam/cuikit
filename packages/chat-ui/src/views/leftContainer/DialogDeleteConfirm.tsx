@@ -6,9 +6,9 @@ import DialogActions from '@mui/material/DialogActions';
 import { ChatModel } from '../../models/ChatModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { lng } from '../../utils/lng';
-import { MdTextUi } from '../../ui/TextUi';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
+import Typography from '@mui/material/Typography';
 
 type Props = {
   chat: ChatModel;
@@ -17,12 +17,8 @@ type Props = {
 const DialogDeleteConfirm: React.FC<Props> = ({ chat }) => {
   const deleteItem = useObserverValue(chat.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
-  const [title, setTitle] = React.useState('');
   const snackbar = useSnackbar();
 
-  React.useEffect(() => {
-    if (deleteItem) setTitle(deleteItem.title);
-  }, [deleteItem]);
   const handleClose = () => {
     chat.actions.deleteItem.value = undefined;
   }
@@ -45,13 +41,9 @@ const DialogDeleteConfirm: React.FC<Props> = ({ chat }) => {
         {lng(['Подтверждение', 'Confirm'])}
       </DialogTitle>
       <DialogContent>
-        <MdTextUi
-          replace={{
-            title,
-        }}
-        >
-          {['Вы уверены, что хотите диалог "{{title}}"?', 'Are you sure you want to delete dialogue "{{title}}"?']}
-        </MdTextUi>
+        <Typography>
+          {['Вы уверены, что хотите диалог?', 'Are you sure you want to delete dialogue?']}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <coreSlots.button

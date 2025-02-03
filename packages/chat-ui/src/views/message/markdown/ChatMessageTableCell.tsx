@@ -2,9 +2,10 @@ import * as React from 'react';
 import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { MdText } from '../../../ui/TextUi';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import { SlotFullPropItem } from '../../../types/SlotFullPropItem';
 
-type Props = {} & TableCellProps;
+type Props = SlotFullPropItem<'textComponent', TypographyProps> & TableCellProps;
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   minWidth: 100,
@@ -14,11 +15,12 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   whiteSpace: 'nowrap',
 }));
 
-const ChatMessageTableCell: React.FC<Props> = ({ children, ...otherProps }) => {
+const ChatMessageTableCell: React.FC<Props> = ({ children, textComponent, textComponentProps, ...otherProps }) => {
+  const comp = { textComponent: textComponent ?? Typography, textComponentProps };
   return (
-    <TableCell {...otherProps} size={'small'}>
+    <TableCell size={'small'} {...otherProps}>
       <BoxStyled>
-        <MdText>{children}</MdText>
+        <comp.textComponent {...comp.textComponentProps}>{children}</comp.textComponent>
       </BoxStyled>
     </TableCell>
   );

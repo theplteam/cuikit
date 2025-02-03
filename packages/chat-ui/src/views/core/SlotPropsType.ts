@@ -1,4 +1,4 @@
-import { Dialogue } from '../../models';
+import { Dialogue, Message } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -10,13 +10,17 @@ import type { TypographyProps } from '@mui/material/Typography';
 import type { MessagePaginationProps } from '../message/actions/MessagePagination';
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
+import { BoxProps } from '@mui/material/Box';
 
 type ChildrenProps = React.PropsWithChildren<{}>;
 
 export type SlotPropsType<D extends Dialogue> = {
   dialogue: ChildrenProps;
   list: ChildrenProps;
+  listSubtitle: TypographyProps;
+  listTimeText: TypographyProps;
   listDriver: ChildrenProps;
+  listDriverTitle: TypographyProps;
   firstMessage: { dialogue: D };
 
   // POPUPS
@@ -28,6 +32,9 @@ export type SlotPropsType<D extends Dialogue> = {
   messagePaginationRoot: StackProps;
   messagePaginationText: TypographyProps;
   messagePaginationButton: IconButtonProps;
+  messageAssistantFooter: any;
+  messageAssistantProgress: BoxProps & { message: Message };
+  messageAssistantProgressText: TypographyProps;
 
   // MARKDOWN
   markdownA: LinkProps;
@@ -36,6 +43,7 @@ export type SlotPropsType<D extends Dialogue> = {
   markdownTbody: TableBodyProps;
   markdownTh: TableCellProps;
   markdownTd: TableCellProps;
+  markdownTdText: TypographyProps;
   markdownTr: TableRowProps;
   markdownSpan: TypographyProps;
   markdownUl: React.OlHTMLAttributes<HTMLOListElement>;
@@ -47,4 +55,5 @@ export type SlotPropsType<D extends Dialogue> = {
   markdownH5: TypographyProps;
   markdownH6: TypographyProps;
   markdownImg: React.JSX.IntrinsicElements['img'];
+  markdownP: TypographyProps;
 };

@@ -5,8 +5,7 @@ import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Scrollbar from './Scrollbar';
-import { MdTextUi } from './TextUi';
-import { useChatCoreSlots } from '../views/core/ChatSlotsContext';
+import { useChatSlots } from '../views/core/ChatSlotsContext';
 import { materialDesignSysPalette } from '../utils/materialDesign/palette';
 
 type Props = React.PropsWithChildren<{
@@ -27,7 +26,7 @@ const DrawerStyled = styled(Drawer)(({ theme }) => ({
 
 const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar, keepMounted }) => {
   const container = React.useRef<HTMLDivElement | null>(null);
-  const coreSlots = useChatCoreSlots();
+  const { slots, slotProps, coreSlots } = useChatSlots();
 
   const height = 500;
   return (
@@ -48,9 +47,9 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
               <CloseIcon />
             </coreSlots.iconButton>
             {!!title && (
-              <MdTextUi m3typography={'title.large'} color={'onBackground'}>
+              <slots.listDriverTitle variant={'subtitle1'} {...slotProps.listDriverTitle}>
                 {title}
-              </MdTextUi>
+              </slots.listDriverTitle>
             )}
           </Stack>
           {!!disableCustomScrollbar && children}

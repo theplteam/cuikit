@@ -2,9 +2,9 @@ import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { QuestionTemplateType } from './useQuestionTemplates';
-import { MdText } from '../../ui/TextUi';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
+import Typography from '@mui/material/Typography';
 
 type Props = {
   item: QuestionTemplateType;
@@ -36,9 +36,9 @@ const QuestionItem: React.FC<Props> = ({ item, onClick }) => {
       onClick={() => onClick(item.message)}
       elevation={0}
     >
-      <MdText>
+      <Typography>
         {item.title}
-      </MdText>
+      </Typography>
     </PaperStyled>
   );
 }

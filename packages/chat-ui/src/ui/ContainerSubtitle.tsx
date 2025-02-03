@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { MdTextUi } from './TextUi';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
-type Props = React.PropsWithChildren;
+type Props = TypographyProps;
 
 const ContainerSubtitle: React.FC<Props> = ({ children }) => {
   return (
-    <MdTextUi m3typography={'title.medium'} m3color={'onSurfaceVariant'}>
+    <Typography variant={'subtitle1'}>
       {children}
-    </MdTextUi>
+    </Typography>
   );
 }
 

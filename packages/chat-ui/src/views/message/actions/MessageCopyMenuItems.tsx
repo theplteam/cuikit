@@ -2,8 +2,8 @@ import * as React from 'react';
 import CodeIcon from '@mui/icons-material/Code';
 import HtmlIcon from '@mui/icons-material/Html';
 import { messageToHtml } from './messageToHtml';
-import MdMenuItem from '../../../ui/menu/MdMenuItem';
 import { useSnackbar } from '../../hooks/useSnackbar';
+import { useChatSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   handleClose: () => void;
@@ -12,6 +12,7 @@ type Props = {
 };
 
 const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => {
+  const { coreSlots } = useChatSlots();
   const snackbar = useSnackbar();
   const handleCopyMarkdown = () => {
     navigator.clipboard.writeText(text)
@@ -28,18 +29,18 @@ const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => 
 
   return (
     <>
-      <MdMenuItem
+      <coreSlots.menuItem
         startIcon={CodeIcon}
         onClick={handleCopyMarkdown}
       >
         {short ? 'Markdown' : ['Копировать Markdown', 'Copy Markdown']}
-      </MdMenuItem>
-      <MdMenuItem
+      </coreSlots.menuItem>
+      <coreSlots.menuItem
         startIcon={HtmlIcon}
         onClick={handleCopyHTML}
       >
         {short ? 'HTML' : ['Копировать HTML', 'Copy HTML']}
-      </MdMenuItem>
+      </coreSlots.menuItem>
     </>
   );
 }

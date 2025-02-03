@@ -3,8 +3,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { MessagesModeType } from '../../hooks/useMessagesMode';
 import { Message } from '../../../../models/Message';
-import MdMenuItem from '../../../../ui/menu/MdMenuItem';
 import { useSnackbar } from '../../../hooks/useSnackbar';
+import { useChatSlots } from '../../../core/ChatSlotsContext';
 
 type Props = {
   message: Message;
@@ -13,6 +13,7 @@ type Props = {
 };
 
 const MessageMobileUserActions: React.FC<Props> = ({ message, modeManager, onClose }) => {
+  const { coreSlots } = useChatSlots();
   const snackbar = useSnackbar();
   const handleCopy = () => {
     navigator.clipboard.writeText(message.text)
@@ -22,13 +23,13 @@ const MessageMobileUserActions: React.FC<Props> = ({ message, modeManager, onClo
 
   return (
     <>
-      <MdMenuItem
+      <coreSlots.menuItem
         startIcon={ContentCopyIcon}
         onClick={handleCopy}
       >
         {['Копировать', 'Copy']}
-      </MdMenuItem>
-      <MdMenuItem
+      </coreSlots.menuItem>
+      <coreSlots.menuItem
         startIcon={EditIcon}
         onClick={() => {
           modeManager.edit(message.id);
@@ -36,7 +37,7 @@ const MessageMobileUserActions: React.FC<Props> = ({ message, modeManager, onClo
         }}
       >
         {['Редактировать', 'Edit']}
-      </MdMenuItem>
+      </coreSlots.menuItem>
     </>
   );
 }

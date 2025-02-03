@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatMessageContainer from './ChatMessageContainer';
-import ChatMessageAssistantProgress from './ChatMessageAssistantProgress';
 import { randomId } from '../../utils/numberUtils/randomInt';
 import { ChatViewConstants } from '../ChatViewConstants';
 import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
@@ -15,8 +14,8 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';
 import PhotoSwipeLightbox from '../photoswipe/PhotoSwipeLightbox';
-import { MdTextUi } from '../../ui/TextUi';
 import { motion } from '../../utils/materialDesign/motion';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   message: Message;
@@ -55,6 +54,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const text = useObserverValue(message.observableText);
   const typing = useObserverValue(message.typing);
   const containerId = React.useState('pswp-chat-gallery' + randomId())[0];
+  const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
     if (typing) return NOOP;
@@ -90,7 +90,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
       elevation={elevation}
     >
       {blockText}
-      <ChatMessageAssistantProgress message={message} />
+      <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} message={message} />
       {(!typing && !!text && enableAssistantActions) && (
         <MessageActionsAssistant
           message={message}
@@ -98,7 +98,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           className={actionsClassName}
         />
       )}
-      {!!message.messageFilters && <MdTextUi variant={'body.small'} style={{ wordWrap: 'break-word' }}>{message.messageFilters}</MdTextUi>}
+      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} />
     </ChatMessageContainerStyled>
   );
 };

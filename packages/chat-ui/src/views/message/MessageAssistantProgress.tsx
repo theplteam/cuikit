@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import Box, { type BoxProps } from '@mui/material/Box';
 import { Message, StreamResponseState } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { MdTextUi } from '../../ui/TextUi';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   message: Message;
-};
+} & BoxProps;
 
 const palette = materialDesignSysPalette;
 
@@ -69,8 +69,9 @@ const steps = {
   [StreamResponseState.PREPARING_ANSWER]: ['Подготовка ответа...', 'Preparing an answer...'],
 };
 
-const ChatMessageAssistantProgress: React.FC<Props> = ({ message }) => {
+const MessageAssistantProgress: React.FC<Props> = ({ message }) => {
   const state = useObserverValue(message.streamState);
+  const { slots, slotProps } = useChatSlots();
   let text = state ? steps[state as keyof typeof steps] ?? '' : '';
 
   /*if (state === StreamResponseState.ANALYZING_DATASET && message.streamCurrentHeader) {
@@ -81,11 +82,14 @@ const ChatMessageAssistantProgress: React.FC<Props> = ({ message }) => {
 
   return (
     <BoxStyled>
-      <MdTextUi m3typography={'body.mediumArticle'}>
+      <slots.messageAssistantProgressText
+        variant="body2"
+        {...slotProps.messageAssistantProgressText}
+      >
         {text}
-      </MdTextUi>
+      </slots.messageAssistantProgressText>
     </BoxStyled>
   );
 };
 
-export default ChatMessageAssistantProgress;
+export default MessageAssistantProgress;

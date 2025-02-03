@@ -5,22 +5,23 @@ import Box from '@mui/material/Box';
 import ChatDialoguesListBlock from './ChatDialoguesListBlock';
 import { useChatModel } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
-import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import Scrollbar from '../../ui/Scrollbar';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {};
 
 const DialoguesList: React.FC<Props> = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
   const chat = useChatModel();
+  const { slotProps, slots } = useChatSlots();
 
   return (
     <Stack gap={2} height={'100%'}>
       <NewChatButton chat={chat} />
       <Box mx={2} mb={0.5}>
-        <ContainerSubtitle>
+        <slots.listSubtitle {...slotProps.listSubtitle}>
           {['История', 'History']}
-        </ContainerSubtitle>
+        </slots.listSubtitle>
       </Box>
       <Box flex={1} ref={ref}>
         {!!height && (

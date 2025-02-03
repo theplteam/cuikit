@@ -3,14 +3,15 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import { ListGroupType } from './useDialogueGroupedList';
-import { MdTextUi } from '../../ui/TextUi';
 import { materialTheme } from '../../utils/materialDesign/materialTheme';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import { SlotFullPropItem } from '../../types/SlotFullPropItem';
 
 type Props = {
   group?: ListGroupType;
   loading?: boolean;
-};
+} & SlotFullPropItem<'textComponent', TypographyProps>;
 
 const SkeletonStyled = styled(Skeleton)(({ theme }) => ({
   ...materialTheme.title.small,
@@ -29,7 +30,8 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   }
 }));
 
-const TimeGroupItem: React.FC<Props> = ({ group, loading }) => {
+const TimeGroupItem: React.FC<Props> = ({ group, loading, textComponent, textComponentProps }) => {
+  const comp = { textComponent: textComponent ?? Typography };
   return (
     <BoxStyled>
       {loading
@@ -37,11 +39,12 @@ const TimeGroupItem: React.FC<Props> = ({ group, loading }) => {
           <SkeletonStyled variant={'text'} width={100} />
         )
         : (
-          <MdTextUi
-            m3typography={'title.small'}
+          <comp.textComponent
+            variant={'body2'}
+            {...textComponentProps}
           >
             {group?.label}
-          </MdTextUi>
+          </comp.textComponent>
           )}
     </BoxStyled>
   );

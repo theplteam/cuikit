@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Markdown from 'markdown-to-jsx';
 import { useProcessAssistantText } from '../../hooks/useProcessAssistantText';
-import { MdText } from '../../../ui/TextUi';
 import { useChatSlots } from '../../core/ChatSlotsContext';
+import { TypographyProps } from '@mui/material/Typography';
 
 type Props = {
   text: string;
@@ -38,11 +38,19 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
           },
           th: {
             component: slots.markdownTh,
-            props: slotProps.markdownTh,
+            props: {
+              ...slotProps.markdownTh,
+              textComponent: slots.markdownTdText,
+              textComponentProps: slotProps.markdownTdText
+            },
           },
           td: {
             component: slots.markdownTd,
-            props: slotProps.markdownTd,
+            props: {
+              ...slotProps.markdownTd,
+              textComponent: slots.markdownTdText,
+              textComponentProps: slotProps.markdownTdText
+            },
           },
           tr: {
             component: slots.markdownTr,
@@ -88,7 +96,7 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
           //  @see https://github.com/quantizor/markdown-to-jsx/issues/209#issuecomment-417712075
           p: (props: React.JSX.IntrinsicElements['p']) => {
             return React.Children.toArray(props.children).some(child => typeof child === "string") ? (
-              <MdText m3typography={'body.mediumArticle'} {...props} />
+              <slots.markdownP {...slotProps.markdownP} {...props as TypographyProps} />
             ) : (
               <React.Fragment key={props.key} children={props.children} />
             )
