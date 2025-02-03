@@ -14,12 +14,12 @@ import { Dialogue } from '../models/Dialogue';
 
 const Chat = <D extends Dialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
   const props = useChatProps(usersProps);
-  const { slots } = usePropsSlots<D>(usersProps.slots);
+  const { slots, slotProps } = usePropsSlots<D>(usersProps.slots);
 
   return (
     <>
       <ChatGlobalProvider props={props}>
-        <ChatSlotsProvider props={slots}>
+        <ChatSlotsProvider slots={slots} slotProps={slotProps}>
           <slots.listDriver>
             <HiddenDesktop>
               <ChatAppDriver>

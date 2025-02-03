@@ -5,14 +5,14 @@ import { SlotPropsType } from './SlotPropsType';
 
 type ChatSlotsContextType<D extends Dialogue> = {
   slots: SlotsType<D>;
-  slotProps: SlotPropsType<D>;
+  slotProps: Partial<SlotPropsType<D>>;
 };
 
 const Context = React.createContext<ChatSlotsContextType<any> | undefined>(undefined);
 
 type ProviderProps<D extends Dialogue> = React.PropsWithChildren<{
   slots: SlotsType<D>;
-  slotProps: SlotPropsType<D>;
+  slotProps: Partial<SlotPropsType<D>>;
 }>;
 
 const ChatSlotsProvider = <D extends Dialogue>({ slots, slotProps, children }: ProviderProps<D>) => {
