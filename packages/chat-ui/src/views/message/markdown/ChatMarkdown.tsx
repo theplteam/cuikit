@@ -1,73 +1,89 @@
 import * as React from 'react';
 import Markdown from 'markdown-to-jsx';
-import Link from '@mui/material/Link';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import ChatMessageTable from './ChatMessageTable';
-import { ChatMessageUl, ChatMessageOl } from './ChatMessageUl';
-import ChatMessageTableCell from './ChatMessageTableCell';
-import ChatMessageImage from './ChatMessageImage';
 import { useProcessAssistantText } from '../../hooks/useProcessAssistantText';
-import { TypographyKeys } from '../../../utils/materialDesign/materialTheme';
-import { MdText, MdTextUi } from '../../../ui/TextUi';
+import { MdText } from '../../../ui/TextUi';
+import { useChatSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   text: string;
 };
 
-const typographyGap: Partial<Record<TypographyKeys, number>> = {
-  'headline.small': 30,
-  'title.large': 28,
-  'title.medium': 26,
-};
-
 const ChatMarkdown: React.FC<Props> = ({ text }) => {
-
+  const { slots, slotProps } = useChatSlots();
   text = useProcessAssistantText(text);
 
-  const getHeader = (m3typography: TypographyKeys) => ({
-    component: MdTextUi,
-    props: {
-      m3typography,
-      style: {
-        marginTop: `${(typographyGap[m3typography] ?? 16) - 16}px`,
-      },
-    },
-  } as const);
 
   return (
     <Markdown
       options={{
         overrides: {
           a: {
-            component: Link,
+            component: slots.markdownA,
             props: {
               color: 'secondary',
               underline: 'none',
             },
           },
-          table: ChatMessageTable,
-          thead: TableHead,
-          tbody: TableBody,
-          th: ChatMessageTableCell,
-          td: ChatMessageTableCell,
-          tr: TableRow,
-          span: {
-            component: MdText,
-            props: {
-              m3typography: 'body.mediumArticle'
-            },
+          table: {
+            component: slots.markdownTable,
+            props: slotProps.markdownTable,
           },
-          ul: ChatMessageUl,
-          ol: ChatMessageOl,
-          h1: getHeader('headline.small'),
-          h2: getHeader('title.large'),
-          h3: getHeader('title.medium'),
-          h4: getHeader('title.small'),
-          h5: getHeader('body.large'),
-          h6: getHeader('body.medium'),
-          img: ChatMessageImage,
+          thead: {
+            component: slots.markdownThead,
+            props: slotProps.markdownThead,
+          },
+          tbody: {
+            component: slots.markdownTbody,
+            props: slotProps.markdownTbody,
+          },
+          th: {
+            component: slots.markdownTh,
+            props: slotProps.markdownTh,
+          },
+          td: {
+            component: slots.markdownTd,
+            props: slotProps.markdownTd,
+          },
+          tr: {
+            component: slots.markdownTr,
+            props: slotProps.markdownTr,
+          },
+          ul: {
+            component: slots.markdownUl,
+            props: slotProps.markdownUl,
+          },
+          ol: {
+            component: slots.markdownOl,
+            props: slotProps.markdownOl,
+          },
+          h1: {
+            component: slots.markdownH1,
+            props: slotProps.markdownH1,
+          },
+          h2: {
+            component: slots.markdownH2,
+            props: slotProps.markdownH2,
+          },
+          h3: {
+            component: slots.markdownH3,
+            props: slotProps.markdownH3,
+          },
+          h4: {
+            component: slots.markdownH4,
+            props: slotProps.markdownH4,
+          },
+          h5: {
+            component: slots.markdownH5,
+            props: slotProps.markdownH5,
+          },
+          h6: {
+            component: slots.markdownH6,
+            props: slotProps.markdownH6,
+          },
+          img: {
+            component: slots.markdownImg,
+            props: slotProps.markdownImg,
+          },
           // TODO: картинки оборачивается в тег <p>, это не баг и фиксить не будут
           //  @see https://github.com/quantizor/markdown-to-jsx/issues/209#issuecomment-417712075
           p: (props: React.JSX.IntrinsicElements['p']) => {

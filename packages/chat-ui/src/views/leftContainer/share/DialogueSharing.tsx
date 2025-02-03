@@ -18,7 +18,7 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
   const [dialogueEditable, setDialogue] = React.useState<Dialogue | undefined>();
   const shareItem = useObserverValue(chat.actions.shareItem);
   const tariffsRef = React.useRef({ tariffs: [] });
-  const slots = useChatSlots();
+  const { slots } = useChatSlots();
   const snackbar = useSnackbar();
 
   const handleClose = () => {

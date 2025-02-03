@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { ChatSlotsType } from './useChatPropsSlots';
+import { CoreSlots, SlotsType } from './usePropsSlots';
 import { Dialogue } from '../../models/Dialogue';
 import { ChatModel, ChatModelProps } from '../../models/ChatModel';
 import { Message } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
+import { SlotPropsType } from './SlotPropsType';
 
 type RequiredProps<D extends Dialogue> = {
   readonly dialogues: readonly D[];
@@ -25,7 +26,9 @@ export type ChatPropsTypes<D extends Dialogue> = {
 // что передает пользователь
 export type ChatUsersProps<D extends Dialogue> = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
-  slots?: Partial<ChatSlotsType<D>>;
+  slots?: Partial<Omit<SlotsType<D>, 'core'>>;
+  coreSlots?: Partial<CoreSlots>;
+  slotProps?: Partial<SlotPropsType<D>>;
   lang?: 'en' | 'ru' | LangKeys;
 } & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
 

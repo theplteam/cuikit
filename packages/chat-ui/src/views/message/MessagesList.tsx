@@ -12,7 +12,7 @@ type Props = {
 
 const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
   const messagesLength = messages.length;
-  const slots = useChatSlots();
+  const { slots } = useChatSlots();
 
   return (
     <>
