@@ -16,6 +16,8 @@ import ChatMessageTableCell from '../message/markdown/ChatMessageTableCell';
 import { ChatMessageOl, ChatMessageUl } from '../message/markdown/ChatMessageUl';
 import { SlotPropsType } from './SlotPropsType';
 import ChatMessageImage from '../message/markdown/ChatMessageImage';
+import MessagePagination from '../message/actions/MessagePagination';
+import Stack from '@mui/material/Stack';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -42,39 +44,45 @@ export const usePropsSlots = <D extends Dialogue>(
 ): SlotsReturnType<D> => {
   return {
     slotProps: React.useMemo(() => slotProps ?? {}, [slotProps]),
-    slots: React.useMemo(() => ({
-      firstMessage: slots?.firstMessage ?? MockComponent,
-      dialogue: slots?.dialogue ?? RootMock,
-      list: slots?.list ?? HiddenContent,
-      listDriver: slots?.listDriver ?? React.Fragment,
-      popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
-      popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
-
-      // MARKDOWN
-      markdownA: Link,
-      markdownTable: ChatMessageTable,
-      markdownThead: TableHead,
-      markdownTbody: TableBody,
-      markdownTh: ChatMessageTableCell,
-      markdownTd: ChatMessageTableCell,
-      markdownTr: TableRow,
-      markdownSpan: Typography,
-      markdownUl: ChatMessageUl,
-      markdownOl: ChatMessageOl,
-      markdownH1: Typography,
-      markdownH2: Typography,
-      markdownH3: Typography,
-      markdownH4: Typography,
-      markdownH5: Typography,
-      markdownH6: Typography,
-      markdownImg: ChatMessageImage,
-
-      // CORE
-      core: {
+    slots: React.useMemo(() => {
+      const core: CoreSlots = {
         button: coreSlots?.button ?? Button,
         iconButton: coreSlots?.iconButton ?? IconButton,
         listItemText: coreSlots?.listItemText ?? ListItemText,
-      },
-    }), [slots])
+      };
+
+      return {
+        core,
+        firstMessage: slots?.firstMessage ?? MockComponent,
+        dialogue: slots?.dialogue ?? RootMock,
+        list: slots?.list ?? HiddenContent,
+        listDriver: slots?.listDriver ?? React.Fragment,
+        popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
+        popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
+
+        // MARKDOWN
+        markdownA: slots?.markdownA ?? Link,
+        markdownTable: slots?.markdownTable ?? ChatMessageTable,
+        markdownThead: slots?.markdownThead ?? TableHead,
+        markdownTbody: slots?.markdownTbody ?? TableBody,
+        markdownTh: slots?.markdownTh ?? ChatMessageTableCell,
+        markdownTd: slots?.markdownTd ?? ChatMessageTableCell,
+        markdownTr: slots?.markdownTr ?? TableRow,
+        markdownSpan: slots?.markdownSpan ?? Typography,
+        markdownUl: slots?.markdownUl ?? ChatMessageUl,
+        markdownOl: slots?.markdownOl ?? ChatMessageOl,
+        markdownH1: slots?.markdownH1 ?? Typography,
+        markdownH2: slots?.markdownH2 ?? Typography,
+        markdownH3: slots?.markdownH3 ?? Typography,
+        markdownH4: slots?.markdownH4 ?? Typography,
+        markdownH5: slots?.markdownH5 ?? Typography,
+        markdownH6: slots?.markdownH6 ?? Typography,
+        markdownImg: slots?.markdownImg ?? ChatMessageImage,
+        messagePagination: slots?.messagePagination ?? MessagePagination,
+        messagePaginationRoot: slots?.messagePaginationRoot ?? Stack,
+        messagePaginationButton: slots?.messagePaginationButton ?? core.iconButton,
+        messagePaginationText: slots?.messagePaginationText ?? Typography,
+      }
+    }, [slots])
   };
 }

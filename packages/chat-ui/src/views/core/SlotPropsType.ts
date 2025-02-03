@@ -7,6 +7,9 @@ import type { TableBodyProps } from '@mui/material/TableBody';
 import type { TableCellProps } from '@mui/material/TableCell';
 import type { TableRowProps } from '@mui/material/TableRow';
 import type { TypographyProps } from '@mui/material/Typography';
+import type { MessagePaginationProps } from '../message/actions/MessagePagination';
+import type { IconButtonProps } from '@mui/material/IconButton';
+import type { StackProps } from '@mui/material/Stack';
 
 type ChildrenProps = React.PropsWithChildren<{}>;
 
@@ -19,6 +22,12 @@ export type SlotPropsType<D extends Dialogue> = {
   // POPUPS
   popupsSharingContent: { dialogue: D; tariffsRef: React.RefObject<{ tariffs: number[] }> };
   popupsInfoContent: { dialogue: D; };
+
+  // MESSAGE
+  messagePagination: MessagePaginationProps;
+  messagePaginationRoot: StackProps;
+  messagePaginationText: TypographyProps;
+  messagePaginationButton: IconButtonProps;
 
   // MARKDOWN
   markdownA: LinkProps;
