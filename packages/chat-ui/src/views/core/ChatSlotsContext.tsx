@@ -18,7 +18,7 @@ type ProviderProps<D extends Dialogue> = React.PropsWithChildren<{
 }>;
 
 const ChatSlotsProvider = <D extends Dialogue>({ slots, coreSlots, slotProps, children }: ProviderProps<D>) => {
-  const [value] = React.useState({ slots, slotProps });
+  const [value] = React.useState({ slots, coreSlots, slotProps });
   return (
     <Context.Provider value={value as ChatSlotsContextType<D>}>
       {children}
@@ -30,7 +30,7 @@ const useChatSlots = (): ChatSlotsContextType<Dialogue> => {
   const context = React.useContext(Context);
 
   if (!context) {
-    throw new Error("useMessagesContext must be used within a ChatGlobalProvider");
+    throw new Error("useChatSlots must be used within a ChatSlotsProvider");
   }
 
   return context;

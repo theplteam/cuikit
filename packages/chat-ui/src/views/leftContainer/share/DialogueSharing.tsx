@@ -18,7 +18,7 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
   const [dialogueEditable, setDialogue] = React.useState<Dialogue | undefined>();
   const shareItem = useObserverValue(chat.actions.shareItem);
   const tariffsRef = React.useRef({ tariffs: [] });
-  const { slots } = useChatSlots();
+  const { slots, coreSlots } = useChatSlots();
   const snackbar = useSnackbar();
 
   const handleClose = () => {
@@ -63,17 +63,17 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
         )}
       </DialogContent>
       <DialogActions>
-        <slots.core.button
+        <coreSlots.button
           onClick={handleClose}
         >
           {['Нет', 'No']}
-        </slots.core.button>
-        <slots.core.button
+        </coreSlots.button>
+        <coreSlots.button
           onClick={handleSave}
           color={'primary'}
         >
           {['Применить', 'Apply']}
-        </slots.core.button>
+        </coreSlots.button>
       </DialogActions>
     </Dialog>
   );

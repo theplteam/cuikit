@@ -15,7 +15,7 @@ type Props = {
 
 const DialogueInfoPopup: React.FC<Props> = ({ chat }) => {
   const [dialogue, setDialogue] = React.useState<Dialogue | undefined>();
-  const { slots } = useChatSlots();
+  const { slots, coreSlots } = useChatSlots();
 
   const viewItem = useObserverValue(chat.actions.viewItem);
 
@@ -41,11 +41,11 @@ const DialogueInfoPopup: React.FC<Props> = ({ chat }) => {
         {!!dialogue && <slots.popupsInfoContent dialogue={dialogue} />}
       </DialogContent>
       <DialogActions>
-        <slots.core.button
+        <coreSlots.button
           onClick={handleClose}
         >
           {['Закрыть', 'Close']}
-        </slots.core.button>
+        </coreSlots.button>
       </DialogActions>
     </Dialog>
   );

@@ -21,6 +21,7 @@ const RootStyled = styled(Stack)(({ theme }) => ({
 
 const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled }) => {
   const coreSlots = useChatCoreSlots();
+
   return (
     <RootStyled
       direction={'row'}

@@ -7,7 +7,6 @@ import { useDialogueContext } from '../../DialogueContext';
 import { Message } from '../../../models/Message';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { useChatSlots } from '../../core/ChatSlotsContext';
-import { materialTheme } from '../../../utils/materialDesign/materialTheme';
 
 export type MessagePaginationProps = {
   message: Message;
@@ -63,7 +62,6 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
             <slots.messagePaginationButton
               size={'small'}
               sx={{
-                fontSize: materialTheme.body.medium.fontSize,
                 color: (theme) => theme.palette.grey[600],
               }}
               {...slotProps?.messagePaginationButton}
