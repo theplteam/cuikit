@@ -8,7 +8,7 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { Dialogue } from '../../models/Dialogue';
+import { Dialogue, StreamResponseState } from '../../models/Dialogue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatModel } from '../core/ChatGlobalContext';
@@ -70,6 +70,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
     const messages = dialogueApi.current?.branch.value ?? [];
     if (text && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
+      dialogueApi.current?.setProgressStatus(StreamResponseState.START);
       const createdNew = await dialogue.createIfEmpty();
       if (createdNew) {
         chat.dialogueActions.open(dialogue);
@@ -77,6 +78,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
       dialogue.sendMessage(lastMessage, text)
         .then(() => {
           chat.dialogueActions.touch(dialogue);
+          dialogueApi.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
         });
 
       setText('');

@@ -34,7 +34,7 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
   readonly isEmpty = new ObservableReactValue(false);
 
-  readonly streamState = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
+  readonly streamStatus = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
 
   closeConnection?: () => void;
 

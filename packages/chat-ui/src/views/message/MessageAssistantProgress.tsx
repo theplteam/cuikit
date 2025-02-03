@@ -7,7 +7,7 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { Dialogue, StreamResponseState } from '../../models';
 
 type Props = {
-  dialogue: Dialogue;
+  dialogue: Dialogue | undefined;
 } & BoxProps;
 
 const palette = materialDesignSysPalette;
@@ -54,7 +54,7 @@ const steps: Record<string, string[]> = {
 };
 
 const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
-  const state = useObserverValue(dialogue.streamState) as StreamResponseState | string | undefined;
+  const state = useObserverValue(dialogue?.streamStatus) as StreamResponseState | string | undefined;
   const { slots, slotProps } = useChatSlots();
   const text = (state && steps[state]) ?? state;
 
@@ -63,7 +63,7 @@ const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
   return (
     <BoxStyled>
       <slots.messageAssistantProgressText
-        variant="body2"
+        variant="body1"
         {...slotProps.messageAssistantProgressText}
       >
         {text}

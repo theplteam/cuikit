@@ -35,6 +35,7 @@ export class ChatGptDialogue extends Dialogue<ChatGptDialogueData> {
 
     this._abortController = stream.controller;
 
+    this.streamStatus.value = undefined;
     for await (const chunk of stream) {
       assistantMessage.text += chunk.choices[0].delta.content ?? '';
     }

@@ -1,9 +1,11 @@
 import { StreamSmootherModel } from './StreamSmootherModel';
 import { Message } from '../Message';
 import { StreamSmootherAbstract } from './StreamSmootherAbstract';
+import { Dialogue } from '../Dialogue';
 
 export type MessageStreamManagerOptions = {
   smoother?: boolean | ((message: Message) => StreamSmootherAbstract);
+  clearStatusAfterFirstText?: boolean;
 }
 
 export class MessageStreamManager {
@@ -14,8 +16,9 @@ export class MessageStreamManager {
 
   constructor(
     readonly assistantMessage: Message,
+    readonly dialogue: Dialogue,
     readonly streamParser: (value: string[], assistantMessage: Message) => void,
-    options?: MessageStreamManagerOptions,
+    private options?: MessageStreamManagerOptions,
   ) {
     if (typeof options?.smoother === 'boolean') {
       if (options.smoother !== false) {
@@ -57,6 +60,7 @@ export class MessageStreamManager {
 
         return new ReadableStream({
           start: (controller) => {
+            const statusRemoved = false;
             // The following function handles each data chunk
             const push = () => {
               // "done" is a Boolean and value a "Uint8Array"
@@ -75,7 +79,12 @@ export class MessageStreamManager {
 
                 const jsonStrings = string.match(/data: (.*)/g);
 
-                if (jsonStrings) this.streamParser(jsonStrings, this.assistantMessage);
+                if (jsonStrings) {
+                  if (!statusRemoved && !!this.options?.clearStatusAfterFirstText) {
+                    this.dialogue.streamStatus.value = undefined;
+                  }
+                  this.streamParser(jsonStrings, this.assistantMessage);
+                }
 
                 push();
               });
