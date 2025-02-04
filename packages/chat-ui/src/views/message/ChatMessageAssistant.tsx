@@ -9,7 +9,7 @@ import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
 import { NOOP } from '../../utils/NOOP';
 import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';
@@ -20,7 +20,7 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 type Props = {
   message: Message;
   enableAssistantActions?: boolean;
-  dialogue: Dialogue;
+  dialogue: DialogueAbstract;
   isLatest?: boolean;
   elevation?: boolean;
 };

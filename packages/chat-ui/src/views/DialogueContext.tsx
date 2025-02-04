@@ -3,12 +3,12 @@ import { MobileMessageActionsType, useMobileMessageActions } from './message/hoo
 import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
 import { type DialogueApi, getDialogueMockApi } from './DialogueApi';
 import { getDialogueListeners } from './utils/getDialogueListeners';
-import { Dialogue } from '../models/Dialogue';
+import { DialogueAbstract } from '../models/DialogueAbstract';
 import { useMessageProgressStatus } from './dialogue/useMessageProgressStatus';
 import { ApiRefType } from './core/useInitializeApiRef';
 
 type DialogueContextType = {
-  dialogue: Dialogue | undefined;
+  dialogue: DialogueAbstract | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
   dialogueApi: React.RefObject<DialogueApi>;
@@ -16,7 +16,7 @@ type DialogueContextType = {
 
 type Props = {
   children: React.ReactNode;
-  dialogue: Dialogue | undefined;
+  dialogue: DialogueAbstract | undefined;
   apiRef: React.RefObject<ApiRefType>;
 };
 

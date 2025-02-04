@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { Dialogue } from '../../../models/Dialogue';
+import { DialogueAbstract } from '../../../models/DialogueAbstract';
 import { ChatModel } from '../../../models/ChatModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const DialogueInfoPopup: React.FC<Props> = ({ chat }) => {
-  const [dialogue, setDialogue] = React.useState<Dialogue | undefined>();
+  const [dialogue, setDialogue] = React.useState<DialogueAbstract | undefined>();
   const { slots, coreSlots } = useChatSlots();
 
   const viewItem = useObserverValue(chat.actions.viewItem);

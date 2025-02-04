@@ -1,7 +1,7 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
 import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 import RootMock from '../message/RootMock';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
@@ -33,15 +33,15 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<D extends Dialogue> = { [key in keyof SlotPropsType<D>]: SlotValue<SlotPropsType<D>[key]> };
+export type SlotsType<D extends DialogueAbstract> = { [key in keyof SlotPropsType<D>]: SlotValue<SlotPropsType<D>[key]> };
 
-type SlotsReturnType<D extends Dialogue> = {
+type SlotsReturnType<D extends DialogueAbstract> = {
   slots: SlotsType<D>;
   coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<D>>;
 };
 
-export const usePropsSlots = <D extends Dialogue>(
+export const usePropsSlots = <D extends DialogueAbstract>(
   slots: Partial<SlotsType<D>> | undefined,
   coreSlots: Partial<CoreSlots> | undefined,
   slotProps: Partial<SlotPropsType<D>> | undefined,

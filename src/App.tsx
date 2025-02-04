@@ -27,6 +27,7 @@ function App() {
 
   const testArray = React.useMemo(() => dd.map(v => new ChatGptDialogue(v, openAi)), []);
 
+
   const [dialogue, setDialogue] = React.useState(([...testArray].sort((a,b) => b.timestamp.value - a.timestamp.value))[0]);
 
   const customActions = useCustomAssistantActions();

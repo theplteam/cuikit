@@ -5,9 +5,9 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { ChatModel } from '../../models/ChatModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 
-type Props<D extends Dialogue> = {
+type Props<D extends DialogueAbstract> = {
   chat: ChatModel<D>;
 };
 
@@ -17,7 +17,7 @@ const useDisabled = () => {
   return isEmpty;
 }
 
-export const NewChatIconButton = <D extends Dialogue>({ chat }: Props<D>) => {
+export const NewChatIconButton = <D extends DialogueAbstract>({ chat }: Props<D>) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
   return (
@@ -31,7 +31,7 @@ export const NewChatIconButton = <D extends Dialogue>({ chat }: Props<D>) => {
   );
 };
 
-const NewChatButton = <D extends Dialogue>({ chat }: Props<D>) => {
+const NewChatButton = <D extends DialogueAbstract>({ chat }: Props<D>) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
   return (

@@ -1,4 +1,4 @@
-import { type Dialogue } from '../../models';
+import { type DialogueAbstract } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -14,7 +14,7 @@ import type { BoxProps } from '@mui/material/Box';
 
 type ChildrenProps = React.PropsWithChildren<{}>;
 
-export type SlotPropsType<D extends Dialogue> = {
+export type SlotPropsType<D extends DialogueAbstract> = {
   dialogue: ChildrenProps;
   list: ChildrenProps;
   listSubtitle: TypographyProps;
@@ -33,7 +33,7 @@ export type SlotPropsType<D extends Dialogue> = {
   messagePaginationText: TypographyProps;
   messagePaginationButton: IconButtonProps;
   messageAssistantFooter: { message: any };
-  messageAssistantProgress: BoxProps & { dialogue: Dialogue };
+  messageAssistantProgress: BoxProps & { dialogue: DialogueAbstract };
   messageAssistantProgressText: TypographyProps;
 
   // MARKDOWN

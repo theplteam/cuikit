@@ -4,7 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { ChatModel } from '../../../models/ChatModel';
-import { Dialogue } from '../../../models/Dialogue';
+import { DialogueAbstract } from '../../../models/DialogueAbstract';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
 import { useSnackbar } from '../../hooks/useSnackbar';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const DialogueSharing: React.FC<Props> = ({ chat }) => {
-  const [dialogueEditable, setDialogue] = React.useState<Dialogue | undefined>();
+  const [dialogueEditable, setDialogue] = React.useState<DialogueAbstract | undefined>();
   const shareItem = useObserverValue(chat.actions.shareItem);
   const tariffsRef = React.useRef({ tariffs: [] });
   const { slots, coreSlots } = useChatSlots();

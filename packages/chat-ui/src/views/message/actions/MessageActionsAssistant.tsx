@@ -3,11 +3,11 @@ import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
 import { Message } from '../../../models/Message';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import { Dialogue } from '../../../models/Dialogue';
+import { DialogueAbstract } from '../../../models/DialogueAbstract';
 
 type Props = {
   message: Message;
-  dialogue: Dialogue;
+  dialogue: DialogueAbstract;
   className: string;
 };
 

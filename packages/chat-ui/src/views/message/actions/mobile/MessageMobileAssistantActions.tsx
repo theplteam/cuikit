@@ -1,11 +1,11 @@
 import * as React from 'react';
 import MessageCopyMenuItems from '../MessageCopyMenuItems';
 import { Message } from '../../../../models/Message';
-import { Dialogue } from '../../../../models/Dialogue';
+import { DialogueAbstract } from '../../../../models/DialogueAbstract';
 
 type Props = {
   message: Message;
-  dialogue: Dialogue;
+  dialogue: DialogueAbstract;
   onClose: () => void;
 };
 

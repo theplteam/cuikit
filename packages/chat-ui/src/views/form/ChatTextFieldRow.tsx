@@ -8,13 +8,13 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { Dialogue, StreamResponseState } from '../../models/Dialogue';
+import { DialogueAbstract, StreamResponseState } from '../../models/DialogueAbstract';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatModel } from '../core/ChatGlobalContext';
 
 type Props = {
-  dialogue?: Dialogue;
+  dialogue?: DialogueAbstract;
   scroller: {
     handleBottomScroll?: () => void;
   };

@@ -4,11 +4,11 @@ import ChatMessageAssistant from './ChatMessageAssistant';
 import { ChatViewConstants } from '../ChatViewConstants';
 import Box from '@mui/material/Box';
 import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 
 type Props = {
   message: Message;
-  dialogue: Dialogue;
+  dialogue: DialogueAbstract;
   isLatest?: boolean;
   isFirst?: boolean;
   enableAssistantActions?: boolean;

@@ -1,7 +1,7 @@
 import { StreamSmootherModel } from './StreamSmootherModel';
 import { Message } from '../Message';
 import { StreamSmootherAbstract } from './StreamSmootherAbstract';
-import { Dialogue } from '../Dialogue';
+import { DialogueAbstract } from '../DialogueAbstract';
 
 export type MessageStreamManagerOptions = {
   smoother?: boolean | ((message: Message) => StreamSmootherAbstract);
@@ -16,7 +16,7 @@ export class MessageStreamManager {
 
   constructor(
     readonly assistantMessage: Message,
-    readonly dialogue: Dialogue,
+    readonly dialogue: DialogueAbstract,
     readonly streamParser: (value: string[], assistantMessage: Message) => void,
     private options?: MessageStreamManagerOptions,
   ) {

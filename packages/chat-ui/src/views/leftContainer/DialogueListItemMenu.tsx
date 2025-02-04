@@ -3,7 +3,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { ChatModel } from '../../models/ChatModel';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 
@@ -11,7 +11,7 @@ type Props = {
   anchorEl: null | HTMLElement;
   handleClose: () => void;
   chat: ChatModel;
-  dialogue: Dialogue;
+  dialogue: DialogueAbstract;
 };
 
 const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, chat, dialogue }) => {

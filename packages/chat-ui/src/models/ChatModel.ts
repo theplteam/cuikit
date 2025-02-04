@@ -1,4 +1,4 @@
-import { Dialogue } from './Dialogue';
+import { DialogueAbstract } from './DialogueAbstract';
 import { ChatActions } from './ChatActions';
 import { PartialExcept } from './types';
 
@@ -8,7 +8,7 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-type Props<D extends Dialogue> = {
+type Props<D extends DialogueAbstract> = {
   openNew: () => void;
   delete: (dialogue: D) => void;
   open: (dialogue: D) => void;
@@ -16,9 +16,9 @@ type Props<D extends Dialogue> = {
   edit?: (newData: PartialExcept<D['data']['data'], 'id'>, dialogue: D) => any,
 };
 
-export type ChatModelProps<D extends Dialogue> = Partial<Props<D>>;
+export type ChatModelProps<D extends DialogueAbstract> = Partial<Props<D>>;
 
-export class ChatModel<D extends Dialogue = Dialogue> {
+export class ChatModel<D extends DialogueAbstract = DialogueAbstract> {
   readonly dialogueActions: Props<D>;
 
   readonly actions = new ChatActions();

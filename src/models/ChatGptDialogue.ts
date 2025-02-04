@@ -1,4 +1,4 @@
-import { Dialogue } from '../../packages/chat-ui/src/models/Dialogue.ts';
+import { DialogueAbstract } from '../../packages/chat-ui/src/models/DialogueAbstract.ts';
 import { Message } from '../../packages/chat-ui/src/models/Message.ts';
 import { DDialogue } from '../../packages/chat-ui/src/models/DialogueData.ts';
 import OpenAI from 'openai';
@@ -7,7 +7,7 @@ export type ChatGptDialogueData = {
   variable?: number;
 } & DDialogue;
 
-export class ChatGptDialogue extends Dialogue<ChatGptDialogueData> {
+export class ChatGptDialogue extends DialogueAbstract<ChatGptDialogueData> {
   private _abortController?: AbortController;
 
   constructor(data: ChatGptDialogueData, private _instance: OpenAI) {

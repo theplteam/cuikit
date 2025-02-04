@@ -2,12 +2,12 @@ import * as React from 'react';
 import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {
   messages: Message[];
-  dialogue: Dialogue;
+  dialogue: DialogueAbstract;
 };
 
 const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {

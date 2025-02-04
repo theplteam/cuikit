@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Dialogue } from '../../models';
+import { DialogueAbstract } from '../../models';
 
-export const useMessageProgressStatus = (dialogue: Dialogue | undefined) => {
+export const useMessageProgressStatus = (dialogue: DialogueAbstract | undefined) => {
   return React.useCallback((status: string) => {
     if (dialogue) {
       dialogue.streamStatus.value = status;

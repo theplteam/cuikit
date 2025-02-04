@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useChatScrollFunctions } from './useChatScrollFunctions';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 
 export const useChatScroller = (
-  dialogue: Dialogue | undefined,
+  dialogue: DialogueAbstract | undefined,
   contentRef: React.RefObject<HTMLDivElement | null> | undefined
 ) => {
   const { handleBottomScroll, scrollButtonEnabled, isTablet } = useChatScrollFunctions(

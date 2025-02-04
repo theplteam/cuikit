@@ -1,4 +1,5 @@
 export * from './Message';
+export * from './DialogueAbstract';
 export * from './Dialogue';
 export * from './DialogueData';
 export * from './ChatModel';

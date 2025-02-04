@@ -2,9 +2,9 @@ import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
 import { ArrayType } from '../../models/types';
 import { ChatModel } from '../../models/ChatModel';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 
-type ChatGlobalContextType<D extends Dialogue> = {
+type ChatGlobalContextType<D extends DialogueAbstract> = {
   model: ChatModel<D>;
   dialogue: D | undefined;
   dialogues: ArrayType<D>;
@@ -14,11 +14,11 @@ type ChatGlobalContextType<D extends Dialogue> = {
   proccessAssistantText: ChatPropsTypes<D>['proccessAssistantText'];
 };
 
-const Context = React.createContext<ChatGlobalContextType<Dialogue> | undefined>(undefined);
+const Context = React.createContext<ChatGlobalContextType<DialogueAbstract> | undefined>(undefined);
 
-type ProviderProps<D extends Dialogue> = React.PropsWithChildren<{ props: ChatPropsTypes<D> }>;
+type ProviderProps<D extends DialogueAbstract> = React.PropsWithChildren<{ props: ChatPropsTypes<D> }>;
 
-const ChatGlobalProvider = <D extends Dialogue>({ props, children }: ProviderProps<D>) => {
+const ChatGlobalProvider = <D extends DialogueAbstract>({ props, children }: ProviderProps<D>) => {
   const model = React.useMemo(() => {
     return props.model ?? (new ChatModel(props.modelProps)).init();
   }, [props.model, props.modelProps]);
@@ -45,7 +45,7 @@ const ChatGlobalProvider = <D extends Dialogue>({ props, children }: ProviderPro
   );
 };
 
-const useChatContext = <D extends Dialogue = Dialogue>(): ChatGlobalContextType<D> => {
+const useChatContext = <D extends DialogueAbstract = DialogueAbstract>(): ChatGlobalContextType<D> => {
   const context = React.useContext(Context);
 
   if (!context) {

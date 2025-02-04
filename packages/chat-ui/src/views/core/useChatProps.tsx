@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueAbstract } from '../../models/DialogueAbstract';
 import { ChatModel, ChatModelProps } from '../../models/ChatModel';
 import { Message } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
@@ -9,14 +9,14 @@ import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useInitializeApiRef';
 
-type RequiredProps<D extends Dialogue> = {
+type RequiredProps<D extends DialogueAbstract> = {
   readonly dialogues: readonly D[];
   dialogue: D | undefined;
   setDialogue: (dialogue: D) => void;
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<D extends Dialogue> = {
+export type ChatPropsTypes<D extends DialogueAbstract> = {
   loading: boolean;
   modelProps?: ChatModelProps<D>;
   model?: ChatModel<D>;
@@ -26,7 +26,7 @@ export type ChatPropsTypes<D extends Dialogue> = {
 } & RequiredProps<D>;
 
 // что передает пользователь
-export type ChatUsersProps<D extends Dialogue> = {
+export type ChatUsersProps<D extends DialogueAbstract> = {
   scrollerRef?: React.RefObject<HTMLDivElement | null>;
   slots?: Partial<Omit<SlotsType<D>, 'core'>>;
   coreSlots?: Partial<CoreSlots>;
@@ -35,7 +35,7 @@ export type ChatUsersProps<D extends Dialogue> = {
   apiRef?: React.MutableRefObject<ApiRefType>;
 } & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<D>>>;
 
-export const useChatProps = <D extends Dialogue> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
+export const useChatProps = <D extends DialogueAbstract> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 
