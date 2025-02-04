@@ -13,7 +13,7 @@ type Props = {
 };
 
 const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
-  const { actionsAssistant } = useChatContext();
+  const { actionsAssistant, disableMessageRating } = useChatContext();
   return (
     <Stack
       direction={'row'}
@@ -21,7 +21,8 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       gap={1.5}
       className={className}
     >
-      <MessageActionCopy message={message} />
+      { }
+      {!disableMessageRating && <MessageActionCopy message={message} />}
       <MessageActionFeedback message={message} />
       {actionsAssistant?.map((component, k) => (
         <component.element

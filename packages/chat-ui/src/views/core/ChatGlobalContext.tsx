@@ -12,6 +12,7 @@ type ChatGlobalContextType<D extends Dialogue> = {
   loading: boolean;
   actionsAssistant: { element: Exclude<ChatPropsTypes<D>['assistantActions'], undefined>[number] }[];
   proccessAssistantText: ChatPropsTypes<D>['proccessAssistantText'];
+  disableMessageRating?: boolean;
 };
 
 const Context = React.createContext<ChatGlobalContextType<Dialogue> | undefined>(undefined);
