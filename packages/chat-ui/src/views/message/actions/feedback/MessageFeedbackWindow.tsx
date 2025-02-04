@@ -70,9 +70,14 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
       }}
     >
       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-        <Typography variant='subtitle1'>
-          {lng(['Почему вы выбрали этот рейтинг? (опционально)', 'Why did you choose this rating? (optional)'])}
-        </Typography>
+        <Box display={'flex'} gap={1} flexDirection={'row'} alignItems={'center'}>
+          <Typography variant='subtitle1'>
+            {lng(['Почему вы выбрали этот рейтинг? ', 'Why did you choose this rating? '])}
+          </Typography>
+          <Typography variant='body2'>
+            {lng(['(опционально)', '(optional)'])}
+          </Typography>
+        </Box>
         <coreSlots.iconButton size='small' onClick={handelClose}>
           <CloseIcon />
         </coreSlots.iconButton>
@@ -103,6 +108,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
           setText(event.target.value);
         }}
         multiline
+        maxRows={3}
         sx={{
           padding: '8px 8px',
           borderRadius: 2,
@@ -114,8 +120,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
         <Link target='_blank' href=''>
           {lng(['Узнайте больше', 'Learn more'])}
         </Link>
-        {' '}
-        {lng(['Открывается в новом окне, как ваши отзывы используются для улучшения Chat UI. ', 'Opens in a new window about how your feedback is used to improve Chat UI.'])}
+        {lng([' Открывается в новом окне, как ваши отзывы используются для улучшения Chat UI. ', ' Opens in a new window about how your feedback is used to improve Chat UI.'])}
       </Typography>
       <Box>
         <coreSlots.button
