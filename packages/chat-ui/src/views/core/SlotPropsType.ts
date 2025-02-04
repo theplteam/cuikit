@@ -32,11 +32,12 @@ export type SlotPropsType<D extends Dialogue> = {
   messagePaginationRoot: StackProps;
   messagePaginationText: TypographyProps;
   messagePaginationButton: IconButtonProps;
-  messageAssistantFooter: any;
+  messageAssistantFooter: { message: any };
   messageAssistantProgress: BoxProps & { dialogue: Dialogue };
   messageAssistantProgressText: TypographyProps;
 
   // MARKDOWN
+  markdown: { text: string };
   markdownA: LinkProps;
   markdownTable: TableProps;
   markdownThead: TableHeadProps;

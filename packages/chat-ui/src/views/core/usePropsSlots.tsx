@@ -21,6 +21,7 @@ import Stack from '@mui/material/Stack';
 import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
+import ChatMarkdown from '../message/markdown/ChatMarkdown';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -41,9 +42,9 @@ type SlotsReturnType<D extends Dialogue> = {
 };
 
 export const usePropsSlots = <D extends Dialogue>(
-  slots?: Partial<SlotsType<D>>,
-  coreSlots?: Partial<CoreSlots>,
-  slotProps?: Partial<SlotPropsType<D>>
+  slots: Partial<SlotsType<D>> | undefined,
+  coreSlots: Partial<CoreSlots> | undefined,
+  slotProps: Partial<SlotPropsType<D>> | undefined,
 ): SlotsReturnType<D> => {
   const res = React.useMemo(() => {
     const core: CoreSlots = {
@@ -65,6 +66,7 @@ export const usePropsSlots = <D extends Dialogue>(
       popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
 
       // MARKDOWN
+      markdown: slots?.markdown ?? ChatMarkdown,
       markdownA: slots?.markdownA ?? Link,
       markdownTable: slots?.markdownTable ?? ChatMessageTable,
       markdownThead: slots?.markdownThead ?? TableHead,
@@ -88,7 +90,7 @@ export const usePropsSlots = <D extends Dialogue>(
       messagePaginationRoot: slots?.messagePaginationRoot ?? Stack,
       messagePaginationButton: slots?.messagePaginationButton ?? core.iconButton,
       messagePaginationText: slots?.messagePaginationText ?? Typography,
-      messageAssistantFooter: slots?.messageAssistantFooter ?? React.Fragment,
+      messageAssistantFooter: slots?.messageAssistantFooter ?? MockComponent,
       messageAssistantProgress: slots?.messageAssistantProgress ?? MessageAssistantProgress,
       messageAssistantProgressText: slots?.messageAssistantProgressText ?? Typography,
     }

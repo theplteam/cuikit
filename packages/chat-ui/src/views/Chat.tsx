@@ -16,7 +16,7 @@ import { useInitializeApiRef } from './core/useInitializeApiRef';
 const Chat = <D extends Dialogue>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
   const apiRef = useInitializeApiRef(usersProps.apiRef);
   const props = useChatProps(usersProps);
-  const { slots, slotProps, coreSlots } = usePropsSlots<D>(usersProps.slots);
+  const { slots, slotProps, coreSlots } = usePropsSlots<D>(usersProps.slots, usersProps.coreSlots, usersProps.slotProps);
 
   return (
     <>

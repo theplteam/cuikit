@@ -12,7 +12,6 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
   const { slots, slotProps } = useChatSlots();
   text = useProcessAssistantText(text);
 
-
   return (
     <Markdown
       options={{

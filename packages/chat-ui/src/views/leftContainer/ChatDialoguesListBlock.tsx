@@ -10,11 +10,13 @@ import DialogueListItem from './DialogueListItem';
 import { useDialogueGroupedList } from './useDialogueGroupedList';
 import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {};
 
 const ChatDialoguesListBlock: React.FC<Props> = () => {
   const { loading, model: chat, dialogues, dialogue: currentDialogue, setDialogue } = useChatContext();
+  const { slots, slotProps } = useChatSlots();
   const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(dialogues);
   return (
     <>
@@ -28,6 +30,8 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
                 <TimeGroupItem
                   group={group}
                   key={group.id}
+                  textComponent={slots.listTimeText}
+                  textComponentProps={slotProps.listTimeText}
                 />
                 {dialoguesInGroup.map(({ groupKey, dialogue }) => {
                   if (groupKey !== group.id) return null;

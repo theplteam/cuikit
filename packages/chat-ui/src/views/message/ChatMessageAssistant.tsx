@@ -98,7 +98,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           className={actionsClassName}
         />
       )}
-      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} />
+      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={message} />
     </ChatMessageContainerStyled>
   );
 };

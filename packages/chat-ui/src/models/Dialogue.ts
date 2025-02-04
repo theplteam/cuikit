@@ -52,10 +52,17 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
   protected abstract stopStreaming: () => void;
 
-  constructor(_data: Data) {
+  protected readonly messageFactory: (data: DMessage) => Message;
+
+  constructor(
+    _data: Data,
+    messageFactory?: (data: DMessage) => Message,
+  ) {
     this.data = new DialogueData(_data);
 
-    const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
+    this.messageFactory = messageFactory ?? ((data) => new Message(data));
+
+    const messages = sortBy(_data.messages.map(v => this.messageFactory(v)), 'time');
 
     this.messages.allMessages.value = messages
       // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
@@ -177,7 +184,7 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
   }
 
   protected _createPair = (text: string, parentMessage: Message | undefined) => {
-    const userMessage = new Message({
+    const userMessage = this.messageFactory({
       id: uuidv4(),
       text,
       owner: ChatMessageOwner.USER,
@@ -186,7 +193,7 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
       parentId: parentMessage?.id,
     });
 
-    const assistantMessage = new Message({
+    const assistantMessage = this.messageFactory({
       id: 'NEW_MESSAGE_' + randomId(),
       text: '',
       owner: ChatMessageOwner.ASSISTANT,
