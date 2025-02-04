@@ -70,10 +70,10 @@ export const usePropsSlots = <D extends Dialogue>(
       popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
 
       //ICON
-      likeOutlinedIcon: slots?.likeOutlinedIcon ?? ThumbUpAltOutlinedIcon,
-      likeFilledIcon: slots?.likeOutlinedIcon ?? ThumbUpAltIcon,
-      dislikeOutlinedIcon: slots?.dislikeOutlinedIcon ?? ThumbDownOutlinedIcon,
-      dislikeFilledIcon: slots?.dislikeOutlinedIcon ?? ThumbDownIcon,
+      messageLikeOutlinedIcon: slots?.messageLikeOutlinedIcon ?? ThumbUpAltOutlinedIcon,
+      messageLikeFilledIcon: slots?.messageLikeFilledIcon ?? ThumbUpAltIcon,
+      messageDislikeOutlinedIcon: slots?.messageDislikeOutlinedIcon ?? ThumbDownOutlinedIcon,
+      messageDislikeFilledIcon: slots?.messageDislikeFilledIcon ?? ThumbDownIcon,
 
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,

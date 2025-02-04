@@ -13,18 +13,18 @@ type Props = {
 export type FeedbackType = 'like' | 'dislike';
 
 const MessageFeedbackButton: React.FC<Props> = ({ type, activeType, onClick, tooltip }) => {
-  const { coreSlots, slots } = useChatSlots();
+  const { coreSlots, slots, slotProps } = useChatSlots();
 
   const isActive = type === activeType;
 
   const icon = {
     like: {
-      active: <slots.likeFilledIcon />,
-      default: <slots.likeOutlinedIcon />,
+      active: <slots.messageLikeFilledIcon {...slotProps.messageLikeFilledIcon} />,
+      default: <slots.messageLikeOutlinedIcon {...slotProps.messageLikeOutlinedIcon} />,
     },
     dislike: {
-      active: <slots.dislikeFilledIcon />,
-      default: <slots.dislikeOutlinedIcon />,
+      active: <slots.messageDislikeFilledIcon {...slotProps.messageDislikeFilledIcon} />,
+      default: <slots.messageDislikeOutlinedIcon {...slotProps.messageDislikeOutlinedIcon} />,
     },
   };
 

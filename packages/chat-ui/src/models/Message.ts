@@ -7,14 +7,17 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 }
 
+export type AppraisalType = 'like' | 'dislike';
+
 export type DMessage = {
   id: IdType;
   text: string;
   owner: ChatMessageOwner;
+  time: number;
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;
-  time: number;
+  appraisal?: AppraisalType;
 }
 
 export class Message {
@@ -39,6 +42,10 @@ export class Message {
 
   set parentId(val: IdType|undefined) {
     this._data.parentId = val;
+  }
+
+  get appraisal() {
+    return this._data.appraisal;
   }
 
   get time() {
@@ -73,6 +80,16 @@ export class Message {
 
   setId = (id: string) => {
     this._data.id = id;
+  }
+
+  setAppraisal = (appraisal: AppraisalType | undefined) => {
+    this._data.appraisal = appraisal;
+    // запрос на сервер
+  }
+
+  sendFeedback = (text: string, tags: string[]) => {
+    console.log(text, tags);
+    // запрос на сервер
   }
 
   /*onError = (code: number) => {

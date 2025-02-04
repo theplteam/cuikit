@@ -10,15 +10,17 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { dislikeFeedbackTags, likeFeedbackTags } from './feedbackTags';
 import Chip from '@mui/material/Chip';
+import { Popover } from '@mui/material';
+import { Message } from '../../../../models/Message';
 
 type Props = {
-  feedback: FeedbackType | undefined;
+  message: Message;
+  anchorEl: HTMLElement | null;
+  onClose: () => void;
 };
 
-export type FeedbackType = 'like' | 'dislike';
-
-const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) => {
+  const { sendFeedback, appraisal } = message;
   const [text, setText] = React.useState('');
   const [tags, setTags] = React.useState<string[]>([]);
 
@@ -29,23 +31,15 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
     setTags([]);
   }
 
-  const handelClose = () => {
-    setIsOpen(false);
-  }
-
   React.useEffect(() => {
-    setIsOpen(!!feedback);
-    handelClear();
-  }, [feedback])
+    if (anchorEl) handelClear();
+  }, [anchorEl])
 
-  if (!isOpen) return null;
-
-  const tagArray = feedback === 'like' ? likeFeedbackTags : dislikeFeedbackTags;
+  const tagArray = appraisal === 'like' ? likeFeedbackTags : dislikeFeedbackTags;
 
   const handleSubmit = () => {
-    console.log('text', text);
-    console.log('tags', tags);
-    handelClose();
+    sendFeedback(text, tags);
+    onClose();
   }
 
   const hangleTag = (tag: string) => {
@@ -57,16 +51,23 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
   }
 
   return (
-    <Stack
-      position={'absolute'}
-      direction={'column'}
-      top={50}
-      padding={2}
-      width={500}
-      borderRadius={2}
-      gap={2}
-      sx={{
-        backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+    <Popover
+      open={Boolean(anchorEl)}
+      onClose={onClose}
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      slotProps={{
+        paper: {
+          sx: {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 2,
+            borderRadius: 2,
+            gap: 2,
+            maxWidth: 500,
+            backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+          }
+        }
       }}
     >
       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
@@ -78,7 +79,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
             {lng(['(опционально)', '(optional)'])}
           </Typography>
         </Box>
-        <coreSlots.iconButton size='small' onClick={handelClose}>
+        <coreSlots.iconButton size='small' onClick={onClose}>
           <CloseIcon />
         </coreSlots.iconButton>
       </Stack>
@@ -110,7 +111,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
         multiline
         maxRows={3}
         sx={{
-          padding: '8px 8px',
+          padding: 1,
           borderRadius: 2,
           border: '1px solid',
           borderColor: materialDesignSysPalette.outline,
@@ -131,7 +132,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ feedback }) => {
           {lng(['Отправить', 'Submit'])}
         </coreSlots.button>
       </Box>
-    </Stack>
+    </Popover>
   );
 }
 

@@ -10,29 +10,39 @@ type Props = {
 };
 
 const MessageActionFeedback: React.FC<Props> = ({ message }) => {
-  const [feedback, setFeedback] = React.useState<FeedbackType | undefined>(undefined);
+  const { setAppraisal, appraisal } = message;
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
 
-  const handleClick = (action: FeedbackType) => {
-    const newValue = feedback === action ? undefined : action;
-    setFeedback(newValue);
-    console.log('ID', message.id);
+  const handleActionClick = (action: FeedbackType) => {
+    const newValue = appraisal === action ? undefined : action;
+    if (newValue) setAnchorEl(ref.current);
+    setAppraisal(newValue);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
   }
 
   return (
-    <Stack gap={1.5} direction={'row'} alignItems={'center'} position={'relative'}>
+    <Stack ref={ref} gap={1.5} direction={'row'} alignItems={'center'} position={'relative'}>
       <MessageFeedbackButton
         tooltip={lng(['Хороший ответ', 'Like message'])}
-        onClick={handleClick}
+        onClick={handleActionClick}
         type="like"
-        activeType={feedback}
+        activeType={appraisal}
       />
       <MessageFeedbackButton
         tooltip={lng(['Плохой ответ', 'Dislike message'])}
-        onClick={handleClick}
+        onClick={handleActionClick}
         type="dislike"
-        activeType={feedback}
+        activeType={appraisal}
       />
-      <MessageFeedbackWindow feedback={feedback} />
+      <MessageFeedbackWindow
+        message={message}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+      />
     </Stack>
   );
 }
