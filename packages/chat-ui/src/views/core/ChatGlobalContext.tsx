@@ -11,6 +11,7 @@ type ChatGlobalContextType<D extends Dialogue> = {
   setDialogue: (dialogue: D) => void;
   loading: boolean;
   actionsAssistant: { element: Exclude<ChatPropsTypes<D>['assistantActions'], undefined>[number] }[];
+  proccessAssistantText: ChatPropsTypes<D>['proccessAssistantText'];
 };
 
 const Context = React.createContext<ChatGlobalContextType<Dialogue> | undefined>(undefined);
@@ -32,6 +33,7 @@ const ChatGlobalProvider = <D extends Dialogue>({ props, children }: ProviderPro
     dialogues: props.dialogues,
     setDialogue: props.setDialogue,
     loading: props.loading,
+    proccessAssistantText: props.proccessAssistantText,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
   }), [model, props.loading, props.dialogue, props.dialogues]);
 

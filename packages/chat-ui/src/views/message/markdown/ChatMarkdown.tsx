@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Markdown from 'markdown-to-jsx';
-import { useProcessAssistantText } from '../../hooks/useProcessAssistantText';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 import { TypographyProps } from '@mui/material/Typography';
+import { useChatContext } from '../../core/ChatGlobalContext';
 
 type Props = {
   text: string;
@@ -10,7 +10,10 @@ type Props = {
 
 const ChatMarkdown: React.FC<Props> = ({ text }) => {
   const { slots, slotProps } = useChatSlots();
-  text = useProcessAssistantText(text);
+  const { proccessAssistantText } = useChatContext();
+  if (proccessAssistantText) {
+    text = proccessAssistantText(text);
+  }
 
   return (
     <Markdown

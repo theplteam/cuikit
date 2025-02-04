@@ -22,6 +22,7 @@ export type ChatPropsTypes<D extends Dialogue> = {
   model?: ChatModel<D>;
   assistantActions?: React.JSXElementConstructor<{ message: Message, dialogue: D }>[];
   userId?: UserIdType;
+  proccessAssistantText?: (text: string) => string;
 } & RequiredProps<D>;
 
 // что передает пользователь
@@ -32,7 +33,7 @@ export type ChatUsersProps<D extends Dialogue> = {
   slotProps?: Partial<SlotPropsType<D>>;
   lang?: 'en' | 'ru' | LangKeys;
   apiRef?: React.MutableRefObject<ApiRefType>;
-} & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | keyof RequiredProps<D>>>;
+} & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<D>>>;
 
 export const useChatProps = <D extends Dialogue> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
   useLangInit(userProps.lang as LangKeys | undefined);
@@ -46,6 +47,7 @@ export const useChatProps = <D extends Dialogue> (userProps: ChatUsersProps<D>):
     model: userProps.model,
     modelProps: userProps.modelProps,
     assistantActions: userProps.assistantActions,
+    proccessAssistantText: userProps.proccessAssistantText,
     // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
-  }), [userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues]);
+  }), [userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues, userProps.proccessAssistantText]);
 }
