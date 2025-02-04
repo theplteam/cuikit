@@ -22,8 +22,8 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       className={className}
     >
       { }
-      {!disableMessageRating && <MessageActionCopy message={message} />}
-      <MessageActionFeedback message={message} />
+      <MessageActionCopy message={message} />
+      {!disableMessageRating && <MessageActionFeedback message={message} />}
       {actionsAssistant?.map((component, k) => (
         <component.element
           dialogue={dialogue}
