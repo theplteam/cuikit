@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { useProcessAssistantText } from '../../../../../../../../topexplorer/src/chat/utils/useProcessAssistantText';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';
@@ -9,6 +8,7 @@ import { usePopoverState } from '../../hooks/usePopoverState';
 import { lng } from '../../../utils/lng';
 import MdMenu from '../../../ui/menu/MdMenu';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
+import { useChatContext } from '../../core/ChatGlobalContext';
 
 
 type Props = {
@@ -16,7 +16,13 @@ type Props = {
 };
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {
-  const text = useProcessAssistantText(message.text);
+  const { proccessAssistantText } = useChatContext();
+
+  let text = message.text;
+
+  if (proccessAssistantText) {
+    text = proccessAssistantText(message.text);
+  }
   const coreSlots = useChatCoreSlots();
 
   const {
