@@ -22,6 +22,8 @@ import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -64,6 +66,10 @@ export const usePropsSlots = <D extends Dialogue>(
       listDriverTitle: slots?.listDriverTitle ?? Typography,
       popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
       popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
+
+      //ICON
+      likeIcon: slots?.likeIcon ?? ThumbUpAltOutlinedIcon,
+      dislikeIcon: slots?.dislikeIcon ?? ThumbDownOutlinedIcon,
 
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,
