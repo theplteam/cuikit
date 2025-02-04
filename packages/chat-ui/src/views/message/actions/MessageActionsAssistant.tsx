@@ -1,11 +1,10 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
+import MessageActionFeedback from './feedback/MessageActionFeedback';
 import { Message } from '../../../models/Message';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import { Dialogue } from '../../../models/Dialogue';
-import MessageActionDislike from './MessageActionDislike';
-import MessageActionLike from './MessageActionLike';
 
 type Props = {
   message: Message;
@@ -23,8 +22,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       className={className}
     >
       <MessageActionCopy message={message} />
-      <MessageActionLike message={message} />
-      <MessageActionDislike message={message} />
+      <MessageActionFeedback message={message} />
       {actionsAssistant?.map((component, k) => (
         <component.element
           dialogue={dialogue}

@@ -24,6 +24,8 @@ import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -68,8 +70,10 @@ export const usePropsSlots = <D extends Dialogue>(
       popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
 
       //ICON
-      likeIcon: slots?.likeIcon ?? ThumbUpAltOutlinedIcon,
-      dislikeIcon: slots?.dislikeIcon ?? ThumbDownOutlinedIcon,
+      likeOutlinedIcon: slots?.likeOutlinedIcon ?? ThumbUpAltOutlinedIcon,
+      likeFilledIcon: slots?.likeOutlinedIcon ?? ThumbUpAltIcon,
+      dislikeOutlinedIcon: slots?.dislikeOutlinedIcon ?? ThumbDownOutlinedIcon,
+      dislikeFilledIcon: slots?.dislikeOutlinedIcon ?? ThumbDownIcon,
 
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,

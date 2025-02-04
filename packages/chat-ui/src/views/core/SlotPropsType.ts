@@ -29,8 +29,10 @@ export type SlotPropsType<D extends Dialogue> = {
   popupsInfoContent: { dialogue: D; };
 
   //ICON
-  likeIcon: SvgIconProps;
-  dislikeIcon: SvgIconProps;
+  likeOutlinedIcon: SvgIconProps;
+  likeFilledIcon: SvgIconProps;
+  dislikeOutlinedIcon: SvgIconProps;
+  dislikeFilledIcon: SvgIconProps;
 
   // MESSAGE
   messagePagination: MessagePaginationProps;
