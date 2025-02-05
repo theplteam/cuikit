@@ -11,7 +11,6 @@ import type { MessagePaginationProps } from '../message/actions/MessagePaginatio
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
-import type { SvgIconProps } from '@mui/material/SvgIcon';
 
 type ChildrenProps = React.PropsWithChildren<{}>;
 
@@ -27,12 +26,6 @@ export type SlotPropsType<D extends Dialogue> = {
   // POPUPS
   popupsSharingContent: { dialogue: D; tariffsRef: React.RefObject<{ tariffs: number[] }> };
   popupsInfoContent: { dialogue: D; };
-
-  //ICON
-  messageLikeOutlinedIcon: SvgIconProps,
-  messageLikeFilledIcon: SvgIconProps,
-  messageDislikeOutlinedIcon: SvgIconProps,
-  messageDislikeFilledIcon: SvgIconProps,
 
   // MESSAGE
   messagePagination: MessagePaginationProps;

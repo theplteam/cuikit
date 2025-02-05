@@ -29,7 +29,6 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
-
 export type CoreSlots = {
   button: SlotValue<ButtonProps>;
   iconButton: SlotValue<IconButtonProps>;
@@ -37,7 +36,16 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<D extends Dialogue> = { [key in keyof SlotPropsType<D>]: SlotValue<SlotPropsType<D>[key]> };
+type SlotWithProps<D extends Dialogue> = { [key in keyof SlotPropsType<D>]: SlotValue<SlotPropsType<D>[key]> };
+
+enum SlotWithoutProps {
+  messageLikeOutlinedIcon = 'messageLikeOutlinedIcon',
+  messageLikeFilledIcon = 'messageLikeFilledIcon',
+  messageDislikeOutlinedIcon = 'messageDislikeOutlinedIcon',
+  messageDislikeFilledIcon = 'messageDislikeFilledIcon',
+}
+
+export type SlotsType<D extends Dialogue> = SlotWithProps<D> & { [key in SlotWithoutProps]: SlotValue };
 
 type SlotsReturnType<D extends Dialogue> = {
   slots: SlotsType<D>;
