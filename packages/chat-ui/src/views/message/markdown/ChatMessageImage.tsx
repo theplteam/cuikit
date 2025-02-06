@@ -6,7 +6,7 @@ import { materialDesignSysPalette } from '../../../utils/materialDesign/palette'
 
 type Props = React.JSX.IntrinsicElements['img'];
 
-const BoxStyled = styled(Box)(({ theme }) => ({
+const BoxStyled = styled(Box)(() => ({
   marginTop: 8,
   width: '100%',
   backgroundColor: materialDesignSysPalette.surfaceBright,

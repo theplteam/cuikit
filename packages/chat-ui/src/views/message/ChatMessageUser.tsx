@@ -97,13 +97,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   if (mode === MessageStateEnum.EDIT) {
     return (
-      <>
-        <MessageUserEditor
-          text={text}
-          onClickApply={onClickApplyEdit}
-          onClickCancel={onClickCancelEdit}
-        />
-      </>
+      <MessageUserEditor
+        text={text}
+        onClickApply={onClickApplyEdit}
+        onClickCancel={onClickCancelEdit}
+      />
     );
   }
 
