@@ -2,11 +2,11 @@ import { NOOP } from '../utils/NOOP';
 import { DialogueAbstract, StreamMessageFnType } from './DialogueAbstract';
 import { DDialogue } from './DialogueData';
 
-export class Dialogue<Data extends DDialogue> extends DialogueAbstract<Data> {
+export class Dialogue extends DialogueAbstract<DDialogue> {
   stopStreaming: () => void
 
   constructor(
-    data: Data,
+    data: DDialogue,
     public streamMessage: StreamMessageFnType,
     stopStreaming?: () => void,
   ) {
