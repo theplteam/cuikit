@@ -32,10 +32,10 @@ const ChatUi = <D extends DialogueAbstract>({ dialogues, handleCreateChat, disab
 
   const currentSlots = React.useMemo(() => ({
     listContainer: slots?.listContainer ?? ListContainer,
-    listContainerPortal: disableList ? undefined : slots?.listContainerPortal ?? ListContainerPortal,
+    listContainerPortal: (disableList || isMobile) ? undefined : slots?.listContainerPortal ?? ListContainerPortal,
     mobileAppBarContainer: slots?.mobileAppBarContainer ?? MobileAppBarContainer,
-    mobileAppBarContainerPortal: disableMobileAppBar ? undefined : slots?.mobileAppBarContainerPortal ?? MobileAppBarContainerPortal,
-  }), [slots, disableList, disableMobileAppBar]);
+    mobileAppBarContainerPortal: (disableMobileAppBar || !isMobile) ? undefined : slots?.mobileAppBarContainerPortal ?? MobileAppBarContainerPortal,
+  }), [slots, disableList, disableMobileAppBar, isMobile]);
 
   return (
     <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'} >
@@ -58,7 +58,7 @@ const ChatUi = <D extends DialogueAbstract>({ dialogues, handleCreateChat, disab
           {...chatProps}
         />
       </Grid>
-      {(isMobile && !disableMobileAppBar) && (
+      {(!disableMobileAppBar && isMobile) && (
         <Grid>
           <currentSlots.mobileAppBarContainer />
         </Grid>
