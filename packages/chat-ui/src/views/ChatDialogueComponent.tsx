@@ -33,7 +33,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   position: 'sticky',
-  bottom: 0,
+  bottom: 5,
   zIndex: 1,
   background: theme.palette.background.paper,
 }));
@@ -50,7 +50,7 @@ const ChatDialogueComponent: React.FC<Props> = ({ contentRef, apiRef }) => {
       apiRef={apiRef}
     >
       <MessagesRowStyled
-        justifyContent={!!dialogue?.messages.length ? 'stretch' : 'center'}
+        justifyContent={dialogue?.messages.length ? 'stretch' : 'center'}
       >
         {!!dialogue && (
           <>

@@ -36,7 +36,7 @@ const DialogueWidthBlockStyled = styled(Box)(({ theme }) => ({
     position: 'absolute',
     top: -50,
     bottom: '0',
-    width: `calc(100% - ${theme.spacing(paddingSidesSx*2)})`,
+    width: `calc(100% - ${theme.spacing(paddingSidesSx * 2)})`,
     height: 100,
     pointerEvents: 'none',
     zIndex: -1,

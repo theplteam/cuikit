@@ -22,6 +22,8 @@ import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
+import DialoguesList from './../leftContainer/DialoguesList';
+import ChatMobileAppBar from './../ChatMobileAppBar';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -57,11 +59,16 @@ export const usePropsSlots = <D extends DialogueAbstract>(
     const componentSlots: SlotsType<D> = {
       firstMessage: slots?.firstMessage ?? MockComponent,
       dialogue: slots?.dialogue ?? RootMock,
-      list: slots?.list ?? HiddenContent,
+      listContainer: slots?.listContainerPortal ?? HiddenContent,
+      listContainerPortal: slots?.listContainerPortal ?? HiddenContent,
+      list: slots?.list ?? DialoguesList,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
       listDriver: slots?.listDriver ?? React.Fragment,
       listDriverTitle: slots?.listDriverTitle ?? Typography,
+      mobileAppBarContainer: slots?.mobileAppBarContainer ?? HiddenContent,
+      mobileAppBarContainerPortal: slots?.mobileAppBarContainerPortal ?? HiddenContent,
+      mobileAppBar: slots?.mobileAppBar ?? ChatMobileAppBar,
       popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
       popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
 

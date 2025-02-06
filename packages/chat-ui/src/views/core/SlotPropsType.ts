@@ -16,12 +16,21 @@ type ChildrenProps = React.PropsWithChildren<{}>;
 
 export type SlotPropsType<D extends DialogueAbstract> = {
   dialogue: ChildrenProps;
+
+  // LIST
+  listContainer: ChildrenProps;
+  listContainerPortal: ChildrenProps;
   list: ChildrenProps;
   listSubtitle: TypographyProps;
   listTimeText: TypographyProps;
   listDriver: ChildrenProps;
   listDriverTitle: TypographyProps;
   firstMessage: { dialogue: D };
+
+  //MOBILE
+  mobileAppBarContainer: ChildrenProps;
+  mobileAppBarContainerPortal: ChildrenProps;
+  mobileAppBar: ChildrenProps;
 
   // POPUPS
   popupsSharingContent: { dialogue: D; tariffsRef: React.RefObject<{ tariffs: number[] }> };

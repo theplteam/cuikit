@@ -7,7 +7,7 @@ const Root: React.FC<Props> = ({ children }) => {
   return (
     <Box
       id={"chatRoot"}
-      width={'100dvw'}
+      width={'100vw'}
       height={'100dvh'}
       position={'relative'}
       display={'flex'}

@@ -1,0 +1,19 @@
+import * as React from 'react';
+import { Portal } from '@mui/base/Portal';
+import Box from '@mui/material/Box';
+
+const containerId = 'chat-ui-list-container';
+
+const ListContainer = () => (
+  <Box width={'100%'} id={containerId} />
+);
+
+const ListContainerPortal = ({ children }: React.PropsWithChildren) => (
+  <Portal container={() => document.getElementById(containerId)}>
+    {children}
+  </Portal>
+);
+
+export { ListContainer, ListContainerPortal };
+
+

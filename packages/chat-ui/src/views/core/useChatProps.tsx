@@ -13,6 +13,7 @@ type RequiredProps<D extends DialogueAbstract> = {
   readonly dialogues: readonly D[];
   dialogue: D | undefined;
   setDialogue: (dialogue: D) => void;
+  licenseKey: string | undefined;
 };
 
 // используется внутри библиотеки
@@ -35,7 +36,7 @@ export type ChatUsersProps<D extends DialogueAbstract> = {
   apiRef?: React.MutableRefObject<ApiRefType>;
 } & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<D>>>;
 
-export const useChatProps = <D extends DialogueAbstract> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
+export const useChatProps = <D extends DialogueAbstract>(userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 
@@ -48,6 +49,7 @@ export const useChatProps = <D extends DialogueAbstract> (userProps: ChatUsersPr
     modelProps: userProps.modelProps,
     assistantActions: userProps.assistantActions,
     proccessAssistantText: userProps.proccessAssistantText,
+    licenseKey: userProps.licenseKey,
     // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
   }), [userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues, userProps.proccessAssistantText]);
 }
