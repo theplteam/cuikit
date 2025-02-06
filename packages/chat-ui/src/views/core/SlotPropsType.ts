@@ -15,12 +15,33 @@ import type { BoxProps } from '@mui/material/Box';
 type ChildrenProps = React.PropsWithChildren<{}>;
 
 export type SlotPropsType<D extends DialogueAbstract> = {
+  /**
+   * Override the full dialogue component
+   */
   dialogue: ChildrenProps;
+  /**
+   * Parent for the dialogues list
+   */
   list: ChildrenProps;
+  /**
+   * Subtitle component for the list container
+   */
   listSubtitle: TypographyProps;
+  /**
+   * Typography component for rendering time text in the dialogues list (today, last week, last 30 days, etc.)
+   */
   listTimeText: TypographyProps;
+  /**
+   * Driver component for the dialogues list (mobile version)
+   */
   listDriver: ChildrenProps;
+  /**
+   * Title for the mobile dialogues list (same as listSubtitle)
+   */
   listDriverTitle: TypographyProps;
+  /**
+   * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
+   */
   firstMessage: { dialogue: D };
 
   // POPUPS
@@ -28,33 +49,114 @@ export type SlotPropsType<D extends DialogueAbstract> = {
   popupsInfoContent: { dialogue: D; };
 
   // MESSAGE
+  /**
+   * Render the pagination block for message branches
+   */
   messagePagination: MessagePaginationProps;
+  /**
+   * Root container for message pagination (branches)
+   */
   messagePaginationRoot: StackProps;
+  /**
+   * Typography component for message pagination (branches)
+   */
   messagePaginationText: TypographyProps;
+  /**
+   * IconButton for arrows
+   */
   messagePaginationButton: IconButtonProps;
+  /**
+   * Render some information under the assistant's message.
+   */
   messageAssistantFooter: { message: any };
+  /**
+   * Render the component while sending a request to the chat or while "thinking."
+   */
   messageAssistantProgress: BoxProps & { dialogue: DialogueAbstract };
+  /**
+   * Typography for the component displayed while sending a request to the chat or while "thinking."
+   */
   messageAssistantProgressText: TypographyProps;
 
   // MARKDOWN
+  /**
+   * Custom markdown renderer
+   */
   markdown: { text: string };
+  /**
+   * Render links
+   */
   markdownA: LinkProps;
+  /**
+   * Render tables (<table>)
+   */
   markdownTable: TableProps;
+  /**
+   * Render table head (<thead>)
+   */
   markdownThead: TableHeadProps;
+  /**
+   * Render table body (<tbody>)
+   */
   markdownTbody: TableBodyProps;
-  markdownTh: TableCellProps;
-  markdownTd: TableCellProps;
-  markdownTdText: TypographyProps;
+  /**
+   * Render table row (<tr>)
+   */
   markdownTr: TableRowProps;
+  /**
+   * Render table head cell (<th>)
+   */
+  markdownTh: TableCellProps;
+  /**
+   * Render table cell (<td>)
+   */
+  markdownTd: TableCellProps;
+  /**
+   * Custom typography for table cells
+   */
+  markdownTdText: TypographyProps;
+  /**
+   * Render spans (<span>)
+   */
   markdownSpan: TypographyProps;
+  /**
+   * Render lists (<ul>)
+   */
   markdownUl: React.OlHTMLAttributes<HTMLOListElement>;
+  /**
+   * Render numeric lists (<ol>)
+   */
   markdownOl: React.HTMLAttributes<HTMLUListElement>;
+  /**
+   * Render headers (<h1>)
+   */
   markdownH1: TypographyProps;
+  /**
+   * Render headers (<h2>)
+   */
   markdownH2: TypographyProps;
+  /**
+   * Render headers (<h3>)
+   */
   markdownH3: TypographyProps;
+  /**
+   * Render headers (<h4>)
+   */
   markdownH4: TypographyProps;
+  /**
+   * Render headers (<h5>)
+   */
   markdownH5: TypographyProps;
+  /**
+   * Render headers (<h6>)
+   */
   markdownH6: TypographyProps;
+  /**
+   * Render images (<img>)
+   */
   markdownImg: React.JSX.IntrinsicElements['img'];
+  /**
+   * Render paragraphs (<p>)
+   */
   markdownP: TypographyProps;
 };

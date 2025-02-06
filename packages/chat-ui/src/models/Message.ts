@@ -18,10 +18,19 @@ export type DMessage = {
 }
 
 export class Message {
+  /**
+   * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
+   */
   readonly observableText = new ObservableReactValue('');
 
+  /**
+   * An observable flag indicating the start/finish of message typing.
+   */
   typing = new ObservableReactValue(false);
 
+  /**
+   * @deprecated
+   */
   messageFilters?: string;
 
   constructor(private _data: DMessage) {

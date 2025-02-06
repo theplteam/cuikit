@@ -9,10 +9,29 @@ const NOOP = (name?: string) => () => {
 }
 
 type Props<D extends DialogueAbstract> = {
+  /**
+   * Open empty dialogue
+   */
   openNew: () => void;
+  /**
+   * Delete selected dialogue
+   * @param dialogue
+   */
   delete: (dialogue: D) => void;
+  /**
+   * Open selected dialogue
+   * @param dialogue
+   */
   open: (dialogue: D) => void;
+  /**
+   * Update dialogue timestamp
+   * @param dialogue
+   */
   touch: (dialogue: D) => void;
+  /**
+   * Update dialogue data
+   * @param dialogue
+   */
   edit?: (newData: PartialExcept<D['data']['data'], 'id'>, dialogue: D) => any,
 };
 
