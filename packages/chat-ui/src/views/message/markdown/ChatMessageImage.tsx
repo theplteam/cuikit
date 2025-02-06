@@ -60,7 +60,7 @@ const ChatMessageImage: React.FC<Props> = (props) => {
         <img {...props} />
       </a>
     </BoxStyled>
-);
+  );
 }
 
 export default ChatMessageImage;

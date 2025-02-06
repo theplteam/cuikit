@@ -14,6 +14,7 @@ export type DMessage = {
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;
+  image?: string;
   time: number;
 }
 
@@ -62,6 +63,10 @@ export class Message {
       ? appModel.user
       : undefined;
   }*/
+
+  get image() {
+    return this._data.image;
+  }
 
   get text() {
     return this.observableText.value;

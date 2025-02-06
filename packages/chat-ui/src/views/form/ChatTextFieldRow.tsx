@@ -12,6 +12,7 @@ import { DialogueAbstract, StreamResponseState } from '../../models/DialogueAbst
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatModel } from '../core/ChatGlobalContext';
+import PinPictureButton from './PinPictureButton';
 
 type Props = {
   dialogue?: DialogueAbstract;
@@ -36,7 +37,7 @@ const DialogueWidthBlockStyled = styled(Box)(({ theme }) => ({
     position: 'absolute',
     top: -50,
     bottom: '0',
-    width: `calc(100% - ${theme.spacing(paddingSidesSx*2)})`,
+    width: `calc(100% - ${theme.spacing(paddingSidesSx * 2)})`,
     height: 100,
     pointerEvents: 'none',
     zIndex: -1,
@@ -64,7 +65,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const [text, setText] = React.useState('');
-
+  const [image, setImage] = React.useState<string>('');
 
   const onSendMessage = async () => {
     const messages = dialogueApi.current?.branch.value ?? [];
@@ -75,13 +76,14 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
       if (createdNew) {
         chat.dialogueActions.open(dialogue);
       }
-      dialogue.sendMessage(lastMessage, text)
+      dialogue.sendMessage(lastMessage, text, image)
         .then(() => {
           chat.dialogueActions.touch(dialogue);
           dialogueApi.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
         });
 
       setText('');
+      setImage('');
       scroller.handleBottomScroll?.();
     }
   }
@@ -95,6 +97,11 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
         alignItems={'flex-end'}
         gap={1}
       >
+        <PinPictureButton
+          image={image}
+          setImage={setImage}
+          isTyping={isTyping}
+        />
         <ChatTextField
           text={text}
           setText={setText}

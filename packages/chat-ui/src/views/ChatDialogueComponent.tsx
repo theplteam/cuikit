@@ -50,7 +50,7 @@ const ChatDialogueComponent: React.FC<Props> = ({ contentRef, apiRef }) => {
       apiRef={apiRef}
     >
       <MessagesRowStyled
-        justifyContent={!!dialogue?.messages.length ? 'stretch' : 'center'}
+        justifyContent={dialogue?.messages.length ? 'stretch' : 'center'}
       >
         {!!dialogue && (
           <>

@@ -22,6 +22,29 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
+type ImageContent = {
+  type: 'image_url', 
+  image_url: { url: string } 
+}
+
+type TextContent = {
+  type: 'text',
+  text: string,
+}
+
+type ExtendedContentType = ImageContent | TextContent;
+
+type FormattedUserMessage = {
+  role: ChatMessageOwner.USER,
+  content: string | ExtendedContentType[],
+}
+type FormattedAssistantMessage = {
+  role: ChatMessageOwner.ASSISTANT,
+  content: string,
+}
+
+type FormattedMessage = FormattedUserMessage | FormattedAssistantMessage;
+
 export type StreamMessageFnType = (text: string, userMessage: Message, assistantMessage: Message) => Promise<void | boolean | string | number>;
 
 export abstract class DialogueAbstract<Data extends DDialogue = DDialogue> {
@@ -96,10 +119,30 @@ export abstract class DialogueAbstract<Data extends DDialogue = DDialogue> {
    * For chat request body
    */
   get messagesFormatted() {
-    return this.messages.currentMessages.value.map((message) => ({
-      role: message.owner,
-      content: message.text,
-    }));
+    const formatted = this.messages.currentMessages.value.map((message) => {
+      const data: FormattedMessage = { 
+        role: message.owner,
+        content: message.text,
+      };
+
+      if (message.image) {
+        data.content = [
+          {
+            type: 'image_url',
+            image_url: {
+              url: message.image,
+            }
+          },
+          {
+            type: 'text',
+            text: message.text,
+          }];
+        }
+
+      return data;
+    })
+
+    return formatted;
   }
 
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DDialogue }>) => {
@@ -165,11 +208,10 @@ export abstract class DialogueAbstract<Data extends DDialogue = DDialogue> {
   sendMessage = (
     lastMessage: Message | undefined,
     text: string,
-
+    image?: string,
   ) => {
     this.isTyping.value = true;
-
-    const { userMessage, assistantMessage } = this._createPair(text, lastMessage);
+    const { userMessage, assistantMessage } = this._createPair(text, lastMessage, image);
 
     this.messages.push(userMessage, assistantMessage);
 
@@ -185,7 +227,7 @@ export abstract class DialogueAbstract<Data extends DDialogue = DDialogue> {
     return promise;
   }
 
-  protected _createPair = (text: string, parentMessage: Message | undefined) => {
+  protected _createPair = (text: string,  parentMessage: Message | undefined, image?: string) => {
     const userMessage = this.messageFactory({
       id: uuidv4(),
       text,
@@ -193,6 +235,7 @@ export abstract class DialogueAbstract<Data extends DDialogue = DDialogue> {
       userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
+      image: image,
     });
 
     const assistantMessage = this.messageFactory({
