@@ -208,6 +208,17 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
     });
   }
 
+  static createEmptyData = <DD>() => {
+    return ({
+      id: 'NEW_DIALOGUE_' + randomId(),
+      title: '',
+      date: '',
+      authorId: 0,
+      messages: [],
+      isNew: true,
+    }) as DD;
+  }
+
   protected _createPair = (text: string, parentMessage: Message<DM> | undefined) => {
     const userMessage = new Message({
       id: uuidv4(),

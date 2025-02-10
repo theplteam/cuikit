@@ -43,7 +43,13 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiRef }: Props<DM, DD>) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { dialogue } = useChatContext<DM, DD>();
+  const { dialogue, handleCreateNewDialogue } = useChatContext<DM, DD>();
+
+  React.useEffect(() => {
+    if (!dialogue) {
+      apiRef.current?.openNewDialogue(handleCreateNewDialogue());
+    }
+  }, []);
 
   return (
     <DialogueProvider

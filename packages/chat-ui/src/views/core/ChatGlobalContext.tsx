@@ -4,6 +4,7 @@ import { DDialogue, Dialogue, DMessage } from '../../models';
 import { ApiRefType } from './useInitializeApiRef';
 import { Dialogues } from '../../models/stream/Dialogues';
 import { useObserverValue } from '../hooks/useObserverValue';
+import { FnType } from '../../models/types';
 
 type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: Dialogue<DM, DD> | undefined;
@@ -11,7 +12,8 @@ type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   apiRef: React.RefObject<ApiRefType<DM, DD>>;
   model: Dialogues<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
-} & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'dialogue' | 'dialogues'>;
+  handleCreateNewDialogue: FnType<DD>;
+} & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'dialogue' | 'dialogues' | 'handleCreateNewDialogue'>;
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);
 
@@ -54,7 +56,6 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
     }
   }, []);
 
-
   const value: ChatGlobalContextType<DM, DD> = React.useMemo(() => ({
     ...props,
     apiRef,
@@ -62,6 +63,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
     dialogues,
     dialogue: currentDialogue,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
+    handleCreateNewDialogue: props.handleCreateNewDialogue ?? Dialogue.createEmptyData as FnType<DD>,
   }), [model, currentDialogue, props, props.loading, dialogues]);
 
   return (
