@@ -54,7 +54,7 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
           </Stack>
           {!!disableCustomScrollbar && children}
           {!disableCustomScrollbar && (
-            <Scrollbar style={{ height, maxHeight: height }}>
+            <Scrollbar style={{ maxHeight: height }}>
               {children}
             </Scrollbar>
           )}

@@ -13,6 +13,7 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import PinPictureButton from './PinPictureButton';
 import { useChatContext } from '../core/ChatGlobalContext';
+import ChatImagePreview from './ChatImagePreview';
 
 type Props = {
   dialogue?: DialogueLight;
@@ -92,29 +93,28 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
 
   return (
     <DialogueWidthBlockStyled>
-      <InnerStackStyled
-        direction={'row'}
-        alignItems={'flex-end'}
-        gap={1}
-      >
-        <PinPictureButton
-          image={image}
-          setImage={setImage}
-          isTyping={isTyping}
-        />
-        <ChatTextField
-          text={text}
-          setText={setText}
-          onSendMessage={onSendMessage}
-          disabled={disabled}
-          classes={inputClasses}
-        />
-        <SendMessageButton
-          dialogue={dialogue}
-          onSendMessage={onSendMessage}
-          isTyping={isTyping}
-          text={text}
-        />
+      <InnerStackStyled>
+        <ChatImagePreview image={image} setImage={setImage} />
+        <Stack direction={'row'} alignItems={'flex-end'} gap={1}>
+          <PinPictureButton
+            image={image}
+            setImage={setImage}
+            isTyping={isTyping}
+          />
+          <ChatTextField
+            text={text}
+            setText={setText}
+            onSendMessage={onSendMessage}
+            disabled={disabled}
+            classes={inputClasses}
+          />
+          <SendMessageButton
+            dialogue={dialogue}
+            onSendMessage={onSendMessage}
+            isTyping={isTyping}
+            text={text}
+          />
+        </Stack>
       </InnerStackStyled>
     </DialogueWidthBlockStyled>
   );

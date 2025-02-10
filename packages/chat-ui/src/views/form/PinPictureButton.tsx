@@ -1,9 +1,12 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import FolderIcon from '@mui/icons-material/Folder';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
-import { materialDesignSysPalette } from './../../utils/materialDesign/palette';
+import { useMobile } from './../../ui/Responsive';
+import MobileImageAppDriver from './MobileImageAppDriver';
+import { useChatModel } from './../../views/core/ChatGlobalContext';
+import Stack from '@mui/material/Stack';
+import { lng } from './../../utils/lng';
 
 type Props = {
   image: string;
@@ -15,8 +18,16 @@ type Props = {
 const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
   const coreSlots = useChatCoreSlots();
   const ref = React.useRef<HTMLInputElement>(null);
+  const mobileRef = React.useRef<HTMLInputElement>(null);
+  const isMobile = useMobile();
+  const chat = useChatModel();
 
   const handleClick = () => {
+    if (isMobile) {
+      chat.actions.mobileImageDriverOpen.value = true;
+      return;
+    }
+
     ref.current?.click();
   };
 
@@ -31,50 +42,55 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
       reader.readAsDataURL(file);
     }
 
-    if (ref.current) ref.current.value = '';
+    if (ref.current?.value) ref.current.value = '';
+    if (mobileRef.current?.value) mobileRef.current.value = '';
+    if (isMobile) chat.actions.mobileImageDriverOpen.value = false;
   };
 
   return (
-    <Box
-      display={'flex'}
+    <Stack
       alignItems={'flex-end'}
       width={48}
       height={40}
       position={'relative'}
     >
-      {image
-        ? (
-          <Box
-            display={'flex'}
-            alignItems={'flex-end'}
-            borderRadius={'50%'}
-            style={{
-              outline: `1px solid ${materialDesignSysPalette.outline}`,
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'cover',
-            }}
-          >
-            <coreSlots.iconButton
-              onClick={() => setImage('')}
-              sx={{ backdropFilter: 'blur(1px)', background: 'none' }}
-            >
-              <CloseIcon sx={{ backgroundColor: 'white', borderRadius: '50%', outline: `1px solid ${materialDesignSysPalette.outline}` }} />
+      <coreSlots.iconButton disabled={!!image || isTyping} onClick={handleClick}>
+        <AddAPhotoIcon />
+      </coreSlots.iconButton>
+      <MobileImageAppDriver>
+        <Stack gap={4} flexDirection={'row'} alignContent={'center'} justifyContent={'center'} height={100}>
+          <Stack alignItems={'center'}>
+            <coreSlots.iconButton onClick={() => mobileRef.current?.click()}>
+              <AddAPhotoIcon sx={{ height: 60, width: 60 }} />
             </coreSlots.iconButton>
-          </Box>
-        ) : (
-          <coreSlots.iconButton onClick={handleClick}>
-            <AddIcon />
-          </coreSlots.iconButton>
-        )}
+            {lng(['Сделать фото', 'Take a photo'])}
+          </Stack>
+          <Stack alignItems={'center'}>
+            <coreSlots.iconButton onClick={() => ref.current?.click()}>
+              <FolderIcon sx={{ height: 60, width: 60 }} />
+            </coreSlots.iconButton>
+            {lng(['Выбрать из галереи', 'Select from gallery'])}
+          </Stack>
+        </Stack>
+      </MobileImageAppDriver>
       <input
-        ref={ref}
+        ref={mobileRef}
         type="file"
-        accept="image/*"
+        accept="image/png,image/jpeg"
+        capture
         onChange={handleImageUpload}
         disabled={isTyping}
         style={{ display: 'none' }}
       />
-    </Box>
+      <input
+        ref={ref}
+        type="file"
+        accept="image/png,image/jpeg"
+        onChange={handleImageUpload}
+        disabled={isTyping}
+        style={{ display: 'none' }}
+      />
+    </Stack>
   );
 };
 
