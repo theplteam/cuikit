@@ -2,11 +2,12 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import StopIcon from '@mui/icons-material/Stop';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueLight } from '../../models/Dialogue';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  dialogue: Dialogue | undefined;
+  dialogue: DialogueLight | undefined;
   isTyping: boolean | undefined;
   text: string;
   onSendMessage: () => void;
@@ -16,10 +17,11 @@ type Props = {
 const SendMessageButton: React.FC<Props> = ({ dialogue, text, onSendMessage, isTyping }) => {
   const disabled = !isTyping && !text;
   const coreSlots = useChatCoreSlots();
+  const { handleStopMessageStreaming } = useChatContext();
 
   const onClick = () => {
     if (isTyping) {
-      dialogue?.closeConnection?.();
+      handleStopMessageStreaming?.();
     } else {
       onSendMessage();
     }

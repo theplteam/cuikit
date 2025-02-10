@@ -4,20 +4,21 @@ import DialogueListItemMenu from './DialogueListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
-import { Dialogue } from '../../models/Dialogue';
-import { ChatModel } from '../../models/ChatModel';
+import { DialogueLight } from '../../models/Dialogue';
 import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatCoreSlots } from '../../views/core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
+import { Dialogues } from '../../models/stream/Dialogues';
 
 type Props = {
-  chat: ChatModel;
-  dialogue: Dialogue;
-  currentDialogue: Dialogue | undefined;
-  setDialogue: (dialogue: Dialogue) => void;
+  // TODO: ANY
+  model: Dialogues<any, any>;
+  dialogue: DialogueLight;
+  currentDialogue: DialogueLight | undefined;
+  setDialogue: (dialogue: DialogueLight['data']['data']) => void;
 };
 
 const classSelected = 'boxSelected';
@@ -72,7 +73,7 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, setDialogue }) => {
+const DialogueListItem: React.FC<Props> = ({ dialogue, model, currentDialogue, setDialogue }) => {
   const {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
@@ -87,7 +88,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, se
   const selected = currentDialogue?.id === dialogue.id;
 
   const handleClickListItem = () => {
-    chat.actions.menuDriverOpen.value = false;
+    model.actions.menuDriverOpen.value = false;
     setDialogue(dialogue);
   }
 
@@ -123,7 +124,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, chat, currentDialogue, se
       <DialogueListItemMenu
         anchorEl={anchorEl}
         handleClose={handleClose}
-        chat={chat}
+        model={model}
         dialogue={dialogue}
       />
     </>

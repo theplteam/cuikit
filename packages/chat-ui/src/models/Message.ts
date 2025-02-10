@@ -1,13 +1,13 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { UserIdType } from './ChatApp';
-import { IdType } from 'types';
+import { IdType } from '../types';
 
 export enum ChatMessageOwner {
   USER = 'user',
   ASSISTANT = 'assistant',
 }
 
-export type AppraisalType = 'like' | 'dislike';
+export type RatingType = 'like' | 'dislike';
 
 export type DMessage = {
   id: IdType;
@@ -17,23 +17,38 @@ export type DMessage = {
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;
-  appraisal?: AppraisalType;
+  rating?: RatingType;
 }
 
-export class Message {
+export type MessageLight = Message<any>;
+
+export class Message<DM extends DMessage> {
+  /**
+   * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
+   */
   readonly observableText = new ObservableReactValue('');
 
+  /**
+   * An observable flag indicating the start/finish of message typing.
+   */
   typing = new ObservableReactValue(false);
 
+  /**
+   * @deprecated
+   */
   messageFilters?: string;
 
-  constructor(private _data: DMessage) {
+  constructor(private _data: DM) {
     this.observableText.value = _data.text;
     this.messageFilters = _data.info;
   }
 
   get id() {
     return this._data.id;
+  }
+
+  get data() {
+    return this._data;
   }
 
   get parentId() {
@@ -44,8 +59,12 @@ export class Message {
     this._data.parentId = val;
   }
 
-  get appraisal() {
-    return this._data.appraisal;
+  get rating() {
+    return this._data.rating;
+  }
+
+  set rating(value) {
+    this._data.rating = value;
   }
 
   get time() {
@@ -80,16 +99,6 @@ export class Message {
 
   setId = (id: string) => {
     this._data.id = id;
-  }
-
-  setAppraisal = (appraisal: AppraisalType | undefined) => {
-    this._data.appraisal = appraisal;
-    // запрос на сервер
-  }
-
-  sendFeedback = (text: string, tags: string[]) => {
-    console.log(text, tags);
-    // запрос на сервер
   }
 
   /*onError = (code: number) => {

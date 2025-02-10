@@ -22,13 +22,27 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-export abstract class Dialogue<Data extends DDialogue = DDialogue> {
+export type DialogueLight = Dialogue<any, any>;
+
+export type MessageStreamingParams<DM extends DMessage = any> = {
+  text: string,
+  message: DM,
+  history: {
+    role: 'user' | 'assistant',
+    content: string,
+  }[],
+  pushChunk: (chunk: string) => void,
+  setText: (text: string) => void,
+  onFinish: () => void,
+}
+
+export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
-  readonly messages = new DialogueMessages();
+  readonly messages = new DialogueMessages<DM>();
 
-  readonly data: DialogueData<Data>;
+  readonly data: DialogueData<DM, DD>;
 
   readonly isTyping = new ObservableReactValue(false);
 
@@ -36,11 +50,9 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
   readonly streamStatus = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
 
-  closeConnection?: () => void;
-
   scrollY = -1;
 
-  private _dialogCreating?: ApiMethodPromise<{ dialogue: DDialogue }>;
+  private _dialogCreating?: ApiMethodPromise<{ dialogue: DD }>;
 
   // диалог уже создан на сервере, но пользователь ещё не отправил ни одного сообщения.
   // Установим этот ID сразу после отправки сообщения
@@ -48,21 +60,14 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
   readonly timestamp: ObservableReactValue<number>;
 
-  abstract streamMessage: (text: string, userMessage: Message, assistantMessage: Message) => Promise<void | boolean | string | number>;
-
-  protected abstract stopStreaming: () => void;
-
-  protected readonly messageFactory: (data: DMessage) => Message;
-
   constructor(
-    _data: Data,
-    messageFactory?: (data: DMessage) => Message,
+    _data: DD,
+    public readonly streamMessage: ((params: MessageStreamingParams<DM>) => void
+      ),
   ) {
     this.data = new DialogueData(_data);
 
-    this.messageFactory = messageFactory ?? ((data) => new Message(data));
-
-    const messages = sortBy(_data.messages.map(v => this.messageFactory(v)), 'time');
+    const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
 
     this.messages.allMessages.value = messages
       // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
@@ -100,8 +105,8 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
     }));
   }
 
-  createInstance = async (method: () => ApiMethodPromise<{ dialogue: DDialogue }>) => {
-    let res: { data?: { dialogue: DDialogue } } | undefined;
+  createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
+    let res: { data?: { dialogue: DD } } | undefined;
 
     this._dialogCreating = method();
     res = await this._dialogCreating;
@@ -137,7 +142,7 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
   }
 
   editMessage = (
-    messageEdit: Message,
+    messageEdit: Message<DM>,
     newText: string,
   ) => {
     const parentMessage = this.messagesArray.find(v => v.id === messageEdit.parentId);
@@ -147,21 +152,18 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
     this.messages.push(userMessage, assistantMessage);
 
-    const promise = this.streamMessage(newText, userMessage, assistantMessage);
+    const promise = this._sendMessage(newText, userMessage, assistantMessage);
 
     promise.then(() => {
       this.isTyping.value = false;
       this.isEmpty.value = false;
-      this.closeConnection = undefined;
     });
-
-    this.closeConnection = this.stopStreaming;
 
     return userMessage;
   }
 
   sendMessage = (
-    lastMessage: Message | undefined,
+    lastMessage: Message<DM> | undefined,
     text: string,
 
   ) => {
@@ -171,36 +173,70 @@ export abstract class Dialogue<Data extends DDialogue = DDialogue> {
 
     this.messages.push(userMessage, assistantMessage);
 
-    const promise = this.streamMessage(text, userMessage, assistantMessage);
+    const promise = this._sendMessage(text, userMessage, assistantMessage);
 
     promise.then(() => {
       this.isTyping.value = false;
-      this.closeConnection = undefined;
     });
-
-    this.closeConnection = this.stopStreaming;
 
     return promise;
   }
 
-  protected _createPair = (text: string, parentMessage: Message | undefined) => {
-    const userMessage = this.messageFactory({
+
+  private _sendMessage = (text: string, userMessage: Message<DM>, assistantMessage: Message<DM>) => {
+    return new Promise<void>((resolve) => {
+      this.streamMessage({
+        text,
+        history: this.messages.currentMessages.value.map((message) => ({
+          role: message.owner,
+          content: message.text,
+        })),
+        message: userMessage.data,
+        setText: (text) => {
+          assistantMessage.text = text;
+        },
+        pushChunk: (chunk) => {
+          if (this.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
+            this.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
+          }
+          assistantMessage.text += chunk;
+        },
+        onFinish: () => {
+          resolve();
+        },
+      });
+    });
+  }
+
+  static createEmptyData = <DD>() => {
+    return ({
+      id: 'NEW_DIALOGUE_' + randomId(),
+      title: '',
+      date: '',
+      authorId: 0,
+      messages: [],
+      isNew: true,
+    }) as DD;
+  }
+
+  protected _createPair = (text: string, parentMessage: Message<DM> | undefined) => {
+    const userMessage = new Message({
       id: uuidv4(),
       text,
       owner: ChatMessageOwner.USER,
       userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
-    });
+    } as DM);
 
-    const assistantMessage = this.messageFactory({
+    const assistantMessage = new Message({
       id: 'NEW_MESSAGE_' + randomId(),
       text: '',
       owner: ChatMessageOwner.ASSISTANT,
       // должно быть больше для правильной сортировки
       time: moment().unix() + 1,
       parentId: userMessage.id,
-    });
+    } as DM);
 
     return {
       userMessage, assistantMessage,

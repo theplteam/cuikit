@@ -2,15 +2,14 @@ import * as React from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { useChatSlots } from '../../../core/ChatSlotsContext';
 import { materialDesignSysPalette } from '../../../../utils/materialDesign/palette';
+import { RatingType } from '../../../../models/Message';
 
 type Props = {
-  type: FeedbackType;
-  activeType: FeedbackType | undefined;
-  onClick: (type: FeedbackType) => void;
+  type: RatingType;
+  activeType: RatingType | undefined;
+  onClick: (type: RatingType) => void;
   tooltip?: string;
 };
-
-export type FeedbackType = 'like' | 'dislike';
 
 const MessageFeedbackButton: React.FC<Props> = ({ type, activeType, onClick, tooltip }) => {
   const { coreSlots, slots } = useChatSlots();

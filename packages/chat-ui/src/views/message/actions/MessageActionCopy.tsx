@@ -3,7 +3,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';
-import { Message } from '../../../models/Message';
+import { MessageLight } from '../../../models/Message';
 import { usePopoverState } from '../../hooks/usePopoverState';
 import { lng } from '../../../utils/lng';
 import MdMenu from '../../../ui/menu/MdMenu';
@@ -12,16 +12,16 @@ import { useChatContext } from '../../core/ChatGlobalContext';
 
 
 type Props = {
-  message: Message;
+  message: MessageLight;
 };
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {
-  const { proccessAssistantText } = useChatContext();
+  const { processAssistantText } = useChatContext();
 
   let text = message.text;
 
-  if (proccessAssistantText) {
-    text = proccessAssistantText(message.text);
+  if (processAssistantText) {
+    text = processAssistantText(message.text);
   }
   const coreSlots = useChatCoreSlots();
 

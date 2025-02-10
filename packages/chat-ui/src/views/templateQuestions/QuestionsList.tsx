@@ -4,11 +4,11 @@ import { useQuestionTemplates } from './useQuestionTemplates';
 import QuestionItem from './QuestionItem';
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
-import { Dialogue } from '../../models/Dialogue';
+import { DialogueLight } from '../../models/Dialogue';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
-  dialogue: Dialogue;
+  dialogue: DialogueLight;
 };
 
 const ContainerStyled = styled(Container)(({ theme }) => ({

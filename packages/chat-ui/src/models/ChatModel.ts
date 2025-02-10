@@ -1,5 +1,7 @@
 import { Dialogue } from './Dialogue';
 import { ChatActions } from './ChatActions';
+import { DMessage } from './Message';
+import { DDialogue } from './DialogueData';
 import { PartialExcept } from './types';
 
 const NOOP = (name?: string) => () => {
@@ -8,22 +10,41 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-type Props<D extends Dialogue> = {
+type Props<DM extends DMessage, DD extends DDialogue<DM>, D = Dialogue<DM, DD>> = {
+  /**
+   * Open empty dialogue
+   */
   openNew: () => void;
+  /**
+   * Delete selected dialogue
+   * @param dialogue
+   */
   delete: (dialogue: D) => void;
+  /**
+   * Open selected dialogue
+   * @param dialogue
+   */
   open: (dialogue: D) => void;
+  /**
+   * Update dialogue timestamp
+   * @param dialogue
+   */
   touch: (dialogue: D) => void;
-  edit?: (newData: PartialExcept<D['data']['data'], 'id'>, dialogue: D) => any,
+  /**
+   * Update dialogue data
+   * @param dialogue
+   */
+  edit?: (newData: PartialExcept<DD, 'id'>, dialogue: Dialogue<DM, DD>) => any,
 };
 
-export type ChatModelProps<D extends Dialogue> = Partial<Props<D>>;
+export type ChatModelProps<DM extends DMessage, DD extends DDialogue<DM>> = Partial<Props<DM, DD>>;
 
-export class ChatModel<D extends Dialogue = Dialogue> {
-  readonly dialogueActions: Props<D>;
+export class ChatModel<DM extends DMessage, DD extends DDialogue<DM>> {
+  readonly dialogueActions: Props<DM, DD>;
 
-  readonly actions = new ChatActions();
+  readonly actions = new ChatActions<DM, DD>();
 
-  constructor(props: ChatModelProps<D> | undefined) {
+  constructor(props: ChatModelProps<DM, DD> | undefined) {
     this.dialogueActions = {
       openNew: props?.openNew ?? NOOP('openNew'),
       delete: props?.delete ?? NOOP('deleteDialogue'),

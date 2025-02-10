@@ -1,24 +1,25 @@
 import { StreamSmootherModel } from './StreamSmootherModel';
-import { Message } from '../Message';
+import { DMessage, Message } from '../Message';
 import { StreamSmootherAbstract } from './StreamSmootherAbstract';
 import { Dialogue } from '../Dialogue';
+import { DDialogue } from '../DialogueData';
 
-export type MessageStreamManagerOptions = {
-  smoother?: boolean | ((message: Message) => StreamSmootherAbstract);
+export type MessageStreamManagerOptions<DM extends DMessage> = {
+  smoother?: boolean | ((message: Message<DM>) => StreamSmootherAbstract);
   clearStatusAfterFirstText?: boolean;
 }
 
-export class MessageStreamManager {
+export class MessageStreamManager<DM extends DMessage, DD extends DDialogue<DM>> {
   // дополнительный стрим, чтобы печатание было более плавным, вместо рывков с большими кусками
   readonly smoother: StreamSmootherAbstract | undefined;
 
   protected _closeConnection?: () => void;
 
   constructor(
-    readonly assistantMessage: Message,
-    readonly dialogue: Dialogue,
-    readonly streamParser: (value: string[], assistantMessage: Message) => void,
-    private options?: MessageStreamManagerOptions,
+    readonly assistantMessage: Message<DM>,
+    readonly dialogue: Dialogue<DM, DD>,
+    readonly streamParser: (value: string[], assistantMessage: Message<DM>) => void,
+    private options?: MessageStreamManagerOptions<DM>,
   ) {
     if (typeof options?.smoother === 'boolean') {
       if (options.smoother !== false) {

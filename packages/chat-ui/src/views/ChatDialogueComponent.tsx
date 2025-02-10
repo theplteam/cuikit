@@ -11,11 +11,12 @@ import { DialogueProvider } from './DialogueContext';
 import { useChatContext } from './core/ChatGlobalContext';
 import { NOOP } from '../utils/NOOP';
 import { ApiRefType } from './core/useInitializeApiRef';
+import { DDialogue, DMessage } from '../models';
 
-type Props = {
+type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
-  apiRef: React.MutableRefObject<ApiRefType>;
+  apiRef: React.MutableRefObject<ApiRefType<DM, DD>>;
 };
 
 const MessagesRowStyled = styled(Stack)(({ theme }) => ({
@@ -39,10 +40,16 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent: React.FC<Props> = ({ contentRef, apiRef }) => {
+const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiRef }: Props<DM, DD>) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { dialogue } = useChatContext();
+  const { dialogue, handleCreateNewDialogue } = useChatContext<DM, DD>();
+
+  React.useEffect(() => {
+    if (!dialogue) {
+      apiRef.current?.openNewDialogue(handleCreateNewDialogue());
+    }
+  }, []);
 
   return (
     <DialogueProvider

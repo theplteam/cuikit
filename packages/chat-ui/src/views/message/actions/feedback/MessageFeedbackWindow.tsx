@@ -11,23 +11,24 @@ import Link from '@mui/material/Link';
 import { dislikeFeedbackTags, likeFeedbackTags } from './feedbackTags';
 import Chip from '@mui/material/Chip';
 import { Popover } from '@mui/material';
-import { Message } from '../../../../models/Message';
+import { MessageLight } from '../../../../models/Message';
+import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 
 type Props = {
-  message: Message;
+  message: MessageLight;
   anchorEl: HTMLElement | null;
   onClose: () => void;
 };
 
 const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) => {
-  const { sendFeedback, appraisal } = message;
-  const [text, setText] = React.useState('');
+  const [feedback, setFeedback] = React.useState('');
   const [tags, setTags] = React.useState<string[]>([]);
 
+  const chatContext = useChatContext();
   const coreSlots = useChatCoreSlots();
 
   const handelClear = () => {
-    setText('');
+    setFeedback('');
     setTags([]);
   }
 
@@ -35,10 +36,10 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
     if (anchorEl) handelClear();
   }, [anchorEl])
 
-  const tagArray = appraisal === 'like' ? likeFeedbackTags : dislikeFeedbackTags;
+  const tagArray = message.rating === 'like' ? likeFeedbackTags : dislikeFeedbackTags;
 
   const handleSubmit = () => {
-    sendFeedback(text, tags);
+    chatContext.onSendFeedback?.({ message, feedback, tags });
     onClose();
   }
 
@@ -104,9 +105,9 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
       </Stack>
       <InputBase
         placeholder={lng(['Предоставьте дополнительную информацию', 'Provide additional feedback'])}
-        value={text}
+        value={feedback}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setText(event.target.value);
+          setFeedback(event.target.value);
         }}
         multiline
         maxRows={3}
@@ -125,7 +126,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
       </Typography>
       <Box>
         <coreSlots.button
-          disabled={!text && tags.length === 0}
+          disabled={!feedback && tags.length === 0}
           onClick={handleSubmit}
           variant='text'
         >
