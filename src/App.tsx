@@ -11,27 +11,12 @@ import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
 import MobileAppBar from './views/appBar/MobileAppBar.tsx';
-import PopupSharingContent from './views/PopupSharingContent.tsx';
-import { ChatGptDialogue, ChatGptDialogueData } from './models/ChatGptDialogue.ts';
-import OpenAI from 'openai';
-import ChatLicenseInfo from '../packages/chat-ui/src/views/license/ChatLicenseInfo.ts';
-
-ChatLicenseInfo.setLicenseKey(import.meta.env.VITE_CHAT_UI_LICENSE_KEY);
+import { ChatGptModel, ChatGptDialogueData } from './models/ChatGptModel.ts';
 
 function App() {
   const dd = dialogues as ChatGptDialogueData[];
 
-  const openAi = React.useMemo(() => {
-    return new OpenAI({
-      apiKey: import.meta.env.VITE_OPENAI_API_KEY, // This is the default and can be omitted
-      dangerouslyAllowBrowser: true,
-    });
-  }, []);
-
-  const testArray = React.useMemo(() => dd.map(v => new ChatGptDialogue(v, openAi)), []);
-
-
-  const [dialogue, setDialogue] = React.useState(([...testArray].sort((a, b) => b.timestamp.value - a.timestamp.value))[0]);
+  const openAi = React.useMemo(() => new ChatGptModel(), []);
 
   const customActions = useCustomAssistantActions();
 
@@ -56,31 +41,14 @@ function App() {
           height={'100%'}
         >
           <Chat
-            dialogue={dialogue}
             lang={'ru'}
-            dialogues={testArray}
-            setDialogue={setDialogue}
+            dialogues={dd}
             scrollerRef={ref}
             userId={20}
-            modelProps={{
-              openNew: () => {
-                const newDialogue = new ChatGptDialogue(
-                  {
-                    id: '1-2-3',
-                    title: 'newDialogue',
-                    messages: [],
-                    authorId: 1,
-                  },
-                  openAi,
-                );
-
-                setDialogue(newDialogue);
-              },
-              open: (dialogue) => setDialogue(dialogue),
-            }}
+            handleStopMessageStreaming={openAi.stopStreaming}
+            onUserMessageSent={openAi.streamMessage}
             slots={{
               list: isMobile ? HiddenContent : LeftContainerPortal,
-              popupsSharingContent: PopupSharingContent,
             }}
             assistantActions={customActions}
           >

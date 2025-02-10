@@ -1,30 +1,30 @@
 import * as React from 'react';
-import { DialogueAbstract } from '../../../models/DialogueAbstract';
-import { Message } from '../../../models/Message';
+import { DialogueLight } from '../../../models/Dialogue';
+import { MessageLight } from '../../../models/Message';
 
 export type StateType = {
   element: HTMLDivElement;
-  dialogue: DialogueAbstract;
-  message: Message;
+  dialogue: DialogueLight;
+  message: MessageLight;
 };
 
 export type MobileMessageActionsType = {
   selectedValue?: {
-    dialogue: DialogueAbstract;
-    message: Message;
+    dialogue: DialogueLight;
+    message: MessageLight;
     top: number;
     left: number;
     bottom: number;
     getBoundingClientRect: () => DOMRect;
   };
-  handleSelectMessage: (dialogue: DialogueAbstract, message: Message, element: HTMLDivElement) => void,
+  handleSelectMessage: (dialogue: DialogueLight, message: MessageLight, element: HTMLDivElement) => void,
   handleCloseSelection: () => void,
 };
 
 export const useMobileMessageActions = (): MobileMessageActionsType => {
   const [_selectedValue, setSelectedValue] = React.useState<StateType | undefined>();
 
-  const handleSelectMessage = (dialogue: DialogueAbstract, message: Message, element: HTMLDivElement) => {
+  const handleSelectMessage = (dialogue: DialogueLight, message: MessageLight, element: HTMLDivElement) => {
     setSelectedValue({ element, dialogue, message });
   }
 

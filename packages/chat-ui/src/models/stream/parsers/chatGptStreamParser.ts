@@ -10,7 +10,8 @@ type ChatGptResponseType = {
   }>;
 };
 
-export const chatGptStreamParser = <T extends ChatGptResponseType>(value: string, assistant: Message) => {
+// TODO: #ANY
+export const chatGptStreamParser = <T extends ChatGptResponseType>(value: string, assistant: Message<any>) => {
   const clearedValue = prepareStreamString(value);
   try {
     const obj = JSON.parse(clearedValue) as T;

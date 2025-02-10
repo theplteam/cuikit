@@ -4,10 +4,10 @@ import Box, { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { DialogueAbstract, StreamResponseState } from '../../models';
+import { DialogueLight, StreamResponseState } from '../../models';
 
 type Props = {
-  dialogue: DialogueAbstract | undefined;
+  dialogue: DialogueLight | undefined;
 } & BoxProps;
 
 const palette = materialDesignSysPalette;
