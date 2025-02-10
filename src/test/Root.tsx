@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 
-type Props = React.PropsWithChildren<{}>;
+type Props = React.PropsWithChildren;
 
 const Root: React.FC<Props> = ({ children }) => {
   return (
