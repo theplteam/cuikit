@@ -34,7 +34,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   position: 'sticky',
-  bottom: 5,
+  bottom: 0,
   zIndex: 1,
   background: theme.palette.background.paper,
 }));
@@ -67,7 +67,7 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
         )}
       </MessagesRowStyled>
       {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
-      <TextRowBlock>
+      <TextRowBlock id={'lol'}>
         <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
         <ChatTextFieldRow dialogue={dialogue} scroller={scrollApiRef.current} />
       </TextRowBlock>
