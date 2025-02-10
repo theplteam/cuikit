@@ -14,6 +14,9 @@ import MobileAppBar from './views/appBar/MobileAppBar.tsx';
 import PopupSharingContent from './views/PopupSharingContent.tsx';
 import { ChatGptDialogue, ChatGptDialogueData } from './models/ChatGptDialogue.ts';
 import OpenAI from 'openai';
+import ChatLicenseInfo from '../packages/chat-ui/src/views/license/ChatLicenseInfo.ts';
+
+ChatLicenseInfo.setLicenseKey(import.meta.env.VITE_CHAT_UI_LICENSE_KEY);
 
 function App() {
   const dd = dialogues as ChatGptDialogueData[];
@@ -28,7 +31,7 @@ function App() {
   const testArray = React.useMemo(() => dd.map(v => new ChatGptDialogue(v, openAi)), []);
 
 
-  const [dialogue, setDialogue] = React.useState(([...testArray].sort((a,b) => b.timestamp.value - a.timestamp.value))[0]);
+  const [dialogue, setDialogue] = React.useState(([...testArray].sort((a, b) => b.timestamp.value - a.timestamp.value))[0]);
 
   const customActions = useCustomAssistantActions();
 

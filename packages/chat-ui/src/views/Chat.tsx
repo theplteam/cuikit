@@ -12,6 +12,7 @@ import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
 import { DialogueAbstract } from '../models/DialogueAbstract';
 import { useInitializeApiRef } from './core/useInitializeApiRef';
+import Watermark from './Watermark';
 
 const Chat = <D extends DialogueAbstract>(usersProps: React.PropsWithChildren<ChatUsersProps<D>>) => {
   const apiRef = useInitializeApiRef(usersProps.apiRef);
@@ -22,6 +23,7 @@ const Chat = <D extends DialogueAbstract>(usersProps: React.PropsWithChildren<Ch
     <>
       <ChatGlobalProvider props={props}>
         <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
+          <Watermark />
           <slots.listDriver>
             <HiddenDesktop>
               <ChatAppDriver>
