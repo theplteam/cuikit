@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { Dialogue, MessageStreamingParams } from '../../models/Dialogue';
-import { DMessage, Message } from '../../models/Message';
+import { MessageStreamingParams } from '../../models/Dialogue';
+import { DMessage } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -28,6 +28,9 @@ type RequiredProps<DM extends DMessage, DD extends DDialogue<DM>> = {
 
 // используется внутри библиотеки
 export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
+  /**
+   * Show loading component
+   */
   loading: boolean;
   /**
    * This dialogue will open immediately after chat initialization, if it's in the dialogue list.
@@ -37,12 +40,12 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Message<DM>, dialogue: Dialogue<DM, DD> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: DM, dialogue: DDialogue<DM> }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
    */
-  proccessAssistantText?: ((text: string) => string);
+  processAssistantText?: ((text: string) => string);
   /**
    * Callback fired when the current dialogue changes
    */
@@ -117,7 +120,7 @@ export const useChatProps = <DM extends DMessage, DD extends DDialogue<DM>> (use
   }), [
     userProps.loading,
     userProps.dialogues,
-    userProps.proccessAssistantText,
+    userProps.processAssistantText,
     userProps.assistantActions,
     userProps.onChangeCurrentDialogue,
     userProps.onChangeCurrentDialogue,

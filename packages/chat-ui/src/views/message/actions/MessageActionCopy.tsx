@@ -16,12 +16,12 @@ type Props = {
 };
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {
-  const { proccessAssistantText } = useChatContext();
+  const { processAssistantText } = useChatContext();
 
   let text = message.text;
 
-  if (proccessAssistantText) {
-    text = proccessAssistantText(message.text);
+  if (processAssistantText) {
+    text = processAssistantText(message.text);
   }
   const coreSlots = useChatCoreSlots();
 
