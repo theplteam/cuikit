@@ -1,22 +1,22 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { Message } from '../models/Message';
+import { DMessage, Message } from '../models/Message';
 import { DialogueMessages } from '../models/DialogueMessages';
 
-export type DialogueListenersMap = {
-  allMessages: ObservableReactValue<Message[]>;
-  branch: ObservableReactValue<Message[]>;
+export type DialogueListenersMap<DM extends DMessage> = {
+  allMessages: ObservableReactValue<Message<DM>[]>;
+  branch: ObservableReactValue<Message<DM>[]>;
   isTyping: ObservableReactValue<boolean>;
 };
 
-export type DialogueApi = {
-  allMessages: ObservableReactValue<Readonly<Message[]>>;
-  branch: ObservableReactValue<Readonly<Message[]>>;
-  getListener: <K extends keyof DialogueListenersMap>(key: K) => DialogueListenersMap[K] | undefined;
-  handleChangeBranch: DialogueMessages['handleChangeBranch'];
+export type DialogueApi<DM extends DMessage> = {
+  allMessages: ObservableReactValue<Readonly<Message<DM>[]>>;
+  branch: ObservableReactValue<Readonly<Message<DM>[]>>;
+  getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
+  handleChangeBranch: DialogueMessages<DM>['handleChangeBranch'];
   setProgressStatus: (status: string) => void;
 };
 
-export const getDialogueMockApi = (): DialogueApi => ({
+export const getDialogueMockApi = <DM extends DMessage>(): DialogueApi<DM> => ({
   allMessages: new ObservableReactValue([]),
   branch: new ObservableReactValue([]),
   handleChangeBranch: () => {},

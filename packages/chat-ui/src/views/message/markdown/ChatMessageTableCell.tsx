@@ -7,7 +7,7 @@ import { SlotFullPropItem } from '../../../types/SlotFullPropItem';
 
 type Props = SlotFullPropItem<'textComponent', TypographyProps> & TableCellProps;
 
-const BoxStyled = styled(Box)(({ theme }) => ({
+const BoxStyled = styled(Box)(() => ({
   minWidth: 100,
   /*height: 40,
   maxHeight: 40,*/

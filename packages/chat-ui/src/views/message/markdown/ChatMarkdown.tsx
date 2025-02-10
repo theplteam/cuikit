@@ -10,9 +10,9 @@ type Props = {
 
 const ChatMarkdown: React.FC<Props> = ({ text }) => {
   const { slots, slotProps } = useChatSlots();
-  const { proccessAssistantText } = useChatContext();
-  if (proccessAssistantText) {
-    text = proccessAssistantText(text);
+  const { processAssistantText } = useChatContext();
+  if (processAssistantText) {
+    text = processAssistantText(text);
   }
 
   return (

@@ -1,4 +1,4 @@
-import { type DialogueAbstract } from '../../models';
+import { DDialogue, type Dialogue, DMessage } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -14,7 +14,7 @@ import type { BoxProps } from '@mui/material/Box';
 
 type ChildrenProps = React.PropsWithChildren<{}>;
 
-export type SlotPropsType<D extends DialogueAbstract> = {
+export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Override the full dialogue component
    */
@@ -42,11 +42,11 @@ export type SlotPropsType<D extends DialogueAbstract> = {
   /**
    * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
    */
-  firstMessage: { dialogue: D };
+  firstMessage: { dialogue: Dialogue<DM, DD> };
 
   // POPUPS
-  popupsSharingContent: { dialogue: D; tariffsRef: React.RefObject<{ tariffs: number[] }> };
-  popupsInfoContent: { dialogue: D; };
+  popupsSharingContent: { dialogue: Dialogue<DM, DD>; tariffsRef: React.RefObject<{ tariffs: number[] }> };
+  popupsInfoContent: { dialogue: Dialogue<DM, DD>; };
 
   // MESSAGE
   /**
@@ -72,7 +72,7 @@ export type SlotPropsType<D extends DialogueAbstract> = {
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */
-  messageAssistantProgress: BoxProps & { dialogue: DialogueAbstract };
+  messageAssistantProgress: BoxProps & { dialogue: Dialogue<DM, DD> };
   /**
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */

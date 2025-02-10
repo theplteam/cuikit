@@ -4,14 +4,14 @@ import Chat from './../Chat';
 import { useElementRef } from './../hooks/useElementRef';
 import { ChatUsersProps } from './../core/useChatProps';
 import { useMobile } from './../../ui/Responsive';
-import { DialogueAbstract } from './../../models/DialogueAbstract';
 import HiddenContent from './../HiddenContent';
 import { ListContainer, ListContainerPortal } from './components/ListContainer';
 import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components/MobileAppBarContainer';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
+import { DDialogue, DMessage } from './../../models';
 
-const ChatUi = <D extends DialogueAbstract>(chatProps: Omit<ChatUsersProps<D>, 'scrollerRef'>) => {
-  const { slots, ...other } = chatProps;
+const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
+  const { slots, ...other } = usersProps;
 
   const ref = useElementRef();
   const isMobile = useMobile();

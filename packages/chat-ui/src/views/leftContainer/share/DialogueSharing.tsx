@@ -4,18 +4,19 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { ChatModel } from '../../../models/ChatModel';
-import { DialogueAbstract } from '../../../models/DialogueAbstract';
+import { DialogueLight } from '../../../models/Dialogue';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { lng } from '../../../utils/lng';
 import { useSnackbar } from '../../hooks/useSnackbar';
 import { useChatSlots } from '../../core/ChatSlotsContext';
+import { DDialogue, DMessage } from '../../../models';
 
 type Props = {
-  chat: ChatModel;
+  chat: ChatModel<DMessage, DDialogue>;
 };
 
 const DialogueSharing: React.FC<Props> = ({ chat }) => {
-  const [dialogueEditable, setDialogue] = React.useState<DialogueAbstract | undefined>();
+  const [dialogueEditable, setDialogue] = React.useState<DialogueLight | undefined>();
   const shareItem = useObserverValue(chat.actions.shareItem);
   const tariffsRef = React.useRef({ tariffs: [] });
   const { slots, coreSlots } = useChatSlots();
@@ -28,9 +29,10 @@ const DialogueSharing: React.FC<Props> = ({ chat }) => {
   const handleSave = async () => {
     handleClose();
     if (dialogueEditable) {
+      // TODO: #ANY - Вообще не должно быть здесь этого
       const res = await chat.dialogueActions.edit?.({
         ...dialogueEditable.data.copyData(),
-      }, dialogueEditable);
+      } as any, dialogueEditable);
 
       if (res.success) {
         snackbar.show(['Вы поделились диалогом', 'You successfully shared the dialogue'])
