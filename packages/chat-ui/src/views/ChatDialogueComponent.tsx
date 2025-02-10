@@ -29,7 +29,7 @@ const MessagesRowStyled = styled(Stack)(({ theme }) => ({
 
 const TextRowBlock = styled(Box)(({ theme }) => ({
   width: '100%',
-  minHeight: ChatViewConstants.TEXT_BLOCK_HEIGHT,
+  height: ChatViewConstants.TEXT_BLOCK_HEIGHT,
   display: 'flex',
   justifyContent: 'center',
   position: 'sticky',

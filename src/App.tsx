@@ -20,6 +20,8 @@ function App() {
   const testArray = React.useMemo(() => dd.map(v => new ChatGptDialogue(v, openAi)).sort((a, b) => b.timestamp.value - a.timestamp.value), []);
   const customActions = useCustomAssistantActions();
 
+  const [currentDialogue, setCurrentDialogue] = React.useState(testArray[0]);
+
   const handleCreateChat = () => {
     const newDialogue = new ChatGptDialogue(
       {
@@ -34,14 +36,28 @@ function App() {
     return newDialogue;
   }
 
+  const handleOpenNewChat = () => {
+    const newChat = handleCreateChat();
+    setCurrentDialogue(newChat);
+  }
+
+  const handleOpenChat = (dialogue: ChatGptDialogue) => {
+    setCurrentDialogue(dialogue)
+  }
+
   return (
     <Root>
       <ChatUi
         dialogues={testArray}
-        handleCreateChat={handleCreateChat}
+        dialogue={currentDialogue}
+        setDialogue={setCurrentDialogue}
         assistantActions={customActions}
         userId={20}
         lang={'ru'}
+        modelProps={{
+          openNew: handleOpenNewChat,
+          open: handleOpenChat,
+        }}
       />
     </Root>
   )

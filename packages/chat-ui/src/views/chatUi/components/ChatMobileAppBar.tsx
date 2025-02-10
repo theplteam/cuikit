@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useChatContext } from './../../core/ChatGlobalContext';
 import { useChatSlots } from './../../core/ChatSlotsContext';
 import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
+import { Box } from '@mui/material';
 
 const ChatMobileAppBar: React.FC = () => {
   const { model } = useChatContext();
@@ -21,9 +22,11 @@ const ChatMobileAppBar: React.FC = () => {
       borderTop={`1px solid ${materialDesignSysPalette.outline}`}
       sx={{ backgroundColor: materialDesignSysPalette.surfaceContainerLow }}
     >
-      <coreSlots.iconButton disableRipple onClick={handleClick}>
-        <MenuIcon />
-      </coreSlots.iconButton>
+      <Box display={'flex'} justifyItems={'center'} justifyContent={'center'}>
+        <coreSlots.iconButton onClick={handleClick}>
+          <MenuIcon />
+        </coreSlots.iconButton>
+      </Box>
     </Stack>
   );
 }
