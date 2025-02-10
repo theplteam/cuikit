@@ -1,6 +1,6 @@
 import { DDialogue } from '../../packages/chat-ui/src/models/DialogueData.ts';
 import OpenAI from 'openai';
-import { MessageStreamingParams } from 'chat-ui';
+import { DMessage, MessageStreamingParams, RatingType } from 'chat-ui';
 
 export type ChatGptDialogueData = {
   variable?: number;
@@ -44,5 +44,15 @@ export class ChatGptModel {
     }
 
     params.onFinish();
+  }
+
+  sendMessageFeedback = (params: { message: DMessage, feedback: string, tags: string[]}) => {
+    const { message, feedback, tags } = params;
+    console.log(message, feedback, tags);
+  }
+
+  sendMessageRating = (params: { rating: RatingType | undefined }) => {
+    const { rating } = params;
+    console.log(rating);
   }
 }
