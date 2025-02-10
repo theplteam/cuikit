@@ -1,7 +1,6 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
 import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
-import { DialogueAbstract } from '../../models/DialogueAbstract';
 import RootMock from '../message/RootMock';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
@@ -22,6 +21,7 @@ import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
+import { DDialogue, DMessage } from '../../models';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -33,19 +33,19 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<D extends DialogueAbstract> = { [key in keyof SlotPropsType<D>]: SlotValue<SlotPropsType<D>[key]> };
+export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> };
 
-type SlotsReturnType<D extends DialogueAbstract> = {
-  slots: SlotsType<D>;
+type SlotsReturnType<DM extends DMessage, DD extends DDialogue<DM>> = {
+  slots: SlotsType<DM, DD>;
   coreSlots: CoreSlots;
-  slotProps: Partial<SlotPropsType<D>>;
+  slotProps: Partial<SlotPropsType<DM, DD>>;
 };
 
-export const usePropsSlots = <D extends DialogueAbstract>(
-  slots: Partial<SlotsType<D>> | undefined,
+export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
+  slots: Partial<SlotsType<DM, DD>> | undefined,
   coreSlots: Partial<CoreSlots> | undefined,
-  slotProps: Partial<SlotPropsType<D>> | undefined,
-): SlotsReturnType<D> => {
+  slotProps: Partial<SlotPropsType<DM, DD>> | undefined,
+): SlotsReturnType<DM, DD> => {
   const res = React.useMemo(() => {
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
@@ -54,7 +54,7 @@ export const usePropsSlots = <D extends DialogueAbstract>(
       menuItem: coreSlots?.menuItem ?? MdMenuItem,
     };
 
-    const componentSlots: SlotsType<D> = {
+    const componentSlots: SlotsType<DM, DD> = {
       firstMessage: slots?.firstMessage ?? MockComponent,
       dialogue: slots?.dialogue ?? RootMock,
       list: slots?.list ?? HiddenContent,

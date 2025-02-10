@@ -1,99 +1,125 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { DialogueAbstract } from '../../models/DialogueAbstract';
-import { ChatModel, ChatModelProps } from '../../models/ChatModel';
-import { Message } from '../../models/Message';
+import { Dialogue, MessageStreamingParams } from '../../models/Dialogue';
+import { DMessage, Message } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useInitializeApiRef';
+import { DDialogue } from '../../models';
+import { ChatEventListeners } from './ChatEventListeners';
+import { FnType } from '../../models/types';
 
-type RequiredProps<D extends DialogueAbstract> = {
+type RequiredProps<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Dialogues list
    * @required
    */
-  readonly dialogues: readonly D[];
+  dialogues: DD[];
   /**
-   * Current dialogue
-   * @required
+   * Callback fired when the user sends a message to the dialogue.
+   * @param message - User's message
+   * @param pushText - call for runtime updating assistant's message
+   * @param onFinish - call for finishing
    */
-  dialogue: D | undefined;
-  /**
-   * Set current dialogue
-   * @required
-   * @param dialogue
-   */
-  setDialogue: (dialogue: D) => void;
+  onUserMessageSent: (params: MessageStreamingParams<DM>) => void;
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<D extends DialogueAbstract> = {
+export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
   loading: boolean;
   /**
-   * A model that comprehensively controls dialogues: initiating a new conversation, deleting one, and refining an existing dialogue.
-   * You may either provide your own model or retain the standard one.
+   * This dialogue will open immediately after chat initialization, if it's in the dialogue list.
+   * If it isn’t in the dialogue list or if the parameter is not provided, an empty dialogue will open.
    */
-  model?: ChatModel<D>;
-  /**
-   * Props for ChatModel. Provide dialogue management functions if you have not designated your own model
-   */
-  modelProps?: ChatModelProps<D>;
+  dialogue?: DD;
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Message, dialogue: D }>[];
-  userId?: UserIdType;
+  assistantActions?: React.JSXElementConstructor<{ message: Message<DM>, dialogue: Dialogue<DM, DD> }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
    */
-  proccessAssistantText?: (text: string) => string;
-} & RequiredProps<D>;
+  proccessAssistantText?: ((text: string) => string);
+  /**
+   * Callback fired when the current dialogue changes
+   */
+  onChangeCurrentDialogue?: ChatEventListeners<{ dialogue: DD }>;
+  /**
+   * Callback fired when message branch changes
+   */
+  onChangeMessageBranch?: ChatEventListeners<{ message: DM }>;
+  /**
+   * Callback fired after message streaming is complete.
+   */
+  onAssistantMessageTypingFinish?: ChatEventListeners<{ message: DM }>;
+  /**
+   * Call when user starts new dialogue
+   */
+  handleCreateNewDialogue?: FnType<DD>;
+  /**
+   * Invoked when the user clicks the stop streaming button.
+   */
+  handleStopMessageStreaming?: FnType;
+  /**
+   * Callback fired when first message sent
+   */
+  onDialogueCreated?: ChatEventListeners<{ dialogue: DD }>;
+  /**
+   * Callback fired when first message sent
+   */
+  onDialogueDeleted?: ChatEventListeners<{ dialogue: DD }>;
+} & RequiredProps<DM, DD>;
 
-// что передает пользователь
-export type ChatUsersProps<D extends DialogueAbstract> = {
+// что передает пользователь, но не нужно чату
+export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Partial<{
   /**
    * ChatUI defaults to using the window for automatic conversation scrolling.
    * if you have embedded the chat within your own component, supply the container's ref to allow for proper scroll management.
    */
-  scrollerRef?: React.RefObject<HTMLDivElement | null>;
+  scrollerRef: React.RefObject<HTMLDivElement | null>;
   /**
    * The components used for each slot inside. Can be instantiated with `useChatSlots`
    */
-  slots?: Partial<Omit<SlotsType<D>, 'core'>>;
+  slots: Partial<Omit<SlotsType<DM, DD>, 'core'>>;
   /**
    * The props used for each slot inside. Can be instantiated with `useChatSlots`
    */
-  slotProps?: Partial<SlotPropsType<D>>;
+  slotProps: Partial<SlotPropsType<DM, DD>>;
   /**
    * The components used for each core slot include Button, IconButton, etc. Can be instantiated with `useChatSlots` or `useChatCoreSlots`
    */
-  coreSlots?: Partial<CoreSlots>;
+  coreSlots: Partial<CoreSlots>;
   /**
    * The language in which the chat interface will be displayed.
    */
-  lang?: 'en' | 'ru' | LangKeys;
+  lang: 'en' | 'ru' | LangKeys;
   /**
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
-  apiRef?: React.MutableRefObject<ApiRefType>;
-} & RequiredProps<D> & Partial<Omit<ChatPropsTypes<D>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<D>>>;
+  apiRef: React.MutableRefObject<ApiRefType<DM, DD>>;
+  userId: UserIdType;
+}> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 
-export const useChatProps = <D extends DialogueAbstract> (userProps: ChatUsersProps<D>): ChatPropsTypes<D> => {
+export const useChatProps = <DM extends DMessage, DD extends DDialogue<DM>> (userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
+  const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, ...chatProps } = userProps;
+
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 
   return React.useMemo(() => ({
-    dialogues: userProps.dialogues,
-    dialogue: userProps.dialogue,
-    setDialogue: userProps.setDialogue,
+    ...chatProps,
     loading: userProps.loading ?? false,
-    model: userProps.model,
-    modelProps: userProps.modelProps,
-    assistantActions: userProps.assistantActions,
-    proccessAssistantText: userProps.proccessAssistantText,
+
     // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
-  }), [userProps.dialogue, userProps.setDialogue, userProps.loading, userProps.dialogues, userProps.proccessAssistantText]);
+  }), [
+    userProps.loading,
+    userProps.dialogues,
+    userProps.proccessAssistantText,
+    userProps.assistantActions,
+    userProps.onChangeCurrentDialogue,
+    userProps.onChangeCurrentDialogue,
+  ]);
 }

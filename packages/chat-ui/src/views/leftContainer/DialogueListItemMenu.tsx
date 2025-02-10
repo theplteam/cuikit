@@ -2,33 +2,34 @@ import * as React from 'react';
 import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { ChatModel } from '../../models/ChatModel';
-import { DialogueAbstract } from '../../models/DialogueAbstract';
+import { DialogueLight } from '../../models/Dialogue';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { Dialogues } from '../../models/stream/Dialogues';
 
 type Props = {
   anchorEl: null | HTMLElement;
   handleClose: () => void;
-  chat: ChatModel;
-  dialogue: DialogueAbstract;
+  // TODO #ANY
+  model: Dialogues<any, any>;
+  dialogue: DialogueLight;
 };
 
-const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, chat, dialogue }) => {
+const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, dialogue }) => {
   const { coreSlots } = useChatSlots();
   const handleDelete = () => {
     handleClose();
-    chat.actions.deleteItem.value = dialogue;
+    model.actions.deleteItem.value = dialogue;
   }
 
   const handleShare = () => {
     handleClose();
-    chat.actions.shareItem.value = dialogue;
+    model.actions.shareItem.value = dialogue;
   }
 
   const handleOpenInfo = () => {
     handleClose();
-    chat.actions.viewItem.value = dialogue;
+    model.actions.viewItem.value = dialogue;
   }
 
   return (

@@ -1,7 +1,8 @@
 import { DialogueApi } from '../DialogueApi';
-import { DialogueAbstract } from '../../models/DialogueAbstract';
+import { Dialogue } from '../../models/Dialogue';
+import { DDialogue, DMessage } from '../../models';
 
-export const getDialogueListeners: (dialogue: DialogueAbstract) => DialogueApi['getListener'] = (dialogue) =>
+export const getDialogueListeners: <DM extends DMessage, DD extends DDialogue<DM>>(dialogue: Dialogue<DM, DD>) => DialogueApi<DM>['getListener'] = (dialogue) =>
   (key) => {
   // TODO: разобраться с типизацией
   let value: any;

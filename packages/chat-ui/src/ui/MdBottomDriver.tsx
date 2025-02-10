@@ -16,7 +16,7 @@ type Props = React.PropsWithChildren<{
   keepMounted?: boolean;
 }>;
 
-const DrawerStyled = styled(Drawer)(({ theme }) => ({
+const DrawerStyled = styled(Drawer)(() => ({
   [`.${drawerClasses.paper}`]: {
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -41,7 +41,7 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
         <Stack pt={0.5}>
           <Stack px={0.5} direction={'row'} alignItems={'center'}>
             <coreSlots.iconButton
-              sx={{ color: (theme) => materialDesignSysPalette.onSurfaceVariant }}
+              sx={{ color: () => materialDesignSysPalette.onSurfaceVariant }}
               onClick={onClose}
             >
               <CloseIcon />

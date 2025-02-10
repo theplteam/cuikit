@@ -1,7 +1,5 @@
 import * as React from 'react';
 import DialogDeleteConfirm from './DialogDeleteConfirm';
-import DialogueSharing from './share/DialogueSharing';
-import DialogueInfoPopup from './info/DialogueInfoPopup';
 import Stack from '@mui/material/Stack';
 import ChatHistorySkeleton from './ChatHistorySkeleton';
 import TimeGroupItem from './TimeGroupItem';
@@ -11,13 +9,22 @@ import { useDialogueGroupedList } from './useDialogueGroupedList';
 import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { DDialogue } from '../../models';
 
 type Props = {};
 
 const ChatDialoguesListBlock: React.FC<Props> = () => {
-  const { loading, model: chat, dialogues, dialogue: currentDialogue, setDialogue } = useChatContext();
+  const { loading, model, dialogues, dialogue: currentDialogue, apiRef, onChangeCurrentDialogue } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(dialogues);
+
+  const setDialogue = React.useCallback((dialogue: DDialogue) => {
+    if (currentDialogue?.id !== dialogue.id) {
+      onChangeCurrentDialogue?.({dialogue});
+      apiRef.current?.onChangeDialogue(dialogue);
+    }
+  }, [onChangeCurrentDialogue, currentDialogue, apiRef.current]);
+
   return (
     <>
       <Stack position={'relative'}>
@@ -41,7 +48,7 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
                         currentDialogue={currentDialogue}
                         setDialogue={setDialogue}
                         dialogue={dialogue}
-                        chat={chat}
+                        model={model}
                       />
                     </Box>
                   );
@@ -52,9 +59,9 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
           </DelayRenderer>
         )}
       </Stack>
-      <DialogDeleteConfirm chat={chat} />
-      <DialogueSharing chat={chat} />
-      <DialogueInfoPopup chat={chat} />
+      <DialogDeleteConfirm />
+      {/*<DialogueSharing model={model}/>*/}
+      {/*<DialogueInfoPopup model={model}/>*/}
     </>
   );
 };

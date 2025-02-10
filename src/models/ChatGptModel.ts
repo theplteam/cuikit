@@ -1,32 +1,36 @@
-import { DialogueAbstract } from '../../packages/chat-ui/src/models/DialogueAbstract.ts';
-import { Message } from '../../packages/chat-ui/src/models/Message.ts';
 import { DDialogue } from '../../packages/chat-ui/src/models/DialogueData.ts';
 import OpenAI from 'openai';
+import { MessageStreamingParams } from 'chat-ui';
 
 export type ChatGptDialogueData = {
   variable?: number;
 } & DDialogue;
 
-export class ChatGptDialogue extends DialogueAbstract<ChatGptDialogueData> {
+export class ChatGptModel {
   private _abortController?: AbortController;
 
-  constructor(data: ChatGptDialogueData, private _instance: OpenAI) {
-    super(data);
+  private _instance: OpenAI
+
+  constructor() {
+    this._instance = new OpenAI({
+      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true,
+    });
   }
 
   stopStreaming = () => {
     this._abortController?.abort();
   }
 
-  streamMessage = async (text: string, _userMessage: Message, assistantMessage: Message) => {
-    const messages = this.messagesFormatted;
+  streamMessage = async (params: MessageStreamingParams) => {
+    const messages = params.history;
     const stream = await this._instance.chat.completions.create({
       model: 'gpt-4o',
       messages: [
         ...messages,
         {
           role: 'user',
-          content: text,
+          content: params.text,
         },
       ],
       stream: true,
@@ -35,9 +39,10 @@ export class ChatGptDialogue extends DialogueAbstract<ChatGptDialogueData> {
 
     this._abortController = stream.controller;
 
-    this.streamStatus.value = undefined;
     for await (const chunk of stream) {
-      assistantMessage.text += chunk.choices[0].delta.content ?? '';
+      params.pushChunk(chunk.choices[0].delta.content ?? '');
     }
+
+    params.onFinish();
   }
 }
