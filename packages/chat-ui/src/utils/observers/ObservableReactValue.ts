@@ -7,7 +7,7 @@ export class ObservableReactValue<T> {
 
   constructor(private _value: T, public debug = false) {}
 
-  get value(): Readonly<T> {
+  get value() {
     return this._value;
   }
 

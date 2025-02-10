@@ -3,29 +3,30 @@ import { MobileMessageActionsType, useMobileMessageActions } from './message/hoo
 import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
 import { type DialogueApi, getDialogueMockApi } from './DialogueApi';
 import { getDialogueListeners } from './utils/getDialogueListeners';
-import { DialogueAbstract } from '../models/DialogueAbstract';
+import { Dialogue } from '../models/Dialogue';
 import { useMessageProgressStatus } from './dialogue/useMessageProgressStatus';
 import { ApiRefType } from './core/useInitializeApiRef';
+import { DDialogue, DMessage } from '../models';
 
-type DialogueContextType = {
-  dialogue: DialogueAbstract | undefined;
+type DialogueContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
+  dialogue: Dialogue<DM, DD> | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
-  dialogueApi: React.RefObject<DialogueApi>;
+  dialogueApi: React.RefObject<DialogueApi<DM>>;
 };
 
-type Props = {
+type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   children: React.ReactNode;
-  dialogue: DialogueAbstract | undefined;
-  apiRef: React.RefObject<ApiRefType>;
+  dialogue: Dialogue<DM, DD> | undefined;
+  apiRef: React.RefObject<ApiRefType<DM, DD>>;
 };
 
-const Context = React.createContext<DialogueContextType | undefined>(undefined);
+const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
 
-const DialogueProvider: React.FC<Props> = ({ children, dialogue, apiRef }) => {
+const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiRef }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
-  const dialogueApi = React.useRef<DialogueApi>(getDialogueMockApi());
+  const dialogueApi = React.useRef<DialogueApi<DM>>(getDialogueMockApi());
   const handleChangeStreamStatus = useMessageProgressStatus(dialogue);
 
   React.useMemo(() => {
@@ -67,7 +68,7 @@ const DialogueProvider: React.FC<Props> = ({ children, dialogue, apiRef }) => {
   );
 };
 
-const useDialogueContext = (): DialogueContextType => {
+const useDialogueContext = <DM extends DMessage, DD extends DDialogue<DM>>(): DialogueContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {

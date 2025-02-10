@@ -2,18 +2,18 @@ import { DMessage } from './Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
 
-export type DDialogue = {
+export type DDialogue<DM extends DMessage = any> = {
   id: IdType;
   title: string;
   date?: string;
   authorId: number;
-  messages: DMessage[];
+  messages: DM[];
 } & { isNew?: boolean };
 
-export class DialogueData<Data extends DDialogue> {
+export class DialogueData<DM extends DMessage, Data extends DDialogue<DM>> {
   readonly observableTitle = new ObservableReactValue('');
 
-  constructor(readonly data: Omit<Data, 'messages'>) {
+  constructor(readonly data: Data) {
     this.observableTitle.value = data.title;
   }
 

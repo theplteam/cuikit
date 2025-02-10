@@ -5,7 +5,7 @@ type Props = React.PropsWithChildren<{}>;
 
 const RootMock: React.FC<Props> = ({ children }) => {
   return (
-    <Stack height={'100%'}>
+    <Stack height={'100%'} flex={1}>
       {children}
     </Stack>
   );

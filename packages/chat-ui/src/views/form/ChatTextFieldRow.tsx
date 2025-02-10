@@ -8,14 +8,14 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { DialogueAbstract, StreamResponseState } from '../../models/DialogueAbstract';
+import { DialogueLight, StreamResponseState } from '../../models/Dialogue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
-import { useChatModel } from '../core/ChatGlobalContext';
 import PinPictureButton from './PinPictureButton';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  dialogue?: DialogueAbstract;
+  dialogue?: DialogueLight;
   scroller: {
     handleBottomScroll?: () => void;
   };
@@ -61,7 +61,7 @@ const InnerStackStyled = styled(Stack)(({ theme }) => ({
 
 const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const { dialogueApi } = useDialogueContext();
-  const chat = useChatModel();
+  const { onDialogueCreated, onAssistantMessageTypingFinish } = useChatContext();
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const [text, setText] = React.useState('');
@@ -74,11 +74,11 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
       dialogueApi.current?.setProgressStatus(StreamResponseState.START);
       const createdNew = await dialogue.createIfEmpty();
       if (createdNew) {
-        chat.dialogueActions.open(dialogue);
+        onDialogueCreated?.(dialogue.data.data);
       }
       dialogue.sendMessage(lastMessage, text, image)
         .then(() => {
-          chat.dialogueActions.touch(dialogue);
+          onAssistantMessageTypingFinish?.(dialogue.data.data);
           dialogueApi.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
         });
 

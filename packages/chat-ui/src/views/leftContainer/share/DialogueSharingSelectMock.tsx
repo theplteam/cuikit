@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { DialogueAbstract } from '../../../models/DialogueAbstract';
+import { DialogueLight } from '../../../models/Dialogue';
 
 type Props = {
-  dialogue: DialogueAbstract;
+  dialogue: DialogueLight;
   tariffsRef: React.RefObject<{ tariffs: number[] }>;
 };
 
