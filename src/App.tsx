@@ -12,6 +12,9 @@ import * as React from 'react';
 import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
 import MobileAppBar from './views/appBar/MobileAppBar.tsx';
 import { ChatGptModel, ChatGptDialogueData } from './models/ChatGptModel.ts';
+import ChatLicenseInfo from '../packages/chat-ui/src/views/license/ChatLicenseInfo.ts';
+
+ChatLicenseInfo.setLicenseKey(import.meta.env.VITE_CHAT_UI_LICENSE_KEY);
 
 function App() {
   const dd = dialogues as ChatGptDialogueData[];
