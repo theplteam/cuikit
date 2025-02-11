@@ -17,13 +17,13 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React
   const isMobile = useMobile();
 
   return (
-    <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'} >
+    <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'}>
       {!isMobile && (
         <Grid container size={{ sm: 4, md: 3 }}>
           <ListContainer />
         </Grid>
       )}
-      <Grid ref={ref} flex={1} maxHeight={'100%'} width={'100%'} overflow={'scroll'}>
+      <Grid ref={ref} flex={1} height={'100%'} width={'100%'} overflow={'auto'}>
         <Chat
           scrollerRef={ref}
           slots={{

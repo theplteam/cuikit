@@ -30,12 +30,9 @@ const MessagesRowStyled = styled(Stack)(({ theme }) => ({
 
 const TextRowBlock = styled(Box)(({ theme }) => ({
   width: '100%',
-  height: ChatViewConstants.TEXT_BLOCK_HEIGHT,
+  minHeight: ChatViewConstants.TEXT_BLOCK_HEIGHT,
   display: 'flex',
   justifyContent: 'center',
-  position: 'sticky',
-  bottom: 0,
-  zIndex: 1,
   background: theme.palette.background.paper,
 }));
 
@@ -67,10 +64,12 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
         )}
       </MessagesRowStyled>
       {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
-      <TextRowBlock id={'lol'}>
-        <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
-        <ChatTextFieldRow dialogue={dialogue} scroller={scrollApiRef.current} />
-      </TextRowBlock>
+      <Stack position={'sticky'} bottom={0} zIndex={1}>
+        <TextRowBlock>
+          <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
+          <ChatTextFieldRow dialogue={dialogue} scroller={scrollApiRef.current} />
+        </TextRowBlock>
+      </Stack>
       <MessageSelectedMobile />
     </DialogueProvider>
   );
