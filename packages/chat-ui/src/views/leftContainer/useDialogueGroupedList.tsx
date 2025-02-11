@@ -3,11 +3,11 @@ import { sortByDesc } from '../../utils/arrayUtils/arraySort';
 import { ArrayType } from '../../models/types';
 import moment from 'moment';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
-import { DialogueLight } from '../../models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 
 export type DialogueGroupType = {
   groupKey: string;
-  dialogue: DialogueLight;
+  dialogue: Dialogue;
 };
 
 export type ListGroupType = {
@@ -16,7 +16,7 @@ export type ListGroupType = {
   id: string;
 };
 
-export const useDialogueGroupedList = (dialogues: ArrayType<DialogueLight>) => {
+export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
   const [dialogueGroups, setDialogueGroups] = React.useState<Record<string, ListGroupType>>({});
 
   React.useEffect(() => {

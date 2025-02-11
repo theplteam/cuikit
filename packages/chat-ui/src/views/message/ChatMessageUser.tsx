@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../DialogueContext';
 import { Message } from '../../models/Message';
-import { DialogueLight } from '../../models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -23,7 +23,7 @@ import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
   message: Message;
-  dialogue: DialogueLight;
+  dialogue: Dialogue;
   isFirst?: boolean;
   elevation?: boolean;
   disableActions?: boolean;

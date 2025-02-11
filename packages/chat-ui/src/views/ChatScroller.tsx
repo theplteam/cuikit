@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useChatScroller } from './utils/useChatScroller';
 import ScrollBottomButton from './ScrollBottomButton';
-import { DialogueLight } from '../models/Dialogue';
+import { Dialogue } from '../models/Dialogue';
 import { BoxRefType } from './hooks/useElementRef';
 
 export type ChatScrollApiRef = {
@@ -10,7 +10,7 @@ export type ChatScrollApiRef = {
 
 type Props = {
   scrollApiRef: React.RefObject<ChatScrollApiRef>;
-  dialogue: DialogueLight | undefined;
+  dialogue: Dialogue | undefined;
   contentRef?: BoxRefType;
 };
 

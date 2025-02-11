@@ -22,8 +22,6 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-export type DialogueLight = Dialogue<any, any>;
-
 export type MessageStreamingParams<DM extends DMessage = any> = {
   /** User's message text */
   text: string,
@@ -45,7 +43,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   onFinish: () => void,
 }
 
-export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
+export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
