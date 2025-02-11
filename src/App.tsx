@@ -10,6 +10,8 @@ import ChatGptAdapter from '../packages/chat-ui/src/views/adapter/ChatGptAdapter
 
 ChatLicenseInfo.setLicenseKey(import.meta.env.VITE_CHAT_UI_LICENSE_KEY);
 
+const helloMessage = 'Hello! I am your AI assistant, and I’m ready to help you with any questions or tasks. Feel free to ask – together we’ll find the best solutions!';
+
 function App() {
   const dd = dialogues as ChatGptDialogueData[];
 
@@ -21,12 +23,13 @@ function App() {
     <Root>
       <ChatGptAdapter>
         <ChatUi
+          dialogue={dd[0]}
           dialogues={dd}
           handleStopMessageStreaming={openAi.stopStreaming}
           onUserMessageSent={openAi.streamMessage}
           assistantActions={customActions}
-          userId={20}
           lang={'ru'}
+          helloMessage={helloMessage}
         />
       </ChatGptAdapter>
     </Root>

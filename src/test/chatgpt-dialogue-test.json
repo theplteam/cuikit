@@ -4,11 +4,7 @@
     "title": "Pleasant conversation",
     "messages": [
       {
-        "role": "developer",
-        "content": "You are a helpful assistant.",
-        "created": 1677652280
-      },
-      {
+        "id": "1",
         "role": "user",
         "content": "Hello!",
         "created": 1677652281
@@ -41,6 +37,7 @@
         }
       },
       {
+        "id": "2",
         "role": "user",
         "content": [
           {

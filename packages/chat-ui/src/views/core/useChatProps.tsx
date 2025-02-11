@@ -103,6 +103,10 @@ export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Part
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
   apiRef: React.MutableRefObject<ApiRefType<DM, DD>>;
+  /**
+   * Show a welcome message at the beginning of the dialogue.
+   */
+  helloMessage?: string
   userId: UserIdType;
 }> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 

@@ -86,7 +86,7 @@ const useChatContext = <DM extends DMessage, DD extends DDialogue<DM>>(): ChatGl
     throw new Error("useMessagesContext must be used within a ChatGlobalProvider");
   }
 
-  /// TODO: #ANY - придумать как передать дженерик в контекст
+  /// TODO: #ANY
   return context as any;
 };
 

@@ -7,6 +7,8 @@ export class ForceStream {
 
   private _promise?: PromiseUtils<boolean>;
 
+  private _stop = false;
+
   // пауза в ms между таймаутами
   speed = { max: 300, min: 100 };
 
@@ -38,6 +40,10 @@ export class ForceStream {
     this._addTextPart(chunk);
   }
 
+  forceStop = () => {
+    this._stop = true;
+  }
+
   private _addTextPart = (chunks: string[]) => {
     const part = chunks[0];
     const newChunks = chunks.slice(1);
@@ -46,7 +52,7 @@ export class ForceStream {
     } else if (this.onPushTextPart) {
       this.onPushTextPart(`${part} `);
     }
-    if (newChunks.length) {
+    if (newChunks.length && !this._stop) {
       setTimeout(
         () => this._addTextPart(newChunks),
         randomInt(100, 300),

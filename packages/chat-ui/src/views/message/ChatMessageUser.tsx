@@ -6,7 +6,7 @@ import { messageActionsClasses } from './messageActionsClasses';
 import MessageActionsUser from './actions/MessageActionsUser';
 import clsx from 'clsx';
 import MessageUserEditor from './editor/MessageUserEditor';
-import MessagePagination from './actions/MessagePagination';
+import MessagePagination from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';

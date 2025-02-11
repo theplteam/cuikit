@@ -6,7 +6,6 @@ import { DDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { ChatApp } from './ChatApp';
-import { sortBy } from '../utils/arrayUtils/arraySort';
 import { IdType } from '../types';
 
 export type NewMessageResponse = {
@@ -76,14 +75,25 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   ) {
     this.data = new DialogueData(_data);
 
-    const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
+    if (!_data.messages.find(v => !!v.parentId)) {
+      const newMessages: DD['messages'] = [];
 
-    this.messages.allMessages.value = messages
-      // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
-      .filter((message, index) => {
-        const nextMessage = messages[index + 1];
-        return !nextMessage || message.isUser !== nextMessage.isUser
+      let parentId: IdType | undefined = undefined;
+      _data.messages.forEach(v => {
+        newMessages.push({
+          ...v,
+          parentId,
+        });
+        if (v.role === ChatMessageOwner.USER) {
+          parentId = v.id;
+        }
       });
+
+      _data.messages = newMessages
+    }
+
+    this.messages.allMessages.value = _data.messages.map(v => new Message(v));
+
     this.isEmpty.value = !!_data.isNew;
     this.timestamp = new ObservableReactValue(moment(_data.date).unix());
   }
