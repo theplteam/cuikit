@@ -11,6 +11,7 @@ import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
 import { useInitializeApiRef } from './core/useInitializeApiRef';
+import Watermark from './Watermark';
 import { DDialogue, DMessage } from '../models';
 
 const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
@@ -25,6 +26,7 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
         apiRef={apiRef}
       >
         <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
+          <Watermark />
           <slots.listDriver>
             <HiddenDesktop>
               <ChatAppDriver>
