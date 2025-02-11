@@ -65,15 +65,7 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
         )}
       </MessagesRowStyled>
       {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
-      <Stack
-        position={'sticky'}
-        bottom={'50%'}
-        zIndex={99999}
-        sx={{
-          pointerEvents: 'none',
-        }}>
-        <Watermark />
-      </Stack>
+      <Watermark />
       <Stack position={'sticky'} bottom={0} zIndex={1}>
         <TextRowBlock>
           <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
