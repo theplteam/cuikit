@@ -12,6 +12,7 @@ import { useChatContext } from './core/ChatGlobalContext';
 import { NOOP } from '../utils/NOOP';
 import { ApiRefType } from './core/useInitializeApiRef';
 import { DDialogue, DMessage } from '../models';
+import Watermark from './Watermark';
 
 type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -64,6 +65,15 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
         )}
       </MessagesRowStyled>
       {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
+      <Stack
+        position={'sticky'}
+        bottom={'50%'}
+        zIndex={99999}
+        sx={{
+          pointerEvents: 'none',
+        }}>
+        <Watermark />
+      </Stack>
       <Stack position={'sticky'} bottom={0} zIndex={1}>
         <TextRowBlock>
           <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />

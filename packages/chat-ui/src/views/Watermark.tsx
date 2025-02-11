@@ -2,6 +2,7 @@ import * as React from 'react';
 import useLicenseVerifier from './license/useLicenseVerifier';
 import Box from '@mui/material/Box';
 import LICENSE_STATUS from './license/ChatLicenseStatus';
+import { Typography } from '@mui/material';
 
 const Watermark: React.FC = () => {
   const { licenseStatus, licenseError } = useLicenseVerifier();
@@ -9,20 +10,12 @@ const Watermark: React.FC = () => {
   if (licenseStatus === LICENSE_STATUS.Valid) return null;
   return (
     <Box
-      position="absolute"
-      zIndex={100000}
       width={'100%'}
-      right={0}
-      bottom={'50%'}
       textAlign={'center'}
-      fontSize={24}
-      letterSpacing={4}
-      fontWeight={700}
-      sx={{
-        pointerEvents: 'none',
-      }}
     >
-      {licenseError}
+      <Typography fontSize={24} sx={{ color: 'rgba(130, 130, 130, 0.62)' }} fontFamily='"Roboto", "Helvetica", "Arial", sans-serif' letterSpacing={5}>
+        {`Chat UI ${licenseError}`}
+      </Typography>
     </Box>
   );
 }

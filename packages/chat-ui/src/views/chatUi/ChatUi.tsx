@@ -19,11 +19,11 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React
   return (
     <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'}>
       {!isMobile && (
-        <Grid container sm={4} md={3}>
+        <Grid container width={'100%'} maxWidth={360}>
           <ListContainer />
         </Grid>
       )}
-      <Grid ref={ref} flex={1} height={'100%'} width={'100%'} overflow={'auto'}>
+      <Grid ref={ref} flex={1} height={'100%'} width={'100%'} maxWidth={700} overflow={'auto'} position={'relative'}>
         <Chat
           scrollerRef={ref}
           slots={{
