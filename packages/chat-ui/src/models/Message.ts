@@ -10,7 +10,7 @@ export enum ChatMessageOwner {
 export type DMessage = {
   id: IdType;
   text: string;
-  owner: ChatMessageOwner;
+  role: ChatMessageOwner;
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;
@@ -60,16 +60,16 @@ export class Message<DM extends DMessage> {
     return this._data.time;
   }
 
-  get owner() {
-    return this._data.owner;
+  get role() {
+    return this._data.role;
   }
 
   get isUser() {
-    return this.owner === ChatMessageOwner.USER;
+    return this.role === ChatMessageOwner.USER;
   }
 
   get isAssistant() {
-    return this.owner === ChatMessageOwner.ASSISTANT;
+    return this.role === ChatMessageOwner.ASSISTANT;
   }
 
   /*get user() {

@@ -109,7 +109,7 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
    */
   get messagesFormatted() {
     return this.messages.currentMessages.value.map((message) => ({
-      role: message.owner,
+      role: message.role,
       content: message.text,
     }));
   }
@@ -197,7 +197,7 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
       this.streamMessage({
         text,
         history: this.messages.currentMessages.value.map((message) => ({
-          role: message.owner,
+          role: message.role,
           content: message.text,
         })),
         message: userMessage.data,
@@ -232,7 +232,7 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
     const userMessage = new Message({
       id: uuidv4(),
       text,
-      owner: ChatMessageOwner.USER,
+      role: ChatMessageOwner.USER,
       userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
@@ -241,7 +241,7 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
     const assistantMessage = new Message({
       id: 'NEW_MESSAGE_' + randomId(),
       text: '',
-      owner: ChatMessageOwner.ASSISTANT,
+      role: ChatMessageOwner.ASSISTANT,
       // должно быть больше для правильной сортировки
       time: moment().unix() + 1,
       parentId: userMessage.id,
