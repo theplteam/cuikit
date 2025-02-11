@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Chat from './../Chat';
 import { useElementRef } from './../hooks/useElementRef';
 import { ChatUsersProps } from './../core/useChatProps';
@@ -19,7 +19,7 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React
   return (
     <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'}>
       {!isMobile && (
-        <Grid container size={{ sm: 4, md: 3 }}>
+        <Grid container sm={4} md={3}>
           <ListContainer />
         </Grid>
       )}
