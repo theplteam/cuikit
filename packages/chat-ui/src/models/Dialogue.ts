@@ -25,14 +25,23 @@ export enum StreamResponseState {
 export type DialogueLight = Dialogue<any, any>;
 
 export type MessageStreamingParams<DM extends DMessage = any> = {
+  /** User's message text */
   text: string,
+  /** User's message */
   message: DM,
+  /** Dialogue history */
   history: {
     role: 'user' | 'assistant',
     content: string,
   }[],
+  /**
+   *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
+   *  Will be added to the current message.
+   */
   pushChunk: (chunk: string) => void,
+  /** Update text message  */
   setText: (text: string) => void,
+  /** Assistant's response answer is complete. */
   onFinish: () => void,
 }
 
