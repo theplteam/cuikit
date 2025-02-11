@@ -22,6 +22,8 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
+type MessageRole = 'user' | 'assistant';
+
 export type MessageStreamingParams<DM extends DMessage = any> = {
   /** User's message text */
   text: string,
@@ -29,7 +31,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   message: DM,
   /** Dialogue history */
   history: {
-    role: 'user' | 'assistant',
+    role: MessageRole,
     content: string,
   }[],
   /**
@@ -195,7 +197,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
       this.streamMessage({
         text,
         history: this.messages.currentMessages.value.map((message) => ({
-          role: message.role,
+          role: message.role as MessageRole,
           content: message.text,
         })),
         message: userMessage.data,

@@ -10,7 +10,7 @@ export enum ChatMessageOwner {
 export type DMessage = {
   id: IdType;
   text: string;
-  role: ChatMessageOwner;
+  role: ChatMessageOwner | string;
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;

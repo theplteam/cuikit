@@ -15,7 +15,8 @@ export class ForceStream {
 
   constructor(
     private _text: string,
-    private model: { text: string }
+    private model?: { text: string },
+    private onPushTextPart?: (text: string) => void,
   ) {}
 
   get promise() {
@@ -40,7 +41,11 @@ export class ForceStream {
   private _addTextPart = (chunks: string[]) => {
     const part = chunks[0];
     const newChunks = chunks.slice(1);
-    this.model.text += `${part} `;
+    if (this.model) {
+      this.model.text += `${part} `;
+    } else if (this.onPushTextPart) {
+      this.onPushTextPart(`${part} `);
+    }
     if (newChunks.length) {
       setTimeout(
         () => this._addTextPart(newChunks),
