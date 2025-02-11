@@ -17,9 +17,7 @@ export type DMessage = {
   time: number;
 }
 
-export type MessageLight = Message<any>;
-
-export class Message<DM extends DMessage> {
+export class Message<DM extends DMessage = any> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */

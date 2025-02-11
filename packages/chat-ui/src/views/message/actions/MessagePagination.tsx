@@ -4,12 +4,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../../DialogueContext';
-import { MessageLight } from '../../../models/Message';
+import { Message } from '../../../models/Message';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 
 export type MessagePaginationProps = {
-  message: MessageLight;
+  message: Message;
   classes: {
     paginationClassName: string;
   };

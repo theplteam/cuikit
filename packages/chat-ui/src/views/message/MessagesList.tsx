@@ -1,12 +1,12 @@
 import * as React from 'react';
 import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { MessageLight } from '../../models/Message';
+import { Message } from '../../models/Message';
 import { DialogueLight } from '../../models/Dialogue';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {
-  messages: MessageLight[];
+  messages: Message[];
   dialogue: DialogueLight;
 };
 

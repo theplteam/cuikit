@@ -11,7 +11,7 @@ import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../DialogueContext';
-import { MessageLight } from '../../models/Message';
+import { Message } from '../../models/Message';
 import { DialogueLight } from '../../models/Dialogue';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
@@ -22,7 +22,7 @@ import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  message: MessageLight;
+  message: Message;
   dialogue: DialogueLight;
   isFirst?: boolean;
   elevation?: boolean;

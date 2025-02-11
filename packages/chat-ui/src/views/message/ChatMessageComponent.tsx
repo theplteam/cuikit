@@ -3,11 +3,11 @@ import ChatMessageUser from './ChatMessageUser';
 import ChatMessageAssistant from './ChatMessageAssistant';
 import { ChatViewConstants } from '../ChatViewConstants';
 import Box from '@mui/material/Box';
-import { MessageLight } from '../../models/Message';
+import { Message } from '../../models/Message';
 import { DialogueLight } from '../../models/Dialogue';
 
 type Props = {
-  message: MessageLight;
+  message: Message;
   dialogue: DialogueLight;
   isLatest?: boolean;
   isFirst?: boolean;

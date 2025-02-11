@@ -4,7 +4,7 @@ import { ChatScrollerType } from './ChatScrollerType';
 import { useTheme } from '@mui/material/styles';
 import { useDialogueContext } from '../DialogueContext';
 import { when } from '../../utils/observers/when';
-import { MessageLight } from '../../models/Message';
+import { Message } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 class FollowingClass {
@@ -19,7 +19,7 @@ class FollowingClass {
   private _yDown = 0;
 
   constructor(
-    private _model: MessageLight,
+    private _model: Message,
     private getPosition: ChatScrollerType,
     private scrollTo: (y: number) => void,
     // TODO: надо убрать
