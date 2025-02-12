@@ -23,7 +23,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       <MessageActionCopy message={message} />
       {actionsAssistant?.map((component, k) => (
         <component.element
-          dialogue={dialogue}
+          dialogue={dialogue.data.data}
           message={message}
           key={k}
         />

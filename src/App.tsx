@@ -16,9 +16,6 @@ function App() {
       id={"chatRoot"}
       width={'100dvw'}
       height={'100dvh'}
-      position={'relative'}
-      display={'flex'}
-      justifyContent={'center'}
     >
       <ChatGptAdapter>
         <ChatPage

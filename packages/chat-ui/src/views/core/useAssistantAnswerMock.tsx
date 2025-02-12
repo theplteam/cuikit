@@ -2,9 +2,11 @@ import * as React from 'react';
 import { MessageStreamingParams } from '../../models';
 import { ForceStream } from '../../models/stream/ForceStream';
 import { generateRandomLoremIpsum } from '../../utils/stringUtils/generateLoremIpsum';
+import { NOOP } from '../../utils/NOOP';
 
 export const useAssistantAnswerMock = () => {
-  return React.useCallback((params: MessageStreamingParams) => {
+
+  const onUserMessageSent = React.useCallback((params: MessageStreamingParams) => {
     const text = generateRandomLoremIpsum("medium");
     const forceStream = new ForceStream(text, undefined, params.pushChunk);
     forceStream.start();
@@ -13,4 +15,6 @@ export const useAssistantAnswerMock = () => {
       params.onFinish();
     });
   }, []);
+
+  return { onUserMessageSent, handleStopMessageStreaming: NOOP };
 }
