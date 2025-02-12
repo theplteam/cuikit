@@ -10,19 +10,32 @@ import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 import { DDialogue, DMessage } from './../../models';
 
-const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
-  const { slots, ...other } = usersProps;
+type ChatUiProps = {
+  listPlacement?: 'left' | 'right';
+};
+
+const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD> & ChatUiProps>) => {
+  const { slots, listPlacement = 'left', ...other } = usersProps;
 
   const ref = useElementRef();
   const isMobile = useMobile();
 
+  const listContainerComponent = React.useMemo(() => isMobile
+    ? null
+    : (
+      <Grid container width={'100%'} maxWidth={360}>
+        <ListContainer />
+      </Grid>
+    ), [isMobile]);
+
   return (
     <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'}>
-      {!isMobile && (
-        <Grid container width={'100%'} maxWidth={360}>
-          <ListContainer />
+      {isMobile && (
+        <Grid>
+          <MobileAppBarContainer />
         </Grid>
       )}
+      {listPlacement === 'left' && listContainerComponent}
       <Grid ref={ref} flex={1} height={'100%'} width={'100%'} maxWidth={700} overflow={'auto'} position={'relative'}>
         <Chat
           scrollerRef={ref}
@@ -39,11 +52,7 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React
           )}
         </Chat>
       </Grid>
-      {isMobile && (
-        <Grid>
-          <MobileAppBarContainer />
-        </Grid>
-      )}
+      {listPlacement === 'right' && listContainerComponent}
     </Grid>
   )
 }
