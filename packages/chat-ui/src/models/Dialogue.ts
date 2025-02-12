@@ -1,4 +1,4 @@
-import { Message, ChatMessageOwner, DMessage } from './Message';
+import { Message, ChatMessageOwner, DMessage, ExtendedContentType } from './Message';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { DialogueMessages } from './DialogueMessages';
@@ -21,20 +21,6 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-type MessageRole = 'user' | 'assistant';
-
-type ImageContent = {
-  type: 'image_url', 
-  image_url: { url: string } 
-}
-
-type TextContent = {
-  type: 'text',
-  text: string,
-}
-
-type ExtendedContentType = ImageContent | TextContent;
-
 type FormattedUserMessage = {
   role: ChatMessageOwner.USER,
   content: string | ExtendedContentType[],
@@ -47,14 +33,14 @@ type FormattedAssistantMessage = {
 type FormattedMessage = FormattedUserMessage | FormattedAssistantMessage;
 
 export type MessageStreamingParams<DM extends DMessage = any> = {
-  /** User's message text */
-  text: string,
+  /** User's message content */
+  content: DMessage['content'],
   /** User's message */
   message: DM,
   /** Dialogue history */
   history: {
-    role: MessageRole,
-    content: string,
+    role: ChatMessageOwner,
+    content: DMessage['content'],
   }[],
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
@@ -141,34 +127,16 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
    * For chat request body
    */
 get messagesFormatted() {
-    // const formatted = this.messages.currentMessages.value.map((message) => {
-    //   const data: FormattedMessage = { 
-    //     role: message.owner,
-    //     content: message.text,
-    //   };
+    const formatted = this.messages.currentMessages.value.map((message) => {
+      const data = { 
+        role: message.role,
+        content: message.content,
+      };
 
-    //   if (message.image) {
-    //     data.content = [
-    //       {
-    //         type: 'image_url',
-    //         image_url: {
-    //           url: message.image,
-    //         }
-    //       },
-    //       {
-    //         type: 'text',
-    //         text: message.text,
-    //       }];
-    //     }
+      return data;
+    })
 
-    //   return data;
-    // })
-
-    // return formatted;
-    return this.messages.currentMessages.value.map((message) => ({
-      role: message.role,
-      content: message.text,
-    }));
+    return formatted as FormattedMessage[];
   }
 
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
@@ -235,11 +203,24 @@ get messagesFormatted() {
   ) => {
     this.isTyping.value = true;
 
-    const { userMessage, assistantMessage } = this._createPair(text, lastMessage, image);
+    let content: DMessage['content'] = text;
+
+    if (image) {
+      content = [{
+        type: 'image_url', 
+        image_url: { url: image } 
+      },
+      {
+        type: 'text',
+        text: text,
+      }]
+    }
+
+    const { userMessage, assistantMessage } = this._createPair(content, lastMessage);
 
     this.messages.push(userMessage, assistantMessage);
 
-    const promise = this._sendMessage(text, userMessage, assistantMessage);
+    const promise = this._sendMessage(content, userMessage, assistantMessage);
 
     promise.then(() => {
       this.isTyping.value = false;
@@ -249,13 +230,13 @@ get messagesFormatted() {
   }
 
 
-  private _sendMessage = (text: string, userMessage: Message<DM>, assistantMessage: Message<DM>) => {
+  private _sendMessage = (content: DMessage['content'], userMessage: Message<DM>, assistantMessage: Message<DM>) => {
     return new Promise<void>((resolve) => {
       this.streamMessage({
-        text,
+        content,
         history: this.messages.currentMessages.value.map((message) => ({
-          role: message.role as MessageRole,
-          content: message.text,
+          role: message.role as ChatMessageOwner,
+          content: message.content,
         })),
         message: userMessage.data,
         setText: (text) => {
@@ -285,20 +266,19 @@ get messagesFormatted() {
     }) as DD;
   }
 
-  protected _createPair = (text: string, parentMessage: Message<DM> | undefined, image?: string) => {
+  protected _createPair = (content: DMessage['content'], parentMessage: Message<DM> | undefined) => {
     const userMessage = new Message({
       id: uuidv4(),
-      text,
+      content,
       role: ChatMessageOwner.USER,
       userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
-      image: image,
     } as DM);
 
     const assistantMessage = new Message({
       id: 'NEW_MESSAGE_' + randomId(),
-      text: '',
+      content: '',
       role: ChatMessageOwner.ASSISTANT,
       // должно быть больше для правильной сортировки
       time: moment().unix() + 1,

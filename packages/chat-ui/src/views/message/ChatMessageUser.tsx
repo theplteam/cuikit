@@ -54,7 +54,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
 }));
 
 const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevation }) => {
-  const text = message.image ? `![image info](${message.image}) ${message.text}` : message.text;
+  const content = message.image ? `![image info](${message.image}) ${message.text}` : message.text;
 
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
@@ -84,7 +84,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   const children = React.useMemo(() => (
     <>
-      {text && <ChatMarkdownBlock text={text} />}
+      {content && <ChatMarkdownBlock text={content} />}
       {((isFirst || message.parentId)) && (
         <MessageActionsUser
           className={actionsClassName}
@@ -93,12 +93,12 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         />
       )}
     </>
-  ), [message, dialogue, text, isFirst, isTyping]);
+  ), [message, dialogue, content, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <MessageUserEditor
-        text={text}
+        text={message.text}
         onClickApply={onClickApplyEdit}
         onClickCancel={onClickCancelEdit}
       />

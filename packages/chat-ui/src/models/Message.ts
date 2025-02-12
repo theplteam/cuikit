@@ -7,14 +7,25 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 }
 
+type ImageContent = {
+  type: 'image_url', 
+  image_url: { url: string } 
+}
+
+type TextContent = {
+  type: 'text',
+  text: string,
+}
+
+export type ExtendedContentType = ImageContent | TextContent;
+
 export type DMessage = {
   id: IdType;
-  text: string;
+  content: string | ExtendedContentType[];
   role: ChatMessageOwner | string;
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;
-  image?: string;
   time: number;
 }
 
@@ -22,7 +33,9 @@ export class Message<DM extends DMessage = any> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */
-  readonly observableText = new ObservableReactValue('');
+  readonly observableText = new ObservableReactValue<string>('');
+
+  image?: string;
 
   /**
    * An observable flag indicating the start/finish of message typing.
@@ -35,7 +48,13 @@ export class Message<DM extends DMessage = any> {
   messageFilters?: string;
 
   constructor(private _data: DM) {
-    this.observableText.value = _data.text;
+    if (Array.isArray(_data.content)) {
+      this.observableText.value = _data.content.find(v => v.type === 'text')?.text || '';
+      this.image = _data.content.find(v => v.type === 'image_url')?.image_url.url || ''
+    } else {
+      this.observableText.value = _data.content;
+    }
+    
     this.messageFilters = _data.info;
   }
 
@@ -71,15 +90,21 @@ export class Message<DM extends DMessage = any> {
     return this.role === ChatMessageOwner.ASSISTANT;
   }
 
+  get content() {
+    let data: DMessage['content'] = this.text;
+
+    if (this.image) {
+      data = [{ type: 'image_url', image_url: { url: this.image } }, {type: 'text', text: this.text}];
+    }
+
+    return data;
+  }
+
   /*get user() {
     return this._data.userName ?? this._data.userId === appModel.user.id
       ? appModel.user
       : undefined;
   }*/
-
-  get image() {
-    return this._data.image;
-  }
 
   get text() {
     return this.observableText.value;
