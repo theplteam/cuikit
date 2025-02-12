@@ -1,13 +1,13 @@
 import * as React from 'react';
 import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { MessageLight } from '../../models/Message';
-import { DialogueLight } from '../../models/Dialogue';
+import { Message } from '../../models/Message';
+import { Dialogue } from '../../models/Dialogue';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {
-  messages: MessageLight[];
-  dialogue: DialogueLight;
+  messages: Message[];
+  dialogue: Dialogue;
 };
 
 const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {

@@ -16,7 +16,7 @@ import { DDialogue, DMessage } from '../models';
 const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
   const apiRef = useInitializeApiRef(usersProps.apiRef);
   const props = useChatProps(usersProps);
-  const { slots, slotProps, coreSlots } = usePropsSlots(usersProps.slots, usersProps.coreSlots, usersProps.slotProps);
+  const { slots, slotProps, coreSlots } = usePropsSlots(usersProps);
 
   return (
     <>

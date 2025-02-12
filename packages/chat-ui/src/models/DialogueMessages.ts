@@ -82,7 +82,7 @@ export class DialogueMessages<DM extends DMessage> {
 
     console.log(topItem, createTree(topItem, dialogue.messages));*/
 
-    const newBranch = topItem?.parentId ? this._createTree(topItem, this.allMessagesArray) : [];
+    const newBranch = topItem?.parentId ? this._createTree(topItem, this.allMessagesArray) : this.allMessagesArray;
 
     this.currentMessages.setValue(newBranch);
 

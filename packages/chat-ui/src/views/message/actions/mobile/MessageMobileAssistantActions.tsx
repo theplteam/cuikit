@@ -1,11 +1,11 @@
 import * as React from 'react';
 import MessageCopyMenuItems from '../MessageCopyMenuItems';
-import { MessageLight } from '../../../../models/Message';
-import { DialogueLight } from '../../../../models/Dialogue';
+import { Message } from '../../../../models/Message';
+import { Dialogue } from '../../../../models/Dialogue';
 
 type Props = {
-  message: MessageLight;
-  dialogue: DialogueLight;
+  message: Message;
+  dialogue: Dialogue;
   onClose: () => void;
 };
 

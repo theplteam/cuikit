@@ -2,12 +2,12 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import StopIcon from '@mui/icons-material/Stop';
-import { DialogueLight } from '../../models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  dialogue: DialogueLight | undefined;
+  dialogue: Dialogue | undefined;
   isTyping: boolean | undefined;
   text: string;
   onSendMessage: () => void;
