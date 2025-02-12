@@ -1,5 +1,5 @@
 import React from "react";
-import ChatLicenseInfo from "./ChatLicenseInfo";
+import ChatLicenseInfo from "../utils/ChatLicenseInfo";
 import CHAT_LICENSE_STATUS from "./ChatLicenseStatus";
 import ChatLicenseError from "./ChatLicenseError";
 import CHAT_LICENSING_MODELS from "./ChatLicensingModels";
