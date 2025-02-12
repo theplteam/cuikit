@@ -6,13 +6,13 @@ import { messageActionsClasses } from './messageActionsClasses';
 import MessageActionsUser from './actions/MessageActionsUser';
 import clsx from 'clsx';
 import MessageUserEditor from './editor/MessageUserEditor';
-import MessagePagination from './actions/MessagePagination';
+import MessagePagination from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../DialogueContext';
-import { MessageLight } from '../../models/Message';
-import { DialogueLight } from '../../models/Dialogue';
+import { Message } from '../../models/Message';
+import { Dialogue } from '../../models/Dialogue';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -22,8 +22,8 @@ import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  message: MessageLight;
-  dialogue: DialogueLight;
+  message: Message;
+  dialogue: Dialogue;
   isFirst?: boolean;
   elevation?: boolean;
   disableActions?: boolean;

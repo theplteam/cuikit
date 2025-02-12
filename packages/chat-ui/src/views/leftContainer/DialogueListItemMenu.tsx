@@ -2,7 +2,7 @@ import * as React from 'react';
 import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { DialogueLight } from '../../models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Dialogues } from '../../models/stream/Dialogues';
@@ -12,7 +12,7 @@ type Props = {
   handleClose: () => void;
   // TODO #ANY
   model: Dialogues<any, any>;
-  dialogue: DialogueLight;
+  dialogue: Dialogue;
 };
 
 const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, dialogue }) => {

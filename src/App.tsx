@@ -1,17 +1,16 @@
 import './App.css'
-import { Chat } from 'chat-ui';
-import Root from './test/Root.tsx';
-import dialogues from './test/dialogues.json';
-import { LeftContainer, LeftContainerPortal } from './test/LeftContainer.tsx';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import { useCustomAssistantActions } from './views/customAssistantActions';
-import { HiddenDesktop, HiddenMobile, useMobile } from '../packages/chat-ui/src/ui/Responsive.tsx';
-import HiddenContent from '../packages/chat-ui/src/views/HiddenContent.tsx';
 import * as React from 'react';
-import { useElementRef } from '../packages/chat-ui/src/views/hooks/useElementRef.tsx';
-import MobileAppBar from './views/appBar/MobileAppBar.tsx';
+import dialogues from './test/chatgpt-dialogue-test.json';
+import { useCustomAssistantActions } from './views/customAssistantActions';
+import ChatUi from '../packages/chat-ui/src/views/chatUi/ChatUi';
+import Root from './test/Root';
 import { ChatGptModel, ChatGptDialogueData } from './models/ChatGptModel.ts';
+import ChatLicenseInfo from '../packages/chat-ui/src/views/license/ChatLicenseInfo.ts';
+import ChatGptAdapter from '../packages/chat-ui/src/views/adapter/ChatGptAdapter.tsx';
+
+ChatLicenseInfo.setLicenseKey(import.meta.env.VITE_CHAT_UI_LICENSE_KEY);
+
+const helloMessage = 'Hello! I am your AI assistant, and I’m ready to help you with any questions or tasks. Feel free to ask – together we’ll find the best solutions!';
 
 function App() {
   const dd = dialogues as ChatGptDialogueData[];
@@ -20,44 +19,19 @@ function App() {
 
   const customActions = useCustomAssistantActions();
 
-  const ref = useElementRef();
-
-  const isMobile = useMobile();
   return (
     <Root>
-      <Stack
-        direction={'row'}
-        height={'inherit'}
-        overflow={'scroll'}
-        position={'relative'}
-        ref={ref}
-      >
-        <HiddenMobile>
-          <LeftContainer />
-        </HiddenMobile>
-        <Box
-          width={'100%'}
-          maxWidth={isMobile ? '100dvw' : 700}
-          height={'100%'}
-        >
-          <Chat
-            lang={'ru'}
-            dialogues={dd}
-            scrollerRef={ref}
-            userId={20}
-            handleStopMessageStreaming={openAi.stopStreaming}
-            onUserMessageSent={openAi.streamMessage}
-            slots={{
-              list: isMobile ? HiddenContent : LeftContainerPortal,
-            }}
-            assistantActions={customActions}
-          >
-            <HiddenDesktop>
-              <MobileAppBar />
-            </HiddenDesktop>
-          </Chat>
-        </Box>
-      </Stack>
+      <ChatGptAdapter>
+        <ChatUi
+          dialogue={dd[0]}
+          dialogues={dd}
+          handleStopMessageStreaming={openAi.stopStreaming}
+          onUserMessageSent={openAi.streamMessage}
+          assistantActions={customActions}
+          lang={'ru'}
+          helloMessage={helloMessage}
+        />
+      </ChatGptAdapter>
     </Root>
   )
 }

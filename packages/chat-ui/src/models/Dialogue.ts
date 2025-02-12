@@ -6,7 +6,6 @@ import { DDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { ChatApp } from './ChatApp';
-import { sortBy } from '../utils/arrayUtils/arraySort';
 import { IdType } from '../types';
 
 export type NewMessageResponse = {
@@ -22,7 +21,7 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-export type DialogueLight = Dialogue<any, any>;
+type MessageRole = 'user' | 'assistant';
 
 type ImageContent = {
   type: 'image_url', 
@@ -48,18 +47,27 @@ type FormattedAssistantMessage = {
 type FormattedMessage = FormattedUserMessage | FormattedAssistantMessage;
 
 export type MessageStreamingParams<DM extends DMessage = any> = {
+  /** User's message text */
   text: string,
+  /** User's message */
   message: DM,
+  /** Dialogue history */
   history: {
-    role: 'user' | 'assistant',
+    role: MessageRole,
     content: string,
   }[],
+  /**
+   *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
+   *  Will be added to the current message.
+   */
   pushChunk: (chunk: string) => void,
+  /** Update text message  */
   setText: (text: string) => void,
+  /** Assistant's response answer is complete. */
   onFinish: () => void,
 }
 
-export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
+export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
@@ -90,14 +98,25 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
   ) {
     this.data = new DialogueData(_data);
 
-    const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
+    if (!_data.messages.find(v => !!v.parentId)) {
+      const newMessages: DD['messages'] = [];
 
-    this.messages.allMessages.value = messages
-      // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
-      .filter((message, index) => {
-        const nextMessage = messages[index + 1];
-        return !nextMessage || message.isUser !== nextMessage.isUser
+      let parentId: IdType | undefined = undefined;
+      _data.messages.forEach(v => {
+        newMessages.push({
+          ...v,
+          parentId,
+        });
+        if (v.role === ChatMessageOwner.USER) {
+          parentId = v.id;
+        }
       });
+
+      _data.messages = newMessages
+    }
+
+    this.messages.allMessages.value = _data.messages.map(v => new Message(v));
+
     this.isEmpty.value = !!_data.isNew;
     this.timestamp = new ObservableReactValue(moment(_data.date).unix());
   }
@@ -122,30 +141,34 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
    * For chat request body
    */
 get messagesFormatted() {
-    const formatted = this.messages.currentMessages.value.map((message) => {
-      const data: FormattedMessage = { 
-        role: message.owner,
-        content: message.text,
-      };
+    // const formatted = this.messages.currentMessages.value.map((message) => {
+    //   const data: FormattedMessage = { 
+    //     role: message.owner,
+    //     content: message.text,
+    //   };
 
-      if (message.image) {
-        data.content = [
-          {
-            type: 'image_url',
-            image_url: {
-              url: message.image,
-            }
-          },
-          {
-            type: 'text',
-            text: message.text,
-          }];
-        }
+    //   if (message.image) {
+    //     data.content = [
+    //       {
+    //         type: 'image_url',
+    //         image_url: {
+    //           url: message.image,
+    //         }
+    //       },
+    //       {
+    //         type: 'text',
+    //         text: message.text,
+    //       }];
+    //     }
 
-      return data;
-    })
+    //   return data;
+    // })
 
-    return formatted;
+    // return formatted;
+    return this.messages.currentMessages.value.map((message) => ({
+      role: message.role,
+      content: message.text,
+    }));
   }
 
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
@@ -231,7 +254,7 @@ get messagesFormatted() {
       this.streamMessage({
         text,
         history: this.messages.currentMessages.value.map((message) => ({
-          role: message.owner,
+          role: message.role as MessageRole,
           content: message.text,
         })),
         message: userMessage.data,
@@ -266,7 +289,7 @@ get messagesFormatted() {
     const userMessage = new Message({
       id: uuidv4(),
       text,
-      owner: ChatMessageOwner.USER,
+      role: ChatMessageOwner.USER,
       userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
@@ -276,7 +299,7 @@ get messagesFormatted() {
     const assistantMessage = new Message({
       id: 'NEW_MESSAGE_' + randomId(),
       text: '',
-      owner: ChatMessageOwner.ASSISTANT,
+      role: ChatMessageOwner.ASSISTANT,
       // должно быть больше для правильной сортировки
       time: moment().unix() + 1,
       parentId: userMessage.id,

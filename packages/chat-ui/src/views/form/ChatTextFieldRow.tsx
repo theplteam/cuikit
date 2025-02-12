@@ -8,7 +8,7 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { DialogueLight, StreamResponseState } from '../../models/Dialogue';
+import { Dialogue, StreamResponseState } from '../../models/Dialogue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import PinPictureButton from './PinPictureButton';
@@ -16,7 +16,7 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import ChatImagePreview from './ChatImagePreview';
 
 type Props = {
-  dialogue?: DialogueLight;
+  dialogue?: Dialogue;
   scroller: {
     handleBottomScroll?: () => void;
   };
@@ -37,7 +37,7 @@ const DialogueWidthBlockStyled = styled(Box)(({ theme }) => ({
     content: '""',
     position: 'absolute',
     top: -50,
-    bottom: '0',
+    bottom: 0,
     width: `calc(100% - ${theme.spacing(paddingSidesSx * 2)})`,
     height: 100,
     pointerEvents: 'none',

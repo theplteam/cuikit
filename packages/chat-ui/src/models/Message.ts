@@ -10,7 +10,7 @@ export enum ChatMessageOwner {
 export type DMessage = {
   id: IdType;
   text: string;
-  owner: ChatMessageOwner;
+  role: ChatMessageOwner | string;
   userId?: UserIdType;
   info?: string;
   parentId?: IdType;
@@ -18,9 +18,7 @@ export type DMessage = {
   time: number;
 }
 
-export type MessageLight = Message<any>;
-
-export class Message<DM extends DMessage> {
+export class Message<DM extends DMessage = any> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */
@@ -61,16 +59,16 @@ export class Message<DM extends DMessage> {
     return this._data.time;
   }
 
-  get owner() {
-    return this._data.owner;
+  get role() {
+    return this._data.role;
   }
 
   get isUser() {
-    return this.owner === ChatMessageOwner.USER;
+    return this.role === ChatMessageOwner.USER;
   }
 
   get isAssistant() {
-    return this.owner === ChatMessageOwner.ASSISTANT;
+    return this.role === ChatMessageOwner.ASSISTANT;
   }
 
   /*get user() {
