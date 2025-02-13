@@ -3,8 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "chat-ui": ["./packages/chat-ui/src"]
+      "@plteam/chat-ui": ["./packages/chat-ui/src"]
     },
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "jsx": "preserve"
   },
   "references": [

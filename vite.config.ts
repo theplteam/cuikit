@@ -13,7 +13,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      'chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
+      '@plteam/chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
     }
   },
 })
