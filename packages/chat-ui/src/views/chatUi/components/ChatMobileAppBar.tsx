@@ -16,13 +16,12 @@ const ChatMobileAppBar: React.FC = () => {
 
   return (
     <Stack
-      justifyItems={'center'}
       justifyContent={'center'}
       height={64}
-      borderTop={`1px solid ${materialDesignSysPalette.outline}`}
       sx={{ backgroundColor: materialDesignSysPalette.surfaceContainerLow }}
+      paddingX={1}
     >
-      <Box display={'flex'} justifyItems={'center'} justifyContent={'center'}>
+      <Box>
         <coreSlots.iconButton onClick={handleClick}>
           <MenuIcon />
         </coreSlots.iconButton>
