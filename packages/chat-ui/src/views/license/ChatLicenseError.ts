@@ -2,7 +2,7 @@ import LICENSE_STATUS from "./ChatLicenseStatus";
 
 const ChatLicenseError: {[key in LICENSE_STATUS]: string} = {
   [LICENSE_STATUS.Invalid]: 'Invalid license key',
-  [LICENSE_STATUS.NotFound]: 'License key not found',
+  [LICENSE_STATUS.NotFound]: 'Missing license key',
   [LICENSE_STATUS.OutOfScope]: 'License key out of scope',
   [LICENSE_STATUS.ExpiredAnnual]: 'License key expired',
   [LICENSE_STATUS.ExpiredAnnualGrace]: 'License key expired (grace period)',
