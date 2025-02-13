@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';
 import { Message } from '../../../models/Message';
 import { usePopoverState } from '../../hooks/usePopoverState';
-import { lng } from '../../../utils/lng';
 import MdMenu from '../../../ui/menu/MdMenu';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { useChatContext } from '../../core/ChatGlobalContext';
+import { useLocalizationContext } from '../../core/LocalizationContext';
 
 
 type Props = {
@@ -17,6 +17,7 @@ type Props = {
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {
   const { processAssistantText } = useChatContext();
+  const locale = useLocalizationContext();
 
   let text = message.text;
 
@@ -32,7 +33,7 @@ const MessageActionCopy: React.FC<Props> = ({ message }) => {
   return (
     <>
       <Tooltip
-        title={lng(['Скопировать сообщение', 'Copy message'])}
+        title={locale.messageCopy}
       >
         <Box>
           <coreSlots.iconButton

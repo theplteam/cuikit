@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import SvgIcon from '@mui/material/SvgIcon';
 import CircularProgress from '@mui/material/CircularProgress';
-import { translateStringNode } from '../TextUi';
 
 export type MdMenuItemProps = {
   children: string[] | string;
@@ -37,7 +36,7 @@ const MdMenuItem: React.FC<MdMenuItemProps> = ({ children, startIcon, disabled, 
             : <ListItemIcon>{icon}</ListItemIcon>}
         </>
       )}
-      {translateStringNode(children)}
+      {children}
     </MenuItemStyled>
   );
 }

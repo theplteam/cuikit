@@ -4,6 +4,10 @@ import { ArrayType } from '../../models/types';
 import moment from 'moment';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { Dialogue } from '../../models/Dialogue';
+import { useLocalizationContext } from '../core/LocalizationContext';
+import { langReplace } from '../../locale/langReplace';
+import { capitalizeFirstLetter } from '../../utils/stringUtils/capitalizeFirstLetter';
+import { Localization } from '../../locale/Localization';
 
 export type DialogueGroupType = {
   groupKey: string;
@@ -11,35 +15,36 @@ export type DialogueGroupType = {
 };
 
 export type ListGroupType = {
-  label: [string, string] | readonly [string, string];
+  label: string;
   timestamp: number;
   id: string;
 };
 
 export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
   const [dialogueGroups, setDialogueGroups] = React.useState<Record<string, ListGroupType>>({});
+  const locale = useLocalizationContext();
 
   React.useEffect(() => {
     const basicGroups = {
       today: {
         id: 'today',
         timestamp: moment().startOf('day').unix(),
-        label: ['Сегодня', 'Today'],
+        label: locale.historyToday,
       },
       yesterday: {
         id: 'yesterday',
         timestamp: moment().subtract(1, 'days').startOf('day').unix(),
-        label: ['Вчера', 'Yesterday'],
+        label: locale.historyYesterday,
       },
       last7Days: {
         id: 'last7Days',
         timestamp: moment().subtract(7, 'days').startOf('day').unix(),
-        label: ['Предыдущие 7 дней', 'Previous 7 Days'],
+        label: langReplace(locale.historyPreviousNDays, { days: 7 }),
       },
       last30Days: {
         id: 'last30Days',
         timestamp: moment().subtract(30, 'days').startOf('day').unix(),
-        label: ['Предыдущие 30 дней', 'Previous 30 Days'],
+        label: langReplace(locale.historyPreviousNDays, { days: 30 }),
       },
     } as Record<string, ListGroupType>;
 
@@ -56,11 +61,11 @@ export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
         results[basicGroupKey] = { ...basicGroups[basicGroupKey] };
       } else if (timestamp >= startOfYear) {
         const month = moment.unix(timestamp);
-        const monthEn = month.format('MMMM');
-        const monthRu = month.locale('ru').format('MMMM');
+
+        const monthEn = capitalizeFirstLetter(month.locale('en').format('MMMM'));
 
         results[monthEn] = {
-          label: [monthRu, monthEn],
+          label: locale[`history${monthEn}` as keyof Localization],
           timestamp,
           id: monthEn,
         };
@@ -70,7 +75,7 @@ export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
         const yearKey = `year${yearLang}`;
 
         results[yearKey] = {
-          label: [yearLang, yearLang],
+          label: yearLang,
           timestamp: year.unix(),
           id: yearKey,
         };

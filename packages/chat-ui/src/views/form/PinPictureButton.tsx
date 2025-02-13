@@ -6,7 +6,7 @@ import { useMobile } from './../../ui/Responsive';
 import MobileImageAppDriver from './MobileImageAppDriver';
 import { useChatModel } from './../../views/core/ChatGlobalContext';
 import Stack from '@mui/material/Stack';
-import { lng } from './../../utils/lng';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
   image: string;
@@ -21,6 +21,7 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
   const mobileRef = React.useRef<HTMLInputElement>(null);
   const isMobile = useMobile();
   const chat = useChatModel();
+  const locale = useLocalizationContext();
 
   const handleClick = () => {
     if (isMobile) {
@@ -63,13 +64,13 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
             <coreSlots.iconButton onClick={() => mobileRef.current?.click()}>
               <AddAPhotoIcon sx={{ height: 60, width: 60 }} />
             </coreSlots.iconButton>
-            {lng(['Сделать фото', 'Take a photo'])}
+            {locale.attachmentImageShot}
           </Stack>
           <Stack alignItems={'center'}>
             <coreSlots.iconButton onClick={() => ref.current?.click()}>
               <FolderIcon sx={{ height: 60, width: 60 }} />
             </coreSlots.iconButton>
-            {lng(['Выбрать из галереи', 'Select from gallery'])}
+            {locale.attachmentImageGallery}
           </Stack>
         </Stack>
       </MobileImageAppDriver>

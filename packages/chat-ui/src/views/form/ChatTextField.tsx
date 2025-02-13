@@ -6,7 +6,7 @@ import { useElementRef } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import useEnterPress, { handleIgnoreEnterPress } from '../hooks/useEnterPress';
 import SimpleScrollbar from '../../ui/SimpleScrollbar';
-import { lng } from '../../utils/lng';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
   text: string;
@@ -38,6 +38,7 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
 const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, classes }) => {
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
+  const locale = useLocalizationContext();
 
   const isTablet = useTablet();
   const onEnterPress = useEnterPress(onSendMessage);
@@ -67,7 +68,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
     >
       <InputBaseStyled
         fullWidth
-        placeholder={lng(['Сообщение чату', 'Message chat'])}
+        placeholder={locale.textFieldPlaceholder}
         value={text}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setText(event.target.value);

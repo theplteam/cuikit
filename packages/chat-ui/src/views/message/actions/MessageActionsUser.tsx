@@ -3,8 +3,8 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
-import { lng } from '../../../utils/lng';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
+import { useLocalizationContext } from '../../core/LocalizationContext';
 
 type Props = {
   className: string;
@@ -21,6 +21,7 @@ const RootStyled = styled(Stack)(({ theme }) => ({
 
 const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled }) => {
   const coreSlots = useChatCoreSlots();
+  const locale = useLocalizationContext();
 
   return (
     <RootStyled
@@ -31,7 +32,7 @@ const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled 
       px={1.5}
     >
       <Tooltip
-        title={lng(['Отредактировать сообщение', 'Edit message'])}
+        title={locale.messageEdit}
       >
         <coreSlots.iconButton
           size={'small'}

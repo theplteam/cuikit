@@ -4,6 +4,7 @@ import HtmlIcon from '@mui/icons-material/Html';
 import { messageToHtml } from './messageToHtml';
 import { useSnackbar } from '../../hooks/useSnackbar';
 import { useChatSlots } from '../../core/ChatSlotsContext';
+import { useLocalizationContext } from '../../core/LocalizationContext';
 
 type Props = {
   handleClose: () => void;
@@ -14,16 +15,17 @@ type Props = {
 const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => {
   const { coreSlots } = useChatSlots();
   const snackbar = useSnackbar();
+  const locale = useLocalizationContext();
   const handleCopyMarkdown = () => {
     navigator.clipboard.writeText(text)
-      .then(() => snackbar.show(['Скопировано в буфер обмена', 'Copied to clipboard']));
+      .then(() => snackbar.show(locale.messageCopiedToClipboard));
     handleClose();
   }
 
   const handleCopyHTML = () => {
     const html = messageToHtml(text);
     navigator.clipboard.writeText(html)
-      .then(() => snackbar.show(['Скопировано в буфер обмена', 'Copied to clipboard']));
+      .then(() => snackbar.show(locale.messageCopiedToClipboard));
     handleClose();
   }
 
@@ -33,13 +35,13 @@ const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => 
         startIcon={CodeIcon}
         onClick={handleCopyMarkdown}
       >
-        {short ? 'Markdown' : ['Копировать Markdown', 'Copy Markdown']}
+        {short ? 'Markdown' : locale.messageCopyMarkdown}
       </coreSlots.menuItem>
       <coreSlots.menuItem
         startIcon={HtmlIcon}
         onClick={handleCopyHTML}
       >
-        {short ? 'HTML' : ['Копировать HTML', 'Copy HTML']}
+        {short ? 'HTML' : locale.messageCopyHTML}
       </coreSlots.menuItem>
     </>
   );

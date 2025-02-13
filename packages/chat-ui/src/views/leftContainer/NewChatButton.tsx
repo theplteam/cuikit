@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useObserverValue } from '../hooks/useObserverValue';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
   openNewDialogue: () => void;
@@ -32,6 +33,8 @@ export const NewChatIconButton = ({ openNewDialogue }: Props) => {
 const NewChatButton = ({ openNewDialogue }: Props) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
+  const locale = useLocalizationContext();
+  
   return (
     <Box
       pt={1.5}
@@ -46,7 +49,7 @@ const NewChatButton = ({ openNewDialogue }: Props) => {
         fullWidth
         variant={'outlined'}
       >
-        {['Новый чат', 'New chat']}
+        {locale.newChat}
       </coreSlots.button>
     </Box>
   );

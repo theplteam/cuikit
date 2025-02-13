@@ -1,11 +1,10 @@
 import * as React from 'react';
-import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Dialogue } from '../../models/Dialogue';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Dialogues } from '../../models/stream/Dialogues';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
   anchorEl: null | HTMLElement;
@@ -17,19 +16,11 @@ type Props = {
 
 const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, dialogue }) => {
   const { coreSlots } = useChatSlots();
+  const locale = useLocalizationContext();
+
   const handleDelete = () => {
     handleClose();
     model.actions.deleteItem.value = dialogue;
-  }
-
-  const handleShare = () => {
-    handleClose();
-    model.actions.shareItem.value = dialogue;
-  }
-
-  const handleOpenInfo = () => {
-    handleClose();
-    model.actions.viewItem.value = dialogue;
   }
 
   return (
@@ -47,24 +38,11 @@ const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, d
       }}
     >
       <coreSlots.menuItem
-        startIcon={ShareIcon}
-        onClick={handleShare}
-        disabled={!dialogue.isOwner}
-      >
-        {['Поделиться', 'Share']}
-      </coreSlots.menuItem>
-      <coreSlots.menuItem
-        startIcon={HelpOutlineIcon}
-        onClick={handleOpenInfo}
-      >
-        {['Информация', 'Info']}
-      </coreSlots.menuItem>
-      <coreSlots.menuItem
         startIcon={DeleteIcon}
         onClick={handleDelete}
         disabled={!dialogue.isOwner}
       >
-        {['Удалить', 'Delete']}
+        {locale.dialogueActionDelete}
       </coreSlots.menuItem>
     </MdMenu>
   );
