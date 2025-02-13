@@ -1,29 +1,15 @@
 import * as React from "react";
+import dialoguesJson from '../testDialogues.json';
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DMessage,
   DDialogue,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
+import SendIcon from '@mui/icons-material/Send';
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
-    {
-      id: "test-dialogue",
-      title: "Welcome message",
-      messages: [
-        {
-          role: "user",
-          content: "Hello!",
-        },
-        {
-          role: "assistant",
-          content: "Hello there! How can I assist you today?",
-        },
-      ] as DMessage[],
-    },
-  ]);
+  const [dialogues] = React.useState<DDialogue[]>(dialoguesJson);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
@@ -35,6 +21,18 @@ const App: React.FC = () => {
         dialogues={dialogues}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}
+        defaultTextFieldValue={'See you later!'}
+        slots={{
+          sendMessageIcon: SendIcon,
+        }}
+        slotProps={{
+          sendMessageButton: {
+            size: 'large',
+            sx: {
+              color: (theme) => theme.palette.secondary.main,
+            },
+          },
+        }}
       />
     </Box>
   );

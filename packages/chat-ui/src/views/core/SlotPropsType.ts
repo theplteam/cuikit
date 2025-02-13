@@ -44,9 +44,7 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
    */
   firstMessage: { dialogue: Dialogue<DM, DD>, text?: string };
 
-  // POPUPS
-  popupsSharingContent: { dialogue: Dialogue<DM, DD>; tariffsRef: React.RefObject<{ tariffs: number[] }> };
-  popupsInfoContent: { dialogue: Dialogue<DM, DD>; };
+  sendMessageButton: IconButtonProps;
 
   // MESSAGE
   /**

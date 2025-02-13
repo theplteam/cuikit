@@ -74,6 +74,10 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    * Callback fired when first message sent
    */
   onDialogueDeleted?: ChatEventListeners<{ dialogue: DD }>;
+  /**
+   * Prefill textfield
+   */
+  defaultTextFieldValue?: string;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату

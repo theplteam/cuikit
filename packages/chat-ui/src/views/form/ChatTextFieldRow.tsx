@@ -62,10 +62,10 @@ const InnerStackStyled = styled(Stack)(({ theme }) => ({
 
 const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const { dialogueApi } = useDialogueContext();
-  const { onDialogueCreated, onAssistantMessageTypingFinish } = useChatContext();
+  const { onDialogueCreated, onAssistantMessageTypingFinish, defaultTextFieldValue } = useChatContext();
   const isTyping = useObserverValue(dialogue?.isTyping);
 
-  const [text, setText] = React.useState('');
+  const [text, setText] = React.useState(defaultTextFieldValue ?? '');
   const [image, setImage] = React.useState<string>('');
 
   const onSendMessage = async () => {
@@ -109,7 +109,6 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
             classes={inputClasses}
           />
           <SendMessageButton
-            dialogue={dialogue}
             onSendMessage={onSendMessage}
             isTyping={isTyping}
             text={text}

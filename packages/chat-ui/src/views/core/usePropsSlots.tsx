@@ -1,6 +1,6 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
-import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
+import { MockComponent } from '../utils/MockComponent';
 import RootMock from '../message/RootMock';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
@@ -24,6 +24,7 @@ import ChatMarkdown from '../message/markdown/ChatMarkdown';
 import { DDialogue, DMessage } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../dialogue/HelloMessage';
+import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -35,7 +36,8 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> };
+export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
+  & ChatIconSlotsType;
 
 type SlotsReturnType<DM extends DMessage, DD extends DDialogue<DM>> = {
   slots: SlotsType<DM, DD>;
@@ -57,6 +59,8 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
     };
 
     const componentSlots: SlotsType<DM, DD> = {
+      ...chatIconSlots,
+      ...slots,
       firstMessage: slots?.firstMessage ?? HelloMessage,
       dialogue: slots?.dialogue ?? RootMock,
       list: slots?.list ?? HiddenContent,
@@ -64,8 +68,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       listTimeText: slots?.listTimeText ?? Typography,
       listDriver: slots?.listDriver ?? React.Fragment,
       listDriverTitle: slots?.listDriverTitle ?? Typography,
-      popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
-      popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
+      sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,
