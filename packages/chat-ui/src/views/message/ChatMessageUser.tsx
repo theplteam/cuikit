@@ -35,13 +35,13 @@ const {
   paginationClassName,
 } = messageActionsClasses;
 
-const ChatMessageContainerStyled = styled(ChatMessageContainer)(({theme}) => ({
+const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => ({
   width: '80%',
   background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
   [`& .${actionsClassName}`]: {
     opacity: 0,
-    transition: theme.transitions.create('opacity', {duration: motion.duration.short3}),
+    transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
   },
   [`&.${hoverMessageClassName}`]: {
     [`& .${actionsClassName}`]: {
@@ -54,7 +54,8 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({theme}) => ({
 }));
 
 const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevation }) => {
-  const text = message.text;
+  const content = message.image ? `![image info](${message.image}) ${message.text}` : message.text;
+
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(dialogue?.isTyping);
@@ -83,7 +84,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   const children = React.useMemo(() => (
     <>
-      {text && <ChatMarkdownBlock text={text}/>}
+      {content && <ChatMarkdownBlock text={content} />}
       {((isFirst || message.parentId)) && (
         <MessageActionsUser
           className={actionsClassName}
@@ -92,12 +93,12 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         />
       )}
     </>
-  ), [message, dialogue, text, isFirst, isTyping]);
+  ), [message, dialogue, content, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <MessageUserEditor
-        text={text}
+        text={message.text}
         onClickApply={onClickApplyEdit}
         onClickCancel={onClickCancelEdit}
       />
@@ -122,7 +123,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
           gap={1}
           mx={1.5}
           className={clsx(
-            {[hoverMessageClassName]: isHover || isTablet},
+            { [hoverMessageClassName]: isHover || isTablet },
           )}
           ref={setElement}
           elevation={elevation}

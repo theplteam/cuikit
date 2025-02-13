@@ -10,7 +10,9 @@ const ChatGptAdapter: React.FC<AdapterProviderProps> = (props) => {
       try {
         content = message.choices[0].message.content;
         message.role = ChatMessageOwner.ASSISTANT;
-      } catch (e) {}
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     // TODO: timed
@@ -18,7 +20,7 @@ const ChatGptAdapter: React.FC<AdapterProviderProps> = (props) => {
       content = content[0].text;
     }
 
-    return { ...message, text: content };
+    return { ...message, content };
   }, []);
 
   return (

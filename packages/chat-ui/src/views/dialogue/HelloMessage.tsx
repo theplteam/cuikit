@@ -12,7 +12,7 @@ type Props = {
 const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
   const [message] = React.useState(new Message({
     id: 'helloMessage' + randomId(),
-    text: '',
+    content: '',
     role: 'assistant',
     time: 0
   }));
