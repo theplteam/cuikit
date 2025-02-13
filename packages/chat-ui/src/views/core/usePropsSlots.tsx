@@ -57,9 +57,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
     };
 
     const componentSlots: SlotsType<DM, DD> = {
-      firstMessage: slots?.firstMessage ?? helloMessage
-        ? ({ dialogue }) => <HelloMessage text={helloMessage!} dialogue={dialogue} />
-        : MockComponent,
+      firstMessage: slots?.firstMessage ?? HelloMessage,
       dialogue: slots?.dialogue ?? RootMock,
       list: slots?.list ?? HiddenContent,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
@@ -105,8 +103,16 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
     };
   }, [slots]);
 
+  const componentSlotProps = React.useMemo(() => ({
+    ...slotProps,
+    firstMessage: {
+      dialogue: slotProps?.firstMessage?.dialogue,
+      text: slotProps?.firstMessage?.text ?? helloMessage,
+    },
+  }) as SlotPropsType<DM, DD>, [slotProps])
+
   return {
-    slotProps: React.useMemo(() => slotProps ?? {}, [slotProps]),
+    slotProps: componentSlotProps,
     slots: res.slots,
     coreSlots: res.coreSlots
   };
