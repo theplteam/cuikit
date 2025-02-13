@@ -1,4 +1,4 @@
-import { DDialogue, DMessage } from "../../models";
+import { DDialogue, DialogueHistoryItemType, DMessage } from "../../models";
 
 export type AdapterType<D = any, M = any> = {
   transformDialogue: (dialogue: D) => DDialogue;
@@ -7,4 +7,5 @@ export type AdapterType<D = any, M = any> = {
    * @param message
    */
   transformMessage?: (message: M) => DMessage;
+  transformHistory?: <T>(history: DialogueHistoryItemType[]) => T[];
 };

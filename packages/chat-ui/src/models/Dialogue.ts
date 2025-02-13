@@ -1,4 +1,4 @@
-import { Message, ChatMessageOwner, DMessage, ExtendedContentType } from './Message';
+import { Message, ChatMessageOwner, DMessage, MessageUserContent, MessageAssistantContent } from './Message';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { DialogueMessages } from './DialogueMessages';
@@ -21,16 +21,8 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-type FormattedUserMessage = {
-  role: ChatMessageOwner.USER,
-  content: string | ExtendedContentType[],
-}
-type FormattedAssistantMessage = {
-  role: ChatMessageOwner.ASSISTANT,
-  content: string,
-}
-
-type FormattedMessage = FormattedUserMessage | FormattedAssistantMessage;
+export type DialogueHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
+  | { role: ChatMessageOwner.ASSISTANT, content: MessageAssistantContent }
 
 export type MessageStreamingParams<DM extends DMessage = any> = {
   /** User's message content */
@@ -38,10 +30,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   /** User's message */
   message: DM,
   /** Dialogue history */
-  history: {
-    role: ChatMessageOwner,
-    content: DMessage['content'],
-  }[],
+  history: DialogueHistoryItemType[],
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.
@@ -123,22 +112,6 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
     return this.data.authorId === ChatApp.userId;
   }
 
-  /**
-   * For chat request body
-   */
-get messagesFormatted() {
-    const formatted = this.messages.currentMessages.value.map((message) => {
-      const data = { 
-        role: message.role,
-        content: message.content,
-      };
-
-      return data;
-    })
-
-    return formatted as FormattedMessage[];
-  }
-
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
     let res: { data?: { dialogue: DD } } | undefined;
 
@@ -207,8 +180,8 @@ get messagesFormatted() {
 
     if (image) {
       content = [{
-        type: 'image_url', 
-        image_url: { url: image } 
+        type: 'image_url',
+        image_url: { url: image }
       },
       {
         type: 'text',
@@ -235,9 +208,9 @@ get messagesFormatted() {
       this.streamMessage({
         content,
         history: this.messages.currentMessages.value.map((message) => ({
-          role: message.role as ChatMessageOwner,
+          role: message.role,
           content: message.content,
-        })),
+        }) as DialogueHistoryItemType),
         message: userMessage.data,
         setText: (text) => {
           assistantMessage.text = text;
@@ -271,7 +244,6 @@ get messagesFormatted() {
       id: uuidv4(),
       content,
       role: ChatMessageOwner.USER,
-      userId: ChatApp.userId ?? '0',
       time: moment().unix(),
       parentId: parentMessage?.id,
     } as DM);

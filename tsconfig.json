@@ -5,6 +5,9 @@
     "paths": {
       "@plteam/chat-ui": ["./packages/chat-ui/src"]
     },
+    "target": "ES2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "jsx": "preserve"

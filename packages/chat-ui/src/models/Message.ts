@@ -1,5 +1,4 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { UserIdType } from './ChatApp';
 import { IdType } from '../types';
 
 export enum ChatMessageOwner {
@@ -8,8 +7,8 @@ export enum ChatMessageOwner {
 }
 
 type ImageContent = {
-  type: 'image_url', 
-  image_url: { url: string } 
+  type: 'image_url',
+  image_url: { url: string }
 }
 
 type TextContent = {
@@ -17,17 +16,20 @@ type TextContent = {
   text: string,
 }
 
-export type ExtendedContentType = ImageContent | TextContent;
+export type MessageUserContent = string | (ImageContent | TextContent)[];
+export type MessageAssistantContent = string | (TextContent)[];
 
 export type DMessage = {
   id: IdType;
-  content: string | ExtendedContentType[];
-  role: ChatMessageOwner | string;
-  userId?: UserIdType;
-  info?: string;
   parentId?: IdType;
   time: number;
-}
+} & ({
+  role: ChatMessageOwner.USER;
+  content: MessageUserContent;
+} | {
+  role: ChatMessageOwner.ASSISTANT;
+  content: MessageAssistantContent;
+})
 
 export class Message<DM extends DMessage = any> {
   /**
@@ -42,20 +44,13 @@ export class Message<DM extends DMessage = any> {
    */
   typing = new ObservableReactValue(false);
 
-  /**
-   * @deprecated
-   */
-  messageFilters?: string;
-
   constructor(private _data: DM) {
     if (Array.isArray(_data.content)) {
-      this.observableText.value = _data.content.find(v => v.type === 'text')?.text || '';
-      this.image = _data.content.find(v => v.type === 'image_url')?.image_url.url || ''
+      this.observableText.value = (_data.content.find(v => v.type === 'text') as TextContent)?.text || '';
+      this.image = (_data.content.find(v => v.type === 'image_url') as ImageContent)?.image_url.url || ''
     } else {
       this.observableText.value = _data.content;
     }
-    
-    this.messageFilters = _data.info;
   }
 
   get id() {

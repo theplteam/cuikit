@@ -15,11 +15,6 @@ const ChatGptAdapter: React.FC<AdapterProviderProps> = (props) => {
       }
     }
 
-    // TODO: timed
-    if (typeof content !== 'string') {
-      content = content[0].text;
-    }
-
     return { ...message, content };
   }, []);
 

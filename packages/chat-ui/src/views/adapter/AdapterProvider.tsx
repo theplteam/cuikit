@@ -8,7 +8,6 @@ export const AdapterProvider = ({ children, transformDialogue, transformMessage 
 
   const baseDialogueTransormer = React.useCallback((dialogue: any) => {
     if (!!transformMessage && Array.isArray(dialogue.messages)) {
-      console.log(dialogue.messages.map(transformMessage))
       return {
         ...dialogue,
         messages: dialogue.messages.map(transformMessage)
