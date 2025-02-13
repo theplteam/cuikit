@@ -9,8 +9,4 @@ export class ChatActions<DM extends DMessage, DD extends DDialogue<DM>> {
   readonly mobileImageDriverOpen = new ObservableReactValue(false);
 
   readonly deleteItem = new ObservableReactValue<Dialogue<DM, DD> | undefined>(undefined);
-
-  readonly shareItem = new ObservableReactValue<Dialogue<DM, DD> | undefined>(undefined);
-
-  readonly viewItem = new ObservableReactValue<Dialogue<DM, DD> | undefined>(undefined);
 }
