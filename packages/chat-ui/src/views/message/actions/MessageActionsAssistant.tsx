@@ -2,13 +2,13 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
 import MessageActionFeedback from './feedback/MessageActionFeedback';
-import { MessageLight } from '../../../models/Message';
+import { Message } from '../../../models/Message';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import { DialogueLight } from '../../../models/Dialogue';
+import { Dialogue } from '../../../models/Dialogue';
 
 type Props = {
-  message: MessageLight
-  dialogue: DialogueLight;
+  message: Message;
+  dialogue: Dialogue;
   className: string;
 };
 
@@ -26,8 +26,8 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       {!disableMessageRating && <MessageActionFeedback message={message} />}
       {actionsAssistant?.map((component, k) => (
         <component.element
-          dialogue={dialogue}
-          message={message}
+          dialogue={dialogue.data.data}
+          message={message.data}
           key={k}
         />
       ))}

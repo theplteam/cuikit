@@ -6,7 +6,7 @@ export type DDialogue<DM extends DMessage = any> = {
   id: IdType;
   title: string;
   date?: string;
-  authorId: number;
+  authorId?: number;
   messages: DM[];
 } & { isNew?: boolean };
 

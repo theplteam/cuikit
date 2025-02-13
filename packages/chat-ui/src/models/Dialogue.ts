@@ -1,4 +1,4 @@
-import { Message, ChatMessageOwner, DMessage } from './Message';
+import { Message, ChatMessageOwner, DMessage, MessageUserContent, MessageAssistantContent } from './Message';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { DialogueMessages } from './DialogueMessages';
@@ -6,7 +6,6 @@ import { DDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { ChatApp } from './ChatApp';
-import { sortBy } from '../utils/arrayUtils/arraySort';
 import { IdType } from '../types';
 
 export type NewMessageResponse = {
@@ -22,21 +21,28 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-export type DialogueLight = Dialogue<any, any>;
+export type DialogueHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
+  | { role: ChatMessageOwner.ASSISTANT, content: MessageAssistantContent }
 
 export type MessageStreamingParams<DM extends DMessage = any> = {
-  text: string,
+  /** User's message content */
+  content: DMessage['content'],
+  /** User's message */
   message: DM,
-  history: {
-    role: 'user' | 'assistant',
-    content: string,
-  }[],
+  /** Dialogue history */
+  history: DialogueHistoryItemType[],
+  /**
+   *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
+   *  Will be added to the current message.
+   */
   pushChunk: (chunk: string) => void,
+  /** Update text message  */
   setText: (text: string) => void,
+  /** Assistant's response answer is complete. */
   onFinish: () => void,
 }
 
-export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
+export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
@@ -67,14 +73,25 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
   ) {
     this.data = new DialogueData(_data);
 
-    const messages = sortBy(_data.messages.map(v => new Message(v)), 'time');
+    if (!_data.messages.find(v => !!v.parentId)) {
+      const newMessages: DD['messages'] = [];
 
-    this.messages.allMessages.value = messages
-      // убираем артефакты, когда пользователь остановил ответ чата ещё до начала стрима и написал новое
-      .filter((message, index) => {
-        const nextMessage = messages[index + 1];
-        return !nextMessage || message.isUser !== nextMessage.isUser
+      let parentId: IdType | undefined = undefined;
+      _data.messages.forEach(v => {
+        newMessages.push({
+          ...v,
+          parentId,
+        });
+        if (v.role === ChatMessageOwner.USER) {
+          parentId = v.id;
+        }
       });
+
+      _data.messages = newMessages
+    }
+
+    this.messages.allMessages.value = _data.messages.map(v => new Message(v));
+
     this.isEmpty.value = !!_data.isNew;
     this.timestamp = new ObservableReactValue(moment(_data.date).unix());
   }
@@ -93,16 +110,6 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
 
   get isOwner() {
     return this.data.authorId === ChatApp.userId;
-  }
-
-  /**
-   * For chat request body
-   */
-  get messagesFormatted() {
-    return this.messages.currentMessages.value.map((message) => ({
-      role: message.owner,
-      content: message.text,
-    }));
   }
 
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
@@ -165,15 +172,28 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
   sendMessage = (
     lastMessage: Message<DM> | undefined,
     text: string,
-
+    image?: string,
   ) => {
     this.isTyping.value = true;
 
-    const { userMessage, assistantMessage } = this._createPair(text, lastMessage);
+    let content: DMessage['content'] = text;
+
+    if (image) {
+      content = [{
+        type: 'image_url',
+        image_url: { url: image }
+      },
+      {
+        type: 'text',
+        text: text,
+      }]
+    }
+
+    const { userMessage, assistantMessage } = this._createPair(content, lastMessage);
 
     this.messages.push(userMessage, assistantMessage);
 
-    const promise = this._sendMessage(text, userMessage, assistantMessage);
+    const promise = this._sendMessage(content, userMessage, assistantMessage);
 
     promise.then(() => {
       this.isTyping.value = false;
@@ -183,14 +203,14 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
   }
 
 
-  private _sendMessage = (text: string, userMessage: Message<DM>, assistantMessage: Message<DM>) => {
+  private _sendMessage = (content: DMessage['content'], userMessage: Message<DM>, assistantMessage: Message<DM>) => {
     return new Promise<void>((resolve) => {
       this.streamMessage({
-        text,
+        content,
         history: this.messages.currentMessages.value.map((message) => ({
-          role: message.owner,
-          content: message.text,
-        })),
+          role: message.role,
+          content: message.content,
+        }) as DialogueHistoryItemType),
         message: userMessage.data,
         setText: (text) => {
           assistantMessage.text = text;
@@ -219,20 +239,19 @@ export class Dialogue<DM extends DMessage, DD extends DDialogue<DM>> {
     }) as DD;
   }
 
-  protected _createPair = (text: string, parentMessage: Message<DM> | undefined) => {
+  protected _createPair = (content: DMessage['content'], parentMessage: Message<DM> | undefined) => {
     const userMessage = new Message({
       id: uuidv4(),
-      text,
-      owner: ChatMessageOwner.USER,
-      userId: ChatApp.userId ?? '0',
+      content,
+      role: ChatMessageOwner.USER,
       time: moment().unix(),
       parentId: parentMessage?.id,
     } as DM);
 
     const assistantMessage = new Message({
       id: 'NEW_MESSAGE_' + randomId(),
-      text: '',
-      owner: ChatMessageOwner.ASSISTANT,
+      content: '',
+      role: ChatMessageOwner.ASSISTANT,
       // должно быть больше для правильной сортировки
       time: moment().unix() + 1,
       parentId: userMessage.id,

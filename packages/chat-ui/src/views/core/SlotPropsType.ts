@@ -7,7 +7,7 @@ import type { TableBodyProps } from '@mui/material/TableBody';
 import type { TableCellProps } from '@mui/material/TableCell';
 import type { TableRowProps } from '@mui/material/TableRow';
 import type { TypographyProps } from '@mui/material/Typography';
-import type { MessagePaginationProps } from '../message/actions/MessagePagination';
+import type { MessagePaginationProps } from '../message/MessagePagination';
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';

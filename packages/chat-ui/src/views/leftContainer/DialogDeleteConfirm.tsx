@@ -4,11 +4,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { lng } from '../../utils/lng';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {};
 
@@ -17,6 +17,7 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
   const deleteItem = useObserverValue(model.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
   const snackbar = useSnackbar();
+  const locale = useLocalizationContext();
 
   const handleClose = () => {
     model.actions.deleteItem.value = undefined;
@@ -26,7 +27,7 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
       onDialogueDeleted?.({ dialogue: deleteItem['data']['data'] });
-      snackbar.show(['Диалог удален', 'Dialogue successfully deleted']);
+      snackbar.show(locale.dialogueDeletedSuccess);
     }
     handleClose();
   }
@@ -38,24 +39,24 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
       onClose={handleClose}
     >
       <DialogTitle>
-        {lng(['Подтверждение', 'Confirm'])}
+        {locale.dialogueDeleteTitle}
       </DialogTitle>
       <DialogContent>
         <Typography>
-          {['Вы уверены, что хотите диалог?', 'Are you sure you want to delete dialogue?']}
+          {locale.dialogueDeleteContent}
         </Typography>
       </DialogContent>
       <DialogActions>
         <coreSlots.button
           onClick={handleClose}
         >
-          {['Нет', 'No']}
+          {locale.no}
         </coreSlots.button>
         <coreSlots.button
           onClick={handleDelete}
           color={'primary'}
         >
-          {['Да', 'Yes']}
+          {locale.yes}
         </coreSlots.button>
       </DialogActions>
     </Dialog>

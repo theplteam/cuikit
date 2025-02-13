@@ -8,13 +8,15 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { DialogueLight, StreamResponseState } from '../../models/Dialogue';
+import { Dialogue, StreamResponseState } from '../../models/Dialogue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
+import PinPictureButton from './PinPictureButton';
 import { useChatContext } from '../core/ChatGlobalContext';
+import ChatImagePreview from './ChatImagePreview';
 
 type Props = {
-  dialogue?: DialogueLight;
+  dialogue?: Dialogue;
   scroller: {
     handleBottomScroll?: () => void;
   };
@@ -35,8 +37,8 @@ const DialogueWidthBlockStyled = styled(Box)(({ theme }) => ({
     content: '""',
     position: 'absolute',
     top: -50,
-    bottom: '0',
-    width: `calc(100% - ${theme.spacing(paddingSidesSx*2)})`,
+    bottom: 0,
+    width: `calc(100% - ${theme.spacing(paddingSidesSx * 2)})`,
     height: 100,
     pointerEvents: 'none',
     zIndex: -1,
@@ -64,7 +66,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const [text, setText] = React.useState('');
-
+  const [image, setImage] = React.useState<string>('');
 
   const onSendMessage = async () => {
     const messages = dialogueApi.current?.branch.value ?? [];
@@ -75,13 +77,14 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
       if (createdNew) {
         onDialogueCreated?.(dialogue.data.data);
       }
-      dialogue.sendMessage(lastMessage, text)
+      dialogue.sendMessage(lastMessage, text, image)
         .then(() => {
           onAssistantMessageTypingFinish?.(dialogue.data.data);
           dialogueApi.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
         });
 
       setText('');
+      setImage('');
       scroller.handleBottomScroll?.();
     }
   }
@@ -90,24 +93,28 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
 
   return (
     <DialogueWidthBlockStyled>
-      <InnerStackStyled
-        direction={'row'}
-        alignItems={'flex-end'}
-        gap={1}
-      >
-        <ChatTextField
-          text={text}
-          setText={setText}
-          onSendMessage={onSendMessage}
-          disabled={disabled}
-          classes={inputClasses}
-        />
-        <SendMessageButton
-          dialogue={dialogue}
-          onSendMessage={onSendMessage}
-          isTyping={isTyping}
-          text={text}
-        />
+      <InnerStackStyled>
+        <ChatImagePreview image={image} setImage={setImage} />
+        <Stack direction={'row'} alignItems={'flex-end'} gap={1}>
+          <PinPictureButton
+            image={image}
+            setImage={setImage}
+            isTyping={isTyping}
+          />
+          <ChatTextField
+            text={text}
+            setText={setText}
+            onSendMessage={onSendMessage}
+            disabled={disabled}
+            classes={inputClasses}
+          />
+          <SendMessageButton
+            dialogue={dialogue}
+            onSendMessage={onSendMessage}
+            isTyping={isTyping}
+            text={text}
+          />
+        </Stack>
       </InnerStackStyled>
     </DialogueWidthBlockStyled>
   );

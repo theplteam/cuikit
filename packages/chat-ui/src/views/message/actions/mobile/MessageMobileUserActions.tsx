@@ -2,12 +2,13 @@ import * as React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { MessagesModeType } from '../../hooks/useMessagesMode';
-import { MessageLight } from '../../../../models/Message';
+import { Message } from '../../../../models/Message';
 import { useSnackbar } from '../../../hooks/useSnackbar';
 import { useChatSlots } from '../../../core/ChatSlotsContext';
+import { useLocalizationContext } from '../../../core/LocalizationContext';
 
 type Props = {
-  message: MessageLight;
+  message: Message;
   modeManager: MessagesModeType;
   onClose: () => void;
 };
@@ -15,9 +16,10 @@ type Props = {
 const MessageMobileUserActions: React.FC<Props> = ({ message, modeManager, onClose }) => {
   const { coreSlots } = useChatSlots();
   const snackbar = useSnackbar();
+  const locale = useLocalizationContext();
   const handleCopy = () => {
     navigator.clipboard.writeText(message.text)
-      .then(() => snackbar.show(['Скопировано в буфер обмена', 'Copied to clipboard']));
+      .then(() => snackbar.show(locale.messageCopiedToClipboard));
     onClose();
   }
 

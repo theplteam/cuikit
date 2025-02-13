@@ -2,6 +2,12 @@ import { ChatApp, LangKeys } from '../models/ChatApp';
 
 export type LangReplaceType = Record<string, string | number>;
 
+/**
+ * @deprecated
+ * use Localization instead
+ * @see Localization
+ * @see useLocalizationContext
+ */
 export const lng = (array: string[], replace?: LangReplaceType) => {
   let text = (ChatApp.lang === LangKeys.RU ? array[0] : array[1]) ?? '';
   if (text && replace) {

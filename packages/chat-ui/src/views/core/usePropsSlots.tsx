@@ -15,7 +15,7 @@ import ChatMessageTableCell from '../message/markdown/ChatMessageTableCell';
 import { ChatMessageOl, ChatMessageUl } from '../message/markdown/ChatMessageUl';
 import { SlotPropsType } from './SlotPropsType';
 import ChatMessageImage from '../message/markdown/ChatMessageImage';
-import MessagePagination from '../message/actions/MessagePagination';
+import MessagePagination from '../message/MessagePagination';
 import Stack from '@mui/material/Stack';
 import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
@@ -26,6 +26,8 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { DDialogue, DMessage } from '../../models';
+import { ChatUsersProps } from './useChatProps';
+import HelloMessage from '../dialogue/HelloMessage';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -52,12 +54,12 @@ type SlotsReturnType<DM extends DMessage, DD extends DDialogue<DM>> = {
   coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<DM, DD>>;
 };
-
+// HelloMessage
 export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
-  slots: Partial<SlotsType<DM, DD>> | undefined,
-  coreSlots: Partial<CoreSlots> | undefined,
-  slotProps: Partial<SlotPropsType<DM, DD>> | undefined,
+  usersProps: ChatUsersProps<DM, DD>
 ): SlotsReturnType<DM, DD> => {
+  const { coreSlots, slots, slotProps, helloMessage } = usersProps;
+
   const res = React.useMemo(() => {
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
@@ -67,7 +69,9 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
     };
 
     const componentSlots: SlotsType<DM, DD> = {
-      firstMessage: slots?.firstMessage ?? MockComponent,
+      firstMessage: slots?.firstMessage ?? helloMessage
+        ? ({ dialogue }) => <HelloMessage text={helloMessage!} dialogue={dialogue} />
+        : MockComponent,
       dialogue: slots?.dialogue ?? RootMock,
       list: slots?.list ?? HiddenContent,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,

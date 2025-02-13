@@ -1,0 +1,73 @@
+import * as React from "react";
+import dialogues from "./chatgpt-dialogue-test.json";
+import {
+  ChatGptAdapter,
+  ChatPage,
+  MessageStreamingParams,
+} from "@plteam/chat-ui";
+import Box from "@mui/material/Box";
+import OpenAI from 'openai';
+
+class ChatGptModel {
+  private _abortController?: AbortController;
+
+  private _instance: OpenAI
+
+  constructor() {
+    this._instance = new OpenAI({
+      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true,
+    });
+  }
+
+  stopStreaming = () => {
+    this._abortController?.abort();
+  }
+
+  streamMessage = async (params: MessageStreamingParams) => {
+    const messages: OpenAI.ChatCompletionCreateParamsStreaming['messages'] = params.history;
+    const stream = await this._instance.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [
+        ...messages,
+        {
+          role: 'user',
+          content: params.content,
+        },
+      ],
+      stream: true,
+    });
+
+
+    this._abortController = stream.controller;
+
+    for await (const chunk of stream) {
+      params.pushChunk(chunk.choices[0].delta.content ?? '');
+    }
+
+    params.onFinish();
+  }
+}
+
+
+const App: React.FC = () => {
+  const dd = dialogues as any;
+
+  const model = React.useMemo(() => new ChatGptModel(), []);
+
+  return (
+    <Box height={"100dvh"} width={"100dvw"}>
+      <ChatGptAdapter>
+        <ChatPage
+          dialogue={dd[0]}
+          dialogues={dd}
+          handleStopMessageStreaming={model.stopStreaming}
+          onUserMessageSent={model.streamMessage}
+          listPlacement={'right'}
+        />
+      </ChatGptAdapter>
+    </Box>
+  );
+}
+
+export default App;

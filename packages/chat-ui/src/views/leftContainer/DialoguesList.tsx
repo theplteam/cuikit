@@ -7,6 +7,7 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import Scrollbar from '../../ui/Scrollbar';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {};
 
@@ -14,6 +15,7 @@ const DialoguesList: React.FC<Props> = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
   const { handleCreateNewDialogue, apiRef } = useChatContext();
   const { slotProps, slots } = useChatSlots();
+  const locale = useLocalizationContext();
 
   const openNewDialogue = () => {
     const dialogue = handleCreateNewDialogue?.();
@@ -27,7 +29,7 @@ const DialoguesList: React.FC<Props> = () => {
       <NewChatButton openNewDialogue={openNewDialogue} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
-          {['История', 'History']}
+          {locale.historyTitle}
         </slots.listSubtitle>
       </Box>
       <Box flex={1} ref={ref}>

@@ -23,7 +23,7 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "chat-ui": ["./packages/chat-ui/src"]
+      "@plteam/chat-ui": ["./packages/chat-ui/src"]
     }
   },
   "include": ["src", "packages/chat-ui/src"]

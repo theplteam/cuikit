@@ -5,6 +5,7 @@ import { ApiRefType } from './useInitializeApiRef';
 import { Dialogues } from '../../models/stream/Dialogues';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { FnType } from '../../models/types';
+import { useAdapterContext } from '../adapter/AdapterContext';
 
 type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: Dialogue<DM, DD> | undefined;
@@ -44,6 +45,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
     };
   }, [apiRef.current]);
 
+  const dialogueAdapter = useAdapterContext();
 
   /**
    * Effect to initialize the provider model with the dialogues provided in the props.
@@ -51,7 +53,10 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
    * the currently active dialogue (if defined in `props.dialogue`) with the `model`.
    */
   React.useEffect(() => {
-    model.list.value = props.dialogues.map(v => new Dialogue(v, props.onUserMessageSent));
+    model.list.value = props.dialogues.map(v => new Dialogue(
+      dialogueAdapter.transformDialogue(v) as DD,
+      props.onUserMessageSent)
+    );
     if (props.dialogue?.id) {
       model.currentDialogue.value = model.get(props.dialogue.id);
     }
@@ -82,7 +87,7 @@ const useChatContext = <DM extends DMessage, DD extends DDialogue<DM>>(): ChatGl
     throw new Error("useMessagesContext must be used within a ChatGlobalProvider");
   }
 
-  /// TODO: #ANY - придумать как передать дженерик в контекст
+  /// TODO: #ANY
   return context as any;
 };
 

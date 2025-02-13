@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { ObservableReactValue } from '../../utils/observers/ObservableReactValue';
 import { useObserverValue } from './useObserverValue';
-import { lng } from '../../utils/lng';
 
 class SnackbarModel {
   readonly open = new ObservableReactValue(false);
 
   title = '';
 
-  show = (title: string | string[]) => {
-    this.title = Array.isArray(title) ? lng(title) : title;
+  show = (title: string) => {
+    this.title = title;
     this.open.value = true;
   }
 

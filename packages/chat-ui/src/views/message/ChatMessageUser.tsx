@@ -6,13 +6,13 @@ import { messageActionsClasses } from './messageActionsClasses';
 import MessageActionsUser from './actions/MessageActionsUser';
 import clsx from 'clsx';
 import MessageUserEditor from './editor/MessageUserEditor';
-import MessagePagination from './actions/MessagePagination';
+import MessagePagination from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../DialogueContext';
-import { MessageLight } from '../../models/Message';
-import { DialogueLight } from '../../models/Dialogue';
+import { Message } from '../../models/Message';
+import { Dialogue } from '../../models/Dialogue';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -22,8 +22,8 @@ import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  message: MessageLight;
-  dialogue: DialogueLight;
+  message: Message;
+  dialogue: Dialogue;
   isFirst?: boolean;
   elevation?: boolean;
   disableActions?: boolean;
@@ -35,13 +35,13 @@ const {
   paginationClassName,
 } = messageActionsClasses;
 
-const ChatMessageContainerStyled = styled(ChatMessageContainer)(({theme}) => ({
+const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => ({
   width: '80%',
   background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
   [`& .${actionsClassName}`]: {
     opacity: 0,
-    transition: theme.transitions.create('opacity', {duration: motion.duration.short3}),
+    transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
   },
   [`&.${hoverMessageClassName}`]: {
     [`& .${actionsClassName}`]: {
@@ -54,7 +54,8 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({theme}) => ({
 }));
 
 const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevation }) => {
-  const text = message.text;
+  const content = message.image ? `![image info](${message.image}) ${message.text}` : message.text;
+
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(dialogue?.isTyping);
@@ -83,7 +84,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   const children = React.useMemo(() => (
     <>
-      {text && <ChatMarkdownBlock text={text}/>}
+      {content && <ChatMarkdownBlock text={content} />}
       {((isFirst || message.parentId)) && (
         <MessageActionsUser
           className={actionsClassName}
@@ -92,12 +93,12 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         />
       )}
     </>
-  ), [message, dialogue, text, isFirst, isTyping]);
+  ), [message, dialogue, content, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <MessageUserEditor
-        text={text}
+        text={message.text}
         onClickApply={onClickApplyEdit}
         onClickCancel={onClickCancelEdit}
       />
@@ -122,7 +123,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
           gap={1}
           mx={1.5}
           className={clsx(
-            {[hoverMessageClassName]: isHover || isTablet},
+            { [hoverMessageClassName]: isHover || isTablet },
           )}
           ref={setElement}
           elevation={elevation}

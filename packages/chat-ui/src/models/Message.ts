@@ -1,5 +1,4 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { UserIdType } from './ChatApp';
 import { IdType } from '../types';
 
 export enum ChatMessageOwner {
@@ -9,38 +8,52 @@ export enum ChatMessageOwner {
 
 export type RatingType = 'like' | 'dislike';
 
-export type DMessage = {
-  id: IdType;
-  text: string;
-  owner: ChatMessageOwner;
-  time: number;
-  userId?: UserIdType;
-  info?: string;
-  parentId?: IdType;
-  rating?: RatingType;
+type ImageContent = {
+  type: 'image_url',
+  image_url: { url: string }
 }
 
-export type MessageLight = Message<any>;
+type TextContent = {
+  type: 'text',
+  text: string,
+}
 
-export class Message<DM extends DMessage> {
+export type MessageUserContent = string | (ImageContent | TextContent)[];
+export type MessageAssistantContent = string | (TextContent)[];
+
+export type DMessage = {
+  id: IdType;
+  parentId?: IdType;
+  time: number;
+  rating?: RatingType;
+} & ({
+  role: ChatMessageOwner.USER;
+  content: MessageUserContent;
+} | {
+  role: ChatMessageOwner.ASSISTANT;
+  content: MessageAssistantContent;
+})
+
+export class Message<DM extends DMessage = any> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */
-  readonly observableText = new ObservableReactValue('');
+  readonly observableText = new ObservableReactValue<string>('');
+
+  image?: string;
 
   /**
    * An observable flag indicating the start/finish of message typing.
    */
   typing = new ObservableReactValue(false);
 
-  /**
-   * @deprecated
-   */
-  messageFilters?: string;
-
   constructor(private _data: DM) {
-    this.observableText.value = _data.text;
-    this.messageFilters = _data.info;
+    if (Array.isArray(_data.content)) {
+      this.observableText.value = (_data.content.find(v => v.type === 'text') as TextContent)?.text || '';
+      this.image = (_data.content.find(v => v.type === 'image_url') as ImageContent)?.image_url.url || ''
+    } else {
+      this.observableText.value = _data.content;
+    }
   }
 
   get id() {
@@ -71,16 +84,26 @@ export class Message<DM extends DMessage> {
     return this._data.time;
   }
 
-  get owner() {
-    return this._data.owner;
+  get role() {
+    return this._data.role;
   }
 
   get isUser() {
-    return this.owner === ChatMessageOwner.USER;
+    return this.role === ChatMessageOwner.USER;
   }
 
   get isAssistant() {
-    return this.owner === ChatMessageOwner.ASSISTANT;
+    return this.role === ChatMessageOwner.ASSISTANT;
+  }
+
+  get content() {
+    let data: DMessage['content'] = this.text;
+
+    if (this.image) {
+      data = [{ type: 'image_url', image_url: { url: this.image } }, {type: 'text', text: this.text}];
+    }
+
+    return data;
   }
 
   /*get user() {
