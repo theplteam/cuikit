@@ -20,6 +20,7 @@ import useHover from '../hooks/useHover';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
+import ChatMessageGallery from './ChatMessageGallery';
 
 type Props = {
   message: Message;
@@ -54,8 +55,6 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
 }));
 
 const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevation }) => {
-  const content = message.image ? `![image info](${message.image}) ${message.text}` : message.text;
-
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(dialogue?.isTyping);
@@ -82,9 +81,16 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
     messageMode.view(message.id);
   }
 
+  const imageComponent = message.image
+    ? (
+      <ChatMessageGallery
+        images={[message.image]} id={message.id}
+      />
+    ) : null;
+
   const children = React.useMemo(() => (
     <>
-      {content && <ChatMarkdownBlock text={content} />}
+      <ChatMarkdownBlock text={message.text} />
       {((isFirst || message.parentId)) && (
         <MessageActionsUser
           className={actionsClassName}
@@ -93,15 +99,18 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         />
       )}
     </>
-  ), [message, dialogue, content, isFirst, isTyping]);
+  ), [message, dialogue, message.text, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (
-      <MessageUserEditor
-        text={message.text}
-        onClickApply={onClickApplyEdit}
-        onClickCancel={onClickCancelEdit}
-      />
+      <>
+        {imageComponent}
+        <MessageUserEditor
+          text={message.text}
+          onClickApply={onClickApplyEdit}
+          onClickCancel={onClickCancelEdit}
+        />
+      </>
     );
   }
 
@@ -118,7 +127,9 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         display={'flex'}
         alignItems={'flex-end'}
         flexDirection={'column'}
+        gap={1}
       >
+        {imageComponent}
         <ChatMessageContainerStyled
           gap={1}
           mx={1.5}
