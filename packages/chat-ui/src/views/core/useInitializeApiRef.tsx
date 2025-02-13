@@ -4,8 +4,18 @@ import { DDialogue, DMessage } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 
 export type ApiRefType<DM extends DMessage, DD extends DDialogue<DM>> = {
+  /**
+   * Current dialogue API
+   */
   dialogue: DialogueApi<DM>;
+  /**
+   * Triggered when another dialogue is opened.
+   */
   onChangeDialogue: (dialogue: DD) => void;
+  /**
+   * Triggered when a new dialogue is opened.
+   * @param dialogue
+   */
   openNewDialogue: (dialogue: DD) => void;
 };
 
