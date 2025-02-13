@@ -27,7 +27,7 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
       onDialogueDeleted?.({ dialogue: deleteItem['data']['data'] });
-      snackbar.show(['Диалог удален', 'Dialogue successfully deleted']);
+      snackbar.show(locale.dialogueDeletedSuccess);
     }
     handleClose();
   }

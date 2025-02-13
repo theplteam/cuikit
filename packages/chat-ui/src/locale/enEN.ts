@@ -28,6 +28,7 @@ export const CHAT_LOCALE: Localization = {
   messageCopyMarkdown: 'Copy Markdown',
   dialogueDeleteTitle: 'Confirmation',
   dialogueDeleteContent: 'Are you sure you want to delete dialogue?',
+  dialogueDeletedSuccess: 'Dialogue successfully deleted',
   dialogueActionDelete: 'Delete',
   textFieldPlaceholder: 'Message chat',
   attachmentImageShot: 'Take a photo',

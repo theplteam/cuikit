@@ -33,6 +33,7 @@ export type Localization = {
   //dialogues
   dialogueDeleteTitle: string;
   dialogueDeleteContent: string;
+  dialogueDeletedSuccess: string;
   dialogueActionDelete: string
 
   // other

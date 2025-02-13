@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dialogue, Message } from '../../models';
+import { ChatMessageOwner, Dialogue, Message } from '../../models';
 import { randomId } from '../../utils/numberUtils/randomInt';
 import ChatMessageComponent from '../message/ChatMessageComponent';
 import { ForceStream } from '../../models/stream/ForceStream';
@@ -13,7 +13,7 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
   const [message] = React.useState(new Message({
     id: 'helloMessage' + randomId(),
     content: '',
-    role: 'assistant',
+    role: ChatMessageOwner.ASSISTANT,
     time: 0
   }));
 
