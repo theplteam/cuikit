@@ -39,12 +39,10 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
             <slots.list>
               <DialoguesList />
             </slots.list>
-            <slots.dialogue>
-              <ChatDialogueComponent
-                apiRef={apiRef}
-                contentRef={usersProps.scrollerRef}
-              />
-            </slots.dialogue>
+            <ChatDialogueComponent
+              apiRef={apiRef}
+              contentRef={usersProps.scrollerRef}
+            />
             {usersProps.children}
           </ChatSlotsProvider>
         </LocalizationProvider>

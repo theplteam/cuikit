@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as React from 'react';
 import ChatTheme from '../core/ChatTheme';
 import ChatUi, { ChatUiProps } from './ChatUi';

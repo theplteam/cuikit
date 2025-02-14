@@ -13,6 +13,7 @@ import { NOOP } from '../utils/NOOP';
 import { ApiRefType } from './core/useInitializeApiRef';
 import { DDialogue, DMessage } from '../models';
 import Watermark from './Watermark';
+import { useChatSlots } from './core/ChatSlotsContext';
 
 type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -42,6 +43,7 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { dialogue, handleCreateNewDialogue } = useChatContext<DM, DD>();
+  const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
     if (!dialogue) {
@@ -54,25 +56,27 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
       dialogue={dialogue}
       apiRef={apiRef}
     >
-      <MessagesRowStyled
-        justifyContent={dialogue?.messages.length ? 'stretch' : 'center'}
-      >
-        {!!dialogue && (
-          <>
-            <ChatMessages />
-            {/*<QuestionsList dialogue={dialogue}/>*/}
-          </>
-        )}
-      </MessagesRowStyled>
-      {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
-      <Watermark />
-      <Stack position={'sticky'} bottom={0} zIndex={1}>
-        <TextRowBlock>
-          <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
-          <ChatTextFieldRow dialogue={dialogue} scroller={scrollApiRef.current} />
-        </TextRowBlock>
-      </Stack>
-      <MessageSelectedMobile />
+      <slots.dialogue {...slotProps.dialogue}>
+        <MessagesRowStyled
+          justifyContent={dialogue?.messages.length ? 'stretch' : 'center'}
+        >
+          {!!dialogue && (
+            <>
+              <ChatMessages />
+              {/*<QuestionsList dialogue={dialogue}/>*/}
+            </>
+          )}
+        </MessagesRowStyled>
+        {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
+        <Watermark />
+        <Stack position={'sticky'} bottom={0} zIndex={1}>
+          <TextRowBlock>
+            <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
+            <ChatTextFieldRow dialogue={dialogue} scroller={scrollApiRef.current} />
+          </TextRowBlock>
+        </Stack>
+        <MessageSelectedMobile />
+      </slots.dialogue>
     </DialogueProvider>
   );
 };

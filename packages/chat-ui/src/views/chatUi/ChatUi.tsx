@@ -30,14 +30,27 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: ChatU
     ), [isMobile, isTablet]);
 
   return (
-    <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'}>
+    <Grid
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      container
+      height={'inherit'}
+      width={'inherit'}
+      position={'relative'}
+    >
       {isMobile && (
         <Grid>
           <MobileAppBarContainer />
         </Grid>
       )}
       {listPlacement === 'left' && listContainerComponent}
-      <Grid ref={ref} flex={1} height={'100%'} width={'100%'} maxWidth={700} overflow={'auto'} position={'relative'}>
+      <Grid
+        ref={ref}
+        flex={1}
+        height={'100%'}
+        width={'100%'}
+        overflow={'auto'}
+        position={'relative'}
+      >
         <Chat
           scrollerRef={ref}
           slots={{

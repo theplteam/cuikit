@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import { IdType } from 'types';
+import { IdType } from '../../types';
 import 'photoswipe/style.css';
 import { Stack } from '@mui/system';
 import Box from '@mui/material/Box';

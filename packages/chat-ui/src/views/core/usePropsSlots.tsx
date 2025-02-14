@@ -1,7 +1,6 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
 import { MockComponent } from '../utils/MockComponent';
-import RootMock from '../message/RootMock';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
 import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
@@ -25,6 +24,7 @@ import { DDialogue, DMessage } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../dialogue/HelloMessage';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
+import DialogueRootContainer from '../dialogue/DialogueRootContainer';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -62,7 +62,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       ...chatIconSlots,
       ...slots,
       firstMessage: slots?.firstMessage ?? HelloMessage,
-      dialogue: slots?.dialogue ?? RootMock,
+      dialogue: slots?.dialogue ?? DialogueRootContainer,
       list: slots?.list ?? HiddenContent,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
