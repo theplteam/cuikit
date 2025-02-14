@@ -3,30 +3,31 @@ import Grid from '@mui/material/Grid';
 import Chat from './../Chat';
 import { useElementRef } from './../hooks/useElementRef';
 import { ChatUsersProps } from './../core/useChatProps';
-import { useMobile } from './../../ui/Responsive';
+import { useMobile, useTablet } from './../../ui/Responsive';
 import HiddenContent from './../HiddenContent';
 import { ListContainer, ListContainerPortal } from './components/ListContainer';
 import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components/MobileAppBarContainer';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 import { DDialogue, DMessage } from './../../models';
 
-type ChatUiProps = {
+export type ChatUiProps<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChildren<{
   listPlacement?: 'left' | 'right';
-};
+}> & ChatUsersProps<DM, DD>;
 
-const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD> & ChatUiProps>) => {
+const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: ChatUiProps<DM, DD>) => {
   const { slots, listPlacement = 'left', ...other } = usersProps;
 
   const ref = useElementRef();
   const isMobile = useMobile();
+  const isTablet = useTablet();
 
   const listContainerComponent = React.useMemo(() => isMobile
     ? null
     : (
-      <Grid item container width={'100%'} maxWidth={360}>
+      <Grid item container width={'100%'} maxWidth={isTablet ? 220 : 360}>
         <ListContainer />
       </Grid>
-    ), [isMobile]);
+    ), [isMobile, isTablet]);
 
   return (
     <Grid flexDirection={{ xs: 'column', sm: 'row' }} container height={'inherit'} width={'inherit'} position={'relative'}>
