@@ -14,7 +14,7 @@ const useLicenseVerifier = () => {
   const [licenseStatus, setLicenseStatus] = React.useState<CHAT_LICENSE_STATUS>(CHAT_LICENSE_STATUS.Valid);
 
   const validateLicense = () => {
-    if (['playliner.com'].includes(window.location.hostname)) {
+    if (['playliner.com'].some(path => window.location.hostname.includes(path))) {
       setLicenseStatus(CHAT_LICENSE_STATUS.Valid);
       return;
     }

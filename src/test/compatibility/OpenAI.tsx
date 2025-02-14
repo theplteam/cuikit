@@ -25,7 +25,6 @@ const App: React.FC = () => {
           handleStopMessageStreaming={handleStopMessageStreaming}
           onUserMessageSent={onUserMessageSent}
           helloMessage={helloMessage}
-          listPlacement={'right'}
         />
       </ChatGptAdapter>
     </Box>

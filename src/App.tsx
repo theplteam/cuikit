@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/customization/CustomSlots';
+import TestApp from './test/compatibility/OpenAI';
 
 const App: React.FC = () => {
   return <TestApp />
