@@ -1,6 +1,6 @@
 import * as React from 'react';
 import HiddenContent from '../HiddenContent';
-import { MockComponent, MockRequiredComponent } from '../utils/MockComponent';
+import { MockComponent } from '../utils/MockComponent';
 import RootMock from '../message/RootMock';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
@@ -27,6 +27,7 @@ import HelloMessage from '../dialogue/HelloMessage';
 import ChatMessageCode from '../message/markdown/ChatMessageCode';
 import ChatMessageBlockquote from '../message/markdown/ChatMessageBlockquote';
 import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
+import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -37,7 +38,8 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> };
+export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
+  & ChatIconSlotsType;
 
 type SlotsReturnType<DM extends DMessage, DD extends DDialogue<DM>> = {
   slots: SlotsType<DM, DD>;
@@ -59,17 +61,16 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
     };
 
     const componentSlots: SlotsType<DM, DD> = {
-      firstMessage: slots?.firstMessage ?? helloMessage
-        ? ({ dialogue }) => <HelloMessage text={helloMessage!} dialogue={dialogue} />
-        : MockComponent,
+      ...chatIconSlots,
+      ...slots,
+      firstMessage: slots?.firstMessage ?? HelloMessage,
       dialogue: slots?.dialogue ?? RootMock,
       list: slots?.list ?? HiddenContent,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
       listDriver: slots?.listDriver ?? React.Fragment,
       listDriverTitle: slots?.listDriverTitle ?? Typography,
-      popupsSharingContent: slots?.popupsSharingContent ?? MockRequiredComponent('popupsSharingContent'),
-      popupsInfoContent: slots?.popupsInfoContent ?? MockRequiredComponent('popupsInfoContent'),
+      sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,
@@ -110,8 +111,16 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
     };
   }, [slots]);
 
+  const componentSlotProps = React.useMemo(() => ({
+    ...slotProps,
+    firstMessage: {
+      dialogue: slotProps?.firstMessage?.dialogue,
+      text: slotProps?.firstMessage?.text ?? helloMessage,
+    },
+  }) as SlotPropsType<DM, DD>, [slotProps])
+
   return {
-    slotProps: React.useMemo(() => slotProps ?? {}, [slotProps]),
+    slotProps: componentSlotProps,
     slots: res.slots,
     coreSlots: res.coreSlots
   };

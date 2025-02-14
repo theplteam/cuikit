@@ -109,7 +109,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   }
 
   get isOwner() {
-    return this.data.authorId === ChatApp.userId;
+    return !!this.data.authorId && ChatApp.userId && this.data.authorId === ChatApp.userId;
   }
 
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {

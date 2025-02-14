@@ -1,22 +1,18 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import StopIcon from '@mui/icons-material/Stop';
-import { Dialogue } from '../../models/Dialogue';
-import { useChatCoreSlots } from '../core/ChatSlotsContext';
+import { useChatSlots } from '../core/ChatSlotsContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  dialogue: Dialogue | undefined;
   isTyping: boolean | undefined;
   text: string;
   onSendMessage: () => void;
 };
 
 
-const SendMessageButton: React.FC<Props> = ({ dialogue, text, onSendMessage, isTyping }) => {
+const SendMessageButton: React.FC<Props> = ({ text, onSendMessage, isTyping }) => {
   const disabled = !isTyping && !text;
-  const coreSlots = useChatCoreSlots();
+  const { slots, slotProps } = useChatSlots();
   const { handleStopMessageStreaming } = useChatContext();
 
   const onClick = () => {
@@ -34,7 +30,8 @@ const SendMessageButton: React.FC<Props> = ({ dialogue, text, onSendMessage, isT
       height={40}
       position={'relative'}
     >
-      <coreSlots.iconButton
+      <slots.sendMessageButton
+        {...slotProps.sendMessageButton}
         disabled={disabled}
         onClick={onClick}
         sx={{
@@ -44,10 +41,11 @@ const SendMessageButton: React.FC<Props> = ({ dialogue, text, onSendMessage, isT
           transform: 'translate(-50%, -50%)',
           height: '48px',
           transition: (theme) => theme.transitions.create('color', { duration: '200ms' }),
+          ...slotProps.sendMessageButton?.sx,
         }}
       >
-        {!!isTyping ? <StopIcon /> : <ArrowUpwardIcon/>}
-      </coreSlots.iconButton>
+        {!!isTyping ? <slots.stopStreamIcon /> : <slots.sendMessageIcon />}
+      </slots.sendMessageButton>
     </Box>
   );
 };

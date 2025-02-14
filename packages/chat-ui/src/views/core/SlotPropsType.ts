@@ -42,11 +42,9 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
    */
-  firstMessage: { dialogue: Dialogue<DM, DD> };
+  firstMessage: { dialogue: Dialogue<DM, DD>, text?: string };
 
-  // POPUPS
-  popupsSharingContent: { dialogue: Dialogue<DM, DD>; tariffsRef: React.RefObject<{ tariffs: number[] }> };
-  popupsInfoContent: { dialogue: Dialogue<DM, DD>; };
+  sendMessageButton: IconButtonProps;
 
   // MESSAGE
   /**

@@ -5,8 +5,8 @@ import ChatMessageComponent from '../message/ChatMessageComponent';
 import { ForceStream } from '../../models/stream/ForceStream';
 
 type Props = {
-  text: string;
-  dialogue: Dialogue;
+  text?: string;
+  dialogue?: Dialogue;
 };
 
 const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
@@ -18,6 +18,8 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
   }));
 
   React.useEffect(() => {
+    if (!dialogue || !text) return;
+
     if (dialogue.messages.allMessages.value.length > 0) {
       message.observableText.value = text;
       return;
@@ -34,7 +36,8 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
     }
   }, [dialogue?.id, text]);
 
-  if (!dialogue) return null;
+  if (!dialogue || !text) return null;
+
   return (
     <ChatMessageComponent
       message={message}

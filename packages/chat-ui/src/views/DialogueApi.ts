@@ -9,10 +9,19 @@ export type DialogueListenersMap<DM extends DMessage> = {
 };
 
 export type DialogueApi<DM extends DMessage> = {
+  /**
+   * All messages in the current dialogue.
+   */
   allMessages: ObservableReactValue<Readonly<Message<DM>[]>>;
+  /**
+   * All messages in the current dialogue branch.
+   */
   branch: ObservableReactValue<Readonly<Message<DM>[]>>;
   getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
   handleChangeBranch: DialogueMessages<DM>['handleChangeBranch'];
+  /**
+   * Set your own waiting status for a chat response.
+   */
   setProgressStatus: (status: string) => void;
 };
 
