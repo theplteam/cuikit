@@ -2,11 +2,11 @@ import * as React from 'react';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import FolderIcon from '@mui/icons-material/Folder';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
-import { useMobile } from './../../ui/Responsive';
-import MobileImageAppDriver from './MobileImageAppDriver';
-import { useChatModel } from './../../views/core/ChatGlobalContext';
+import { useMobile } from '../../ui/Responsive';
 import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
+import MdMenu from '../../ui/menu/MdMenu';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 type Props = {
   image: string;
@@ -19,13 +19,13 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
   const coreSlots = useChatCoreSlots();
   const ref = React.useRef<HTMLInputElement>(null);
   const mobileRef = React.useRef<HTMLInputElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMobile = useMobile();
-  const chat = useChatModel();
   const locale = useLocalizationContext();
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
-      chat.actions.mobileImageDriverOpen.value = true;
+      setAnchorEl(event.currentTarget);
       return;
     }
 
@@ -45,7 +45,7 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
 
     if (ref.current?.value) ref.current.value = '';
     if (mobileRef.current?.value) mobileRef.current.value = '';
-    if (isMobile) chat.actions.mobileImageDriverOpen.value = false;
+    if (isMobile) setAnchorEl(null);
   };
 
   return (
@@ -58,22 +58,32 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
       <coreSlots.iconButton disabled={!!image || isTyping} onClick={handleClick}>
         <AddAPhotoIcon />
       </coreSlots.iconButton>
-      <MobileImageAppDriver>
-        <Stack gap={4} flexDirection={'row'} alignContent={'center'} justifyContent={'center'} height={100}>
-          <Stack alignItems={'center'}>
-            <coreSlots.iconButton onClick={() => mobileRef.current?.click()}>
-              <AddAPhotoIcon sx={{ height: 60, width: 60 }} />
-            </coreSlots.iconButton>
-            {locale.attachmentImageShot}
-          </Stack>
-          <Stack alignItems={'center'}>
-            <coreSlots.iconButton onClick={() => ref.current?.click()}>
-              <FolderIcon sx={{ height: 60, width: 60 }} />
-            </coreSlots.iconButton>
-            {locale.attachmentImageGallery}
-          </Stack>
-        </Stack>
-      </MobileImageAppDriver>
+      <MdMenu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <coreSlots.menuItem
+          startIcon={PhotoCameraIcon}
+          onClick={() => mobileRef.current?.click()}
+        >
+          {locale.attachmentImageShot}
+        </coreSlots.menuItem>
+        <coreSlots.menuItem
+          startIcon={FolderIcon}
+          onClick={() => ref.current?.click()}
+        >
+          {locale.attachmentImageGallery}
+        </coreSlots.menuItem>
+      </MdMenu>
       <input
         ref={mobileRef}
         type="file"
