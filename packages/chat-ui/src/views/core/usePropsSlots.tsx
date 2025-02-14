@@ -24,9 +24,11 @@ import ChatMarkdown from '../message/markdown/ChatMarkdown';
 import { DDialogue, DMessage } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../dialogue/HelloMessage';
+import ChatMessageCode from '../message/markdown/ChatMessageCode';
+import ChatMessageBlockquote from '../message/markdown/ChatMessageBlockquote';
+import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
-
 
 export type CoreSlots = {
   button: SlotValue<ButtonProps>;
@@ -89,6 +91,9 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       markdownH5: slots?.markdownH5 ?? Typography,
       markdownH6: slots?.markdownH6 ?? Typography,
       markdownImg: slots?.markdownImg ?? ChatMessageImage,
+      markdownCodeWrapper: slots?.markdownCodeWrapper ?? ChatMessageCodeWrapper,
+      markdownCode: slots?.markdownCode ?? ChatMessageCode,
+      markdownBlockquote: slots?.markdownBlockquote ?? ChatMessageBlockquote,
       markdownP: slots?.markdownP ?? Typography,
       messagePagination: slots?.messagePagination ?? MessagePagination,
       messagePaginationRoot: slots?.messagePaginationRoot ?? Stack,

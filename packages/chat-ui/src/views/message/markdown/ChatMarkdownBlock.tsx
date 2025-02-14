@@ -19,11 +19,12 @@ const BoxStyled = styled(Box)(() => ({
   '& ol, p, ul': {
     margin: 0,
   },
-  '& div:first-child': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 16,
-  },
+  // ломает компонент кода
+  // '& div:first-child': {
+  //   display: 'flex',
+  // flexDirection: 'column',
+  //   gap: 16,
+  // },
   '& code': {
     whiteSpace: 'pre-line',
   },

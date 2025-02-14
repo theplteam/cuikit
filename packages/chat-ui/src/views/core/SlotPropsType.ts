@@ -156,6 +156,18 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
    */
   markdownImg: React.JSX.IntrinsicElements['img'];
   /**
+   * Render pre (<pre>)
+   */
+  markdownCodeWrapper: React.JSX.IntrinsicElements['pre'];
+  /**
+   * Render code (<code>)
+   */
+  markdownCode: React.JSX.IntrinsicElements['code'];
+  /**
+   * Render blockquote (<blockquote>)
+   */
+  markdownBlockquote: React.JSX.IntrinsicElements['blockquote'];
+  /**
    * Render paragraphs (<p>)
    */
   markdownP: TypographyProps;
