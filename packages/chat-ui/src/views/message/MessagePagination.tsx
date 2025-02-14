@@ -29,7 +29,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
     boundaryCount: 0,
     siblingCount: 0,
     defaultPage: branches.findIndex(v => v.id === message.id) + 1,
-    onChange: (event, page) => dialogueApi.current?.handleChangeBranch(branches[page - 1]),
+    onChange: (_event, page) => dialogueApi.current?.handleChangeBranch(branches[page - 1]),
   });
 
   /*console.log(branches);

@@ -24,7 +24,7 @@ export const simpleBarClasses: SimpleBarClassesType = {
 
 const SimpleBarStyled = styled(SimpleBar, {
   shouldForwardProp: (propName) => propName !== 'maxContent'
-})<{ maxContent?: boolean }>(({ theme, maxContent }) => ({
+})<{ maxContent?: boolean }>(({ maxContent }) => ({
   [`& .${simpleBarClasses.contentWrapper}`]: {
     minWidth: maxContent ? 'max-content' : undefined,
   },

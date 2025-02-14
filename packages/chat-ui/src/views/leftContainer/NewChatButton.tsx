@@ -16,7 +16,7 @@ const useDisabled = () => {
   return isEmpty;
 }
 
-export const NewChatIconButton = ({ openNewDialogue }: Props) => {
+export const NewChatIconButton: React.FC<Props> = ({ openNewDialogue }) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
   return (
@@ -30,11 +30,11 @@ export const NewChatIconButton = ({ openNewDialogue }: Props) => {
   );
 };
 
-const NewChatButton = ({ openNewDialogue }: Props) => {
+const NewChatButton: React.FC<Props> = ({ openNewDialogue }) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
-  
+
   return (
     <Box
       pt={1.5}

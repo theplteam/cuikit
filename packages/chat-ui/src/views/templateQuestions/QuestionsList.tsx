@@ -11,7 +11,7 @@ type Props = {
   dialogue: Dialogue;
 };
 
-const ContainerStyled = styled(Container)(({ theme }) => ({
+const ContainerStyled = styled(Container)(() => ({
   height: '100%',
   display: 'flex',
   alignItems: 'center',
@@ -22,7 +22,7 @@ const QuestionsList: React.FC<Props> = ({ dialogue }) => {
 
   const messages = useObserverValue(dialogue.messages.allMessages) ?? [];
 
-  const onClick = React.useCallback((message: string) => {
+  const onClick = React.useCallback((_message: string) => {
     // dialogue.sendMessage(message);
   }, [dialogue]);
 

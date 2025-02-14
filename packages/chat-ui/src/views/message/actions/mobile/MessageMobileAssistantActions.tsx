@@ -9,7 +9,7 @@ type Props = {
   onClose: () => void;
 };
 
-const MessageMobileAssistantActions: React.FC<Props> = ({ message, dialogue, onClose }) => {
+const MessageMobileAssistantActions: React.FC<Props> = ({ message, onClose }) => {
   return (
     <>
       <MessageCopyMenuItems

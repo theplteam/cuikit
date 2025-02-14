@@ -4,7 +4,7 @@ import { SlideData } from 'photoswipe';
 import { BLOCK_CHILDREN_KEY } from './PhotoSwipe';
 import 'photoswipe/style.css';
 import '../photoswipe/skin/skin.css';
-import PhotoSwipeLightboxTypes from 'photoswipe/dist/types/lightbox/lightbox';
+import PhotoSwipeLightboxConstructor from 'photoswipe/lightbox';
 import { randomInt } from '../../utils/numberUtils/randomInt';
 
 type Props = {
@@ -28,7 +28,7 @@ type Props = {
 
 export const usePhotoswipe = ({ gallery, onGalleryOpen, onSlideChange, elementsSource }: Props) => {
   const containerIdRef = React.useRef('pswp-gallery' + randomInt(1, 100000));
-  const [psClass, setPsClass] = React.useState<PhotoSwipeLightboxTypes | undefined>()
+  const [psClass, setPsClass] = React.useState<PhotoSwipeLightboxConstructor | undefined>()
 
   React.useEffect(
     () => {

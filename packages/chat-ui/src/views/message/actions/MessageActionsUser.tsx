@@ -12,7 +12,7 @@ type Props = {
   disabled?: boolean;
 };
 
-const RootStyled = styled(Stack)(({ theme }) => ({
+const RootStyled = styled(Stack)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,

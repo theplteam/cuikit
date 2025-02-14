@@ -13,7 +13,7 @@ type Props = {
   loading?: boolean;
 } & SlotFullPropItem<'textComponent', TypographyProps>;
 
-const SkeletonStyled = styled(Skeleton)(({ theme }) => ({
+const SkeletonStyled = styled(Skeleton)(() => ({
   ...materialTheme.title.small,
 }));
 

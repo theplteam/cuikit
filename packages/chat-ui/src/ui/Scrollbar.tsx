@@ -7,7 +7,7 @@ type Props = React.PropsWithChildren<{
   style?: React.CSSProperties;
 }>;
 
-const SimpleBarStyled = styled(SimpleBar)(({ theme }) => ({
+const SimpleBarStyled = styled(SimpleBar)(() => ({
   [`& .${simpleBarClasses.track}`]: {
     width: 12,
     borderLeft: '1px solid #dedede',

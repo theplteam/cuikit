@@ -6,7 +6,7 @@ import { materialTheme } from '../../utils/materialDesign/materialTheme';
 
 type Props = SkeletonProps;
 
-const ListItemSkeletonStyled = styled(Skeleton)(({ theme }) => ({
+const ListItemSkeletonStyled = styled(Skeleton)(() => ({
   ...materialTheme.body.large,
 }));
 
