@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "title": "Code blocks",
+    "messages": [
+      {
+        "id": "1",
+        "content": "Hi! Show me how you draw code blocks and quotes.",
+        "role": "user",
+        "userId": 123,
+        "time": 1673788800000
+      },
+      {
+        "id": "2",
+        "content": "Of course, here are the code blocks:\n\n```typescript\n <ChatGptAdapter>\n    <ChatPage\n      dialogue={dd[0]}\n      dialogues={dd}\n      handleStopMessageStreaming={handleStopMessageStreaming}\n      onUserMessageSent={onUserMessageSent}\n      helloMessage={helloMessage}\n    />\n</ChatGptAdapter>\n```\n\nAnd here are the quotes: \n> Lorem ipsum dolor sit amet,\n> consectetur adipiscing elit,\n> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n",
+
+        "role": "assistant",
+        "time": 1673788805000
+      }
+    ],
+    "date": "2024-11-16 08:07:54"
+  }
+]
