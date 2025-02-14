@@ -29,6 +29,9 @@ export type Localization = {
   messageCopyHTML: string;
   messageCopyMarkdown: string;
 
+  //code
+  codeCopyButton: string;
+  codeEditButton: string;
 
   //dialogues
   dialogueDeleteTitle: string;

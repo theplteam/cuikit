@@ -94,6 +94,18 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
             component: slots.markdownImg,
             props: slotProps.markdownImg,
           },
+          pre: {
+            component: slots.markdownCodeWrapper,
+            props: slotProps.markdownCodeWrapper,
+          },
+          code: {
+            component: slots.markdownCode,
+            props: slotProps.markdownCode,
+          },
+          blockquote: {
+            component: slots.markdownBlockquote,
+            props: slotProps.markdownBlockquote,
+          },
           // TODO: картинки оборачивается в тег <p>, это не баг и фиксить не будут
           //  @see https://github.com/quantizor/markdown-to-jsx/issues/209#issuecomment-417712075
           p: (props: React.JSX.IntrinsicElements['p']) => {
