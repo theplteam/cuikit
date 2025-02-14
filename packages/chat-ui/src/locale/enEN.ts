@@ -26,6 +26,8 @@ export const CHAT_LOCALE: Localization = {
   messageCopiedToClipboard: 'Copied to clipboard',
   messageCopyHTML: 'Copy HTML',
   messageCopyMarkdown: 'Copy Markdown',
+  codeCopyButton: 'Copy',
+  codeEditButton: 'Edit',
   dialogueDeleteTitle: 'Confirmation',
   dialogueDeleteContent: 'Are you sure you want to delete dialogue?',
   dialogueDeletedSuccess: 'Dialogue successfully deleted',
