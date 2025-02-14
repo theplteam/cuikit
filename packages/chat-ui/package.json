@@ -26,8 +26,7 @@
     "simplebar-react": "^3.2.4",
     "use-resize-observer": "^9.1.0",
     "uuid": "^9.0.0",
-    "react-syntax-highlighter": "^15.6.1",
-    "@monaco-editor/react": "^4.7.0"
+    "react-syntax-highlighter": "^15.6.1"
   },
   "devDependencies": {
     "@types/lodash.throttle": "^4.1.4",

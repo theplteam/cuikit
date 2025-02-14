@@ -19,7 +19,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "```js\nimport React, { useState } from \"react\";\nimport ReactMarkdown from \"react-markdown\";\nimport { Prism as SyntaxHighlighter } from \"react-syntax-highlighter\";\nimport { dracula } from \"react-syntax-highlighter/dist/esm/styles/prism\";\nimport { Card } from \"@/components/ui/card\";\nimport { Button } from \"@/components/ui/button\";\nimport { Copy, Edit } from \"lucide-react\";\n\nconst MarkdownRenderer = ({ content }) => {\n  const [isEditing, setIsEditing] = useState(false);\n  const [markdown, setMarkdown] = useState(content);\n\n  const handleCopy = () => {\n    navigator.clipboard.writeText(markdown);\n    alert(\"Код скопирован!\");\n  };\n\n  return (\n    <Card className=\"p-4 relative\">\n      <div className=\"absolute top-2 right-2 flex gap-2\">\n        <Button size=\"icon\" variant=\"ghost\" onClick={() => setIsEditing(!isEditing)}>\n          <Edit size={16} />\n        </Button>\n        <Button size=\"icon\" variant=\"ghost\" onClick={handleCopy}>\n          <Copy size={16} />\n        </Button>\n      </div>\n      {isEditing ? (\n        <textarea\n          className=\"w-full p-2 border rounded-md\"\n          value={markdown}\n          onChange={(e) => setMarkdown(e.target.value)}\n          rows={10}\n        />\n      ) : (\n        <ReactMarkdown\n          components={{\n            code({ node, inline, className, children, ...props }) {\n              const match = /language-(\\w+)/.exec(className || \"\");\n              return !inline && match ? (\n                <SyntaxHighlighter\n                  style={dracula}\n                  language={match[1]}\n                  PreTag=\"div\"\n                  {...props}\n                >\n                  {String(children).replace(/\\n$/, \"\")}\n                </SyntaxHighlighter>\n              ) : (\n                <code className={className} {...props}>\n                  {children}\n                </code>\n              );\n            },\n          }}\n        >\n          {markdown}\n        </ReactMarkdown>\n      )}\n    </Card>\n  );\n};\n\nexport default MarkdownRenderer;``` Text after"
+            "content": "\n\nHello there, how may I assist you today?"
           },
           "logprobs": null,
           "finish_reason": "stop"
@@ -57,7 +57,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "> blockquote.\n> blockquote.\n> blockquote `>`.\n>> blockquote `>>`."
+            "content": "\n\nYou are handsome!"
           },
           "logprobs": null,
           "finish_reason": "stop"

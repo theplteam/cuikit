@@ -5,19 +5,18 @@ import Stack from '@mui/material/Stack';
 import { useChatCoreSlots } from '../../../views/core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import EditIcon from '@mui/icons-material/Edit';
 import { useLocalizationContext } from '../../../views/core/LocalizationContext';
 import { useSnackbar } from '../../../views/hooks/useSnackbar';
-import Drawer from '@mui/material/Drawer';
 import { Prism } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
-import Editor from "@monaco-editor/react";
-import { useMobile } from '../../../ui/Responsive';
-import CloseIcon from '@mui/icons-material/Close';
 
 type Props = React.JSX.IntrinsicElements['pre'];
 
-const PreStyled = styled('pre')(() => ({}))
+const PreStyled = styled('pre')(() => ({
+  '&&& div:first-child': {
+    flexDirection: 'row',
+  }
+}))
 
 const PrismStyled = styled(Prism)(() => ({
   maxHeight: 300,
@@ -31,12 +30,10 @@ const MenuBar = styled(Stack)(() => ({
 }))
 
 const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
-  const [isEditing, setIsEditing] = React.useState(false);
   const [codeText, setCodeText] = React.useState('');
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
   const snackbar = useSnackbar();
-  const isMobile = useMobile();
 
   const childrenProps = React.useMemo(() => React.Children.map(children, element => {
     if (!React.isValidElement(element)) return;
@@ -54,10 +51,6 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
       .then(() => snackbar.show(locale.messageCopiedToClipboard));;
   }
 
-  const handleEdit = () => {
-    setIsEditing(!isEditing);
-  }
-
   return (
     <>
       <PreStyled {...other}>
@@ -69,16 +62,16 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
             <coreSlots.button size='small' onClick={handleCopy} startIcon={<ContentCopyIcon />}>
               {locale.codeCopyButton}
             </coreSlots.button>
-            <coreSlots.button size='small' onClick={handleEdit} startIcon={<EditIcon />}>
+            {/* <coreSlots.button size='small' onClick={handleEdit} startIcon={<EditIcon />}>
               {locale.codeEditButton}
-            </coreSlots.button>
+            </coreSlots.button> */}
           </Stack>
         </MenuBar>
         <PrismStyled showLineNumbers language={codeLang as string} style={dracula} PreTag={'div'}>
           {codeText}
         </PrismStyled>
       </PreStyled >
-      <Drawer
+      {/* <Drawer
         open={isEditing}
         onClose={handleEdit}
         anchor={'right'}
@@ -87,6 +80,7 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
           <coreSlots.iconButton color='inherit' onClick={handleEdit}>
             <CloseIcon />
           </coreSlots.iconButton>
+         !@monaco-editor/react!
           <Editor
             width={isMobile ? '100vw' : 600}
             height={'100%'}
@@ -101,7 +95,7 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
             }}
           />
         </Stack>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }
