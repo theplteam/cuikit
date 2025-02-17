@@ -3,6 +3,8 @@ import { Localization } from './Localization';
 export const CHAT_LOCALE: Localization = {
   yes: 'Yes',
   no: 'No',
+  send: 'Send',
+  cancel: 'Cancel',
   newChat: "New Chat",
   historyTitle: "History",
   historyToday: "Today",

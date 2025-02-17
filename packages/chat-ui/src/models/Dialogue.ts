@@ -73,7 +73,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   ) {
     this.data = new DialogueData(_data);
 
-    if (!_data.messages.find(v => !!v.parentId)) {
+    /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];
 
       let parentId: IdType | undefined = undefined;
@@ -88,7 +88,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
       });
 
       _data.messages = newMessages
-    }
+    }*/
 
     this.messages.allMessages.value = _data.messages.map(v => new Message(v));
 

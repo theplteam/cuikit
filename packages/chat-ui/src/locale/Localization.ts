@@ -2,6 +2,8 @@ export type Localization = {
   yes: string;
   no: string;
   newChat: string;
+  send: string
+  cancel: string;
 
   // history
   historyTitle: string;

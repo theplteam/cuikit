@@ -20,7 +20,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
   const { dialogueApi } = useDialogueContext();
   const { slots, slotProps } = useChatSlots();
   const messages = useObserverValue(dialogueApi.current?.getListener('allMessages'), []);
-  const branches = messages?.filter(v => v.parentId === message.parentId && v.isUser) ?? [];
+  const branches = messages?.filter(v => v.parentId === message.parentId) ?? [];
 
   const height = 30;
   // console.log('page ' + (branches.findIndex(v => v.id === message.id) + 1), message.id, branches.map(v => v.id));
@@ -35,6 +35,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
   /*console.log(branches);
   console.log(dialogue.messages.map((v) => ({ text: v.text, id: v.parentId })));*/
   if (branches.length <= 1) return <Box height={height} />;
+
   return (
     <slots.messagePaginationRoot
       direction={'row'}

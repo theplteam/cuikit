@@ -78,6 +78,12 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    * Prefill textfield
    */
   defaultTextFieldValue?: string;
+  /**
+   * Branching of the conversation after editing the user's message or updating the assistant's answer.
+   * Unlocks the "edit message" function for the user.
+   * Unlocks the "change model" or "reply again" function for the assistant.
+   */
+  enableBracnhes?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату

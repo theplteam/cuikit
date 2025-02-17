@@ -19,18 +19,19 @@ type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   children: React.ReactNode;
   dialogue: Dialogue<DM, DD> | undefined;
   apiRef: React.RefObject<ApiRefType<DM, DD>>;
+  enableBranches: boolean | undefined;
 };
 
 const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
 
-const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiRef }: Props<DM, DD>) => {
+const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiRef, enableBranches }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
   const dialogueApi = React.useRef<DialogueApi<DM>>(getDialogueMockApi());
   const handleChangeStreamStatus = useMessageProgressStatus(dialogue);
 
   React.useMemo(() => {
-    dialogue?.messages.init();
+    dialogue?.messages.init(enableBranches);
 
     if (dialogue) {
       const messages = dialogue.messages;

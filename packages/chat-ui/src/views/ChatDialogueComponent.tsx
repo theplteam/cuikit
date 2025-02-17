@@ -19,6 +19,7 @@ type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
   apiRef: React.MutableRefObject<ApiRefType<DM, DD>>;
+  enableBranches: boolean | undefined;
 };
 
 const MessagesRowStyled = styled(Stack)(({ theme }) => ({
@@ -39,7 +40,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiRef }: Props<DM, DD>) => {
+const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiRef, enableBranches }: Props<DM, DD>) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { dialogue, handleCreateNewDialogue } = useChatContext<DM, DD>();
@@ -55,6 +56,7 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
     <DialogueProvider
       dialogue={dialogue}
       apiRef={apiRef}
+      enableBranches={enableBranches}
     >
       <slots.dialogue {...slotProps.dialogue}>
         <MessagesRowStyled

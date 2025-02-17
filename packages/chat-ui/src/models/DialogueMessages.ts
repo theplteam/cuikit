@@ -1,7 +1,6 @@
 import { DMessage, Message } from './Message';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
-import { sortByDesc } from '../utils/arrayUtils/arraySort';
 import { isDefined } from '../utils/isDefined';
 import { IdType } from '../types';
 
@@ -21,27 +20,34 @@ export class DialogueMessages<DM extends DMessage> {
     return this.allMessages.value;
   }
 
-  // запомнить в какой ветке остановились, чтобы при повторном входе в диалог снова открыть её
+  // Remember which branch we stopped at, so that upon re-entering the dialogue, reopens it
   private _lastMessage?: Message<DM>;
 
   private _callbackInitiated = false;
 
-  init = () => {
+  init = (enableBranches?: boolean) => {
     if (this._callbackInitiated) return;
 
     const newObject = this._createNewMap(this.allMessagesArray);
 
     const map = new Map(Object.entries(newObject));
 
-    this._updateBranch(map, this._lastMessage);
+    this._updateBranch(map, this._lastMessage, enableBranches);
 
-    // реакция на пополнение в массиве всех сообщений, чтобы обновить ветку
+    // reaction to adding to the array of all messages to update the thread
     this.allMessages.subscribe(() => {
       const newObject = this._createNewMap(this.allMessagesArray);
       const map = new Map(Object.entries(newObject));
 
-      this._updateBranch(map, arrayLast(this.allMessagesArray as Message<DM>[]));
+      this._updateBranch(map, arrayLast(this.allMessagesArray as Message<DM>[]), enableBranches);
     });
+  }
+
+  changeBranchesStatus = (enableBranches: boolean) => {
+    const newObject = this._createNewMap(this.allMessagesArray);
+
+    const map = new Map(Object.entries(newObject));
+    this._updateBranch(map, this._lastMessage, enableBranches);
   }
 
   handleChangeBranch = (message: Message<DM>) => {
@@ -52,10 +58,15 @@ export class DialogueMessages<DM extends DMessage> {
     map.set(parentId, { messages: [message] });
     // console.log(message, messagesParentMap);
 
-    this._updateBranch(map, message);
+    this._updateBranch(map, message, true);
   }
 
-  private _updateBranch = (map: MesagesMapType<DM>, startFrom?: Message<DM>) => {
+  private _updateBranch = (map: MesagesMapType<DM>, startFrom?: Message<DM>, enableBranches?: boolean) => {
+    if (enableBranches !== true) {
+      this.currentMessages.setValue(this.allMessagesArray);
+      return;
+    }
+
     if (!startFrom) startFrom = this._lastMessage;
     const rootMessages = startFrom ? [startFrom] : map.get(rootMessageHash)?.messages ?? [];
 
@@ -65,10 +76,10 @@ export class DialogueMessages<DM extends DMessage> {
       branches.push(this._getBranchRecursive(rootMessage, map));
     }
 
-    const topItems = branches.map(b => sortByDesc(b.slice(), 'time')[0])
+    const topItems = branches.map(b => arrayLast(b))
       .filter(isDefined);
 
-    const topItem = sortByDesc(topItems, 'time')[0];
+    const topItem = arrayLast(topItems);
 
     /*console.log(
       branches.length,
@@ -109,40 +120,20 @@ export class DialogueMessages<DM extends DMessage> {
   }
 
   private _createTree = (lastItem: Message<DM>, messages: Readonly<Message<DM>[]>) => {
-    messages = sortByDesc([...messages], 'time');
-
-    let userMessage: Message<DM> | undefined;
-
-    if (lastItem.isUser) {
-      userMessage = lastItem;
-    } else {
-      const newerMessageParentId = lastItem?.parentId;
-
-      userMessage = messages.find(m => m.id === newerMessageParentId);
-    }
-
     const branch: Message<DM>[] = [];
 
-    // console.log({ lastText: lastItem.text, lastId: lastItem.id, pid: lastItem.parentId }, { parentText: userMessage?.text, id: userMessage?.id });
-    while (userMessage) {
-      const currentMessages = messages.filter(
-        m => !m.isUser && m.parentId === userMessage?.id
-      );
+    let nextItem: Message<DM> | undefined = lastItem;
 
-      // console.log(...[userMessage, ...currentMessages].map(v => ({ text: v.text, id: v.id, parentId: v.parentId })));
-      // Добавление текущих сообщений и самого пользовательского сообщения в ветку
-      branch.push(...currentMessages);
-      branch.push(userMessage);
+    while (nextItem) {
+      branch.push(nextItem);
 
-      // Переход к следующему пользовательскому сообщению в цепочке
-      if (userMessage.parentId) {
-        userMessage = messages.find(m => m.id === userMessage!.parentId);
+      if (nextItem.parentId) {
+        nextItem = messages.find(m => m.id === nextItem!.parentId);
       } else {
-        userMessage = undefined;
+        nextItem = undefined;
       }
     }
 
-    // Возвращаем ветку в обратном порядке
     return branch.reverse();
   }
 

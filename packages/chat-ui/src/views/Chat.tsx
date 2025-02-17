@@ -40,6 +40,7 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
               <DialoguesList />
             </slots.list>
             <ChatDialogueComponent
+              enableBranches={props.enableBracnhes}
               apiRef={apiRef}
               contentRef={usersProps.scrollerRef}
             />

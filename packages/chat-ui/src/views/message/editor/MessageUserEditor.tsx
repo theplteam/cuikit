@@ -2,6 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageUserEditorTextfield from './MessageUserEditorTextfield';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
+import { useLocalizationContext } from '../../core/LocalizationContext';
 
 type Props = {
   text: string;
@@ -12,6 +13,7 @@ type Props = {
 const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel }) => {
   const [newText, setNewText] = React.useState(text);
   const coreSlots = useChatCoreSlots();
+  const locale = useLocalizationContext();
 
   const onClick = () => {
     if (text !== newText && !!newText) {
@@ -35,14 +37,14 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
           onClick={onClickCancel}
           variant={'outlined'}
         >
-          {['Отменить', 'Cancel']}
+          {locale.cancel}
         </coreSlots.button>
         <coreSlots.button
           onClick={onClick}
           disabled={text === newText || !newText}
           variant={'contained'}
         >
-          {['Отправить', 'Send']}
+          {locale.send}
         </coreSlots.button>
       </Stack>
     </Stack>
