@@ -81,10 +81,10 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
     messageMode.view(message.id);
   }
 
-  const imageComponent = message.image
+  const imageComponent = message.images?.length
     ? (
       <ChatMessageGallery
-        images={[message.image]} id={message.id}
+        images={message.images} id={message.id}
       />
     ) : null;
 

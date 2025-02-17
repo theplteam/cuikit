@@ -7,21 +7,24 @@ import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import { ChatViewConstants } from '../../views/ChatViewConstants';
+import { useSnackbar } from '../../views/hooks/useSnackbar';
 
 type Props = {
-  image: string;
-  setImage: (img: string) => void;
+  images: string[];
+  setImages: (images: string[]) => void;
   isTyping?: boolean;
 };
 
 
-const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
+const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   const coreSlots = useChatCoreSlots();
   const ref = React.useRef<HTMLInputElement>(null);
   const mobileRef = React.useRef<HTMLInputElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMobile = useMobile();
   const locale = useLocalizationContext();
+  const snackbar = useSnackbar();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
@@ -33,20 +36,22 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    let files = Array.from(event.target.files || []);
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+    if (files.length + images.length > ChatViewConstants.MAX_IMAGES_IN_MESSAGE) {
+      files = files.slice(0, ChatViewConstants.MAX_IMAGES_IN_MESSAGE - images.length);
+      snackbar.show(locale.maxImageWarning);
+    };
+
+    const newImages = files.map((file) => URL.createObjectURL(file));
+    setImages([...images, ...newImages]);
 
     if (ref.current?.value) ref.current.value = '';
     if (mobileRef.current?.value) mobileRef.current.value = '';
     if (isMobile) setAnchorEl(null);
   };
+
+  const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping;
 
   return (
     <Stack
@@ -55,7 +60,7 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
       height={40}
       position={'relative'}
     >
-      <coreSlots.iconButton disabled={!!image || isTyping} onClick={handleClick}>
+      <coreSlots.iconButton disabled={disabled} onClick={handleClick}>
         <AddAPhotoIcon />
       </coreSlots.iconButton>
       <MdMenu
@@ -96,6 +101,7 @@ const PinPictureButton: React.FC<Props> = ({ image, setImage, isTyping }) => {
       <input
         ref={ref}
         type="file"
+        multiple
         accept="image/png,image/jpeg"
         onChange={handleImageUpload}
         disabled={isTyping}

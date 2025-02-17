@@ -40,6 +40,7 @@ export type Localization = {
   dialogueActionDelete: string
 
   // other
+  maxImageWarning: string;
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;

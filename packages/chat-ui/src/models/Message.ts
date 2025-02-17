@@ -37,7 +37,7 @@ export class Message<DM extends DMessage = any> {
    */
   readonly observableText = new ObservableReactValue<string>('');
 
-  image?: string;
+  images?: string[];
 
   /**
    * An observable flag indicating the start/finish of message typing.
@@ -47,7 +47,7 @@ export class Message<DM extends DMessage = any> {
   constructor(private _data: DM) {
     if (Array.isArray(_data.content)) {
       this.observableText.value = (_data.content.find(v => v.type === 'text') as TextContent)?.text || '';
-      this.image = (_data.content.find(v => v.type === 'image_url') as ImageContent)?.image_url.url || ''
+      this.images = (_data.content.filter(v => v.type === 'image_url') as ImageContent[])?.map((img) => img.image_url.url || '')
     } else {
       this.observableText.value = _data.content;
     }
@@ -88,8 +88,9 @@ export class Message<DM extends DMessage = any> {
   get content() {
     let data: DMessage['content'] = this.text;
 
-    if (this.image) {
-      data = [{ type: 'image_url', image_url: { url: this.image } }, {type: 'text', text: this.text}];
+    if (this.images?.length) {
+      const imgContent: ImageContent[] = this.images.map((img) => ({ type: 'image_url', image_url: { url: img } }));
+      data = [...imgContent, { type: 'text', text: this.text }] ;
     }
 
     return data;

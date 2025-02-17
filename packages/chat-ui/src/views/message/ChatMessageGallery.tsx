@@ -2,31 +2,42 @@ import React, { useEffect } from 'react';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import { IdType } from '../../types';
 import 'photoswipe/style.css';
-import { Stack } from '@mui/system';
-import Box from '@mui/material/Box';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
 
 type Props = {
   id: IdType;
   images: string[];
 };
 
-const BoxStyled = styled(Box)(() => ({
+const GridItem = styled(Grid)(() => ({
   width: '100%',
   backgroundColor: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
   '& a': {
-    width: 'inherit',
+    width: '100%',
+    height: '100%',
+    lineHeight: 0,
+    display: 'block',
   },
   '& img': {
     maxHeight: 'min(500px, 80dvh)',
-    objectFit: 'contain',
-    objectPosition: 'center',
+    height: '100%',
+    width: "inherit",
+    objectFit: 'cover',
     aspectRatio: 'auto',
-    width: 'inherit',
+    objectPosition: 'center',
+    borderRadius: 16,
+  },
+  '&:last-child': {
+    borderRadius: '16px 16px 0 16px',
+    '& img': {
+      borderRadius: '16px 16px 0 16px',
+    }
   },
 }));
+
 
 const ChatMessageGallery = ({ id, images }: Props) => {
   const [items, setItems] = React.useState<HTMLImageElement[]>([]);
@@ -57,16 +68,18 @@ const ChatMessageGallery = ({ id, images }: Props) => {
     };
   }, [images, id]);
 
+  const ratio = items.length === 4 ? 4 : 3;
   return (
-    <Stack
+    <Grid
+      container
       gap={1}
       className="pswp-gallery"
       id={galleryId}
-      flexDirection={'row'}
       mx={1.5}
+      justifyContent={'flex-end'}
     >
       {items.map(({ src, width, height }, index) => (
-        <BoxStyled borderRadius={4}>
+        <GridItem item xs={ratio} key={index} borderRadius={4}>
           <a
             href={src}
             data-pswp-width={width}
@@ -74,16 +87,12 @@ const ChatMessageGallery = ({ id, images }: Props) => {
             key={`${galleryId}-${index}`}
             target="_blank"
             rel="noreferrer"
-            style={{
-              lineHeight: 0,
-              display: 'block',
-            }}
           >
             <img src={src} alt="" />
           </a>
-        </BoxStyled>
+        </GridItem>
       ))}
-    </Stack>
+    </Grid>
   );
 }
 

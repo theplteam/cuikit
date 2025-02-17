@@ -172,21 +172,15 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   sendMessage = (
     lastMessage: Message<DM> | undefined,
     text: string,
-    image?: string,
+    images?: string[],
   ) => {
     this.isTyping.value = true;
 
-    let content: DMessage['content'] = text;
+    let content: MessageUserContent = text;
 
-    if (image) {
-      content = [{
-        type: 'image_url',
-        image_url: { url: image }
-      },
-      {
-        type: 'text',
-        text: text,
-      }]
+    if (images?.length) {
+      const imgContent: MessageUserContent = images.map((img) => ({ type: 'image_url', image_url: { url: img } }));
+      content = [...imgContent, { type: 'text', text: text,}]
     }
 
     const { userMessage, assistantMessage } = this._createPair(content, lastMessage);
