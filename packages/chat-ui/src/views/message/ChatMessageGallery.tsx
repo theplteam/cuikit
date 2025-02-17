@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import { IdType } from '../../types';
 import 'photoswipe/style.css';
@@ -22,7 +22,7 @@ const GridItem = styled(Grid)(() => ({
     display: 'block',
   },
   '& img': {
-    maxHeight: 'min(500px, 80dvh)',
+    maxHeight: 'min(200px, 80dvh)',
     height: '100%',
     width: "inherit",
     objectFit: 'cover',
@@ -42,31 +42,31 @@ const GridItem = styled(Grid)(() => ({
 const ChatMessageGallery = ({ id, images }: Props) => {
   const [items, setItems] = React.useState<HTMLImageElement[]>([]);
   const galleryId = `gallery-${id}`;
+  const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
+    gallery: `#${galleryId}`,
+    children: 'a',
+    pswpModule: () => import('photoswipe'),
+    zoom: false,
+    showHideAnimationType: 'fade',
+  }), [id]);
 
-  useEffect(() => {
-    const imgElements = images.map((src) => {
-      const image = new Image();
-      image.src = src;
-
-      return image;
-    })
-
-    setItems(imgElements);
-
-    let lightbox: PhotoSwipeLightbox | null = new PhotoSwipeLightbox({
-      gallery: `#${galleryId}`,
-      children: 'a',
-      pswpModule: () => import('photoswipe'),
-      zoom: false,
-      showHideAnimationType: 'fade',
-    });
+  React.useEffect(() => {
     lightbox.init();
 
     return () => {
       lightbox?.destroy();
-      lightbox = null
     };
-  }, [images, id]);
+  }, []);
+
+  React.useEffect(() => {
+    const imgElements = images.map((src) => {
+      const image = new Image();
+      image.src = src;
+      return image;
+    })
+
+    setItems(imgElements);
+  }, [images]);
 
   const ratio = items.length === 4 ? 4 : 3;
   return (

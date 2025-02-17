@@ -103,14 +103,14 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   if (mode === MessageStateEnum.EDIT) {
     return (
-      <>
+      <Stack width={'100%'} gap={1} alignItems={'flex-end'}>
         {imageComponent}
         <MessageUserEditor
           text={message.text}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />
-      </>
+      </Stack>
     );
   }
 
@@ -130,17 +130,19 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         gap={1}
       >
         {imageComponent}
-        <ChatMessageContainerStyled
-          gap={1}
-          mx={1.5}
-          className={clsx(
-            { [hoverMessageClassName]: isHover || isTablet },
-          )}
-          ref={setElement}
-          elevation={elevation}
-        >
-          {children}
-        </ChatMessageContainerStyled>
+        {message.text && (
+          <ChatMessageContainerStyled
+            gap={1}
+            mx={1.5}
+            className={clsx(
+              { [hoverMessageClassName]: isHover || isTablet },
+            )}
+            ref={setElement}
+            elevation={elevation}
+          >
+            {children}
+          </ChatMessageContainerStyled>
+        )}
       </Box>
       <MessagePagination
         disabled={isTyping}

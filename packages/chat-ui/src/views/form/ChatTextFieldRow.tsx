@@ -70,7 +70,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
 
   const onSendMessage = async () => {
     const messages = dialogueApi.current?.branch.value ?? [];
-    if (text && dialogue) {
+    if ((images.length || text) && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
       dialogueApi.current?.setProgressStatus(StreamResponseState.START);
       const createdNew = await dialogue.createIfEmpty();
@@ -112,6 +112,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
             onSendMessage={onSendMessage}
             isTyping={isTyping}
             text={text}
+            images={images}
           />
         </Stack>
       </InnerStackStyled>
