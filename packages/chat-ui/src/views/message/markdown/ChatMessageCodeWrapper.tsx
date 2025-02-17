@@ -19,7 +19,7 @@ const PreStyled = styled('pre')(() => ({
 }))
 
 const PrismStyled = styled(Prism)(() => ({
-  maxHeight: 300,
+  maxHeight: 700,
   marginTop: '0 !important',
   borderRadius: '0 0 4px 4px !important',
 }))
