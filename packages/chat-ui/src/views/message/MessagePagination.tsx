@@ -16,13 +16,14 @@ export type MessagePaginationProps = {
   disabled?: boolean;
 };
 
+export const MessagePaginationHeight = 30
+
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
   const { dialogueApi } = useDialogueContext();
   const { slots, slotProps } = useChatSlots();
   const messages = useObserverValue(dialogueApi.current?.getListener('allMessages'), []);
   const branches = messages?.filter(v => v.parentId === message.parentId) ?? [];
 
-  const height = 30;
   // console.log('page ' + (branches.findIndex(v => v.id === message.id) + 1), message.id, branches.map(v => v.id));
   const { items } = usePagination({
     count: branches.length,
@@ -34,7 +35,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
 
   /*console.log(branches);
   console.log(dialogue.messages.map((v) => ({ text: v.text, id: v.parentId })));*/
-  if (branches.length <= 1) return <Box height={height} />;
+  if (branches.length <= 1) return <Box height={MessagePaginationHeight} />;
 
   return (
     <slots.messagePaginationRoot
@@ -42,7 +43,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
       pr={0.5}
       gap={0.5}
       alignItems={'center'}
-      height={height}
+      height={MessagePaginationHeight}
       className={classes.paginationClassName}
       {...slotProps?.messagePaginationRoot}
     >
