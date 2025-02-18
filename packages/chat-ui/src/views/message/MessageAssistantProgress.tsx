@@ -5,6 +5,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Dialogue, StreamResponseState } from '../../models';
+import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
   dialogue: Dialogue | undefined;
@@ -48,15 +49,15 @@ const BoxStyled = styled(Box)(() => ({
   ]
 }));
 
-
-const steps: Record<string, string[]> = {
-  [StreamResponseState.START]: ['Думаю', 'Thinking'],
-};
-
 const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
   const state = useObserverValue(dialogue?.streamStatus) as StreamResponseState | string | undefined;
   const { slots, slotProps } = useChatSlots();
-  const text = (state && steps[state]) ?? state;
+  const locale = useLocalizationContext();
+  let text = state;
+
+  if (state === StreamResponseState.START) {
+    text = locale.thinking;
+  }
 
   if (!text || state === StreamResponseState.TYPING_MESSAGE || state === StreamResponseState.FINISH_MESSAGE) return null;
 

@@ -40,6 +40,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   setText: (text: string) => void,
   /** Assistant's response answer is complete. */
   onFinish: () => void,
+  setStatus: (status: string) => void,
 }
 
 export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any> {
@@ -224,6 +225,9 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
         onFinish: () => {
           resolve();
         },
+        setStatus: (status) => {
+          this.streamStatus.value = status;
+        }
       });
     });
   }

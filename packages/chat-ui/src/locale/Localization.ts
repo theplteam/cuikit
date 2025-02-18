@@ -4,6 +4,7 @@ export type Localization = {
   newChat: string;
   send: string
   cancel: string;
+  thinking: string;
 
   // history
   historyTitle: string;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse.tsx'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
 const MarkdownPreview = React.lazy(() => import('./markdown/App'));
 const CustomSlots = React.lazy(() => import('./customization/CustomSlots'));
@@ -20,6 +21,7 @@ const App: React.FC = () => {
       case 'custom-slots': variant = CustomSlots; break;
       case 'common': variant = BaseExample; break;
       case 'openai-adapter': variant = OpenAI; break;
+      case 'awaiting-response': variant = AwaitingResponse; break;
     }
 
     setComponent(variant);

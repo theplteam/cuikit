@@ -18,7 +18,6 @@ export default defineConfig(({ mode }) => {
         input: path.resolve(__dirname, 'index-doc.html'),
         output: {
           chunkFileNames: (chunkInfo) => {
-            console.log(chunkInfo);
             const nameNew = md5(chunkInfo.name);
             return `assets/${nameNew}-[hash].js`;
           },
