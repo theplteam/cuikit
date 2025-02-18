@@ -40,6 +40,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   setText: (text: string) => void,
   /** Assistant's response answer is complete. */
   onFinish: () => void,
+  /** Set awaiting status */
   setStatus: (status: string) => void,
 }
 

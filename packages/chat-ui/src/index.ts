@@ -5,6 +5,7 @@ import ChatLicenseInfo from './views/utils/ChatLicenseInfo';
 import { NewChatButton, NewChatIconButton, useChatContext } from './views';
 import { useDialogueContext } from './views/DialogueContext';
 import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
+import { useChatApiRef } from './views/hooks/useChatApiRef';
 
 export * from './models';
 export * from './views/adapter';
@@ -19,4 +20,5 @@ export {
   useDialogueContext,
   ChatLicenseInfo,
   useAssistantAnswerMock,
+  useChatApiRef,
 };

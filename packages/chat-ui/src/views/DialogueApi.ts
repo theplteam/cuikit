@@ -25,6 +25,8 @@ export type DialogueApi<DM extends DMessage> = {
   setProgressStatus: (status: string) => void;
 };
 
+export type DialogueApiUser<DM extends DMessage> = Omit<DialogueApi<DM>, 'getListener'>;
+
 export const getDialogueMockApi = <DM extends DMessage>(): DialogueApi<DM> => ({
   allMessages: new ObservableReactValue([]),
   branch: new ObservableReactValue([]),

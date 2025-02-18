@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DialogueApi, getDialogueMockApi } from '../DialogueApi';
+import { DialogueApi, DialogueApiUser, getDialogueMockApi } from '../DialogueApi';
 import { DDialogue, DMessage } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 
@@ -18,6 +18,10 @@ export type ApiRefType<DM extends DMessage, DD extends DDialogue<DM>> = {
    */
   openNewDialogue: (dialogue: DD) => void;
 };
+
+export type ApiRefUserType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
+  dialogue: DialogueApiUser<DM>;
+} & Omit<ApiRefType<DM, DD>, 'dialogue'>;
 
 export const useInitializeApiRef = <DM extends DMessage, DD extends DDialogue<DM>>(apiRef: React.MutableRefObject<ApiRefType<DM, DD>> | undefined) => {
   const ref = React.useRef<ApiRefType<DM, DD>>({
