@@ -8,7 +8,8 @@
     "dev-host": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:docs": "node buildDocs.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,6 +17,7 @@
     "@mui/base": "5.0.0-beta.68",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
+    "md5": "^2.3.0",
     "openai": "^4.81.0",
     "photoswipe": "^5.3.0",
     "react": "^18.3.1",
@@ -27,6 +29,8 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "@types/md5": "^2.3.5",
+    "cross-env": "^7.0.3",
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",

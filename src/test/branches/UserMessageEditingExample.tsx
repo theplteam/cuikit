@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DMessage,
   DDialogue,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
@@ -48,6 +47,7 @@ const UserMessageEditingExample: React.FC = () => {
           role: "assistant",
           content: "Yes. Multiply 250 by 0.12. The answer is 30.",
         },
+        // User message 3-1 has been edited, creating a branch.
         {
           id: "3-2",
           parentId: "2",
@@ -72,7 +72,7 @@ const UserMessageEditingExample: React.FC = () => {
           role: "assistant",
           content: "How about grilled chicken with veggies?",
         },
-      ] as DMessage[],
+      ],
     },
   ]);
 
