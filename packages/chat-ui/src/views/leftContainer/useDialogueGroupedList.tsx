@@ -56,30 +56,39 @@ export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
 
     dialogues.forEach((item) => {
       const timestamp = item.timestamp.value;
-      const basicGroupKey = basicKeys.find(v => timestamp >= basicGroups[v].timestamp);
-      if (basicGroupKey) {
-        results[basicGroupKey] = { ...basicGroups[basicGroupKey] };
-      } else if (timestamp >= startOfYear) {
-        const month = moment.unix(timestamp);
+      if (!!timestamp) {
+        const basicGroupKey = basicKeys.find(v => timestamp >= basicGroups[v].timestamp);
+        if (basicGroupKey) {
+          results[basicGroupKey] = { ...basicGroups[basicGroupKey] };
+        } else if (timestamp >= startOfYear) {
+          const month = moment.unix(timestamp);
 
-        const monthEn = capitalizeFirstLetter(month.locale('en').format('MMMM'));
+          const monthEn = capitalizeFirstLetter(month.locale('en').format('MMMM'));
 
-        results[monthEn] = {
-          label: locale[`history${monthEn}` as keyof Localization],
-          timestamp,
-          id: monthEn,
-        };
+          results[monthEn] = {
+            label: locale[`history${monthEn}` as keyof Localization],
+            timestamp,
+            id: monthEn,
+          };
+        } else {
+          const year = moment.unix(timestamp).startOf('year');
+          const yearLang = year.format('YYYY');
+          const yearKey = `year${yearLang}`;
+
+          results[yearKey] = {
+            label: yearLang,
+            timestamp: year.unix(),
+            id: yearKey,
+          };
+        }
       } else {
-        const year = moment.unix(timestamp).startOf('year');
-        const yearLang = year.format('YYYY');
-        const yearKey = `year${yearLang}`;
-
-        results[yearKey] = {
-          label: yearLang,
-          timestamp: year.unix(),
-          id: yearKey,
+        results['other'] = {
+          label: 'Other',
+          timestamp: 0,
+          id: 'Other',
         };
       }
+
     });
 
     if (JSON.stringify(results) !== JSON.stringify(dialogueGroups)) {
@@ -91,7 +100,7 @@ export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
     const groupsValues = sortByDesc(Object.values(dialogueGroups), 'timestamp');
 
     const dialoguesInGroup: DialogueGroupType[] = [];
-    dialogues.forEach((dialogue) => {
+    sortByDesc([...dialogues], 'time').forEach((dialogue) => {
       dialoguesInGroup.push({
         groupKey: groupsValues.find(v => v.timestamp < dialogue.timestamp.value)?.id ?? '',
         dialogue,

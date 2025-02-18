@@ -91,7 +91,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const children = React.useMemo(() => (
     <>
       <ChatMarkdownBlock text={message.text} />
-      {((isFirst || message.parentId)) && (
+      {((isFirst || message.parentId) && !!enableBracnhes) && (
         <MessageActionsUser
           className={actionsClassName}
           onClickEdit={onClickEdit}

@@ -26,13 +26,14 @@ const SendMessageButton: React.FC<Props> = ({ text, onSendMessage, isTyping }) =
     <Box
       display={'flex'}
       alignItems={'flex-end'}
+      justifyContent={'center'}
       width={48}
       height={40}
       position={'relative'}
     >
       <slots.sendMessageButton
         {...slotProps.sendMessageButton}
-        disabled={disabled}
+        disabled={disabled || (!handleStopMessageStreaming && !!isTyping)}
         onClick={onClick}
         sx={{
           position: 'absolute',
@@ -40,11 +41,12 @@ const SendMessageButton: React.FC<Props> = ({ text, onSendMessage, isTyping }) =
           top: '50%',
           transform: 'translate(-50%, -50%)',
           height: '48px',
+          width: '48px',
           transition: (theme) => theme.transitions.create('color', { duration: '200ms' }),
           ...slotProps.sendMessageButton?.sx,
         }}
       >
-        {!!isTyping ? <slots.stopStreamIcon /> : <slots.sendMessageIcon />}
+        {(!!isTyping && !!handleStopMessageStreaming) ? <slots.stopStreamIcon /> : <slots.sendMessageIcon />}
       </slots.sendMessageButton>
     </Box>
   );

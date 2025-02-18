@@ -5,7 +5,6 @@ import { DialogueMessages } from './DialogueMessages';
 import { DDialogue, DialogueData } from './DialogueData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
-import { ChatApp } from './ChatApp';
 import { IdType } from '../types';
 
 export type NewMessageResponse = {
@@ -102,6 +101,10 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
     return this.data.id;
   }
 
+  get time() {
+    return this.timestamp.value ?? 0;
+  }
+
   get title() {
     return this.data.title;
   }
@@ -111,7 +114,8 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   }
 
   get isOwner() {
-    return !!this.data.authorId && ChatApp.userId && this.data.authorId === ChatApp.userId;
+    return true;
+    // return !!this.data.authorId && ChatApp.userId && this.data.authorId === ChatApp.userId;
   }
 
   createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
@@ -236,8 +240,8 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   static createEmptyData = <DD>() => {
     return ({
       id: 'NEW_DIALOGUE_' + randomId(),
-      title: '',
-      date: '',
+      title: 'New dialogue',
+      date: (new Date()).toISOString(),
       authorId: 0,
       messages: [],
       isNew: true,
