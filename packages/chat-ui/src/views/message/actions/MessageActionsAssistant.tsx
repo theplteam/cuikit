@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
-import MessageActionFeedback from './feedback/MessageActionFeedback';
 import { Message } from '../../../models/Message';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import { Dialogue } from '../../../models/Dialogue';
@@ -13,7 +12,7 @@ type Props = {
 };
 
 const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
-  const { actionsAssistant, disableMessageRating } = useChatContext();
+  const { actionsAssistant } = useChatContext();
   return (
     <Stack
       direction={'row'}
@@ -23,7 +22,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
     >
       { }
       <MessageActionCopy message={message} />
-      {!disableMessageRating && <MessageActionFeedback message={message} />}
+      {/*!disableMessageRating && <MessageActionFeedback message={message} />*/}
       {actionsAssistant?.map((component, k) => (
         <component.element
           dialogue={dialogue.data.data}
