@@ -50,7 +50,7 @@ export class Message<DM extends DMessage = any> {
     } else {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
       this.observableText.value = (content.find(v => v.type === 'text') as TextContent)?.text || '';
-      this.image = (content.find(v => v.type === 'image_url') as ImageContent)?.image_url.url || ''
+      this.images = (content.filter(v => v.type === 'image_url') as ImageContent[])?.map((img) => img.image_url.url || '');
     }
   }
 
