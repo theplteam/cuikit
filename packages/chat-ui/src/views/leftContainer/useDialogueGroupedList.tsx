@@ -12,6 +12,7 @@ import { Localization } from '../../locale/Localization';
 export type DialogueGroupType = {
   groupKey: string;
   dialogue: Dialogue;
+  time: number;
 };
 
 export type ListGroupType = {
@@ -67,7 +68,7 @@ export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
 
           results[monthEn] = {
             label: locale[`history${monthEn}` as keyof Localization],
-            timestamp,
+            timestamp: month.unix(),
             id: monthEn,
           };
         } else {
@@ -100,12 +101,15 @@ export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
     const groupsValues = sortByDesc(Object.values(dialogueGroups), 'timestamp');
 
     const dialoguesInGroup: DialogueGroupType[] = [];
-    sortByDesc([...dialogues], 'time').forEach((dialogue) => {
+    dialogues.forEach((dialogue) => {
       dialoguesInGroup.push({
-        groupKey: groupsValues.find(v => v.timestamp < dialogue.timestamp.value)?.id ?? '',
+        groupKey: groupsValues.find(v => v.timestamp <= dialogue.time)?.id ?? '',
         dialogue,
+        time: dialogue.time,
       });
     });
+
+    sortByDesc(dialoguesInGroup, 'time');
 
     return { groupsValues, dialoguesInGroup };
   }, [dialogueGroups, dialogues]);

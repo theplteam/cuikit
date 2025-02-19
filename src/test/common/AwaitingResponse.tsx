@@ -1,14 +1,13 @@
 import * as React from "react";
 import {
   ChatPage,
-  DMessage,
   DDialogue, MessageStreamingParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
 const awaitSeconds = (seconds: number) => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
-const AwaitingResponse: React.FC = () => {
+const App: React.FC = () => {
   const [dialogues] = React.useState<DDialogue[]>([
     {
       id: "test-dialogue",
@@ -22,7 +21,7 @@ const AwaitingResponse: React.FC = () => {
           role: "assistant",
           content: "Hello there! How can I assist you today?",
         },
-      ] as DMessage[],
+      ],
     },
   ]);
 
@@ -53,4 +52,4 @@ const AwaitingResponse: React.FC = () => {
   );
 }
 
-export default AwaitingResponse;
+export default App;

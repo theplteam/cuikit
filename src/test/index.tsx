@@ -1,9 +1,10 @@
 import * as React from 'react';
-const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse.tsx'));
+const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
 const MarkdownPreview = React.lazy(() => import('./markdown/App'));
 const CustomSlots = React.lazy(() => import('./customization/CustomSlots'));
 const BaseExample = React.lazy(() => import('./common/BaseExample'));
+const DialogueStructure = React.lazy(() => import('./common/DialogueStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 
 const App: React.FC = () => {
@@ -22,7 +23,10 @@ const App: React.FC = () => {
       case 'common': variant = BaseExample; break;
       case 'openai-adapter': variant = OpenAI; break;
       case 'awaiting-response': variant = AwaitingResponse; break;
+      case 'dialogue-structure': variant = DialogueStructure; break;
     }
+
+    // console.log(`componentName: ${componentName}`, !!variant);
 
     setComponent(variant);
   }, []);

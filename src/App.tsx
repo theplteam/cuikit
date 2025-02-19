@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/common/AwaitingResponse';
+import TestApp from './test/common/DialogueStructure';
 
 const App: React.FC = () => {
   return (

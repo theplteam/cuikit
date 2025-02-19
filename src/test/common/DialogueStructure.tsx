@@ -10,7 +10,26 @@ const App: React.FC = () => {
   const [dialogues] = React.useState<DDialogue[]>([
     {
       id: "test-dialogue",
-      title: "Welcome message",
+      title: "Second dialogue",
+      date: (new Date('2025-01-18T12:00:00.000Z')).toISOString(),
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: "Hello!",
+          },
+        },
+        {
+          role: "assistant",
+          content: "Hello there! How can I assist you today?",
+        },
+      ],
+    },
+    {
+      id: "test-dialogue2",
+      title: "First dialogue",
+      date: (new Date('2024-12-12T12:00:00.000Z')).toISOString(),
       messages: [
         {
           role: "user",

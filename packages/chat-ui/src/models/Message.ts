@@ -22,7 +22,7 @@ export type MessageAssistantContent = string | (TextContent)[];
 export type DMessage = {
   id: IdType;
   parentId?: IdType;
-  time: number;
+  time?: number;
 } & ({
   role: ChatMessageOwner.USER;
   content: MessageUserContent;
@@ -45,11 +45,12 @@ export class Message<DM extends DMessage = any> {
   typing = new ObservableReactValue(false);
 
   constructor(private _data: DM) {
-    if (Array.isArray(_data.content)) {
-      this.observableText.value = (_data.content.find(v => v.type === 'text') as TextContent)?.text || '';
-      this.image = (_data.content.find(v => v.type === 'image_url') as ImageContent)?.image_url.url || ''
-    } else {
+    if (typeof _data.content === 'string') {
       this.observableText.value = _data.content;
+    } else {
+      const content = Array.isArray(_data.content) ? _data.content : [_data.content];
+      this.observableText.value = (content.find(v => v.type === 'text') as TextContent)?.text || '';
+      this.image = (content.find(v => v.type === 'image_url') as ImageContent)?.image_url.url || ''
     }
   }
 
