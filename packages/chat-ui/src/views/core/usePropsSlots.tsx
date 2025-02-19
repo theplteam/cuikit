@@ -20,6 +20,10 @@ import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { DDialogue, DMessage } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../dialogue/HelloMessage';
@@ -38,8 +42,17 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
+type SlotWithProps<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
   & ChatIconSlotsType;
+
+enum SlotWithoutProps {
+  messageLikeOutlinedIcon = 'messageLikeOutlinedIcon',
+  messageLikeFilledIcon = 'messageLikeFilledIcon',
+  messageDislikeOutlinedIcon = 'messageDislikeOutlinedIcon',
+  messageDislikeFilledIcon = 'messageDislikeFilledIcon',
+}
+
+export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = SlotWithProps<DM, DD> & { [key in SlotWithoutProps]: SlotValue };
 
 type SlotsReturnType<DM extends DMessage, DD extends DDialogue<DM>> = {
   slots: SlotsType<DM, DD>;
@@ -71,6 +84,12 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       listDriver: slots?.listDriver ?? React.Fragment,
       listDriverTitle: slots?.listDriverTitle ?? Typography,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
+
+      //ICON
+      messageLikeOutlinedIcon: slots?.messageLikeOutlinedIcon ?? ThumbUpAltOutlinedIcon,
+      messageLikeFilledIcon: slots?.messageLikeFilledIcon ?? ThumbUpAltIcon,
+      messageDislikeOutlinedIcon: slots?.messageDislikeOutlinedIcon ?? ThumbDownOutlinedIcon,
+      messageDislikeFilledIcon: slots?.messageDislikeFilledIcon ?? ThumbDownIcon,
 
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,

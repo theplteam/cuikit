@@ -6,6 +6,8 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 }
 
+export type RatingType = 'like' | 'dislike';
+
 type ImageContent = {
   type: 'image_url',
   image_url: { url: string }
@@ -23,6 +25,7 @@ export type DMessage = {
   id: IdType;
   parentId?: IdType;
   time?: number;
+  rating?: RatingType;
 } & ({
   role: ChatMessageOwner.USER;
   content: MessageUserContent;
@@ -68,6 +71,14 @@ export class Message<DM extends DMessage = any> {
 
   set parentId(val: IdType|undefined) {
     this._data.parentId = val;
+  }
+
+  get rating() {
+    return this._data.rating;
+  }
+
+  set rating(value) {
+    this._data.rating = value;
   }
 
   get time() {

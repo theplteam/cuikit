@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { MessageStreamingParams } from '../../models/Dialogue';
-import { DMessage } from '../../models/Message';
+import { DMessage, RatingType } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -84,6 +84,14 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    * Unlocks the "change model" or "reply again" function for the assistant.
    */
   enableBracnhes?: boolean;
+  /**
+   * Callback fired when message rating sent
+   */
+  onSendRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
+  /**
+   * Callback fired when message feedback sent
+   */
+  onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: string[] }>;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
@@ -120,7 +128,7 @@ export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Part
   userId: UserIdType;
 }> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 
-export const useChatProps = <DM extends DMessage, DD extends DDialogue<DM>> (userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
+export const useChatProps = <DM extends DMessage, DD extends DDialogue<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
   const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, ...chatProps } = userProps;
 
   useLangInit(userProps.lang as LangKeys | undefined);
