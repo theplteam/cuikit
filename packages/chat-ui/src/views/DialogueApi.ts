@@ -19,10 +19,6 @@ export type DialogueApi<DM extends DMessage> = {
   branch: ObservableReactValue<Readonly<Message<DM>[]>>;
   getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
   handleChangeBranch: DialogueMessages<DM>['handleChangeBranch'];
-  /**
-   * Set your own waiting status for a chat response.
-   */
-  setProgressStatus: (status: string) => void;
 };
 
 export type DialogueApiUser<DM extends DMessage> = Omit<DialogueApi<DM>, 'getListener'>;
@@ -32,5 +28,4 @@ export const getDialogueMockApi = <DM extends DMessage>(): DialogueApi<DM> => ({
   branch: new ObservableReactValue([]),
   handleChangeBranch: () => {},
   getListener: () => undefined,
-  setProgressStatus: () => {},
 });

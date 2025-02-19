@@ -10,16 +10,16 @@ import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
 import { DialogueProvider } from './DialogueContext';
 import { useChatContext } from './core/ChatGlobalContext';
 import { NOOP } from '../utils/NOOP';
-import { ApiRefType } from './core/useInitializeApiRef';
 import { DDialogue, DMessage } from '../models';
 import Watermark from './Watermark';
 import { useChatSlots } from './core/ChatSlotsContext';
+import { ApiManager } from './core/useApiManager';
 
 type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
-  apiRef: React.MutableRefObject<ApiRefType<DM, DD>>;
   enableBranches: boolean | undefined;
+  apiManager: ApiManager;
 };
 
 const MessagesRowStyled = styled(Stack)(({ theme }) => ({
@@ -40,7 +40,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiRef, enableBranches }: Props<DM, DD>) => {
+const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiManager, enableBranches }: Props<DM, DD>) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { dialogue, handleCreateNewDialogue } = useChatContext<DM, DD>();
@@ -48,14 +48,14 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
 
   React.useEffect(() => {
     if (!dialogue) {
-      apiRef.current?.openNewDialogue(handleCreateNewDialogue());
+      apiManager.apiRef.current?.openNewDialogue(handleCreateNewDialogue());
     }
   }, []);
 
   return (
     <DialogueProvider
       dialogue={dialogue}
-      apiRef={apiRef}
+      apiManager={apiManager}
       enableBranches={enableBranches}
     >
       <slots.dialogue {...slotProps.dialogue}>

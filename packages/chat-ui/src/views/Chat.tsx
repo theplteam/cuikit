@@ -10,12 +10,16 @@ import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
-import { useInitializeApiRef } from './core/useInitializeApiRef';
+import { useApiRef } from './core/useApiRef';
 import { DDialogue, DMessage } from '../models';
 import { LocalizationProvider } from './core/LocalizationContext';
+import { useApiManager } from './core/useApiManager';
 
 const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
-  const apiRef = useInitializeApiRef(usersProps.apiRef);
+  const userApiRef = usersProps.apiRef;
+  const apiRef = useApiRef<DM, DD>();
+  const apiManager = useApiManager(apiRef, userApiRef);
+
   const props = useChatProps(usersProps);
   const { slots, slotProps, coreSlots } = usePropsSlots(usersProps);
 
@@ -23,7 +27,7 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
     <>
       <ChatGlobalProvider
         props={props}
-        apiRef={apiRef}
+        apiManager={apiManager}
       >
         <LocalizationProvider>
           <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
@@ -41,7 +45,7 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
             </slots.list>
             <ChatDialogueComponent
               enableBranches={props.enableBracnhes}
-              apiRef={apiRef}
+              apiManager={apiManager}
               contentRef={usersProps.scrollerRef}
             />
             {usersProps.children}

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ApiRefUserType } from '../core/useInitializeApiRef';
+import { ApiRefType } from '../core/useApiRef';
 import { DDialogue, DMessage } from '../../models';
 
 export const useChatApiRef = <DM extends DMessage = any, DD extends DDialogue<DM> = any>() =>
-  React.useRef<ApiRefUserType<DM, DD> | null>(null);
+  React.useRef<ApiRefType<DM, DD> | null>(null);

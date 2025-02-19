@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
 import { DDialogue, Dialogue, DMessage } from '../../models';
-import { ApiRefType } from './useInitializeApiRef';
+import { PrivateApiRefType } from './useApiRef';
 import { Dialogues } from '../../models/stream/Dialogues';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { FnType } from '../../models/types';
 import { useAdapterContext } from '../adapter/AdapterContext';
+import { useApiRefInitialization } from './useApiRefInitialization';
+import { ApiManager } from './useApiManager';
 
 type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: Dialogue<DM, DD> | undefined;
   dialogues: Dialogue<DM, DD>[];
-  apiRef: React.RefObject<ApiRefType<DM, DD>>;
+  apiRef: React.RefObject<PrivateApiRefType>;
   model: Dialogues<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
   handleCreateNewDialogue: FnType<DD>;
@@ -21,29 +23,19 @@ const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>
 
 type ProviderProps<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChildren<{
   props: ChatPropsTypes<DM, DD>,
-  apiRef: React.RefObject<ApiRefType<DM, DD>>;
+  apiManager: ApiManager;
 }>;
 
-const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ props, children, apiRef }: ProviderProps<DM, DD>) => {
+const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const [model] = React.useState(new Dialogues<DM, DD>());
   const currentDialogue = useObserverValue(model.currentDialogue);
   const dialogues = useObserverValue(model.list) ?? [];
 
-  /**
-   * Initialize API methods
-   * TODO: peredelat, sechas krivo
-   */
-  React.useMemo(() => {
-    if (!apiRef.current) return;
-    apiRef.current.onChangeDialogue = (dialogue) => {
-      model.currentDialogue.value = model.get(dialogue.id);
-    };
-
-    apiRef.current.openNewDialogue = (dialogue) => {
-      const dialogueInstance = model.fromData(dialogue, props.onUserMessageSent);
-      model.currentDialogue.value = dialogueInstance;
-    };
-  }, [apiRef.current]);
+  useApiRefInitialization(
+    apiManager,
+    model,
+    props,
+  );
 
   const dialogueAdapter = useAdapterContext();
 
@@ -64,7 +56,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
 
   const value: ChatGlobalContextType<DM, DD> = React.useMemo(() => ({
     ...props,
-    apiRef,
+    apiRef: apiManager.apiRef,
     model,
     dialogues,
     dialogue: currentDialogue,

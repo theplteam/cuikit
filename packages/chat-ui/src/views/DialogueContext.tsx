@@ -1,53 +1,32 @@
 import * as React from 'react';
 import { MobileMessageActionsType, useMobileMessageActions } from './message/hooks/useMobileMessageActions';
 import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
-import { type DialogueApi, getDialogueMockApi } from './DialogueApi';
-import { getDialogueListeners } from './utils/getDialogueListeners';
 import { Dialogue } from '../models/Dialogue';
-import { useMessageProgressStatus } from './dialogue/useMessageProgressStatus';
-import { ApiRefType } from './core/useInitializeApiRef';
 import { DDialogue, DMessage } from '../models';
+import { ApiManager } from './core/useApiManager';
+import { useDialogueApiInitialization } from './dialogue/useDialogueApiInitialization';
+import { PrivateApiRefType } from './core/useApiRef';
 
 type DialogueContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: Dialogue<DM, DD> | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
-  dialogueApi: React.RefObject<DialogueApi<DM>>;
+  apiRef: React.RefObject<PrivateApiRefType<DM>>;
 };
 
 type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   children: React.ReactNode;
   dialogue: Dialogue<DM, DD> | undefined;
-  apiRef: React.RefObject<ApiRefType<DM, DD>>;
+  apiManager: ApiManager;
   enableBranches: boolean | undefined;
 };
 
 const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
 
-const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiRef, enableBranches }: Props<DM, DD>) => {
+const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiManager, enableBranches }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
-  const dialogueApi = React.useRef<DialogueApi<DM>>(getDialogueMockApi());
-  const handleChangeStreamStatus = useMessageProgressStatus(dialogue);
-
-  React.useMemo(() => {
-    dialogue?.messages.init(enableBranches);
-
-    if (dialogue) {
-      const messages = dialogue.messages;
-      dialogueApi.current = {
-        allMessages: messages.allMessages,
-        branch: messages.currentMessages,
-        getListener: getDialogueListeners(dialogue),
-        handleChangeBranch: messages.handleChangeBranch,
-        setProgressStatus: handleChangeStreamStatus,
-      };
-    }
-
-    if (apiRef.current) {
-      apiRef.current.dialogue = dialogueApi.current;
-    }
-  }, [dialogue, handleChangeStreamStatus]);
+  useDialogueApiInitialization(dialogue, apiManager);
 
   /*const [state, setState] = React.useState(0)
 
@@ -59,8 +38,8 @@ const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ child
   console.log(state);*/
 
   const value = React.useMemo(() => ({
-    dialogue, dialogueApi, mobileMessageActions, messageMode
-  }), [dialogue, apiRef.current, mobileMessageActions, messageMode]);
+    dialogue, apiRef: apiManager.apiRef, mobileMessageActions, messageMode
+  }), [dialogue, apiManager.apiRef.current, messageMode, mobileMessageActions]);
 
   return (
     <Context.Provider value={value}>

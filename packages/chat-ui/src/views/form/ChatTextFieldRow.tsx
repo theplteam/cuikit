@@ -61,7 +61,8 @@ const InnerStackStyled = styled(Stack)(({ theme }) => ({
 }));
 
 const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
-  const { dialogueApi } = useDialogueContext();
+  const { apiRef } = useDialogueContext();
+  const dialogueApi = apiRef.current?.dialogue
   const { onDialogueCreated, onAssistantMessageTypingFinish, defaultTextFieldValue } = useChatContext();
   const isTyping = useObserverValue(dialogue?.isTyping);
 
@@ -69,10 +70,10 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const [images, setImages] = React.useState<string[]>([]);
 
   const onSendMessage = async () => {
-    const messages = dialogueApi.current?.branch.value ?? [];
+    const messages = dialogueApi?.branch.value ?? [];
     if ((images.length || text) && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
-      dialogueApi.current?.setProgressStatus(StreamResponseState.START);
+      apiRef.current?.setProgressStatus(StreamResponseState.START);
       const createdNew = await dialogue.createIfEmpty();
       if (createdNew) {
         onDialogueCreated?.(dialogue.data.data);
@@ -80,7 +81,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
       dialogue.sendMessage(lastMessage, text, images)
         .then(() => {
           onAssistantMessageTypingFinish?.(dialogue.data.data);
-          dialogueApi.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
+          apiRef.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
         });
 
       setText('');

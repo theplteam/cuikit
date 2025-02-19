@@ -6,7 +6,7 @@ import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
-import { ApiRefType } from './useInitializeApiRef';
+import { ApiRefType } from './useApiRef';
 import { DDialogue } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 import { FnType } from '../../models/types';

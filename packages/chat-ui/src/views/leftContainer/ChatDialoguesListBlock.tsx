@@ -21,7 +21,7 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
   const setDialogue = React.useCallback((dialogue: DDialogue) => {
     if (currentDialogue?.id !== dialogue.id) {
       onChangeCurrentDialogue?.({dialogue});
-      apiRef.current?.onChangeDialogue(dialogue);
+      apiRef.current?.onChangeDialogue(dialogue.id);
     }
   }, [onChangeCurrentDialogue, currentDialogue, apiRef.current]);
 
