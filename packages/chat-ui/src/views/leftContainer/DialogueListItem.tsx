@@ -68,7 +68,7 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   width: 65,
   pointerEvents: 'none',
   backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
     backgroundImage: getGradient('#fff'),
   },
 }));

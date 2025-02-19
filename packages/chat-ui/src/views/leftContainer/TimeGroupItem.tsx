@@ -24,7 +24,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   left: 0,
   background: materialDesignSysPalette.surfaceContainerLow,
   zIndex: 1,
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
     background: '#fff',
     top: 0,
   }
