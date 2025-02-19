@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/common/DialogueStructure';
+import TestApp from './test/customization/CustomAssistantActions';
 
 const App: React.FC = () => {
   return (

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { MessageStreamingParams } from '../../models/Dialogue';
-import { DMessage, RatingType } from '../../models/Message';
+import { ChatMessageOwner, DMessage, RatingType } from '../../models/Message';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -40,7 +40,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: DM, dialogue: DDialogue<DM> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, dialogue: DDialogue<DM> }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
@@ -92,6 +92,10 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    * Callback fired when message feedback sent
    */
   onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: string[] }>;
+  /**
+   * A flag indicating whether message copying is disabled
+   */
+  disableMessageCopying ?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
