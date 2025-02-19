@@ -6,6 +6,7 @@ const CustomSlots = React.lazy(() => import('./customization/CustomSlots'));
 const BaseExample = React.lazy(() => import('./common/BaseExample'));
 const DialogueStructure = React.lazy(() => import('./common/DialogueStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
+const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -24,6 +25,7 @@ const App: React.FC = () => {
       case 'openai-adapter': variant = OpenAI; break;
       case 'awaiting-response': variant = AwaitingResponse; break;
       case 'dialogue-structure': variant = DialogueStructure; break;
+      case 'assistant-actions': variant = CustomAssistantActions; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
