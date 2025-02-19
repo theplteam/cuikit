@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import { MessageLight, RatingType } from '../../../../models/Message';
+import { RatingType } from '../../../../models/Message';
 import { lng } from '../../../../utils/lng';
 import MessageFeedbackButton from './MessageFeedbackButton';
 import MessageFeedbackWindow from './MessageFeedbackWindow';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 
 type Props = {
-  message: MessageLight;
+  // TODO: #ANY
+  message: any;
 };
 
 const MessageActionFeedback: React.FC<Props> = ({ message }) => {
