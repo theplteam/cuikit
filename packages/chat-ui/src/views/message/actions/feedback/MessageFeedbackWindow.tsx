@@ -11,11 +11,11 @@ import Link from '@mui/material/Link';
 import { dislikeFeedbackTags, likeFeedbackTags } from './feedbackTags';
 import Chip from '@mui/material/Chip';
 import { Popover } from '@mui/material';
-import { MessageLight } from '../../../../models/Message';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 
 type Props = {
-  message: MessageLight;
+  // TODO: #ANY
+  message: any;
   anchorEl: HTMLElement | null;
   onClose: () => void;
 };
