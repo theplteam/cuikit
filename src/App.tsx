@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/markdown/MarkdownCustomExample';
+import TestApp from './test/compatibility/OpenAI';
 
 const App: React.FC = () => {
   return (
