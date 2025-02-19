@@ -5,6 +5,7 @@ import {
   DDialogue,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
+import { styled } from '@mui/material/styles';
 
 const markdownString = `
 # Heading level 1
@@ -13,56 +14,27 @@ const markdownString = `
 
 ### Heading level 3
 
-#### Heading level 4
-
-##### Heading level 5
-
-###### Heading level 6
-
-**Bold**
-
-*Italic*
-
-[Link](https://docs.playliner.com/)
-
-Ordered Lists:
-
-1. First item
-2. Second item
-3. Third item
-
-Unordered Lists:
-
-- First item
-- Second item
-- Third item
-
-Example of a code block:
-
-\`\`\`jsx
-import React from 'react';
-
-const App = () => {
-  return <div>Hello, world!</div>
-};
-
-export default App;
-\`\`\`
-
 Quote:
 
-> Line 1
-> Line 2
-> Line 3
-
-Example of a table:
-
-| Name  | Age | City          |
-|-------|-----|---------------|
-| Alice | 30  | New York      |
-| Bob   | 25  | London        |
-| Carol | 35  | San Francisco |
+> Lorem ipsum odor amet, consectetuer adipiscing elit.
+> Purus rhoncus donec maecenas conubia parturient odio vivamus.
+> Augue vehicula mattis ex quisque malesuada.
+> Ante fames pharetra cras lorem sociosqu himenaeos placerat quis nam. 
 `;
+
+const BlockquoteStyled = styled('blockquote')(({ theme }) => ({
+  margin: 0,
+  padding: theme.spacing(1),
+  paddingLeft: theme.spacing(2),
+  backgroundColor: '#fff0de',
+  borderLeft: `4px solid`,
+  borderColor: '#fdcf74',
+  borderRadius: 6,
+  color: '#333333',
+  'p': {
+    whiteSpace: 'break-spaces',
+  }
+}))
 
 const App: React.FC = () => {
   const [dialogues] = React.useState<DDialogue[]>(
@@ -95,6 +67,23 @@ const App: React.FC = () => {
         dialogues={dialogues}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}
+        slots={{
+          markdownBlockquote: BlockquoteStyled,
+        }}
+        slotProps={{
+          markdownH1: {
+            variant: "h4",
+            color: "primary",
+          },
+          markdownH2: {
+            variant: "h5",
+            color: "primary",
+          },
+          markdownH3: {
+            variant: "h6",
+            color: "primary",
+          },
+        }}
       />
     </Box>
   );
