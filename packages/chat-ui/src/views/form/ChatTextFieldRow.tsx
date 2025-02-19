@@ -66,25 +66,25 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
-  const [image, setImage] = React.useState<string>('');
+  const [images, setImages] = React.useState<string[]>([]);
 
   const onSendMessage = async () => {
     const messages = dialogueApi.current?.branch.value ?? [];
-    if (text && dialogue) {
+    if ((images.length || text) && dialogue) {
       const lastMessage = arrayLast(messages.filter(v => v.isUser));
       dialogueApi.current?.setProgressStatus(StreamResponseState.START);
       const createdNew = await dialogue.createIfEmpty();
       if (createdNew) {
         onDialogueCreated?.(dialogue.data.data);
       }
-      dialogue.sendMessage(lastMessage, text, image)
+      dialogue.sendMessage(lastMessage, text, images)
         .then(() => {
           onAssistantMessageTypingFinish?.(dialogue.data.data);
           dialogueApi.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
         });
 
       setText('');
-      setImage('');
+      setImages([]);
       scroller.handleBottomScroll?.();
     }
   }
@@ -94,11 +94,11 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
   return (
     <DialogueWidthBlockStyled>
       <InnerStackStyled>
-        <ChatImagePreview image={image} setImage={setImage} />
+        <ChatImagePreview images={images} setImages={setImages} />
         <Stack direction={'row'} alignItems={'flex-end'} gap={1}>
           <PinPictureButton
-            image={image}
-            setImage={setImage}
+            images={images}
+            setImages={setImages}
             isTyping={isTyping}
           />
           <ChatTextField
@@ -112,6 +112,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
             onSendMessage={onSendMessage}
             isTyping={isTyping}
             text={text}
+            images={images}
           />
         </Stack>
       </InnerStackStyled>
