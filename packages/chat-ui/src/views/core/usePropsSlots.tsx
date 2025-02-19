@@ -131,6 +131,13 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
   }, [slots]);
 
   const componentSlotProps = React.useMemo(() => ({
+    markdownH1: { variant: 'h1' },
+    markdownH2: { variant: 'h2' },
+    markdownH3: { variant: 'h3' },
+    markdownH4: { variant: 'h4' },
+    markdownH5: { variant: 'h5' },
+    markdownH6: { variant: 'h6' },
+
     ...slotProps,
     firstMessage: {
       dialogue: slotProps?.firstMessage?.dialogue,

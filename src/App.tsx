@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/customization/CustomAssistantActions';
+import TestApp from './test/markdown/App';
 
 const App: React.FC = () => {
   return (
