@@ -55,8 +55,6 @@ const MainBoxStyled = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     left: 0,
     width: '100%',
-    height: '100%',
-    top: 0,
   },
   [`& .${chatClassNames.dialogueRoot}`]: {
     height: '100%',
@@ -74,11 +72,14 @@ const QuestionItemStyled = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef> }> = ({ apiRef }) => {
+const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef>, handleDrawerClose: () => void }> = ({ apiRef, handleDrawerClose }) => {
   const sendMessage = React.useCallback((text: string) => {
     const longAwaitingAnswer = setTimeout(() => apiRef.current?.setProgressStatus('Please wait a little longer.'), 2500);
+
     apiRef.current?.sendUserMessage(text)
       .then(() => clearTimeout(longAwaitingAnswer));
+
+    handleDrawerClose();
   }, [apiRef.current]);
 
   return (
@@ -194,7 +195,7 @@ const App: React.FC = () => {
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >
-          <ToolsPanel apiRef={apiRef} />
+          <ToolsPanel apiRef={apiRef} handleDrawerClose={handleDrawerClose} />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -204,7 +205,7 @@ const App: React.FC = () => {
           }}
           open
         >
-          <ToolsPanel apiRef={apiRef} />
+          <ToolsPanel apiRef={apiRef} handleDrawerClose={handleDrawerClose} />
         </Drawer>
       </Box>
       <MainBoxStyled
