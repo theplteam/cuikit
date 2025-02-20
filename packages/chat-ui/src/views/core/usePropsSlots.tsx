@@ -70,6 +70,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       listTimeText: slots?.listTimeText ?? Typography,
       listDriver: slots?.listDriver ?? React.Fragment,
       listDriverTitle: slots?.listDriverTitle ?? Typography,
+      dialoguesList: slots?.dialoguesList ?? React.Fragment,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
       // MARKDOWN
