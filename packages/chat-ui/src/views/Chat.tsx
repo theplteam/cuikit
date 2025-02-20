@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ChatDialogueComponent from './ChatDialogueComponent';
+import ChatDialogueComponent from './dialogue/ChatDialogueComponent';
 import { ChatUsersProps, useChatProps } from './core/useChatProps';
 import { ChatGlobalProvider } from './core/ChatGlobalContext';
 import ChatAppDriver from './leftContainer/ChatAppDriver';

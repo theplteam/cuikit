@@ -1,19 +1,19 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import ChatMessages from './message/ChatMessages';
-import ChatTextFieldRow from './form/ChatTextFieldRow';
+import ChatMessages from '../message/ChatMessages';
+import ChatTextFieldRow from '../form/ChatTextFieldRow';
 import Box from '@mui/material/Box';
-import { ChatViewConstants } from './ChatViewConstants';
-import MessageSelectedMobile from './message/MessageSelectedMobile';
+import { ChatViewConstants } from '../ChatViewConstants';
+import MessageSelectedMobile from '../message/MessageSelectedMobile';
 import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
 import { DialogueProvider } from './DialogueContext';
-import { useChatContext } from './core/ChatGlobalContext';
-import { NOOP } from '../utils/NOOP';
-import { DDialogue, DMessage } from '../models';
-import Watermark from './Watermark';
-import { useChatSlots } from './core/ChatSlotsContext';
-import { ApiManager } from './core/useApiManager';
+import { useChatContext } from '../core/ChatGlobalContext';
+import { NOOP } from '../../utils/NOOP';
+import { DDialogue, DMessage } from '../../models';
+import Watermark from '../Watermark';
+import { useChatSlots } from '../core/ChatSlotsContext';
+import { ApiManager } from '../core/useApiManager';
 
 type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
   contentRef?: React.RefObject<HTMLDivElement | null>;

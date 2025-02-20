@@ -10,7 +10,7 @@ import MessagePagination, { MessagePaginationHeight } from './MessagePagination'
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { useDialogueContext } from '../DialogueContext';
+import { useDialogueContext } from '../dialogue/DialogueContext';
 import { Message } from '../../models/Message';
 import { Dialogue } from '../../models/Dialogue';
 import { useElementRefState } from '../hooks/useElementRef';

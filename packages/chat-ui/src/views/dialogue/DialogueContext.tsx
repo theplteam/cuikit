@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { MobileMessageActionsType, useMobileMessageActions } from './message/hooks/useMobileMessageActions';
-import { MessagesModeType, useMessagesMode } from './message/hooks/useMessagesMode';
-import { Dialogue } from '../models/Dialogue';
-import { DDialogue, DMessage } from '../models';
-import { ApiManager } from './core/useApiManager';
-import { useDialogueApiInitialization } from './dialogue/useDialogueApiInitialization';
-import { PrivateApiRefType } from './core/useApiRef';
-import { useDialogueSendMessage } from './dialogue/useDialogueSendMessage';
-import { type ChatGlobalContextType } from './core/ChatGlobalContext';
+import { MobileMessageActionsType, useMobileMessageActions } from '../message/hooks/useMobileMessageActions';
+import { MessagesModeType, useMessagesMode } from '../message/hooks/useMessagesMode';
+import { Dialogue } from '../../models/Dialogue';
+import { DDialogue, DMessage } from '../../models';
+import { ApiManager } from '../core/useApiManager';
+import { useDialogueApiInitialization } from './useDialogueApiInitialization';
+import { PrivateApiRefType } from '../core/useApiRef';
+import { useDialogueSendMessage } from './useDialogueSendMessage';
+import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
 
 type DialogueContextType<DM extends DMessage, DD extends DDialogue<DM>> = {

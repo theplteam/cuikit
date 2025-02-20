@@ -3,7 +3,7 @@ import usePagination from '@mui/material/usePagination';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
-import { useDialogueContext } from '../DialogueContext';
+import { useDialogueContext } from '../dialogue/DialogueContext';
 import { Message } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatSlots } from '../core/ChatSlotsContext';

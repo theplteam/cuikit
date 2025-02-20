@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { ChatViewConstants } from '../ChatViewConstants';
 import MessagesList from './MessagesList';
-import { useDialogueContext } from '../DialogueContext';
+import { useDialogueContext } from '../dialogue/DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {};

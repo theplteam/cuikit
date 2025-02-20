@@ -3,7 +3,7 @@ import { MobileMessageActionsType } from './hooks/useMobileMessageActions';
 import MessageMobileUserActions from './actions/mobile/MessageMobileUserActions';
 import MessageMobileAssistantActions from './actions/mobile/MessageMobileAssistantActions';
 import { MessagesModeType } from './hooks/useMessagesMode';
-import { useDialogueContext } from '../DialogueContext';
+import { useDialogueContext } from '../dialogue/DialogueContext';
 import MdMenu from '../../ui/menu/MdMenu';
 
 type Props = {

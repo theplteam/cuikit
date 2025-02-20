@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ChatViewConstants } from '../ChatViewConstants';
 import { ChatScrollerType } from './ChatScrollerType';
 import { useTheme } from '@mui/material/styles';
-import { useDialogueContext } from '../DialogueContext';
+import { useDialogueContext } from '../dialogue/DialogueContext';
 import { when } from '../../utils/observers/when';
 import { Message } from '../../models/Message';
 import { useObserverValue } from '../hooks/useObserverValue';

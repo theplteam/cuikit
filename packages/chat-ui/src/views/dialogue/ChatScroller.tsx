@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { useChatScroller } from './utils/useChatScroller';
+import { useChatScroller } from '../utils/useChatScroller';
 import ScrollBottomButton from './ScrollBottomButton';
-import { Dialogue } from '../models/Dialogue';
-import { BoxRefType } from './hooks/useElementRef';
+import { Dialogue } from '../../models/Dialogue';
+import { BoxRefType } from '../hooks/useElementRef';
 
 export type ChatScrollApiRef = {
   handleBottomScroll: () => void;
