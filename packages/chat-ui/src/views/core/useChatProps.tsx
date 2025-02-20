@@ -83,7 +83,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    * Unlocks the "edit message" function for the user.
    * Unlocks the "change model" or "reply again" function for the assistant.
    */
-  enableBracnhes?: boolean;
+  enableBranches?: boolean;
   /**
    * Callback fired when message rating sent
    */

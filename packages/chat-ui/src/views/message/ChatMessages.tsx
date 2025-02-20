@@ -8,9 +8,9 @@ import { useObserverValue } from '../hooks/useObserverValue';
 type Props = {};
 
 const ChatMessages: React.FC<Props> = () => {
-  const { dialogueApi, dialogue } = useDialogueContext();
+  const { apiRef, dialogue } = useDialogueContext();
 
-  const messages = useObserverValue(dialogueApi.current?.getListener('branch'));
+  const messages = useObserverValue(apiRef.current?.dialogue.getListener('branch'));
 
   return (
     <Stack

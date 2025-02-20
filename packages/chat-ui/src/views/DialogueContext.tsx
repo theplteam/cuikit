@@ -6,6 +6,9 @@ import { DDialogue, DMessage } from '../models';
 import { ApiManager } from './core/useApiManager';
 import { useDialogueApiInitialization } from './dialogue/useDialogueApiInitialization';
 import { PrivateApiRefType } from './core/useApiRef';
+import { useDialogueSendMessage } from './dialogue/useDialogueSendMessage';
+import { type ChatGlobalContextType } from './core/ChatGlobalContext';
+import { ChatScrollApiRef } from './ChatScroller';
 
 type DialogueContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: Dialogue<DM, DD> | undefined;
@@ -14,19 +17,31 @@ type DialogueContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   apiRef: React.RefObject<PrivateApiRefType<DM>>;
 };
 
-type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
-  children: React.ReactNode;
+type Props<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChildren<{
   dialogue: Dialogue<DM, DD> | undefined;
   apiManager: ApiManager;
-  enableBranches: boolean | undefined;
-};
+  scrollRef: React.RefObject<ChatScrollApiRef>;
+  globalProps: Pick<ChatGlobalContextType<any, any>, 'onDialogueCreated' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
+}>;
 
 const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
 
-const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiManager, enableBranches }: Props<DM, DD>) => {
+const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
-  useDialogueApiInitialization(dialogue, apiManager);
+
+  const onMessageSend = useDialogueSendMessage(
+    dialogue,
+    globalProps.onDialogueCreated,
+    globalProps.onAssistantMessageTypingFinish,
+    scrollRef.current ?? undefined,
+  );
+
+  useDialogueApiInitialization(dialogue, apiManager, onMessageSend);
+
+  React.useMemo(() => {
+    dialogue?.messages.init(globalProps.enableBranches);
+  }, [dialogue]);
 
   /*const [state, setState] = React.useState(0)
 

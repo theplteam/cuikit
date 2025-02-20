@@ -43,7 +43,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiManager, enableBranches }: Props<DM, DD>) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { dialogue, handleCreateNewDialogue } = useChatContext<DM, DD>();
+  const { dialogue, handleCreateNewDialogue, onAssistantMessageTypingFinish, onDialogueCreated } = useChatContext<DM, DD>();
   const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
@@ -56,7 +56,12 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
     <DialogueProvider
       dialogue={dialogue}
       apiManager={apiManager}
-      enableBranches={enableBranches}
+      globalProps={{
+        onAssistantMessageTypingFinish,
+        enableBranches,
+        onDialogueCreated,
+      }}
+      scrollRef={scrollApiRef}
     >
       <slots.dialogue {...slotProps.dialogue}>
         <MessagesRowStyled
@@ -74,7 +79,7 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ 
         <Stack position={'sticky'} bottom={0} zIndex={1}>
           <TextRowBlock>
             <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
-            <ChatTextFieldRow dialogue={dialogue} scroller={scrollApiRef.current} />
+            <ChatTextFieldRow dialogue={dialogue} />
           </TextRowBlock>
         </Stack>
         <MessageSelectedMobile />

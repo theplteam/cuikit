@@ -8,12 +8,12 @@ export enum ChatMessageOwner {
 
 export type RatingType = 'like' | 'dislike';
 
-type ImageContent = {
+export type ImageContent = {
   type: 'image_url',
   image_url: { url: string }
 }
 
-type TextContent = {
+export type TextContent = {
   type: 'text',
   text: string,
 }

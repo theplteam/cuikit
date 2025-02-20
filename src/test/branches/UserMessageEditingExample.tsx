@@ -86,7 +86,7 @@ const UserMessageEditingExample: React.FC = () => {
         dialogues={dialogues}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}
-        enableBracnhes
+        enableBranches
       />
     </Box>
   );

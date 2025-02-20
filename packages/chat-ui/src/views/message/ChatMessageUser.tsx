@@ -60,7 +60,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const { messageMode, dialogueApi } = useDialogueContext();
-  const { onAssistantMessageTypingFinish, enableBracnhes } = useChatContext();
+  const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
 
   const mode = messageMode.values[message.id];
 
@@ -91,7 +91,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const children = React.useMemo(() => (
     <>
       <ChatMarkdownBlock text={message.text} />
-      {((isFirst || message.parentId) && !!enableBracnhes) && (
+      {((isFirst || message.parentId) && !!enableBranches) && (
         <MessageActionsUser
           className={actionsClassName}
           onClickEdit={onClickEdit}
@@ -144,7 +144,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
           </ChatMessageContainerStyled>
         )}
       </Box>
-      {!!enableBracnhes ? (
+      {!!enableBranches ? (
         <MessagePagination
           disabled={isTyping}
           message={message}

@@ -9,7 +9,7 @@ import { useAdapterContext } from '../adapter/AdapterContext';
 import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
-type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
+export type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: Dialogue<DM, DD> | undefined;
   dialogues: Dialogue<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;

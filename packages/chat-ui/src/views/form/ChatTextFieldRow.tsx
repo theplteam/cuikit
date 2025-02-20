@@ -5,21 +5,17 @@ import Stack from '@mui/material/Stack';
 import SendMessageButton from './SendMessageButton';
 import Box from '@mui/material/Box';
 import { inputBaseClasses } from '@mui/material/InputBase';
-import { arrayLast } from '../../utils/arrayUtils/arrayLast';
-import { useDialogueContext } from '../DialogueContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { Dialogue, StreamResponseState } from '../../models/Dialogue';
+import { Dialogue } from '../../models/Dialogue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import PinPictureButton from './PinPictureButton';
 import { useChatContext } from '../core/ChatGlobalContext';
 import ChatImagePreview from './ChatImagePreview';
+import { DMessage } from '../../models';
 
 type Props = {
   dialogue?: Dialogue;
-  scroller: {
-    handleBottomScroll?: () => void;
-  };
 };
 
 const inputClasses = {
@@ -60,34 +56,31 @@ const InnerStackStyled = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const ChatTextFieldRow: React.FC<Props> = ({ dialogue, scroller }) => {
-  const { apiRef } = useDialogueContext();
-  const dialogueApi = apiRef.current?.dialogue
-  const { onDialogueCreated, onAssistantMessageTypingFinish, defaultTextFieldValue } = useChatContext();
+const ChatTextFieldRow: React.FC<Props> = ({ dialogue }) => {
+  const { defaultTextFieldValue, apiRef } = useChatContext();
+
   const isTyping = useObserverValue(dialogue?.isTyping);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
   const [images, setImages] = React.useState<string[]>([]);
 
   const onSendMessage = async () => {
-    const messages = dialogueApi?.branch.value ?? [];
-    if ((images.length || text) && dialogue) {
-      const lastMessage = arrayLast(messages.filter(v => v.isUser));
-      apiRef.current?.setProgressStatus(StreamResponseState.START);
-      const createdNew = await dialogue.createIfEmpty();
-      if (createdNew) {
-        onDialogueCreated?.(dialogue.data.data);
-      }
-      dialogue.sendMessage(lastMessage, text, images)
-        .then(() => {
-          onAssistantMessageTypingFinish?.(dialogue.data.data);
-          apiRef.current?.setProgressStatus(StreamResponseState.FINISH_MESSAGE);
-        });
+    let content: DMessage['content'] = text;
+    if (images.length) {
+      content = images.map(v => ({ type: 'image_url', image_url: { url: v } }));
 
-      setText('');
-      setImages([]);
-      scroller.handleBottomScroll?.();
+      if (!!text) {
+        content = [
+          { type: 'text', text },
+          ...content,
+        ];
+      }
     }
+
+    apiRef.current?.sendUserMessage(content);
+
+    setText('');
+    setImages([]);
   }
 
   const disabled = !dialogue || isTyping;
