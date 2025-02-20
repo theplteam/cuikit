@@ -15,7 +15,7 @@ import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
 
-type Props<DM extends DMessage, DD extends DDialogue<DM>> = {
+type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
   enableBranches: boolean | undefined;
@@ -40,7 +40,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiManager, enableBranches }: Props<DM, DD>) => {
+const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { dialogue, handleCreateNewDialogue, onAssistantMessageTypingFinish, onDialogueCreated } = useChatContext<DM, DD>();

@@ -31,7 +31,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any
   /**
    * Send message to conversation
    */
-  sendUserMessage: (content: DMessage['content']) => Promise<void>;
+  sendUserMessage: (content: DMessage['content']) => Promise<boolean>;
   /**
    * Triggered when another dialogue is opened.
    */

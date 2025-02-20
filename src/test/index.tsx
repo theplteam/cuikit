@@ -8,6 +8,7 @@ const BaseExample = React.lazy(() => import('./common/BaseExample'));
 const DialogueStructure = React.lazy(() => import('./common/DialogueStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
+const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -28,6 +29,7 @@ const App: React.FC = () => {
       case 'awaiting-response': variant = AwaitingResponse; break;
       case 'dialogue-structure': variant = DialogueStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
+      case 'api-reference': variant = ApiRefTest; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
