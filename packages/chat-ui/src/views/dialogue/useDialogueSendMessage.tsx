@@ -25,7 +25,8 @@ export const useDialogueSendMessage = (
     }
 
     if ((images?.length || text) && dialogue) {
-      const lastMessage = arrayLast(branchMessages.filter(v => v.isUser));
+      const lastMessage = arrayLast(branchMessages);
+
       dialogue.streamStatus.value = StreamResponseState.START;
       const createdNew = await dialogue.createIfEmpty();
       if (createdNew) {

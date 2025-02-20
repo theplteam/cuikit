@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/compatibility/OpenAI';
+import TestApp from './test/branches/UserMessageEditingExample';
 
 const App: React.FC = () => {
   return (
