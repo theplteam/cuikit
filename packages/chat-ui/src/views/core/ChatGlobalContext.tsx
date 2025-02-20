@@ -16,7 +16,6 @@ export type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>>
   model: Dialogues<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
   handleCreateNewDialogue: FnType<DD>;
-  disableMessageRating?: boolean;
 } & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'dialogue' | 'dialogues' | 'handleCreateNewDialogue'>;
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);

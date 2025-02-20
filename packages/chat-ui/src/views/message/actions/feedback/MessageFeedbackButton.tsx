@@ -34,7 +34,8 @@ const MessageFeedbackButton: React.FC<Props> = ({ type, activeType, onClick, too
         onClick={() => onClick(type)}
         sx={{
           color: isActive ? materialDesignSysPalette.primary : undefined,
-          backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined
+          backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
+          ':hover': { backgroundColor: isActive ? materialDesignSysPalette.primaryFixedDim : undefined },
         }}
       >
         {icon[type][isActive ? 'active' : 'default']}

@@ -4,6 +4,7 @@ import MessageActionCopy from './MessageActionCopy';
 import { Message } from '../../../models/Message';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import { Dialogue } from '../../../models/Dialogue';
+import MessageActionFeedback from './feedback/MessageActionFeedback';
 
 type Props = {
   message: Message;
@@ -12,7 +13,7 @@ type Props = {
 };
 
 const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
-  const { actionsAssistant, disableMessageCopying } = useChatContext();
+  const { actionsAssistant, disableMessageCopying, onSendRating } = useChatContext();
   return (
     <Stack
       direction={'row'}
@@ -20,8 +21,8 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       gap={1.5}
       className={className}
     >
-      {!disableMessageCopying && <MessageActionCopy message={message}/>}
-      {/*!disableMessageRating && <MessageActionFeedback message={message} />*/}
+      {!disableMessageCopying && <MessageActionCopy message={message} />}
+      {onSendRating && <MessageActionFeedback message={message} />}
       {actionsAssistant?.map((component, k) => (
         <component.element
           dialogue={dialogue.data.data}

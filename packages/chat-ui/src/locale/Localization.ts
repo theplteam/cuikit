@@ -42,6 +42,18 @@ export type Localization = {
   dialogueDeletedSuccess: string;
   dialogueActionDelete: string
 
+  // rating
+  messageLikeTooltip: string;
+  messageDislikeTooltip: string;
+  messageFeedbackTitle: string;
+  messageFeedbackSecondTitle: string;
+  messageFeedbackPlaceholder: string;
+  messageFeedbackSubmitButton: string;
+  messageFeedbackLink: string;
+  messageFeedbackText: string;
+  messageFeedbackLikeOptions: string[];
+  messageFeedbackDislikeOptions: string[];
+
   // other
   maxImageWarning: string;
   textFieldPlaceholder: string;

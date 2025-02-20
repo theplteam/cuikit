@@ -85,17 +85,17 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    */
   enableBranches?: boolean;
   /**
-   * Callback fired when message rating sent
+   * If callback is set, rating buttons appear. Callback fired when message rating sent
    */
   onSendRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
   /**
-   * Callback fired when message feedback sent
+   * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent 
    */
   onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: string[] }>;
   /**
    * A flag indicating whether message copying is disabled
    */
-  disableMessageCopying ?: boolean;
+  disableMessageCopying?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
