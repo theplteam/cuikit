@@ -4,7 +4,7 @@ import { ApiRefType, PrivateApiRefType } from './useApiRef';
 export class ApiManager {
   constructor(
     public apiRef: React.RefObject<PrivateApiRefType>,
-    public userApiRef: React.MutableRefObject<ApiRefType> | undefined,
+    public userApiRef: React.RefObject<ApiRefType> | undefined,
   ) {}
 
   setMethod = <K extends keyof ApiRefType>(name: K, method: ApiRefType[K]) => {
@@ -14,7 +14,7 @@ export class ApiManager {
       (apiRef.current[name] as any) = method;
     }
 
-    if (this.userApiRef) {
+    if (this.userApiRef?.current) {
       this.userApiRef.current[name] = method;
     }
   }
@@ -38,7 +38,7 @@ export class ApiManager {
 
 export const useApiManager = (
   apiRef: React.RefObject<PrivateApiRefType>,
-  userApiRef: React.MutableRefObject<ApiRefType> | undefined,
+  userApiRef: React.RefObject<ApiRefType> | undefined,
 ) => {
   return React.useMemo(() => new ApiManager(apiRef, userApiRef), [apiRef, userApiRef]);
 }

@@ -12,7 +12,7 @@ export const useDialogueSendMessage = (
     handleBottomScroll?: () => void;
   }
 ) => {
-  return React.useCallback(async (content: DMessage['content']) => {
+  return React.useCallback((content: DMessage['content']) => {
     const branchMessages = dialogue?.messages.currentMessages.value ?? [];
     let text = '';
     let images: string[] = [];
@@ -24,22 +24,32 @@ export const useDialogueSendMessage = (
       images = content.map(v => v.type === 'image_url' ? v.image_url.url : undefined).filter(v => !!v) as string[];
     }
 
-    if ((images?.length || text) && dialogue) {
-      const lastMessage = arrayLast(branchMessages);
+    return new Promise<boolean>(async (resolve) => {
+      if ((images?.length || text) && dialogue) {
+        const lastMessage = arrayLast(branchMessages);
 
-      dialogue.streamStatus.value = StreamResponseState.START;
-      const createdNew = await dialogue.createIfEmpty();
-      if (createdNew) {
-        onDialogueCreated?.(dialogue.data.data);
+        dialogue.streamStatus.value = StreamResponseState.START;
+
+        try {
+          const createdNew = await dialogue.createIfEmpty();
+          if (createdNew) {
+            onDialogueCreated?.(dialogue.data.data);
+          }
+          dialogue.sendMessage(lastMessage, text, images)
+            .then(() => {
+              resolve(true);
+              onAssistantMessageTypingFinish?.(dialogue.data.data);
+              dialogue.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
+            })
+            .catch(() => resolve(false));
+
+          scroller?.handleBottomScroll?.();
+        } catch (e) {
+          resolve(false);
+        }
       }
-      dialogue.sendMessage(lastMessage, text, images)
-        .then(() => {
-          onAssistantMessageTypingFinish?.(dialogue.data.data);
-          dialogue.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
-        });
+    });
 
-      scroller?.handleBottomScroll?.();
-    }
   }, [
     dialogue,
     arrayPluck(dialogue?.messages.currentMessages.value ?? [], 'id').join(','),

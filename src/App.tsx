@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/branches/UserMessageEditingExample';
+import TestApp from './test/common/ApiRefTest';
 
 const App: React.FC = () => {
   return (

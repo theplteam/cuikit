@@ -17,7 +17,7 @@ import { useApiManager } from './core/useApiManager';
 
 const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
   const userApiRef = usersProps.apiRef;
-  const apiRef = useApiRef<DM, DD>();
+  const apiRef = useApiRef<DM, DD>(userApiRef);
   const apiManager = useApiManager(apiRef, userApiRef);
 
   const props = useChatProps(usersProps);

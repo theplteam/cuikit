@@ -6,9 +6,13 @@ import { NewChatButton, NewChatIconButton, useChatContext } from './views';
 import { useDialogueContext } from './views/dialogue/DialogueContext';
 import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
 import { useChatApiRef } from './views/hooks/useChatApiRef';
+import type { ApiRefType } from './views/core/useApiRef';
+import { chatClassNames } from './views/core/chatClassNames';
 
 export * from './models';
 export * from './views/adapter';
+
+type ChatApiRef = ApiRefType | null;
 
 export {
   Chat,
@@ -21,4 +25,6 @@ export {
   ChatLicenseInfo,
   useAssistantAnswerMock,
   useChatApiRef,
+  type ChatApiRef,
+  chatClassNames,
 };

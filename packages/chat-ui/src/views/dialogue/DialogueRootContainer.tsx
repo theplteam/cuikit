@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Box, { BoxProps } from '@mui/material/Box';
+import { chatClassNames } from '../core/chatClassNames';
+import clsx from 'clsx';
 
 type Props = BoxProps;
 
@@ -10,6 +12,7 @@ const DialogueRootContainer: React.FC<Props> = (boxProps) => {
       display={'flex'}
       justifyContent={'center'}
       height={'inherit'}
+      className={chatClassNames.dialogueRoot}
     >
       <Box
         width={'100%'}
@@ -17,6 +20,7 @@ const DialogueRootContainer: React.FC<Props> = (boxProps) => {
         display={'flex'}
         flexDirection={'column'}
         {...boxProps}
+        className={clsx(chatClassNames.dialogueRoot, boxProps.className)}
       />
     </Box>
   );

@@ -21,7 +21,7 @@ const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
         <ChatMessageComponent
           message={message}
           dialogue={dialogue}
-          key={message.id}
+          key={message.id ?? key}
           isFirst={!key}
           isLatest={key === messagesLength -1}
           enableAssistantActions

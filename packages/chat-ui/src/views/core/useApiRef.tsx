@@ -31,7 +31,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any
   /**
    * Send message to conversation
    */
-  sendUserMessage: (content: DMessage['content']) => void;
+  sendUserMessage: (content: DMessage['content']) => Promise<void>;
   /**
    * Triggered when another dialogue is opened.
    */
@@ -57,12 +57,12 @@ export type PrivateApiRefType<DM extends DMessage = any, DD extends DDialogue<DM
   getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
 } & ApiRefType<DM, DD>;
 
-export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>() => {
-  return React.useRef<PrivateApiRefType<DM, DD>>({
+export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
+  const apiRef = React.useRef<PrivateApiRefType<DM, DD>>({
     onChangeDialogue: NOOP,
     openNewDialogue: NOOP,
     deleteDialogue: NOOP,
-    sendUserMessage: NOOP,
+    sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
     getCurrentDialogue: () => undefined,
@@ -73,4 +73,13 @@ export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>() => {
     branch: new ObservableReactValue([]),
     getListener: () => undefined,
   });
+
+  React.useMemo(() => {
+    if (userApiRef) {
+      const {getListener, branch, allMessages, ...otherProps} = apiRef.current;
+      userApiRef.current = otherProps;
+    }
+  }, [userApiRef]);
+
+  return apiRef;
 }

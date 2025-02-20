@@ -4,9 +4,12 @@ import { ForceStream } from '../../models/stream/ForceStream';
 import { generateRandomLoremIpsum } from '../../utils/stringUtils/generateLoremIpsum';
 import { NOOP } from '../../utils/NOOP';
 
-export const useAssistantAnswerMock = () => {
+export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: number }>) => {
 
-  const onUserMessageSent = React.useCallback((params: MessageStreamingParams) => {
+  const onUserMessageSent = React.useCallback(async (params: MessageStreamingParams) => {
+    if (mockOptions?.delayTimeout) {
+      await new Promise(resolve => setTimeout(resolve, mockOptions.delayTimeout));
+    }
     const text = generateRandomLoremIpsum("medium");
     const forceStream = new ForceStream(text, undefined, params.pushChunk);
     forceStream.start();
