@@ -19,6 +19,13 @@ export class ApiManager {
     }
   }
 
+  setPrivateMethod = <K extends keyof PrivateApiRefType>(name: K, method: PrivateApiRefType[K]) => {
+    const apiRef = this.apiRef;
+    if (apiRef.current) {
+      apiRef.current[name] = method;
+    }
+  }
+
   setMethods = (methods: Partial<ApiRefType>) => {
     for (const key in methods) {
       const method = methods[key as keyof ApiRefType];

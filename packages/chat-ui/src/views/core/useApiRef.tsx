@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { DialogueApi, getDialogueMockApi } from '../DialogueApi';
-import { DDialogue, DMessage } from '../../models';
+import { DDialogue, DMessage, Message } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 import { IdType } from '../../types';
 import { DialogueMessages } from '../../models/DialogueMessages';
+import { ObservableReactValue } from '../../utils/observers';
+import { DialogueListenersMap } from '../dialogue/DialogueListenersMap';
 
 export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
   /**
@@ -29,7 +30,6 @@ export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any
   deleteDialogue: (dialogueId: IdType) => void;
   /**
    * Send message to conversation
-   * TODO: НЕ ДОБАВЛЕН В ИНИЦИАЛИЗАЦИЮ
    */
   sendUserMessage: (content: DMessage['content']) => void;
   /**
@@ -52,12 +52,13 @@ export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any
 };
 
 export type PrivateApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
-  dialogue: DialogueApi<DM>;
+  allMessages: ObservableReactValue<Readonly<Message<DM>[]>>;
+  branch: ObservableReactValue<Readonly<Message<DM>[]>>;
+  getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
 } & ApiRefType<DM, DD>;
 
 export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>() => {
   return React.useRef<PrivateApiRefType<DM, DD>>({
-    dialogue: getDialogueMockApi(),
     onChangeDialogue: NOOP,
     openNewDialogue: NOOP,
     deleteDialogue: NOOP,
@@ -68,5 +69,8 @@ export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>() => {
     getAllMessages: () => [],
     getBranchMessages: () => [],
     getAllDialogues: () => [],
+    allMessages: new ObservableReactValue([]),
+    branch: new ObservableReactValue([]),
+    getListener: () => undefined,
   });
 }

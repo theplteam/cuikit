@@ -19,9 +19,9 @@ export type MessagePaginationProps = {
 export const MessagePaginationHeight = 30
 
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
-  const { dialogueApi } = useDialogueContext();
+  const { apiRef } = useDialogueContext();
   const { slots, slotProps } = useChatSlots();
-  const messages = useObserverValue(dialogueApi.current?.getListener('allMessages'), []);
+  const messages = useObserverValue(apiRef.current?.getListener('allMessages'), []);
   const branches = messages?.filter(v => v.parentId === message.parentId) ?? [];
 
   // console.log('page ' + (branches.findIndex(v => v.id === message.id) + 1), message.id, branches.map(v => v.id));
@@ -30,7 +30,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
     boundaryCount: 0,
     siblingCount: 0,
     defaultPage: branches.findIndex(v => v.id === message.id) + 1,
-    onChange: (_event, page) => dialogueApi.current?.handleChangeBranch(branches[page - 1]),
+    onChange: (_event, page) => apiRef.current?.handleChangeBranch(branches[page - 1]),
   });
 
   /*console.log(branches);

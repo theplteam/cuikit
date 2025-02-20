@@ -59,7 +59,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const isTablet = useTablet();
   const isTyping = useObserverValue(dialogue?.isTyping);
 
-  const { messageMode, dialogueApi } = useDialogueContext();
+  const { messageMode, apiRef } = useDialogueContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
 
   const mode = messageMode.values[message.id];
@@ -73,7 +73,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
     const newMessage = dialogue.editMessage(message, newText);
-    dialogueApi.current?.handleChangeBranch(newMessage);
+    apiRef.current?.handleChangeBranch(newMessage);
     onAssistantMessageTypingFinish?.(dialogue.data.data);
   }
 

@@ -32,15 +32,9 @@ export const useDialogueApiInitialization = (
       setProgressStatus: handleChangeStreamStatus,
     });
 
-    const privateApi = apiManager.apiRef.current;
-    if (privateApi) {
-      privateApi.dialogue = {
-        allMessages: messages.allMessages,
-        branch: messages.currentMessages,
-        getListener: getDialogueListeners(dialogue),
-        handleChangeBranch: messages.handleChangeBranch,
-      };
-    }
-    apiManager.apiRef.current?.dialogue
+    apiManager.setPrivateMethod('allMessages', messages.allMessages);
+    apiManager.setPrivateMethod('branch', messages.currentMessages);
+    apiManager.setPrivateMethod('getListener', getDialogueListeners(dialogue));
+
   }, [dialogue]);
 }

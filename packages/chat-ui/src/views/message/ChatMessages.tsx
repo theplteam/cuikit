@@ -10,7 +10,7 @@ type Props = {};
 const ChatMessages: React.FC<Props> = () => {
   const { apiRef, dialogue } = useDialogueContext();
 
-  const messages = useObserverValue(apiRef.current?.dialogue.getListener('branch'));
+  const messages = useObserverValue(apiRef.current?.getListener('branch'));
 
   return (
     <Stack

@@ -1,10 +1,10 @@
-import { DialogueApi } from '../DialogueApi';
 import { Dialogue } from '../../models/Dialogue';
 import { DDialogue, DMessage } from '../../models';
+import { PrivateApiRefType } from '../core/useApiRef';
 
-export const getDialogueListeners: <DM extends DMessage, DD extends DDialogue<DM>>(dialogue: Dialogue<DM, DD>) => DialogueApi<DM>['getListener'] = (dialogue) =>
+export const getDialogueListeners: <DM extends DMessage, DD extends DDialogue<DM>>(dialogue: Dialogue<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (dialogue) =>
   (key) => {
-  // TODO: разобраться с типизацией
+  // TODO: #ANY
   let value: any;
   switch (key) {
     case "allMessages": value = dialogue.messages.allMessages;break;

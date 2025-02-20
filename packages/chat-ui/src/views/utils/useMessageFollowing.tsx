@@ -130,9 +130,9 @@ export const useMessageFollowing = (
   scrollTo: (y: number) => void,
 ) => {
   const [followingModel, setFollowingModel] = React.useState<FollowingClass | undefined>();
-  const { dialogueApi } = useDialogueContext();
+  const { apiRef } = useDialogueContext();
 
-  const messages = useObserverValue(dialogueApi.current?.getListener('allMessages')) ?? [];
+  const messages = useObserverValue(apiRef.current?.getListener('allMessages')) ?? [];
 
   const lastMessageModel = React.useMemo(() => {
     if (!messages.length) return undefined;
