@@ -40,7 +40,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any
    * Triggered when a new dialogue is opened.
    * @param dialogue
    */
-  openNewDialogue: (dialogue: DD) => void;
+  openNewDialogue: (dialogue?: DD) => void;
   /**
    * Set your own waiting status for a chat response.
    */

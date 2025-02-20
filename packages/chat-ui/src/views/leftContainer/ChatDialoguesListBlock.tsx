@@ -60,8 +60,6 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
         )}
       </Stack>
       <DialogDeleteConfirm />
-      {/*<DialogueSharing model={model}/>*/}
-      {/*<DialogueInfoPopup model={model}/>*/}
     </>
   );
 };
