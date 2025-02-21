@@ -57,7 +57,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
       container={() => containerRef.current!}
     >
       <Toolbar sx={{ justifyContent: 'flex-end' }}>
-        <IconButton onClick={handleDrawerClose}>
+        <IconButton onClick={handleDrawerClose} sx={{ display: { sm: 'none' } }}>
           <CloseIcon />
         </IconButton>
       </Toolbar>
