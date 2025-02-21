@@ -47,7 +47,7 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
               <CloseIcon />
             </coreSlots.iconButton>
             {!!title && (
-              <slots.listDriverTitle variant={'subtitle1'} {...slotProps.listDriverTitle}>
+              <slots.listDriverTitle variant={'subtitle1'} {...slotProps.listDrawerTitle}>
                 {title}
               </slots.listDriverTitle>
             )}

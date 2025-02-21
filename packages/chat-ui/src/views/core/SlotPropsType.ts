@@ -40,11 +40,11 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
    * Driver component for the dialogues list (mobile version)
    * Will ignored if dialoguesList slot provided
    */
-  listDriver: ChildrenProps;
+  listDrawer: ChildrenProps;
   /**
    * Title for the mobile dialogues list (same as listSubtitle)
    */
-  listDriverTitle: TypographyProps;
+  listDrawerTitle: TypographyProps;
   /**
    * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
    */
