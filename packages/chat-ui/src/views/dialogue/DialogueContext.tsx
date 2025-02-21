@@ -21,7 +21,7 @@ type Props<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren
   dialogue: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
-  globalProps: Pick<ChatGlobalContextType<any, any>, 'onDialogueCreated' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
+  globalProps: Pick<ChatGlobalContextType<any, any>, 'onThreadCreated' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
 }>;
 
 const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
@@ -32,7 +32,7 @@ const DialogueProvider = <DM extends DMessage, DD extends Thread<DM>>({ children
 
   const onMessageSend = useDialogueSendMessage(
     dialogue,
-    globalProps.onDialogueCreated,
+    globalProps.onThreadCreated,
     globalProps.onAssistantMessageTypingFinish,
     scrollRef.current ?? undefined,
   );

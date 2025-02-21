@@ -18,7 +18,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Override the full dialogue component
    */
-  dialogue: ChildrenProps;
+  thread: ChildrenProps;
   /**
    * Parent for the dialogues list
    * Will ignored if dialoguesList slot provided
@@ -27,7 +27,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * List of dialogues
    */
-  dialoguesList: any;
+  threadsList: any;
   /**
    * Subtitle component for the list container
    */

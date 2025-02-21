@@ -7,11 +7,11 @@ import { ThreadModel } from '../../../models/ThreadModel';
 
 type Props = {
   message: MessageModel;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
   className: string;
 };
 
-const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
+const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className }) => {
   const { actionsAssistant, disableMessageCopying } = useChatContext();
   return (
     <Stack
@@ -24,7 +24,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className
       {/*!disableMessageRating && <MessageActionFeedback message={message} />*/}
       {actionsAssistant?.map((component, k) => (
         <component.element
-          dialogue={dialogue.data.data}
+          thread={thread.data.data}
           message={message.data}
           key={k}
         />

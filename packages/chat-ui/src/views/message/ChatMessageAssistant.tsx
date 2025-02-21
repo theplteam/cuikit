@@ -94,7 +94,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
       {(!typing && !!text && enableAssistantActions) && (
         <MessageActionsAssistant
           message={message}
-          dialogue={dialogue}
+          thread={dialogue}
           className={actionsClassName}
         />
       )}

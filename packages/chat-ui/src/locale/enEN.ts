@@ -33,7 +33,7 @@ export const CHAT_LOCALE: Localization = {
   codeEditButton: 'Edit',
   dialogueDeleteTitle: 'Confirmation',
   dialogueDeleteContent: 'Are you sure you want to delete dialogue?',
-  dialogueDeletedSuccess: 'Dialogue successfully deleted',
+  dialogueDeletedSuccess: 'Thread successfully deleted',
   dialogueActionDelete: 'Delete',
   maxImageWarning: 'Maximum number of images exceeded',
   textFieldPlaceholder: 'Message chat',

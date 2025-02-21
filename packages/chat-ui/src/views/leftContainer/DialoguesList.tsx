@@ -13,20 +13,20 @@ type Props = {};
 
 const DialoguesList: React.FC<Props> = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
-  const { handleCreateNewDialogue, apiRef } = useChatContext();
+  const { handleCreateNewThread, apiRef } = useChatContext();
   const { slotProps, slots } = useChatSlots();
   const locale = useLocalizationContext();
 
-  const openNewDialogue = () => {
-    const dialogue = handleCreateNewDialogue?.();
+  const openNewThread = () => {
+    const dialogue = handleCreateNewThread?.();
     if (dialogue) {
-      apiRef.current?.openNewDialogue(dialogue);
+      apiRef.current?.openNewThread(dialogue);
     }
   }
 
   return (
     <Stack gap={2} height={'100%'}>
-      <NewChatButton openNewDialogue={openNewDialogue} />
+      <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
           {locale.historyTitle}

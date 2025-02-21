@@ -43,47 +43,47 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 const ChatDialogueComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { dialogue, handleCreateNewDialogue, onAssistantMessageTypingFinish, onDialogueCreated } = useChatContext<DM, DD>();
+  const { thread, handleCreateNewThread, onAssistantMessageTypingFinish, onThreadCreated } = useChatContext<DM, DD>();
   const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
-    if (!dialogue) {
-      apiManager.apiRef.current?.openNewDialogue(handleCreateNewDialogue());
+    if (!thread) {
+      apiManager.apiRef.current?.openNewThread(handleCreateNewThread());
     }
   }, []);
 
   return (
     <DialogueProvider
-      dialogue={dialogue}
+      dialogue={thread}
       apiManager={apiManager}
       globalProps={{
         onAssistantMessageTypingFinish,
         enableBranches,
-        onDialogueCreated,
+        onThreadCreated: onThreadCreated,
       }}
       scrollRef={scrollApiRef}
     >
-      <slots.dialogue {...slotProps.dialogue}>
+      <slots.thread {...slotProps.thread}>
         <MessagesRowStyled
-          justifyContent={dialogue?.messages.length ? 'stretch' : 'center'}
+          justifyContent={thread?.messages.length ? 'stretch' : 'center'}
         >
-          {!!dialogue && (
+          {!!thread && (
             <>
               <ChatMessages />
-              {/*<QuestionsList dialogue={dialogue}/>*/}
+              {/*<QuestionsList thread={thread}/>*/}
             </>
           )}
         </MessagesRowStyled>
-        {/*(!dialogue && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
+        {/*(!thread && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
         <Watermark />
         <Stack position={'sticky'} bottom={0} zIndex={1}>
           <TextRowBlock>
-            <ChatScroller dialogue={dialogue} contentRef={contentRef} scrollApiRef={scrollApiRef} />
-            <ChatTextFieldRow dialogue={dialogue} />
+            <ChatScroller dialogue={thread} contentRef={contentRef} scrollApiRef={scrollApiRef} />
+            <ChatTextFieldRow dialogue={thread} />
           </TextRowBlock>
         </Stack>
         <MessageSelectedMobile />
-      </slots.dialogue>
+      </slots.thread>
     </DialogueProvider>
   );
 };

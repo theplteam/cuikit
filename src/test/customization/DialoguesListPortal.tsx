@@ -48,7 +48,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
   const { apiRef } = useChatContext();
 
   const onOpenNew = React.useCallback(() => {
-    apiRef.current?.openNewDialogue();
+    apiRef.current?.openNewThread();
     handleDrawerClose();
   }, [apiRef.current]);
 
@@ -76,7 +76,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
           </Button>
         </Box>
         <Typography sx={{ pl: 1 }} fontWeight={'bold'}>
-          Dialogues list
+          Threads list
         </Typography>
         {children}
       </Stack>
@@ -183,18 +183,18 @@ const App: React.FC = () => {
         ref={scrollRef}
       >
         <Chat
-          dialogue={dialogues[0]}
-          dialogues={dialogues}
+          thread={dialogues[0]}
+          threads={dialogues}
           handleStopMessageStreaming={handleStopMessageStreaming}
           onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}
           scrollerRef={scrollRef}
-          onChangeCurrentDialogue={handleDrawerClose}
+          onChangeCurrentThread={handleDrawerClose}
           slots={{
-            dialoguesList: ToolsPanelPortal,
+            threadsList: ToolsPanelPortal,
           }}
           slotProps={{
-            dialoguesList: {
+            threadsList: {
               handleDrawerClose,
               containerRef: toolsContainerRef,
             },

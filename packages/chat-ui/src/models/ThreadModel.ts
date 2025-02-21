@@ -28,7 +28,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   content: DMessage['content'],
   /** User's message */
   message: DM,
-  /** Dialogue history */
+  /** Thread history */
   history: DialogueHistoryItemType[],
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).

@@ -14,16 +14,16 @@ import { Thread } from '../../models';
 type Props = {};
 
 const ChatDialoguesListBlock: React.FC<Props> = () => {
-  const { loading, model, dialogues, dialogue: currentDialogue, apiRef, onChangeCurrentDialogue } = useChatContext();
+  const { loading, model, threads, thread: currentDialogue, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
-  const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(dialogues);
+  const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(threads);
 
-  const setDialogue = React.useCallback((dialogue: Thread) => {
-    if (currentDialogue?.id !== dialogue.id) {
-      onChangeCurrentDialogue?.({dialogue});
-      apiRef.current?.onChangeDialogue(dialogue.id);
+  const setDialogue = React.useCallback((thread: Thread) => {
+    if (currentDialogue?.id !== thread.id) {
+      onChangeCurrentThread?.({ thread });
+      apiRef.current?.onChangeThread(thread.id);
     }
-  }, [onChangeCurrentDialogue, currentDialogue, apiRef.current]);
+  }, [onChangeCurrentThread, currentDialogue, apiRef.current]);
 
   return (
     <>

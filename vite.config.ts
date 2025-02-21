@@ -28,8 +28,20 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: "",
+    optimizeDeps: {
+      include: [
+        '@emotion/react',
+        '@emotion/styled',
+        '@mui/material/Tooltip'
+      ],
+    },
     plugins: [
-      react(),
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion/babel-plugin'],
+        },
+      }),
       checker({
         typescript: true,
       }),

@@ -1,13 +1,13 @@
-import { DMessage } from '../MessageModel';
-import { Thread } from '../ThreadData';
-import { ObservableReactValue } from '../../utils/observers';
-import { ThreadModel } from '../ThreadModel';
-import { ChatActions } from '../ChatActions';
+import { DMessage } from './MessageModel';
+import { Thread } from './ThreadData';
+import { ObservableReactValue } from '../utils/observers';
+import { ThreadModel } from './ThreadModel';
+import { ChatActions } from './ChatActions';
 
-export class Dialogues<DM extends DMessage, DD extends Thread<DM>> {
+export class Threads<DM extends DMessage, DD extends Thread<DM>> {
   readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
 
-  readonly currentDialogue = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
+  readonly currentThread = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
 
   readonly actions = new ChatActions<DM, DD>();
 
@@ -22,13 +22,12 @@ export class Dialogues<DM extends DMessage, DD extends Thread<DM>> {
     }
   }
 
-
   /**
-   * Populates a Dialogue instance from provided data parameters, or fetches the existing instance
+   * Populates a Thread instance from provided data parameters, or fetches the existing instance
    * if it already exists in the list.
    *
-   * @param params - The arguments required to create a Dialogue instance, including data and a stream function.
-   * @returns The existing or newly created Dialogue instance.
+   * @param params - The arguments required to create a Thread instance, including data and a stream function.
+   * @returns The existing or newly created Thread instance.
    */
   fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;

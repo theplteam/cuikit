@@ -13,10 +13,10 @@ import { FnType } from '../../models/types';
 
 type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
   /**
-   * Dialogues list
+   * Threads list
    * @required
    */
-  dialogues: DD[];
+  threads: DD[];
   /**
    * Callback fired when the user sends a message to the dialogue.
    * @param message - User's message
@@ -36,11 +36,11 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
    * This dialogue will open immediately after chat initialization, if it's in the dialogue list.
    * If it isn’t in the dialogue list or if the parameter is not provided, an empty dialogue will open.
    */
-  dialogue?: DD;
+  thread?: DD;
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, dialogue: Thread<DM> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: Thread<DM> }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
@@ -49,7 +49,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Callback fired when the current dialogue changes
    */
-  onChangeCurrentDialogue?: ChatEventListeners<{ dialogue: DD }>;
+  onChangeCurrentThread?: ChatEventListeners<{ thread: DD }>;
   /**
    * Callback fired when message branch changes
    */
@@ -61,7 +61,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Call when user starts new dialogue
    */
-  handleCreateNewDialogue?: FnType<DD>;
+  handleCreateNewThread?: FnType<DD>;
   /**
    * Invoked when the user clicks the stop streaming button.
    */
@@ -69,11 +69,11 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Callback fired when first message sent
    */
-  onDialogueCreated?: ChatEventListeners<{ dialogue: DD }>;
+  onThreadCreated?: ChatEventListeners<{ thread: DD }>;
   /**
    * Callback fired when first message sent
    */
-  onDialogueDeleted?: ChatEventListeners<{ dialogue: DD }>;
+  onThreadDeleted?: ChatEventListeners<{ thread: DD }>;
   /**
    * Prefill textfield
    */
@@ -145,10 +145,10 @@ export const useChatProps = <DM extends DMessage, DD extends Thread<DM>>(userPro
     // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
   }), [
     userProps.loading,
-    userProps.dialogues,
+    userProps.threads,
     userProps.processAssistantText,
     userProps.assistantActions,
-    userProps.onChangeCurrentDialogue,
-    userProps.onChangeCurrentDialogue,
+    userProps.onChangeCurrentThread,
+    userProps.onChangeCurrentThread,
   ]);
 }

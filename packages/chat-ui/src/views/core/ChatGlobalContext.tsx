@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
 import { Thread, ThreadModel, DMessage } from '../../models';
 import { PrivateApiRefType } from './useApiRef';
-import { Dialogues } from '../../models/stream/Dialogues';
+import { Threads } from '../../models/Threads';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { FnType } from '../../models/types';
 import { useAdapterContext } from '../adapter/AdapterContext';
@@ -10,14 +10,14 @@ import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
 export type ChatGlobalContextType<DM extends DMessage, DD extends Thread<DM>> = {
-  dialogue: ThreadModel<DM, DD> | undefined;
-  dialogues: ThreadModel<DM, DD>[];
+  thread: ThreadModel<DM, DD> | undefined;
+  threads: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
-  model: Dialogues<DM, DD>;
+  model: Threads<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
-  handleCreateNewDialogue: FnType<DD>;
+  handleCreateNewThread: FnType<DD>;
   disableMessageRating?: boolean;
-} & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'dialogue' | 'dialogues' | 'handleCreateNewDialogue'>;
+} & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'thread' | 'threads' | 'handleCreateNewThread'>;
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);
 
@@ -27,8 +27,8 @@ type ProviderProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWith
 }>;
 
 const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
-  const [model] = React.useState(new Dialogues<DM, DD>());
-  const currentDialogue = useObserverValue(model.currentDialogue);
+  const [model] = React.useState(new Threads<DM, DD>());
+  const currentDialogue = useObserverValue(model.currentThread);
   const dialogues = useObserverValue(model.list) ?? [];
 
   useApiRefInitialization(
@@ -41,16 +41,16 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
 
   /**
    * Effect to initialize the provider model with the dialogues provided in the props.
-   * It converts the dialogues into instances of the `Dialogue` class and synchronizes
+   * It converts the dialogues into instances of the `Thread` class and synchronizes
    * the currently active dialogue (if defined in `props.dialogue`) with the `model`.
    */
   React.useEffect(() => {
-    model.list.value = props.dialogues.map(v => new ThreadModel(
+    model.list.value = props.threads.map(v => new ThreadModel(
       dialogueAdapter.transformDialogue(v) as DD,
       props.onUserMessageSent)
     );
-    if (props.dialogue?.id) {
-      model.currentDialogue.value = model.get(props.dialogue.id);
+    if (props.thread?.id) {
+      model.currentThread.value = model.get(props.thread.id);
     }
   }, []);
 
@@ -58,10 +58,10 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
     ...props,
     apiRef: apiManager.apiRef,
     model,
-    dialogues,
-    dialogue: currentDialogue,
+    threads: dialogues,
+    thread: currentDialogue,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
-    handleCreateNewDialogue: props.handleCreateNewDialogue ?? ThreadModel.createEmptyData as FnType<DD>,
+    handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData as FnType<DD>,
   }), [model, currentDialogue, props, props.loading, dialogues]);
 
   return (

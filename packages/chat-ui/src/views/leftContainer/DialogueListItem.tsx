@@ -11,11 +11,11 @@ import { iconButtonClasses } from '@mui/material/IconButton';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatCoreSlots } from '../../views/core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
-import { Dialogues } from '../../models/stream/Dialogues';
+import { Threads } from '../../models/Threads';
 
 type Props = {
   // TODO: ANY
-  model: Dialogues<any, any>;
+  model: Threads<any, any>;
   dialogue: ThreadModel;
   currentDialogue: ThreadModel | undefined;
   setDialogue: (dialogue: ThreadModel['data']['data']) => void;

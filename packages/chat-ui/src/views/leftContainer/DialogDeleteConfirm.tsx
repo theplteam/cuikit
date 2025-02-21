@@ -13,7 +13,7 @@ import { useLocalizationContext } from '../core/LocalizationContext';
 type Props = {};
 
 const DialogDeleteConfirm: React.FC<Props> = () => {
-  const { model, onDialogueDeleted } = useChatContext();
+  const { model, onThreadDeleted } = useChatContext();
   const deleteItem = useObserverValue(model.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
   const snackbar = useSnackbar();
@@ -26,7 +26,7 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
   const handleDelete = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
-      onDialogueDeleted?.({ dialogue: deleteItem['data']['data'] });
+      onThreadDeleted?.({ thread: deleteItem['data']['data'] });
       snackbar.show(locale.dialogueDeletedSuccess);
     }
     handleClose();

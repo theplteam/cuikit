@@ -43,9 +43,9 @@ const Chat = <DM extends DMessage, DD extends Thread<DM>>(usersProps: React.Prop
             <slots.listContainer>
               <DialoguesList />
             </slots.listContainer>
-            <slots.dialoguesList {...slotProps.dialoguesList}>
+            <slots.threadsList {...slotProps.threadsList}>
               <ChatDialoguesListBlock />
-            </slots.dialoguesList>
+            </slots.threadsList>
             <ChatDialogueComponent
               enableBranches={props.enableBranches}
               apiManager={apiManager}

@@ -59,8 +59,8 @@ const App: React.FC = () => {
     <Box height={"100dvh"} width={"100dvw"}>
       <ChatGptAdapter>
         <ChatPage
-          dialogue={dd[0]}
-          dialogues={dd}
+          thread={dd[0]}
+          threads={dd}
           handleStopMessageStreaming={model.stopStreaming}
           onUserMessageSent={model.streamMessage}
           listPlacement={'right'}

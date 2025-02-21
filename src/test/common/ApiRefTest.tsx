@@ -213,8 +213,8 @@ const App: React.FC = () => {
         ref={scrollRef}
       >
         <Chat
-          dialogue={dialogues[0]}
-          dialogues={dialogues}
+          thread={dialogues[0]}
+          threads={dialogues}
           handleStopMessageStreaming={handleStopMessageStreaming}
           onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}

@@ -6,7 +6,7 @@ import { ChatUsersProps } from '../core/useChatProps';
 
 export const useDialogueSendMessage = (
   dialogue: ThreadModel | undefined,
-  onDialogueCreated: ChatUsersProps<any, any>['onDialogueCreated'],
+  onDialogueCreated: ChatUsersProps<any, any>['onThreadCreated'],
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
   scroller?: {
     handleBottomScroll?: () => void;

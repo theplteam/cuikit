@@ -3,14 +3,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ThreadModel } from '../../models/ThreadModel';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { Dialogues } from '../../models/stream/Dialogues';
+import { Threads } from '../../models/Threads';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
   anchorEl: null | HTMLElement;
   handleClose: () => void;
   // TODO #ANY
-  model: Dialogues<any, any>;
+  model: Threads<any, any>;
   dialogue: ThreadModel;
 };
 

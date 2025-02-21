@@ -14,33 +14,33 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
   /**
    * Get all dialogues
    */
-  getAllDialogues: () => DD[];
+  getAllThreads: () => DD[];
   /**
    * Get current dialogue
    */
-  getCurrentDialogue: () => DD | undefined;
+  getCurrentThread: () => DD | undefined;
   /**
    * Get messages from current branch
    * @see https://docs.playliner.com/introduction/branching/
    */
   getBranchMessages: () => DM[];
   /**
-   * Delete dialogue by id
+   * Delete thread by id
    */
-  deleteDialogue: (dialogueId: IdType) => void;
+  deleteThread: (threadId: IdType) => void;
   /**
    * Send message to conversation
    */
   sendUserMessage: (content: DMessage['content']) => Promise<boolean>;
   /**
-   * Triggered when another dialogue is opened.
+   * Triggered when another thread is opened.
    */
-  onChangeDialogue: (dialogueId: IdType) => void;
+  onChangeThread: (threadId: IdType) => void;
   /**
    * Triggered when a new dialogue is opened.
    * @param dialogue
    */
-  openNewDialogue: (dialogue?: DD) => void;
+  openNewThread: (thread?: DD) => void;
   /**
    * Set your own waiting status for a chat response.
    */
@@ -59,16 +59,16 @@ export type PrivateApiRefType<DM extends DMessage = any, DD extends Thread<DM> =
 
 export const useApiRef = <DM extends DMessage, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
   const apiRef = React.useRef<PrivateApiRefType<DM, DD>>({
-    onChangeDialogue: NOOP,
-    openNewDialogue: NOOP,
-    deleteDialogue: NOOP,
+    onChangeThread: NOOP,
+    openNewThread: NOOP,
+    deleteThread: NOOP,
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
-    getCurrentDialogue: () => undefined,
+    getCurrentThread: () => undefined,
     getAllMessages: () => [],
     getBranchMessages: () => [],
-    getAllDialogues: () => [],
+    getAllThreads: () => [],
     allMessages: new ObservableReactValue([]),
     branch: new ObservableReactValue([]),
     getListener: () => undefined,
