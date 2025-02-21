@@ -65,12 +65,12 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       ...slots,
       firstMessage: slots?.firstMessage ?? HelloMessage,
       dialogue: slots?.dialogue ?? DialogueRootContainer,
-      list: slots?.list ?? HiddenContent,
+      listContainer: slots?.dialoguesList ? HiddenContent : slots?.listContainer ?? HiddenContent,
+      dialoguesList: slots?.dialoguesList ?? HiddenContent,
+      listDriver: slots?.dialoguesList ? HiddenContent : slots?.listDriver ?? React.Fragment,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
-      listDriver: slots?.listDriver ?? React.Fragment,
       listDriverTitle: slots?.listDriverTitle ?? Typography,
-      dialoguesList: slots?.dialoguesList ?? React.Fragment,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
       // MARKDOWN

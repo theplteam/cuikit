@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/common/ApiRefTest';
+import TestApp from './test/customization/DialoguesListPortal';
 
 const App: React.FC = () => {
   return (

@@ -40,9 +40,12 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
                 </ChatAppDriver>
               </HiddenDesktop>
             </slots.listDriver>
-            <slots.list>
+            <slots.listContainer>
               <DialoguesList />
-            </slots.list>
+            </slots.listContainer>
+            <slots.dialoguesList {...slotProps.dialoguesList}>
+              <ChatDialoguesListBlock />
+            </slots.dialoguesList>
             <ChatDialogueComponent
               enableBranches={props.enableBranches}
               apiManager={apiManager}

@@ -54,7 +54,7 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: ChatU
         <Chat
           scrollerRef={ref}
           slots={{
-            list: isMobile ? HiddenContent : ListContainerPortal,
+            listContainer: isMobile ? HiddenContent : ListContainerPortal,
             ...slots,
           }}
           {...other}

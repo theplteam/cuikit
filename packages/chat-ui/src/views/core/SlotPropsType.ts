@@ -21,13 +21,13 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   dialogue: ChildrenProps;
   /**
    * Parent for the dialogues list
-   * TODO: mb no needed
+   * Will ignored if dialoguesList slot provided
    */
-  list: ChildrenProps;
+  listContainer: any;
   /**
    * List of dialogues
    */
-  dialoguesList: ChildrenProps;
+  dialoguesList: any;
   /**
    * Subtitle component for the list container
    */
@@ -38,7 +38,7 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   listTimeText: TypographyProps;
   /**
    * Driver component for the dialogues list (mobile version)
-   * TODO: mb no needed
+   * Will ignored if dialoguesList slot provided
    */
   listDriver: ChildrenProps;
   /**
