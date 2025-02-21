@@ -42,7 +42,7 @@ const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, d
         onClick={handleDelete}
         disabled={!dialogue.isOwner}
       >
-        {locale.dialogueActionDelete}
+        {locale.threadActionDelete}
       </coreSlots.menuItem>
     </MdMenu>
   );

@@ -8,7 +8,7 @@ import { ThreadModel } from '../../models/ThreadModel';
 
 type Props = {
   message: MessageModel;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
   isLatest?: boolean;
   isFirst?: boolean;
   enableAssistantActions?: boolean;
@@ -17,7 +17,7 @@ type Props = {
   elevation?: boolean;
 };
 
-const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions, message, isLatest, isFirst, enableAssistantActions, dialogue}) => {
+const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions, message, isLatest, isFirst, enableAssistantActions, thread}) => {
   return (
     <Box
       justifyContent={message.isUser ? 'flex-end' : 'flex-start'}
@@ -33,7 +33,7 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions
         ? (
           <ChatMessageUser
             message={message}
-            dialogue={dialogue}
+            dialogue={thread}
             isFirst={isFirst}
             elevation={elevation}
             disableActions={disableActions}
@@ -44,7 +44,7 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions
             isLatest={isLatest}
             message={message}
             enableAssistantActions={enableAssistantActions}
-            dialogue={dialogue}
+            thread={thread}
             elevation={elevation}
           />
         )}

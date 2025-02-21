@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ChatDialogueComponent from './dialogue/ChatDialogueComponent';
+import ThreadComponent from './thread/ThreadComponent';
 import { ChatUsersProps, useChatProps } from './core/useChatProps';
 import { ChatGlobalProvider } from './core/ChatGlobalContext';
 import ChatAppDriver from './leftContainer/ChatAppDriver';
@@ -46,7 +46,7 @@ const Chat = <DM extends DMessage, DD extends Thread<DM>>(usersProps: React.Prop
             <slots.threadsList {...slotProps.threadsList}>
               <ChatDialoguesListBlock />
             </slots.threadsList>
-            <ChatDialogueComponent
+            <ThreadComponent
               enableBranches={props.enableBranches}
               apiManager={apiManager}
               contentRef={usersProps.scrollerRef}

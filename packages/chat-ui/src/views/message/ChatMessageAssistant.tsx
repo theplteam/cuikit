@@ -20,7 +20,7 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 type Props = {
   message: MessageModel;
   enableAssistantActions?: boolean;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
   isLatest?: boolean;
   elevation?: boolean;
 };
@@ -47,7 +47,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   }
 }));
 
-const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, dialogue, isLatest, elevation }) => {
+const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
   const { element, setElement } = useElementRefState();
 
   const isHover = useHover(element);
@@ -90,11 +90,11 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
       elevation={elevation}
     >
       {blockText}
-      {isLatest && <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} dialogue={dialogue} />}
+      {isLatest && <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} dialogue={thread} />}
       {(!typing && !!text && enableAssistantActions) && (
         <MessageActionsAssistant
           message={message}
-          thread={dialogue}
+          thread={thread}
           className={actionsClassName}
         />
       )}

@@ -3,7 +3,7 @@ import { MobileMessageActionsType } from './hooks/useMobileMessageActions';
 import MessageMobileUserActions from './actions/mobile/MessageMobileUserActions';
 import MessageMobileAssistantActions from './actions/mobile/MessageMobileAssistantActions';
 import { MessagesModeType } from './hooks/useMessagesMode';
-import { useDialogueContext } from '../dialogue/DialogueContext';
+import { useThreadContext } from '../thread/ThreadContext';
 import MdMenu from '../../ui/menu/MdMenu';
 
 type Props = {
@@ -19,7 +19,7 @@ const MessageSelectedMobile = () => {
   const {
     mobileMessageActions,
     messageMode
-  } = useDialogueContext();
+  } = useThreadContext();
 
   React.useEffect(() => {
     if (open && !mobileMessageActions.selectedValue) {

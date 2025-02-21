@@ -10,7 +10,7 @@ import MessagePagination, { MessagePaginationHeight } from './MessagePagination'
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { useDialogueContext } from '../dialogue/DialogueContext';
+import { useThreadContext } from '../thread/ThreadContext';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useElementRefState } from '../hooks/useElementRef';
@@ -59,7 +59,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const isTablet = useTablet();
   const isTyping = useObserverValue(dialogue?.isTyping);
 
-  const { messageMode, apiRef } = useDialogueContext();
+  const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
 
   const mode = messageMode.values[message.id];

@@ -22,12 +22,12 @@ import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
 import { Thread, DMessage } from '../../models';
 import { ChatUsersProps } from './useChatProps';
-import HelloMessage from '../dialogue/HelloMessage';
+import HelloMessage from '../thread/HelloMessage';
 import ChatMessageCode from '../message/markdown/ChatMessageCode';
 import ChatMessageBlockquote from '../message/markdown/ChatMessageBlockquote';
 import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
-import DialogueRootContainer from '../dialogue/DialogueRootContainer';
+import ThreadRootContainer from '../thread/ThreadRootContainer';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -64,7 +64,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends Thread<DM>>(
       ...chatIconSlots,
       ...slots,
       firstMessage: slots?.firstMessage ?? HelloMessage,
-      thread: slots?.thread ?? DialogueRootContainer,
+      thread: slots?.thread ?? ThreadRootContainer,
       listContainer: slots?.threadsList ? HiddenContent : slots?.listContainer ?? HiddenContent,
       threadsList: slots?.threadsList ?? HiddenContent,
       listDrawer: slots?.threadsList ? HiddenContent : slots?.listDrawer ?? React.Fragment,
@@ -122,7 +122,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends Thread<DM>>(
 
     ...slotProps,
     firstMessage: {
-      dialogue: slotProps?.firstMessage?.dialogue,
+      thread: slotProps?.firstMessage?.thread,
       text: slotProps?.firstMessage?.text ?? helloMessage,
     },
   }) as SlotPropsType<DM, DD>, [slotProps])

@@ -4,22 +4,22 @@ import { AdapterContext } from './AdapterContext';
 
 export type AdapterProviderProps = React.PropsWithChildren<Partial<AdapterType>>;
 
-export const AdapterProvider = ({ children, transformDialogue, transformMessage }: AdapterProviderProps) => {
+export const AdapterProvider = ({ children, transformThread, transformMessage }: AdapterProviderProps) => {
 
-  const baseDialogueTransormer = React.useCallback((dialogue: any) => {
-    if (!!transformMessage && Array.isArray(dialogue.messages)) {
+  const baseDialogueTransormer = React.useCallback((thread: any) => {
+    if (!!transformMessage && Array.isArray(thread.messages)) {
       return {
-        ...dialogue,
-        messages: dialogue.messages.map(transformMessage)
+        ...thread,
+        messages: thread.messages.map(transformMessage)
       };
     }
 
-    return dialogue;
+    return thread;
   }, [transformMessage]);
 
   const value = React.useMemo(
-    () => ({ transformDialogue: transformDialogue ?? baseDialogueTransormer, transformMessage }),
-    [transformDialogue, transformMessage, baseDialogueTransormer]
+    () => ({ transformThread: transformThread ?? baseDialogueTransormer, transformMessage }),
+    [transformThread, transformMessage, baseDialogueTransormer]
   );
 
   return (

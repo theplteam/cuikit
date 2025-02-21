@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useMessageProgressStatus } from './useMessageProgressStatus';
 import { ThreadModel } from '../../models/ThreadModel';
 import { ApiManager } from '../core/useApiManager';
-import { getDialogueListeners } from '../utils/getDialogueListeners';
-import { useDialogueSendMessage } from './useDialogueSendMessage';
+import { getThreadListeners } from '../utils/getThreadListeners';
+import { useThreadSendMessage } from './useThreadSendMessage';
 
-export const useDialogueApiInitialization = (
+export const useThreadApiInitialization = (
   dialogue: ThreadModel | undefined,
   apiManager: ApiManager,
-  onMessageSend: ReturnType<typeof useDialogueSendMessage>,
+  onMessageSend: ReturnType<typeof useThreadSendMessage>,
 ) => {
   const handleChangeStreamStatus = useMessageProgressStatus(dialogue);
 
@@ -34,7 +34,7 @@ export const useDialogueApiInitialization = (
 
     apiManager.setPrivateMethod('allMessages', messages.allMessages);
     apiManager.setPrivateMethod('branch', messages.currentMessages);
-    apiManager.setPrivateMethod('getListener', getDialogueListeners(dialogue));
+    apiManager.setPrivateMethod('getListener', getThreadListeners(dialogue));
 
   }, [dialogue]);
 }

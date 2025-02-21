@@ -17,7 +17,7 @@ export class MessageStreamManager<DM extends DMessage, DD extends Thread<DM>> {
 
   constructor(
     readonly assistantMessage: MessageModel<DM>,
-    readonly dialogue: ThreadModel<DM, DD>,
+    readonly thread: ThreadModel<DM, DD>,
     readonly streamParser: (value: string[], assistantMessage: MessageModel<DM>) => void,
     private options?: MessageStreamManagerOptions<DM>,
   ) {
@@ -82,7 +82,7 @@ export class MessageStreamManager<DM extends DMessage, DD extends Thread<DM>> {
 
                 if (jsonStrings) {
                   if (!statusRemoved && !!this.options?.clearStatusAfterFirstText) {
-                    this.dialogue.streamStatus.value = undefined;
+                    this.thread.streamStatus.value = undefined;
                   }
                   this.streamParser(jsonStrings, this.assistantMessage);
                 }

@@ -4,7 +4,7 @@ import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { ChatUsersProps } from '../core/useChatProps';
 
-export const useDialogueSendMessage = (
+export const useThreadSendMessage = (
   dialogue: ThreadModel | undefined,
   onDialogueCreated: ChatUsersProps<any, any>['onThreadCreated'],
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],

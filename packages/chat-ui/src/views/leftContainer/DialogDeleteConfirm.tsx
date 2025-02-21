@@ -27,7 +27,7 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
       onThreadDeleted?.({ thread: deleteItem['data']['data'] });
-      snackbar.show(locale.dialogueDeletedSuccess);
+      snackbar.show(locale.threadDeletedSuccess);
     }
     handleClose();
   }
@@ -39,11 +39,11 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
       onClose={handleClose}
     >
       <DialogTitle>
-        {locale.dialogueDeleteTitle}
+        {locale.threadDeleteTitle}
       </DialogTitle>
       <DialogContent>
         <Typography>
-          {locale.dialogueDeleteContent}
+          {locale.threadDeleteContent}
         </Typography>
       </DialogContent>
       <DialogActions>

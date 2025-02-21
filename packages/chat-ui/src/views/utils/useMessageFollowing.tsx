@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ChatViewConstants } from '../ChatViewConstants';
 import { ChatScrollerType } from './ChatScrollerType';
 import { useTheme } from '@mui/material/styles';
-import { useDialogueContext } from '../dialogue/DialogueContext';
+import { useThreadContext } from '../thread/ThreadContext';
 import { when } from '../../utils/observers/when';
 import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -130,7 +130,7 @@ export const useMessageFollowing = (
   scrollTo: (y: number) => void,
 ) => {
   const [followingModel, setFollowingModel] = React.useState<FollowingClass | undefined>();
-  const { apiRef } = useDialogueContext();
+  const { apiRef } = useThreadContext();
 
   const messages = useObserverValue(apiRef.current?.getListener('allMessages')) ?? [];
 

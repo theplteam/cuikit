@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 type Props = BoxProps;
 
-const DialogueRootContainer: React.FC<Props> = (boxProps) => {
+const ThreadRootContainer: React.FC<Props> = (boxProps) => {
   return (
     <Box
       width={'100%'}
@@ -26,4 +26,4 @@ const DialogueRootContainer: React.FC<Props> = (boxProps) => {
   );
 }
 
-export default DialogueRootContainer;
+export default ThreadRootContainer;

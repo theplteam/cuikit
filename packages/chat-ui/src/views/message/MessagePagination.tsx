@@ -3,7 +3,7 @@ import usePagination from '@mui/material/usePagination';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
-import { useDialogueContext } from '../dialogue/DialogueContext';
+import { useThreadContext } from '../thread/ThreadContext';
 import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatSlots } from '../core/ChatSlotsContext';
@@ -19,7 +19,7 @@ export type MessagePaginationProps = {
 export const MessagePaginationHeight = 30
 
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
-  const { apiRef } = useDialogueContext();
+  const { apiRef } = useThreadContext();
   const { slots, slotProps } = useChatSlots();
   const messages = useObserverValue(apiRef.current?.getListener('allMessages'), []);
   const branches = messages?.filter(v => v.parentId === message.parentId) ?? [];

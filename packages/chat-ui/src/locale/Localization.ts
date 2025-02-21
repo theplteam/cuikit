@@ -37,10 +37,10 @@ export type Localization = {
   codeEditButton: string;
 
   //dialogues
-  dialogueDeleteTitle: string;
-  dialogueDeleteContent: string;
-  dialogueDeletedSuccess: string;
-  dialogueActionDelete: string
+  threadDeleteTitle: string;
+  threadDeleteContent: string;
+  threadDeletedSuccess: string;
+  threadActionDelete: string
 
   // other
   maxImageWarning: string;

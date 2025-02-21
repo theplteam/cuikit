@@ -7,20 +7,20 @@ import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {
   messages: MessageModel[];
-  dialogue: ThreadModel;
+  thread: ThreadModel;
 };
 
-const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
+const MessagesList: React.FC<Props> = ({ messages, thread }) => {
   const messagesLength = messages.length;
   const { slots } = useChatSlots();
 
   return (
     <>
-      <slots.firstMessage dialogue={dialogue} />
+      <slots.firstMessage thread={thread} />
       {messages.map((message, key) => (
         <ChatMessageComponent
           message={message}
-          dialogue={dialogue}
+          thread={thread}
           key={message.id ?? key}
           isFirst={!key}
           isLatest={key === messagesLength -1}
@@ -32,6 +32,6 @@ const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
 }
 
 export default React.memo(MessagesList, (prevProps, nextProps) => {
-  return prevProps.dialogue.id === nextProps.dialogue.id
+  return prevProps.thread.id === nextProps.thread.id
     && arrayPluck(prevProps.messages, 'id').join() === arrayPluck(nextProps.messages, 'id').join('');
 });

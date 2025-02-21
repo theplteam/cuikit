@@ -2,13 +2,13 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { ChatViewConstants } from '../ChatViewConstants';
 import MessagesList from './MessagesList';
-import { useDialogueContext } from '../dialogue/DialogueContext';
+import { useThreadContext } from '../thread/ThreadContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {};
 
 const ChatMessages: React.FC<Props> = () => {
-  const { apiRef, dialogue } = useDialogueContext();
+  const { apiRef, thread } = useThreadContext();
 
   const messages = useObserverValue(apiRef.current?.getListener('branch'));
 
@@ -21,7 +21,7 @@ const ChatMessages: React.FC<Props> = () => {
       width={'100%'}
       id={ChatViewConstants.MESSAGE_BOX_ID}
     >
-      {!!dialogue && <MessagesList dialogue={dialogue} messages={messages ?? []}/>}
+      {!!thread && <MessagesList thread={thread} messages={messages ?? []}/>}
     </Stack>
   );
 };

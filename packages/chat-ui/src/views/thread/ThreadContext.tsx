@@ -4,44 +4,44 @@ import { MessagesModeType, useMessagesMode } from '../message/hooks/useMessagesM
 import { ThreadModel } from '../../models/ThreadModel';
 import { Thread, DMessage } from '../../models';
 import { ApiManager } from '../core/useApiManager';
-import { useDialogueApiInitialization } from './useDialogueApiInitialization';
+import { useThreadApiInitialization } from './useThreadApiInitialization';
 import { PrivateApiRefType } from '../core/useApiRef';
-import { useDialogueSendMessage } from './useDialogueSendMessage';
+import { useThreadSendMessage } from './useThreadSendMessage';
 import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
 
-type DialogueContextType<DM extends DMessage, DD extends Thread<DM>> = {
-  dialogue: ThreadModel<DM, DD> | undefined;
+type ThreadContextType<DM extends DMessage, DD extends Thread<DM>> = {
+  thread: ThreadModel<DM, DD> | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
   apiRef: React.RefObject<PrivateApiRefType<DM>>;
 };
 
 type Props<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
-  dialogue: ThreadModel<DM, DD> | undefined;
+  thread: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
   globalProps: Pick<ChatGlobalContextType<any, any>, 'onThreadCreated' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
 }>;
 
-const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
+const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
 
-const DialogueProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, dialogue, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
+const ThreadProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
 
-  const onMessageSend = useDialogueSendMessage(
-    dialogue,
+  const onMessageSend = useThreadSendMessage(
+    thread,
     globalProps.onThreadCreated,
     globalProps.onAssistantMessageTypingFinish,
     scrollRef.current ?? undefined,
   );
 
-  useDialogueApiInitialization(dialogue, apiManager, onMessageSend);
+  useThreadApiInitialization(thread, apiManager, onMessageSend);
 
   React.useMemo(() => {
-    dialogue?.messages.init(globalProps.enableBranches);
-  }, [dialogue]);
+    thread?.messages.init(globalProps.enableBranches);
+  }, [thread]);
 
   /*const [state, setState] = React.useState(0)
 
@@ -53,8 +53,8 @@ const DialogueProvider = <DM extends DMessage, DD extends Thread<DM>>({ children
   console.log(state);*/
 
   const value = React.useMemo(() => ({
-    dialogue, apiRef: apiManager.apiRef, mobileMessageActions, messageMode
-  }), [dialogue, apiManager.apiRef.current, messageMode, mobileMessageActions]);
+    thread, apiRef: apiManager.apiRef, mobileMessageActions, messageMode
+  }), [thread, apiManager.apiRef.current, messageMode, mobileMessageActions]);
 
   return (
     <Context.Provider value={value}>
@@ -63,14 +63,14 @@ const DialogueProvider = <DM extends DMessage, DD extends Thread<DM>>({ children
   );
 };
 
-const useDialogueContext = <DM extends DMessage, DD extends Thread<DM>>(): DialogueContextType<DM, DD> => {
+const useThreadContext = <DM extends DMessage, DD extends Thread<DM>>(): ThreadContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {
-    throw new Error("useMessagesContext must be used within a MessagesProvider");
+    throw new Error("useThreadContext must be used within a ThreadProvider");
   }
 
   return context;
 };
 
-export { DialogueProvider, useDialogueContext };
+export { ThreadProvider, useThreadContext };

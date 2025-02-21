@@ -42,11 +42,11 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
   /**
    * Effect to initialize the provider model with the dialogues provided in the props.
    * It converts the dialogues into instances of the `Thread` class and synchronizes
-   * the currently active dialogue (if defined in `props.dialogue`) with the `model`.
+   * the currently active thread (if defined in `props.thread`) with the `model`.
    */
   React.useEffect(() => {
     model.list.value = props.threads.map(v => new ThreadModel(
-      dialogueAdapter.transformDialogue(v) as DD,
+      dialogueAdapter.transformThread(v) as DD,
       props.onUserMessageSent)
     );
     if (props.thread?.id) {

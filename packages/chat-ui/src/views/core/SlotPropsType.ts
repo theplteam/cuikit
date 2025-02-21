@@ -48,7 +48,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
    */
-  firstMessage: { dialogue: ThreadModel<DM, DD>, text?: string };
+  firstMessage: { thread: ThreadModel<DM, DD>, text?: string };
 
   sendMessageButton: IconButtonProps;
 

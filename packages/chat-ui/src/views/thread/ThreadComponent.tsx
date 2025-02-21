@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import { ChatViewConstants } from '../ChatViewConstants';
 import MessageSelectedMobile from '../message/MessageSelectedMobile';
 import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
-import { DialogueProvider } from './DialogueContext';
+import { ThreadProvider } from './ThreadContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { NOOP } from '../../utils/NOOP';
 import { Thread, DMessage } from '../../models';
@@ -40,7 +40,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
+const ThreadComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { thread, handleCreateNewThread, onAssistantMessageTypingFinish, onThreadCreated } = useChatContext<DM, DD>();
@@ -53,8 +53,8 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends Thread<DM>>({ con
   }, []);
 
   return (
-    <DialogueProvider
-      dialogue={thread}
+    <ThreadProvider
+      thread={thread}
       apiManager={apiManager}
       globalProps={{
         onAssistantMessageTypingFinish,
@@ -84,8 +84,8 @@ const ChatDialogueComponent = <DM extends DMessage, DD extends Thread<DM>>({ con
         </Stack>
         <MessageSelectedMobile />
       </slots.thread>
-    </DialogueProvider>
+    </ThreadProvider>
   );
 };
 
-export default ChatDialogueComponent;
+export default ThreadComponent;

@@ -16,8 +16,8 @@ export class Threads<DM extends DMessage, DD extends Thread<DM>> {
   }
 
   delete = (id: DD['id']) => {
-    const dialogue = this.get(id);
-    if (dialogue) {
+    const thread = this.get(id);
+    if (thread) {
       this.list.value = this.list.value.filter(d => d.id !== id);
     }
   }
@@ -31,11 +31,11 @@ export class Threads<DM extends DMessage, DD extends Thread<DM>> {
    */
   fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;
-    let dialogue = this.get(data.id);
-    if (!dialogue) {
-      dialogue = new ThreadModel(data, streamFn);
-      this.list.value = [...this.list.value, dialogue];
+    let thread = this.get(data.id);
+    if (!thread) {
+      thread = new ThreadModel(data, streamFn);
+      this.list.value = [...this.list.value, thread];
     }
-    return dialogue;
+    return thread;
   }
 }

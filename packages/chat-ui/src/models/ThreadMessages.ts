@@ -20,7 +20,7 @@ export class ThreadMessages<DM extends DMessage> {
     return this.allMessages.value;
   }
 
-  // Remember which branch we stopped at, so that upon re-entering the dialogue, reopens it
+  // Remember which branch we stopped at, so that upon re-entering the thread, reopens it
   private _lastMessage?: MessageModel<DM>;
 
   private _callbackInitiated = false;
@@ -91,7 +91,7 @@ export class ThreadMessages<DM extends DMessage> {
       }))
     );
 
-    console.log(topItem, createTree(topItem, dialogue.messages));*/
+    console.log(topItem, createTree(topItem, thread.messages));*/
 
     const newBranch = topItem?.parentId ? this._createTree(topItem, this.allMessagesArray) : this.allMessagesArray;
 

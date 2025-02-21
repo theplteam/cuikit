@@ -44,7 +44,7 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
       key={'helloMessage'}
       isLatest={false}
       isFirst={false}
-      dialogue={dialogue}
+      thread={dialogue}
       enableAssistantActions={false}
     />
   );

@@ -18,7 +18,7 @@ type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
    */
   threads: DD[];
   /**
-   * Callback fired when the user sends a message to the dialogue.
+   * Callback fired when the user sends a message to the thread.
    * @param message - User's message
    * @param pushText - call for runtime updating assistant's message
    * @param onFinish - call for finishing
@@ -33,8 +33,8 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
    */
   loading: boolean;
   /**
-   * This dialogue will open immediately after chat initialization, if it's in the dialogue list.
-   * If it isn’t in the dialogue list or if the parameter is not provided, an empty dialogue will open.
+   * This thread will open immediately after chat initialization, if it's in the thread list.
+   * If it isn’t in the thread list or if the parameter is not provided, an empty thread will open.
    */
   thread?: DD;
   /**
@@ -47,7 +47,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
    */
   processAssistantText?: ((text: string) => string);
   /**
-   * Callback fired when the current dialogue changes
+   * Callback fired when the current thread changes
    */
   onChangeCurrentThread?: ChatEventListeners<{ thread: DD }>;
   /**
@@ -59,7 +59,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
    */
   onAssistantMessageTypingFinish?: ChatEventListeners<{ message: DM }>;
   /**
-   * Call when user starts new dialogue
+   * Call when user starts new thread
    */
   handleCreateNewThread?: FnType<DD>;
   /**
@@ -126,7 +126,7 @@ export type ChatUsersProps<DM extends DMessage, DD extends Thread<DM>> = Partial
    */
   apiRef: React.MutableRefObject<ApiRefType<DM, DD> | null>;
   /**
-   * Show a welcome message at the beginning of the dialogue.
+   * Show a welcome message at the beginning of the thread.
    */
   helloMessage?: string
   userId: UserIdType;
