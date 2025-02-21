@@ -22,7 +22,7 @@ const GridItem = styled(Grid)(() => ({
     display: 'block',
   },
   '& img': {
-    maxHeight: 'min(200px, 80dvh)',
+    maxHeight: 'min(120px, 80dvh)',
     height: '100%',
     width: "inherit",
     objectFit: 'cover',
