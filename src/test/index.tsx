@@ -9,6 +9,7 @@ const DialogueStructure = React.lazy(() => import('./common/DialogueStructure'))
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
+const DialoguesListPortal = React.lazy(() => import('./customization/DialoguesListPortal'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -30,6 +31,7 @@ const App: React.FC = () => {
       case 'dialogue-structure': variant = DialogueStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
+      case 'portal-list': variant = DialoguesListPortal; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);

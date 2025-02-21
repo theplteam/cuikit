@@ -18,9 +18,56 @@ import AddIcon from '@mui/icons-material/Add';
 import { Portal } from '@mui/base/Portal';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CloseIcon from '@mui/icons-material/Close';
-
+import moment from 'moment';
 
 const drawerWidth = 240;
+
+const date = moment().utc().format('HH:mm:ss [as of] MMMM D, YYYY');
+
+const dialoguesDataArray = [
+  {
+    id: "test-dialogue",
+    title: "Welcome message",
+    messages: [
+      {
+        role: "user",
+        content: "Hello!",
+      },
+      {
+        role: "assistant",
+        content: "Hello there! How can I assist you today?",
+      },
+    ],
+  },
+  {
+    id: "test-dialogue-1",
+    title: "Conversation with assistant",
+    messages: [
+      {
+        role: "user",
+        content: "Hi, how are you?!",
+      },
+      {
+        role: "assistant",
+        content: "Hi there! I'm here and ready to help. How can I assist you today?",
+      },
+    ],
+  },
+  {
+    id: "test-dialogue-2",
+    title: "User's question",
+    messages: [
+      {
+        role: "user",
+        content: "What time is it?",
+      },
+      {
+        role: "assistant",
+        content: `I don't have direct access to your local clock or time zone. However, the system’s timestamp (in UTC) shows ${date}. If you're in a different time zone, you'll need to adjust accordingly. Would you like help converting this to your local time?`,
+      },
+    ],
+  },
+];
 
 const MainBoxStyled = styled(Box)(({ theme }) => ({
   width: `calc(100% - ${drawerWidth}px)`,
@@ -57,7 +104,12 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
       container={() => containerRef.current!}
     >
       <Toolbar sx={{ justifyContent: 'flex-end' }}>
-        <IconButton onClick={handleDrawerClose}>
+        <IconButton
+          onClick={handleDrawerClose}
+          sx={{
+            display: { sm: 'none' },
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </Toolbar>
@@ -84,23 +136,37 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
   );
 };
 
+const ChatAppBar: React.FC<{ handleDrawerToggle: () => void }> = ({ handleDrawerToggle }) => {
+  const { dialogue } = useChatContext();
+
+  const title = dialogue?.title || 'Chat UI';
+  return (
+    <AppBar
+      position="fixed"
+      sx={{
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+      }}
+    >
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          edge="start"
+          onClick={handleDrawerToggle}
+          sx={{ mr: 2, display: { sm: 'none' } }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" noWrap component="div">
+          {title}
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
-    {
-      id: "test-dialogue",
-      title: "Welcome message",
-      messages: [
-        {
-          role: "user",
-          content: "Hello!",
-        },
-        {
-          role: "assistant",
-          content: "Hello there! How can I assist you today?",
-        },
-      ],
-    },
-  ]);
+  const [dialogues] = React.useState<DDialogue[]>(dialoguesDataArray);
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
   const toolsContainerRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -134,27 +200,6 @@ const App: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Chat UI
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -199,7 +244,9 @@ const App: React.FC = () => {
               containerRef: toolsContainerRef,
             },
           }}
-        />
+        >
+          <ChatAppBar handleDrawerToggle={handleDrawerToggle} />
+        </Chat>
       </MainBoxStyled>
     </Box>
   );

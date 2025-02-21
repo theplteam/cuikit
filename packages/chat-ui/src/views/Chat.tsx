@@ -31,7 +31,7 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
       >
         <LocalizationProvider>
           <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
-            <slots.listDriver>
+            <slots.listDrawer>
               <HiddenDesktop>
                 <ChatAppDriver>
                   <Box display={'flex'} flexDirection={'column'} height={500}>
@@ -39,7 +39,7 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
                   </Box>
                 </ChatAppDriver>
               </HiddenDesktop>
-            </slots.listDriver>
+            </slots.listDrawer>
             <slots.listContainer>
               <DialoguesList />
             </slots.listContainer>
