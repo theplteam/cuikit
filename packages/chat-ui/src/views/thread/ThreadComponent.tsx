@@ -78,8 +78,8 @@ const ThreadComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRe
         <Watermark />
         <Stack position={'sticky'} bottom={0} zIndex={1}>
           <TextRowBlock>
-            <ChatScroller dialogue={thread} contentRef={contentRef} scrollApiRef={scrollApiRef} />
-            <ChatTextFieldRow dialogue={thread} />
+            <ChatScroller thread={thread} contentRef={contentRef} scrollApiRef={scrollApiRef} />
+            <ChatTextFieldRow thread={thread} />
           </TextRowBlock>
         </Stack>
         <MessageSelectedMobile />

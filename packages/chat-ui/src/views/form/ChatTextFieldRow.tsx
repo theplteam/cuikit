@@ -15,7 +15,7 @@ import ChatImagePreview from './ChatImagePreview';
 import { DMessage } from '../../models';
 
 type Props = {
-  dialogue?: ThreadModel;
+  thread?: ThreadModel;
 };
 
 const inputClasses = {
@@ -56,10 +56,10 @@ const InnerStackStyled = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const ChatTextFieldRow: React.FC<Props> = ({ dialogue }) => {
+const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
   const { defaultTextFieldValue, apiRef } = useChatContext();
 
-  const isTyping = useObserverValue(dialogue?.isTyping);
+  const isTyping = useObserverValue(thread?.isTyping);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
   const [images, setImages] = React.useState<string[]>([]);
@@ -83,7 +83,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ dialogue }) => {
     setImages([]);
   }
 
-  const disabled = !dialogue || isTyping;
+  const disabled = !thread || isTyping;
 
   return (
     <DialogueWidthBlockStyled>

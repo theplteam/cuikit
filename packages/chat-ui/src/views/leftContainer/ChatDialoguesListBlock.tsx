@@ -5,7 +5,7 @@ import ChatHistorySkeleton from './ChatHistorySkeleton';
 import TimeGroupItem from './TimeGroupItem';
 import Box from '@mui/material/Box';
 import DialogueListItem from './DialogueListItem';
-import { useDialogueGroupedList } from './useDialogueGroupedList';
+import { useThreadsGroupedList } from './useThreadsGroupedList';
 import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
@@ -16,7 +16,7 @@ type Props = {};
 const ChatDialoguesListBlock: React.FC<Props> = () => {
   const { loading, model, threads, thread: currentDialogue, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
-  const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(threads);
+  const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
   const setDialogue = React.useCallback((thread: Thread) => {
     if (currentDialogue?.id !== thread.id) {
@@ -40,14 +40,14 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
                   textComponent={slots.listTimeText}
                   textComponentProps={slotProps.listTimeText}
                 />
-                {dialoguesInGroup.map(({ groupKey, dialogue }) => {
+                {threadsInGroup.map(({ groupKey, thread }) => {
                   if (groupKey !== group.id) return null;
                   return (
-                    <Box key={dialogue.id}>
+                    <Box key={thread.id}>
                       <DialogueListItem
-                        currentDialogue={currentDialogue}
-                        setDialogue={setDialogue}
-                        dialogue={dialogue}
+                        currentThread={currentDialogue}
+                        setThread={setDialogue}
+                        thread={thread}
                         model={model}
                       />
                     </Box>

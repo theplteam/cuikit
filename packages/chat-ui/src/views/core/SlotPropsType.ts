@@ -16,7 +16,7 @@ type ChildrenProps = React.PropsWithChildren<{}>;
 
 export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
-   * Override the full dialogue component
+   * Override the full thread component
    */
   thread: ChildrenProps;
   /**
@@ -46,7 +46,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
    */
   listDrawerTitle: TypographyProps;
   /**
-   * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
+   * Welcome message from the assistant for a new thread or the initial message from the assistant in an existing thread.
    */
   firstMessage: { thread: ThreadModel<DM, DD>, text?: string };
 
@@ -76,7 +76,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */
-  messageAssistantProgress: BoxProps & { dialogue: ThreadModel<DM, DD> };
+  messageAssistantProgress: BoxProps & { thread: ThreadModel<DM, DD> };
   /**
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */

@@ -10,12 +10,12 @@ export type ChatScrollApiRef = {
 
 type Props = {
   scrollApiRef: React.RefObject<ChatScrollApiRef>;
-  dialogue: ThreadModel | undefined;
+  thread: ThreadModel | undefined;
   contentRef?: BoxRefType;
 };
 
-const ChatScroller: React.FC<Props> = ({ dialogue, contentRef, scrollApiRef }) => {
-  const { scrollButtonEnabled, handleBottomScroll } = useChatScroller(dialogue, contentRef);
+const ChatScroller: React.FC<Props> = ({ thread, contentRef, scrollApiRef }) => {
+  const { scrollButtonEnabled, handleBottomScroll } = useChatScroller(thread, contentRef);
 
   React.useMemo(() => {
     if (scrollApiRef.current) {

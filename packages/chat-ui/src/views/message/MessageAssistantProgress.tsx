@@ -8,7 +8,7 @@ import { ThreadModel, StreamResponseState } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
-  dialogue: ThreadModel | undefined;
+  thread: ThreadModel | undefined;
 } & BoxProps;
 
 const palette = materialDesignSysPalette;
@@ -49,8 +49,8 @@ const BoxStyled = styled(Box)(() => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
-  const state = useObserverValue(dialogue?.streamStatus) as StreamResponseState | string | undefined;
+const MessageAssistantProgress: React.FC<Props> = ({ thread }) => {
+  const state = useObserverValue(thread?.streamStatus) as StreamResponseState | string | undefined;
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
   let text = state;

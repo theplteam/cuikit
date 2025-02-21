@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
-import { ListGroupType } from './useDialogueGroupedList';
+import { ListGroupType } from './useThreadsGroupedList';
 import { materialTheme } from '../../utils/materialDesign/materialTheme';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import Typography, { TypographyProps } from '@mui/material/Typography';

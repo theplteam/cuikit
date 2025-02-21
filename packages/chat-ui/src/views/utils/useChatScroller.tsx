@@ -3,11 +3,11 @@ import { useChatScrollFunctions } from './useChatScrollFunctions';
 import { ThreadModel } from '../../models/ThreadModel';
 
 export const useChatScroller = (
-  dialogue: ThreadModel | undefined,
+  thread: ThreadModel | undefined,
   contentRef: React.RefObject<HTMLDivElement | null> | undefined
 ) => {
   const { handleBottomScroll, scrollButtonEnabled, isTablet } = useChatScrollFunctions(
-    dialogue,
+    thread,
     (top, behavior) => {
       requestAnimationFrame(() => {
         if (contentRef) {

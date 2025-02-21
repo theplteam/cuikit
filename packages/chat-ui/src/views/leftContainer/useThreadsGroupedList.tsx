@@ -11,7 +11,7 @@ import { Localization } from '../../locale/Localization';
 
 export type DialogueGroupType = {
   groupKey: string;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
   time: number;
 };
 
@@ -21,8 +21,8 @@ export type ListGroupType = {
   id: string;
 };
 
-export const useDialogueGroupedList = (dialogues: ArrayType<ThreadModel>) => {
-  const [dialogueGroups, setDialogueGroups] = React.useState<Record<string, ListGroupType>>({});
+export const useThreadsGroupedList = (threads: ArrayType<ThreadModel>) => {
+  const [threadGroups, setThreadGroups] = React.useState<Record<string, ListGroupType>>({});
   const locale = useLocalizationContext();
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ export const useDialogueGroupedList = (dialogues: ArrayType<ThreadModel>) => {
 
     const results: Record<string, ListGroupType> = {};
 
-    dialogues.forEach((item) => {
+    threads.forEach((item) => {
       const timestamp = item.timestamp.value;
       if (!!timestamp) {
         const basicGroupKey = basicKeys.find(v => timestamp >= basicGroups[v].timestamp);
@@ -92,25 +92,25 @@ export const useDialogueGroupedList = (dialogues: ArrayType<ThreadModel>) => {
 
     });
 
-    if (JSON.stringify(results) !== JSON.stringify(dialogueGroups)) {
-      setDialogueGroups({ ...results });
+    if (JSON.stringify(results) !== JSON.stringify(threadGroups)) {
+      setThreadGroups({ ...results });
     }
-  }, [arrayPluck(dialogues, 'id').join(',')]);
+  }, [arrayPluck(threads, 'id').join(',')]);
 
   return React.useMemo(() => {
-    const groupsValues = sortByDesc(Object.values(dialogueGroups), 'timestamp');
+    const groupsValues = sortByDesc(Object.values(threadGroups), 'timestamp');
 
-    const dialoguesInGroup: DialogueGroupType[] = [];
-    dialogues.forEach((dialogue) => {
-      dialoguesInGroup.push({
-        groupKey: groupsValues.find(v => v.timestamp <= dialogue.time)?.id ?? '',
-        dialogue,
-        time: dialogue.time,
+    const threadsInGroup: DialogueGroupType[] = [];
+    threads.forEach((thread) => {
+      threadsInGroup.push({
+        groupKey: groupsValues.find(v => v.timestamp <= thread.time)?.id ?? '',
+        thread,
+        time: thread.time,
       });
     });
 
-    sortByDesc(dialoguesInGroup, 'time');
+    sortByDesc(threadsInGroup, 'time');
 
-    return { groupsValues, dialoguesInGroup };
-  }, [dialogueGroups, dialogues]);
+    return { groupsValues, threadsInGroup };
+  }, [threadGroups, threads]);
 }

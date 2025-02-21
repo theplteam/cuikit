@@ -24,7 +24,7 @@ import ChatMessageGallery from './ChatMessageGallery';
 
 type Props = {
   message: MessageModel;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
   isFirst?: boolean;
   elevation?: boolean;
   disableActions?: boolean;
@@ -54,10 +54,10 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   }
 }));
 
-const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevation }) => {
+const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
-  const isTyping = useObserverValue(dialogue?.isTyping);
+  const isTyping = useObserverValue(thread?.isTyping);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
@@ -72,9 +72,9 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
-    const newMessage = dialogue.editMessage(message, newText);
+    const newMessage = thread.editMessage(message, newText);
     apiRef.current?.handleChangeBranch(newMessage);
-    onAssistantMessageTypingFinish?.(dialogue.data.data);
+    onAssistantMessageTypingFinish?.(thread.data.data);
   }
 
   const onClickCancelEdit = () => {
@@ -99,7 +99,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
         />
       )}
     </>
-  ), [message, dialogue, message.text, isFirst, isTyping]);
+  ), [message, thread, message.text, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (

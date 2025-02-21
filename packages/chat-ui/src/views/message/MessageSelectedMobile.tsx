@@ -49,7 +49,7 @@ const MessageSelectedMobile = () => {
 }
 
 const MessageSelectedMobileContent: React.FC<Props> = ({ mobileMessageActions, open, modeManager }) => {
-  const { message, dialogue, ...position } = mobileMessageActions.selectedValue;
+  const { message, thread, ...position } = mobileMessageActions.selectedValue;
 
   return (
     <MdMenu
@@ -73,7 +73,7 @@ const MessageSelectedMobileContent: React.FC<Props> = ({ mobileMessageActions, o
       ) : (
         <MessageMobileAssistantActions
           message={message}
-          dialogue={dialogue}
+          dialogue={thread}
           onClose={mobileMessageActions.handleCloseSelection}
         />
       )}

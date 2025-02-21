@@ -8,7 +8,7 @@ import { ThreadListenersMap } from '../thread/ThreadListenersMap';
 
 export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> = {
   /**
-   * Get all messages from current dialogue
+   * Get all messages from current thread
    */
   getAllMessages: () => DM[];
   /**
@@ -16,7 +16,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
    */
   getAllThreads: () => DD[];
   /**
-   * Get current dialogue
+   * Get current thread
    */
   getCurrentThread: () => DD | undefined;
   /**
@@ -37,8 +37,8 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
    */
   onChangeThread: (threadId: IdType) => void;
   /**
-   * Triggered when a new dialogue is opened.
-   * @param dialogue
+   * Triggered when a new thread is opened.
+   * @param thread
    */
   openNewThread: (thread?: DD) => void;
   /**
@@ -46,7 +46,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
    */
   setProgressStatus: (status: string) => void;
   /**
-   * Change dialogue branch
+   * Change thread branch
    */
   handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
 };

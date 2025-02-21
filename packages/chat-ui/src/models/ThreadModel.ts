@@ -59,7 +59,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
   scrollY = -1;
 
-  private _dialogCreating?: ApiMethodPromise<{ dialogue: DD }>;
+  private _threadCreating?: ApiMethodPromise<{ thread: DD }>;
 
   // диалог уже создан на сервере, но пользователь ещё не отправил ни одного сообщения.
   // Установим этот ID сразу после отправки сообщения
@@ -118,18 +118,18 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     // return !!this.data.authorId && ChatApp.userId && this.data.authorId === ChatApp.userId;
   }
 
-  createInstance = async (method: () => ApiMethodPromise<{ dialogue: DD }>) => {
-    let res: { data?: { dialogue: DD } } | undefined;
+  createInstance = async (method: () => ApiMethodPromise<{ thread: DD }>) => {
+    let res: { data?: { thread: DD } } | undefined;
 
-    this._dialogCreating = method();
-    res = await this._dialogCreating;
+    this._threadCreating = method();
+    res = await this._threadCreating;
 
     // тут не нужно ставить id или менять страничку, т.к. диалог создается сразу как мы в него входим
     if (res?.data) {
-      this.potentialId = res.data.dialogue.id;
+      this.potentialId = res.data.thread.id;
     }
 
-    this._dialogCreating = undefined;
+    this._threadCreating = undefined;
   }
 
   /**
@@ -139,9 +139,9 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     let created = false;
 
     if (this.isEmpty.value) {
-      const createResult = await this._dialogCreating;
+      const createResult = await this._threadCreating;
       if (!this.potentialId && createResult?.data) {
-        this.potentialId = createResult.data.dialogue.id;
+        this.potentialId = createResult.data.thread.id;
       }
 
       if (this.potentialId) {
@@ -234,7 +234,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
   static createEmptyData = <DD>() => {
     return ({
       id: 'NEW_DIALOGUE_' + randomId(),
-      title: 'New dialogue',
+      title: 'New thread',
       date: (new Date()).toISOString(),
       authorId: 0,
       messages: [],

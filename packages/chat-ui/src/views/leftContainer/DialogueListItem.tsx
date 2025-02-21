@@ -16,9 +16,9 @@ import { Threads } from '../../models/Threads';
 type Props = {
   // TODO: ANY
   model: Threads<any, any>;
-  dialogue: ThreadModel;
-  currentDialogue: ThreadModel | undefined;
-  setDialogue: (dialogue: ThreadModel['data']['data']) => void;
+  thread: ThreadModel;
+  currentThread: ThreadModel | undefined;
+  setThread: (thread: ThreadModel['data']['data']) => void;
 };
 
 const classSelected = 'boxSelected';
@@ -73,23 +73,23 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DialogueListItem: React.FC<Props> = ({ dialogue, model, currentDialogue, setDialogue }) => {
+const DialogueListItem: React.FC<Props> = ({ thread, model, currentThread, setThread }) => {
   const {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
 
   const coreSlots = useChatCoreSlots();
 
-  const isEmpty = useObserverValue(dialogue.isEmpty);
-  const title = useObserverValue(dialogue.data.observableTitle);
+  const isEmpty = useObserverValue(thread.isEmpty);
+  const title = useObserverValue(thread.data.observableTitle);
 
   if (isEmpty) return null;
 
-  const selected = currentDialogue?.id === dialogue.id;
+  const selected = currentThread?.id === thread.id;
 
   const handleClickListItem = () => {
     model.actions.menuDriverOpen.value = false;
-    setDialogue(dialogue);
+    setThread(thread);
   }
 
   return (
@@ -110,7 +110,7 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, model, currentDialogue, s
         <coreSlots.iconButton
           size={'small'}
           onClick={handleClick}
-          disabled={!dialogue.isOwner}
+          disabled={!thread.isOwner}
           sx={{
             position: 'absolute',
             right: (theme) => theme.spacing(1.5),
@@ -125,13 +125,13 @@ const DialogueListItem: React.FC<Props> = ({ dialogue, model, currentDialogue, s
         anchorEl={anchorEl}
         handleClose={handleClose}
         model={model}
-        dialogue={dialogue}
+        thread={thread}
       />
     </>
   );
 };
 
 export default React.memo(DialogueListItem, (prevProps, nextProps) => {
-  return (prevProps.dialogue.id === prevProps.currentDialogue?.id) === (nextProps.dialogue.id === nextProps.currentDialogue?.id)
-    && prevProps.dialogue.id === nextProps.dialogue.id;
+  return (prevProps.thread.id === prevProps.currentThread?.id) === (nextProps.thread.id === nextProps.currentThread?.id)
+    && prevProps.thread.id === nextProps.thread.id;
 });

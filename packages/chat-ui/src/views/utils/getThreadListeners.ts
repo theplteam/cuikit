@@ -2,14 +2,14 @@ import { ThreadModel } from '../../models/ThreadModel';
 import { Thread, DMessage } from '../../models';
 import { PrivateApiRefType } from '../core/useApiRef';
 
-export const getThreadListeners: <DM extends DMessage, DD extends Thread<DM>>(dialogue: ThreadModel<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (dialogue) =>
+export const getThreadListeners: <DM extends DMessage, DD extends Thread<DM>>(thread: ThreadModel<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (thread) =>
   (key) => {
   // TODO: #ANY
   let value: any;
   switch (key) {
-    case "allMessages": value = dialogue.messages.allMessages;break;
-    case "branch": value = dialogue.messages.currentMessages;break;
-    case "isTyping": value = dialogue.isTyping;break;
+    case "allMessages": value = thread.messages.allMessages;break;
+    case "branch": value = thread.messages.currentMessages;break;
+    case "isTyping": value = thread.isTyping;break;
   }
 
   return value;

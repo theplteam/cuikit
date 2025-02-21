@@ -33,7 +33,7 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions
         ? (
           <ChatMessageUser
             message={message}
-            dialogue={thread}
+            thread={thread}
             isFirst={isFirst}
             elevation={elevation}
             disableActions={disableActions}

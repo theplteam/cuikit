@@ -11,16 +11,16 @@ type Props = {
   handleClose: () => void;
   // TODO #ANY
   model: Threads<any, any>;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
 };
 
-const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, dialogue }) => {
+const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thread }) => {
   const { coreSlots } = useChatSlots();
   const locale = useLocalizationContext();
 
   const handleDelete = () => {
     handleClose();
-    model.actions.deleteItem.value = dialogue;
+    model.actions.deleteItem.value = thread;
   }
 
   return (
@@ -40,7 +40,7 @@ const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, d
       <coreSlots.menuItem
         startIcon={DeleteIcon}
         onClick={handleDelete}
-        disabled={!dialogue.isOwner}
+        disabled={!thread.isOwner}
       >
         {locale.threadActionDelete}
       </coreSlots.menuItem>
