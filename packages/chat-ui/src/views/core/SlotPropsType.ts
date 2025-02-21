@@ -1,4 +1,4 @@
-import { DDialogue, type Dialogue, DMessage } from '../../models';
+import { Thread, type ThreadModel, DMessage } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -14,7 +14,7 @@ import type { BoxProps } from '@mui/material/Box';
 
 type ChildrenProps = React.PropsWithChildren<{}>;
 
-export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
+export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Override the full dialogue component
    */
@@ -48,7 +48,7 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
    */
-  firstMessage: { dialogue: Dialogue<DM, DD>, text?: string };
+  firstMessage: { dialogue: ThreadModel<DM, DD>, text?: string };
 
   sendMessageButton: IconButtonProps;
 
@@ -76,7 +76,7 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */
-  messageAssistantProgress: BoxProps & { dialogue: Dialogue<DM, DD> };
+  messageAssistantProgress: BoxProps & { dialogue: ThreadModel<DM, DD> };
   /**
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */

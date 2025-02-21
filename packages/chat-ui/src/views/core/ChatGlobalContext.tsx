@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
-import { DDialogue, Dialogue, DMessage } from '../../models';
+import { Thread, ThreadModel, DMessage } from '../../models';
 import { PrivateApiRefType } from './useApiRef';
 import { Dialogues } from '../../models/stream/Dialogues';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -9,9 +9,9 @@ import { useAdapterContext } from '../adapter/AdapterContext';
 import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
-export type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
-  dialogue: Dialogue<DM, DD> | undefined;
-  dialogues: Dialogue<DM, DD>[];
+export type ChatGlobalContextType<DM extends DMessage, DD extends Thread<DM>> = {
+  dialogue: ThreadModel<DM, DD> | undefined;
+  dialogues: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
   model: Dialogues<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
@@ -21,12 +21,12 @@ export type ChatGlobalContextType<DM extends DMessage, DD extends DDialogue<DM>>
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);
 
-type ProviderProps<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChildren<{
+type ProviderProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
   props: ChatPropsTypes<DM, DD>,
   apiManager: ApiManager;
 }>;
 
-const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
+const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const [model] = React.useState(new Dialogues<DM, DD>());
   const currentDialogue = useObserverValue(model.currentDialogue);
   const dialogues = useObserverValue(model.list) ?? [];
@@ -45,7 +45,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
    * the currently active dialogue (if defined in `props.dialogue`) with the `model`.
    */
   React.useEffect(() => {
-    model.list.value = props.dialogues.map(v => new Dialogue(
+    model.list.value = props.dialogues.map(v => new ThreadModel(
       dialogueAdapter.transformDialogue(v) as DD,
       props.onUserMessageSent)
     );
@@ -61,7 +61,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
     dialogues,
     dialogue: currentDialogue,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
-    handleCreateNewDialogue: props.handleCreateNewDialogue ?? Dialogue.createEmptyData as FnType<DD>,
+    handleCreateNewDialogue: props.handleCreateNewDialogue ?? ThreadModel.createEmptyData as FnType<DD>,
   }), [model, currentDialogue, props, props.loading, dialogues]);
 
   return (
@@ -72,7 +72,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ pro
   );
 };
 
-const useChatContext = <DM extends DMessage, DD extends DDialogue<DM>>(): ChatGlobalContextType<DM, DD> => {
+const useChatContext = <DM extends DMessage, DD extends Thread<DM>>(): ChatGlobalContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {

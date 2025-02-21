@@ -3,13 +3,13 @@ import dialoguesJson from '../testDialogues.json';
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue,
+  Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import SendIcon from '@mui/icons-material/Send';
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>(dialoguesJson);
+  const [dialogues] = React.useState<Thread[]>(dialoguesJson);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();

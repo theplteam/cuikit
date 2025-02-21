@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { MobileMessageActionsType, useMobileMessageActions } from '../message/hooks/useMobileMessageActions';
 import { MessagesModeType, useMessagesMode } from '../message/hooks/useMessagesMode';
-import { Dialogue } from '../../models/Dialogue';
-import { DDialogue, DMessage } from '../../models';
+import { ThreadModel } from '../../models/ThreadModel';
+import { Thread, DMessage } from '../../models';
 import { ApiManager } from '../core/useApiManager';
 import { useDialogueApiInitialization } from './useDialogueApiInitialization';
 import { PrivateApiRefType } from '../core/useApiRef';
@@ -10,15 +10,15 @@ import { useDialogueSendMessage } from './useDialogueSendMessage';
 import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
 
-type DialogueContextType<DM extends DMessage, DD extends DDialogue<DM>> = {
-  dialogue: Dialogue<DM, DD> | undefined;
+type DialogueContextType<DM extends DMessage, DD extends Thread<DM>> = {
+  dialogue: ThreadModel<DM, DD> | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
   apiRef: React.RefObject<PrivateApiRefType<DM>>;
 };
 
-type Props<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChildren<{
-  dialogue: Dialogue<DM, DD> | undefined;
+type Props<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
+  dialogue: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
   globalProps: Pick<ChatGlobalContextType<any, any>, 'onDialogueCreated' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
@@ -26,7 +26,7 @@ type Props<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChild
 
 const Context = React.createContext<DialogueContextType<any, any> | undefined>(undefined);
 
-const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ children, dialogue, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
+const DialogueProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, dialogue, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
 
@@ -63,7 +63,7 @@ const DialogueProvider = <DM extends DMessage, DD extends DDialogue<DM>>({ child
   );
 };
 
-const useDialogueContext = <DM extends DMessage, DD extends DDialogue<DM>>(): DialogueContextType<DM, DD> => {
+const useDialogueContext = <DM extends DMessage, DD extends Thread<DM>>(): DialogueContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {

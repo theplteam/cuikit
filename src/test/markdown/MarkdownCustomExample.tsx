@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue,
+  Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import { styled } from '@mui/material/styles';
@@ -37,7 +37,7 @@ const BlockquoteStyled = styled('blockquote')(({ theme }) => ({
 }))
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>(
+  const [dialogues] = React.useState<Thread[]>(
     [
       {
         id: "1",

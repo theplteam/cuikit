@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import { RatingType } from '../../../../models/Message';
+import { RatingType } from '../../../../models/MessageModel';
 import { lng } from '../../../../utils/lng';
 import MessageFeedbackButton from './MessageFeedbackButton';
 import MessageFeedbackWindow from './MessageFeedbackWindow';

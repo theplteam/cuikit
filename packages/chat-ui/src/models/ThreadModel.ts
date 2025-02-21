@@ -1,8 +1,8 @@
-import { Message, ChatMessageOwner, DMessage, MessageUserContent, MessageAssistantContent } from './Message';
+import { MessageModel, ChatMessageOwner, DMessage, MessageUserContent, MessageAssistantContent } from './MessageModel';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { DialogueMessages } from './DialogueMessages';
-import { DDialogue, DialogueData } from './DialogueData';
+import { ThreadMessages } from './ThreadMessages';
+import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { IdType } from '../types';
@@ -43,13 +43,13 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   setStatus: (status: string) => void,
 }
 
-export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any> {
+export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
-  readonly messages = new DialogueMessages<DM>();
+  readonly messages = new ThreadMessages<DM>();
 
-  readonly data: DialogueData<DM, DD>;
+  readonly data: ThreadData<DM, DD>;
 
   readonly isTyping = new ObservableReactValue(false);
 
@@ -72,7 +72,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
     public readonly streamMessage: ((params: MessageStreamingParams<DM>) => void
       ),
   ) {
-    this.data = new DialogueData(_data);
+    this.data = new ThreadData(_data);
 
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];
@@ -91,7 +91,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
       _data.messages = newMessages
     }*/
 
-    this.messages.allMessages.value = _data.messages.map(v => new Message(v));
+    this.messages.allMessages.value = _data.messages.map(v => new MessageModel(v));
 
     this.isEmpty.value = !!_data.isNew;
     this.timestamp = new ObservableReactValue(moment(_data.date).unix());
@@ -155,7 +155,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   }
 
   editMessage = (
-    messageEdit: Message<DM>,
+    messageEdit: MessageModel<DM>,
     newText: string,
   ) => {
     const parentMessage = this.messagesArray.find(v => v.id === messageEdit.parentId);
@@ -176,7 +176,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   }
 
   sendMessage = (
-    lastMessage: Message<DM> | undefined,
+    lastMessage: MessageModel<DM> | undefined,
     text: string,
     images?: string[],
   ) => {
@@ -203,7 +203,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
   }
 
 
-  private _sendMessage = (content: DMessage['content'], userMessage: Message<DM>, assistantMessage: Message<DM>) => {
+  private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
     return new Promise<void>((resolve) => {
       this.streamMessage({
         content,
@@ -242,8 +242,8 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
     }) as DD;
   }
 
-  protected _createPair = (content: DMessage['content'], parentMessage: Message<DM> | undefined) => {
-    const userMessage = new Message({
+  protected _createPair = (content: DMessage['content'], parentMessage: MessageModel<DM> | undefined) => {
+    const userMessage = new MessageModel({
       id: uuidv4(),
       content,
       role: ChatMessageOwner.USER,
@@ -251,7 +251,7 @@ export class Dialogue<DM extends DMessage = any, DD extends DDialogue<DM> = any>
       parentId: parentMessage?.id,
     } as DM);
 
-    const assistantMessage = new Message({
+    const assistantMessage = new MessageModel({
       id: 'NEW_MESSAGE_' + randomId(),
       content: '',
       role: ChatMessageOwner.ASSISTANT,

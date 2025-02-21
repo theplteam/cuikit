@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Dialogue, DMessage, StreamResponseState, TextContent } from '../../models';
+import { ThreadModel, DMessage, StreamResponseState, TextContent } from '../../models';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { ChatUsersProps } from '../core/useChatProps';
 
 export const useDialogueSendMessage = (
-  dialogue: Dialogue | undefined,
+  dialogue: ThreadModel | undefined,
   onDialogueCreated: ChatUsersProps<any, any>['onDialogueCreated'],
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
   scroller?: {

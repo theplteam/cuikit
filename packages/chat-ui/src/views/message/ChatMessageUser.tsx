@@ -11,8 +11,8 @@ import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useDialogueContext } from '../dialogue/DialogueContext';
-import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { MessageModel } from '../../models/MessageModel';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -23,8 +23,8 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import ChatMessageGallery from './ChatMessageGallery';
 
 type Props = {
-  message: Message;
-  dialogue: Dialogue;
+  message: MessageModel;
+  dialogue: ThreadModel;
   isFirst?: boolean;
   elevation?: boolean;
   disableActions?: boolean;

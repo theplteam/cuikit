@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { DDialogue, DMessage, Message } from '../../models';
+import { Thread, DMessage, MessageModel } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 import { IdType } from '../../types';
-import { DialogueMessages } from '../../models/DialogueMessages';
+import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { DialogueListenersMap } from '../dialogue/DialogueListenersMap';
 
-export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
+export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> = {
   /**
    * Get all messages from current dialogue
    */
@@ -48,16 +48,16 @@ export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any
   /**
    * Change dialogue branch
    */
-  handleChangeBranch: DialogueMessages<DM>['handleChangeBranch'];
+  handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
 };
 
-export type PrivateApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
-  allMessages: ObservableReactValue<Readonly<Message<DM>[]>>;
-  branch: ObservableReactValue<Readonly<Message<DM>[]>>;
+export type PrivateApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> = {
+  allMessages: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
+  branch: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
   getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
 } & ApiRefType<DM, DD>;
 
-export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
+export const useApiRef = <DM extends DMessage, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
   const apiRef = React.useRef<PrivateApiRefType<DM, DD>>({
     onChangeDialogue: NOOP,
     openNewDialogue: NOOP,

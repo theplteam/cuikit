@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { ChatMessageOwner, Dialogue, Message } from '../../models';
+import { ChatMessageOwner, ThreadModel, MessageModel } from '../../models';
 import { randomId } from '../../utils/numberUtils/randomInt';
 import ChatMessageComponent from '../message/ChatMessageComponent';
 import { ForceStream } from '../../models/stream/ForceStream';
 
 type Props = {
   text?: string;
-  dialogue?: Dialogue;
+  dialogue?: ThreadModel;
 };
 
 const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
-  const [message] = React.useState(new Message({
+  const [message] = React.useState(new MessageModel({
     id: 'helloMessage' + randomId(),
     content: '',
     role: ChatMessageOwner.ASSISTANT,

@@ -8,8 +8,8 @@ import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
 import { NOOP } from '../../utils/NOOP';
-import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { MessageModel } from '../../models/MessageModel';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';
@@ -18,9 +18,9 @@ import { motion } from '../../utils/materialDesign/motion';
 import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {
-  message: Message;
+  message: MessageModel;
   enableAssistantActions?: boolean;
-  dialogue: Dialogue;
+  dialogue: ThreadModel;
   isLatest?: boolean;
   elevation?: boolean;
 };

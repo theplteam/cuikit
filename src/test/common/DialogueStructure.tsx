@@ -2,12 +2,12 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue,
+  Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [dialogues] = React.useState<Thread[]>([
     {
       id: "test-dialogue",
       title: "Second dialogue",

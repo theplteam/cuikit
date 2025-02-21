@@ -1,27 +1,27 @@
-import { DMessage, Message } from './Message';
+import { DMessage, MessageModel } from './MessageModel';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { isDefined } from '../utils/isDefined';
 import { IdType } from '../types';
 
 
-type ParentMapValue<DM extends DMessage> = { messages: Message<DM>[] };
+type ParentMapValue<DM extends DMessage> = { messages: MessageModel<DM>[] };
 
 type MesagesMapType<DM extends DMessage> = Map<IdType, ParentMapValue<DM>>;
 
 const rootMessageHash = 'rootMessage';
 
-export class DialogueMessages<DM extends DMessage> {
-  allMessages = new ObservableReactValue<Message<DM>[]>([], true);
+export class ThreadMessages<DM extends DMessage> {
+  allMessages = new ObservableReactValue<MessageModel<DM>[]>([], true);
 
-  currentMessages = new ObservableReactValue<Message<DM>[]>([]);
+  currentMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 
   get allMessagesArray() {
     return this.allMessages.value;
   }
 
   // Remember which branch we stopped at, so that upon re-entering the dialogue, reopens it
-  private _lastMessage?: Message<DM>;
+  private _lastMessage?: MessageModel<DM>;
 
   private _callbackInitiated = false;
 
@@ -39,7 +39,7 @@ export class DialogueMessages<DM extends DMessage> {
       const newObject = this._createNewMap(this.allMessagesArray);
       const map = new Map(Object.entries(newObject));
 
-      this._updateBranch(map, arrayLast(this.allMessagesArray as Message<DM>[]), enableBranches);
+      this._updateBranch(map, arrayLast(this.allMessagesArray as MessageModel<DM>[]), enableBranches);
     });
   }
 
@@ -50,7 +50,7 @@ export class DialogueMessages<DM extends DMessage> {
     this._updateBranch(map, this._lastMessage, enableBranches);
   }
 
-  handleChangeBranch = (message: Message<DM>) => {
+  handleChangeBranch = (message: MessageModel<DM>) => {
     const parentId = message.parentId ?? rootMessageHash;
 
     const newObject = this._createNewMap(this.allMessagesArray);
@@ -61,7 +61,7 @@ export class DialogueMessages<DM extends DMessage> {
     this._updateBranch(map, message, true);
   }
 
-  private _updateBranch = (map: MesagesMapType<DM>, startFrom?: Message<DM>, enableBranches?: boolean) => {
+  private _updateBranch = (map: MesagesMapType<DM>, startFrom?: MessageModel<DM>, enableBranches?: boolean) => {
     if (enableBranches !== true) {
       this.currentMessages.setValue(this.allMessagesArray);
       return;
@@ -70,7 +70,7 @@ export class DialogueMessages<DM extends DMessage> {
     if (!startFrom) startFrom = this._lastMessage;
     const rootMessages = startFrom ? [startFrom] : map.get(rootMessageHash)?.messages ?? [];
 
-    const branches: Message<DM>[][] = [];
+    const branches: MessageModel<DM>[][] = [];
 
     for (const rootMessage of rootMessages) {
       branches.push(this._getBranchRecursive(rootMessage, map));
@@ -102,7 +102,7 @@ export class DialogueMessages<DM extends DMessage> {
     return this._lastMessage;
   }
 
-  private _getBranchRecursive = (parent: Message<DM>, map: MesagesMapType<DM>) => {
+  private _getBranchRecursive = (parent: MessageModel<DM>, map: MesagesMapType<DM>) => {
     const branch = [parent];
 
     const parentMap = map.get(parent.id);
@@ -119,10 +119,10 @@ export class DialogueMessages<DM extends DMessage> {
     return branch;
   }
 
-  private _createTree = (lastItem: Message<DM>, messages: Readonly<Message<DM>[]>) => {
-    const branch: Message<DM>[] = [];
+  private _createTree = (lastItem: MessageModel<DM>, messages: Readonly<MessageModel<DM>[]>) => {
+    const branch: MessageModel<DM>[] = [];
 
-    let nextItem: Message<DM> | undefined = lastItem;
+    let nextItem: MessageModel<DM> | undefined = lastItem;
 
     while (nextItem) {
       branch.push(nextItem);
@@ -137,7 +137,7 @@ export class DialogueMessages<DM extends DMessage> {
     return branch.reverse();
   }
 
-  private _createNewMap = (messages: Readonly<Message<DM>[]>) => {
+  private _createNewMap = (messages: Readonly<MessageModel<DM>[]>) => {
     const newObject: { [key: string]: ParentMapValue<DM> } = {};
 
     for (const message of messages) {
@@ -151,7 +151,7 @@ export class DialogueMessages<DM extends DMessage> {
     return newObject;
   }
 
-  push = (...newMessages: Message<DM>[]) => {
+  push = (...newMessages: MessageModel<DM>[]) => {
     this.allMessages.setValue([
       ...this.allMessages.value,
       ...newMessages,

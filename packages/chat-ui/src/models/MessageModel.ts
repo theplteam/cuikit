@@ -34,7 +34,7 @@ export type DMessage = {
   content: MessageAssistantContent;
 })
 
-export class Message<DM extends DMessage = any> {
+export class MessageModel<DM extends DMessage = any> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */

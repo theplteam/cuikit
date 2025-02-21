@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Dialogues } from '../../models/stream/Dialogues';
@@ -11,7 +11,7 @@ type Props = {
   handleClose: () => void;
   // TODO #ANY
   model: Dialogues<any, any>;
-  dialogue: Dialogue;
+  dialogue: ThreadModel;
 };
 
 const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, dialogue }) => {

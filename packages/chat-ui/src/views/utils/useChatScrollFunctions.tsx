@@ -3,12 +3,12 @@ import throttle from 'lodash.throttle';
 import { useMessageFollowing } from './useMessageFollowing';
 import { ChatScrollerType } from './ChatScrollerType';
 import { NOOP } from '../../utils/NOOP';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useTablet } from '../../ui/Responsive';
 import { isWindowCheck } from '../hooks/useScrollSave';
 
 export const useChatScrollFunctions = (
-  dialogue: Dialogue | undefined,
+  dialogue: ThreadModel | undefined,
   scrollTo: (top: number, behavior?: 'smooth') => void,
   getPosition: ChatScrollerType,
   getScrollContainer: () => HTMLDivElement | undefined | Window,

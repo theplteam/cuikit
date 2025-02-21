@@ -3,7 +3,7 @@ import { sortByDesc } from '../../utils/arrayUtils/arraySort';
 import { ArrayType } from '../../models/types';
 import moment from 'moment';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import { langReplace } from '../../locale/langReplace';
 import { capitalizeFirstLetter } from '../../utils/stringUtils/capitalizeFirstLetter';
@@ -11,7 +11,7 @@ import { Localization } from '../../locale/Localization';
 
 export type DialogueGroupType = {
   groupKey: string;
-  dialogue: Dialogue;
+  dialogue: ThreadModel;
   time: number;
 };
 
@@ -21,7 +21,7 @@ export type ListGroupType = {
   id: string;
 };
 
-export const useDialogueGroupedList = (dialogues: ArrayType<Dialogue>) => {
+export const useDialogueGroupedList = (dialogues: ArrayType<ThreadModel>) => {
   const [dialogueGroups, setDialogueGroups] = React.useState<Record<string, ListGroupType>>({});
   const locale = useLocalizationContext();
 

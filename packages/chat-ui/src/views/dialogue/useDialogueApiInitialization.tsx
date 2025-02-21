@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useMessageProgressStatus } from './useMessageProgressStatus';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { ApiManager } from '../core/useApiManager';
 import { getDialogueListeners } from '../utils/getDialogueListeners';
 import { useDialogueSendMessage } from './useDialogueSendMessage';
 
 export const useDialogueApiInitialization = (
-  dialogue: Dialogue | undefined,
+  dialogue: ThreadModel | undefined,
   apiManager: ApiManager,
   onMessageSend: ReturnType<typeof useDialogueSendMessage>,
 ) => {

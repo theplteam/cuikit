@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { DDialogue, Dialogue, DMessage } from '../../models';
+import { Thread, ThreadModel, DMessage } from '../../models';
 
-export const useMessageProgressStatus = <DM extends DMessage, DD extends DDialogue<DM>>(dialogue: Dialogue<DM, DD> | undefined) => {
+export const useMessageProgressStatus = <DM extends DMessage, DD extends Thread<DM>>(dialogue: ThreadModel<DM, DD> | undefined) => {
   return React.useCallback((status: string) => {
     if (dialogue) {
       dialogue.streamStatus.value = status;

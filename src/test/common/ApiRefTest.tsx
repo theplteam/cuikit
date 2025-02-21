@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   useAssistantAnswerMock,
-  DDialogue, Chat, ChatApiRef, useChatApiRef, chatClassNames,
+  Thread, Chat, ChatApiRef, useChatApiRef, chatClassNames,
 } from "@plteam/chat-ui";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -110,7 +110,7 @@ const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef>, handleD
 };
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [dialogues] = React.useState<Thread[]>([
     {
       id: "test-dialogue",
       title: "Welcome message",

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { MessageStreamingParams } from '../../models/Dialogue';
-import { ChatMessageOwner, DMessage, RatingType } from '../../models/Message';
+import { MessageStreamingParams } from '../../models/ThreadModel';
+import { ChatMessageOwner, DMessage, RatingType } from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
-import { DDialogue } from '../../models';
+import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 import { FnType } from '../../models/types';
 
-type RequiredProps<DM extends DMessage, DD extends DDialogue<DM>> = {
+type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Dialogues list
    * @required
@@ -27,7 +27,7 @@ type RequiredProps<DM extends DMessage, DD extends DDialogue<DM>> = {
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
+export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Show loading component
    */
@@ -40,7 +40,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, dialogue: DDialogue<DM> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, dialogue: Thread<DM> }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
@@ -99,7 +99,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
-export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Partial<{
+export type ChatUsersProps<DM extends DMessage, DD extends Thread<DM>> = Partial<{
   /**
    * ChatUI defaults to using the window for automatic conversation scrolling.
    * if you have embedded the chat within your own component, supply the container's ref to allow for proper scroll management.
@@ -132,7 +132,7 @@ export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Part
   userId: UserIdType;
 }> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 
-export const useChatProps = <DM extends DMessage, DD extends DDialogue<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
+export const useChatProps = <DM extends DMessage, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
   const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, ...chatProps } = userProps;
 
   useLangInit(userProps.lang as LangKeys | undefined);

@@ -10,7 +10,7 @@ import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
 import { DialogueProvider } from './DialogueContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { NOOP } from '../../utils/NOOP';
-import { DDialogue, DMessage } from '../../models';
+import { Thread, DMessage } from '../../models';
 import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
@@ -40,7 +40,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 }));
 
 
-const ChatDialogueComponent = <DM extends DMessage, DD extends DDialogue<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
+const ChatDialogueComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const { dialogue, handleCreateNewDialogue, onAssistantMessageTypingFinish, onDialogueCreated } = useChatContext<DM, DD>();

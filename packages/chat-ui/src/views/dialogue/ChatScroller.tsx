@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useChatScroller } from '../utils/useChatScroller';
 import ScrollBottomButton from './ScrollBottomButton';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { BoxRefType } from '../hooks/useElementRef';
 
 export type ChatScrollApiRef = {
@@ -10,7 +10,7 @@ export type ChatScrollApiRef = {
 
 type Props = {
   scrollApiRef: React.RefObject<ChatScrollApiRef>;
-  dialogue: Dialogue | undefined;
+  dialogue: ThreadModel | undefined;
   contentRef?: BoxRefType;
 };
 

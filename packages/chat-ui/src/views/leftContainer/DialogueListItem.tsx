@@ -4,7 +4,7 @@ import DialogueListItemMenu from './DialogueListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { iconButtonClasses } from '@mui/material/IconButton';
@@ -16,9 +16,9 @@ import { Dialogues } from '../../models/stream/Dialogues';
 type Props = {
   // TODO: ANY
   model: Dialogues<any, any>;
-  dialogue: Dialogue;
-  currentDialogue: Dialogue | undefined;
-  setDialogue: (dialogue: Dialogue['data']['data']) => void;
+  dialogue: ThreadModel;
+  currentDialogue: ThreadModel | undefined;
+  setDialogue: (dialogue: ThreadModel['data']['data']) => void;
 };
 
 const classSelected = 'boxSelected';

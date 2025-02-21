@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Dialogues } from '../../models/stream/Dialogues';
 import { IdType } from '../../types';
-import { DDialogue, Dialogue } from '../../models';
+import { Thread, ThreadModel } from '../../models';
 import { ChatPropsTypes } from './useChatProps';
 import { ApiManager } from './useApiManager';
 
@@ -17,8 +17,8 @@ export const useApiRefInitialization = (
       model.currentDialogue.value = model.get(dialogueId);
     };
 
-    const openNewDialogue = (dialogue?: DDialogue) => {
-      const dialogueInstance = model.fromData(dialogue ?? Dialogue.createEmptyData(), props.onUserMessageSent);
+    const openNewDialogue = (dialogue?: Thread) => {
+      const dialogueInstance = model.fromData(dialogue ?? ThreadModel.createEmptyData(), props.onUserMessageSent);
       model.currentDialogue.value = dialogueInstance;
     };
 

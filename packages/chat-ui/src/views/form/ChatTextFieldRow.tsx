@@ -6,7 +6,7 @@ import SendMessageButton from './SendMessageButton';
 import Box from '@mui/material/Box';
 import { inputBaseClasses } from '@mui/material/InputBase';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import PinPictureButton from './PinPictureButton';
@@ -15,7 +15,7 @@ import ChatImagePreview from './ChatImagePreview';
 import { DMessage } from '../../models';
 
 type Props = {
-  dialogue?: Dialogue;
+  dialogue?: ThreadModel;
 };
 
 const inputClasses = {

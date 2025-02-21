@@ -1,14 +1,14 @@
 import * as React from "react";
 import {
   ChatPage,
-  DDialogue, MessageStreamingParams,
+  Thread, MessageStreamingParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
 const awaitSeconds = (seconds: number) => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [dialogues] = React.useState<Thread[]>([
     {
       id: "test-dialogue",
       title: "Welcome message",

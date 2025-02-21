@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   useAssistantAnswerMock,
-  DDialogue, Chat, useChatApiRef, chatClassNames, useChatContext,
+  Thread, Chat, useChatApiRef, chatClassNames, useChatContext,
 } from "@plteam/chat-ui";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -166,7 +166,7 @@ const ChatAppBar: React.FC<{ handleDrawerToggle: () => void }> = ({ handleDrawer
 };
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>(dialoguesDataArray);
+  const [dialogues] = React.useState<Thread[]>(dialoguesDataArray);
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
   const toolsContainerRef = React.useRef<HTMLDivElement | null>(null);
 

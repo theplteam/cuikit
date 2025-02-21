@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   useAssistantAnswerMock,
-  DDialogue, Chat, useChatApiRef, chatClassNames, useChatContext,
+  Thread, Chat, useChatApiRef, chatClassNames, useChatContext,
 } from "@plteam/chat-ui";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -85,7 +85,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
 };
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [dialogues] = React.useState<Thread[]>([
     {
       id: "test-dialogue",
       title: "Welcome message",

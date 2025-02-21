@@ -1,13 +1,13 @@
-import { DMessage } from '../Message';
-import { DDialogue } from '../DialogueData';
+import { DMessage } from '../MessageModel';
+import { Thread } from '../ThreadData';
 import { ObservableReactValue } from '../../utils/observers';
-import { Dialogue } from '../Dialogue';
+import { ThreadModel } from '../ThreadModel';
 import { ChatActions } from '../ChatActions';
 
-export class Dialogues<DM extends DMessage, DD extends DDialogue<DM>> {
-  readonly list = new ObservableReactValue<Dialogue<DM, DD>[]>([]);
+export class Dialogues<DM extends DMessage, DD extends Thread<DM>> {
+  readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
 
-  readonly currentDialogue = new ObservableReactValue<Dialogue<DM, DD> | undefined>(undefined);
+  readonly currentDialogue = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
 
   readonly actions = new ChatActions<DM, DD>();
 
@@ -30,11 +30,11 @@ export class Dialogues<DM extends DMessage, DD extends DDialogue<DM>> {
    * @param params - The arguments required to create a Dialogue instance, including data and a stream function.
    * @returns The existing or newly created Dialogue instance.
    */
-  fromData = (...params: ConstructorParameters<typeof Dialogue<DM, DD>>) => {
+  fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;
     let dialogue = this.get(data.id);
     if (!dialogue) {
-      dialogue = new Dialogue(data, streamFn);
+      dialogue = new ThreadModel(data, streamFn);
       this.list.value = [...this.list.value, dialogue];
     }
     return dialogue;

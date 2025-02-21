@@ -1,8 +1,8 @@
 import type { ObservableReactValue } from "../../utils/observers";
-import type { DMessage, Message } from "../../models";
+import type { DMessage, MessageModel } from "../../models";
 
 export type DialogueListenersMap<DM extends DMessage> = {
-  allMessages: ObservableReactValue<Message<DM>[]>;
-  branch: ObservableReactValue<Message<DM>[]>;
+  allMessages: ObservableReactValue<MessageModel<DM>[]>;
+  branch: ObservableReactValue<MessageModel<DM>[]>;
   isTyping: ObservableReactValue<boolean>;
 };

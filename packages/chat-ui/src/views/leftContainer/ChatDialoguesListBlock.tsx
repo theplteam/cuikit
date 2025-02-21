@@ -9,7 +9,7 @@ import { useDialogueGroupedList } from './useDialogueGroupedList';
 import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { DDialogue } from '../../models';
+import { Thread } from '../../models';
 
 type Props = {};
 
@@ -18,7 +18,7 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, dialoguesInGroup } = useDialogueGroupedList(dialogues);
 
-  const setDialogue = React.useCallback((dialogue: DDialogue) => {
+  const setDialogue = React.useCallback((dialogue: Thread) => {
     if (currentDialogue?.id !== dialogue.id) {
       onChangeCurrentDialogue?.({dialogue});
       apiRef.current?.onChangeDialogue(dialogue.id);

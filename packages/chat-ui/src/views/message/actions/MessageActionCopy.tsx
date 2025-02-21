@@ -3,7 +3,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';
-import { Message } from '../../../models/Message';
+import { MessageModel } from '../../../models/MessageModel';
 import { usePopoverState } from '../../hooks/usePopoverState';
 import MdMenu from '../../../ui/menu/MdMenu';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
@@ -12,7 +12,7 @@ import { useLocalizationContext } from '../../core/LocalizationContext';
 
 
 type Props = {
-  message: Message;
+  message: MessageModel;
 };
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {

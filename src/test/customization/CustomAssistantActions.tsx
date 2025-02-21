@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue, DMessage,
+  Thread, DMessage,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import IconButton from '@mui/material/IconButton';
@@ -37,7 +37,7 @@ const SaveTextButton = (props: { message: Extract<DMessage, { role: 'assistant' 
 }
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [dialogues] = React.useState<Thread[]>([
     {
       id: "test-dialogue",
       title: "Welcome message",

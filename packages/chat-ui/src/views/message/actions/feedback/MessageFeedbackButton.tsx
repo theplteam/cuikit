@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { useChatSlots } from '../../../core/ChatSlotsContext';
 import { materialDesignSysPalette } from '../../../../utils/materialDesign/palette';
-import { RatingType } from '../../../../models/Message';
+import { RatingType } from '../../../../models/MessageModel';
 
 type Props = {
   type: RatingType;

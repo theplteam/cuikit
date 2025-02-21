@@ -11,11 +11,11 @@ import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
 import { useApiRef } from './core/useApiRef';
-import { DDialogue, DMessage } from '../models';
+import { Thread, DMessage } from '../models';
 import { LocalizationProvider } from './core/LocalizationContext';
 import { useApiManager } from './core/useApiManager';
 
-const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
+const Chat = <DM extends DMessage, DD extends Thread<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
   const userApiRef = usersProps.apiRef;
   const apiRef = useApiRef<DM, DD>(userApiRef);
   const apiManager = useApiManager(apiRef, userApiRef);

@@ -1,7 +1,7 @@
-import { Dialogue } from './Dialogue';
+import { ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
-import { DMessage } from './Message';
-import { DDialogue } from './DialogueData';
+import { DMessage } from './MessageModel';
+import { Thread } from './ThreadData';
 import { PartialExcept } from './types';
 
 const NOOP = (name?: string) => () => {
@@ -10,7 +10,7 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-type Props<DM extends DMessage, DD extends DDialogue<DM>, D = Dialogue<DM, DD>> = {
+type Props<DM extends DMessage, DD extends Thread<DM>, D = ThreadModel<DM, DD>> = {
   /**
    * Open empty dialogue
    */
@@ -34,12 +34,12 @@ type Props<DM extends DMessage, DD extends DDialogue<DM>, D = Dialogue<DM, DD>> 
    * Update dialogue data
    * @param dialogue
    */
-  edit?: (newData: PartialExcept<DD, 'id'>, dialogue: Dialogue<DM, DD>) => any,
+  edit?: (newData: PartialExcept<DD, 'id'>, dialogue: ThreadModel<DM, DD>) => any,
 };
 
-export type ChatModelProps<DM extends DMessage, DD extends DDialogue<DM>> = Partial<Props<DM, DD>>;
+export type ChatModelProps<DM extends DMessage, DD extends Thread<DM>> = Partial<Props<DM, DD>>;
 
-export class ChatModel<DM extends DMessage, DD extends DDialogue<DM>> {
+export class ChatModel<DM extends DMessage, DD extends Thread<DM>> {
   readonly dialogueActions: Props<DM, DD>;
 
   readonly actions = new ChatActions<DM, DD>();

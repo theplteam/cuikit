@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatGptAdapter,
   ChatPage,
-  DDialogue,
+  Thread,
   useAssistantAnswerMock,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
@@ -92,7 +92,7 @@ const dialogues = [
 ];
 
 const App: React.FC = () => {
-  const dd = dialogues as DDialogue[];
+  const dd = dialogues as Thread[];
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();

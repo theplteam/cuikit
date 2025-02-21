@@ -1,8 +1,8 @@
-import { Dialogue } from '../../models/Dialogue';
-import { DDialogue, DMessage } from '../../models';
+import { ThreadModel } from '../../models/ThreadModel';
+import { Thread, DMessage } from '../../models';
 import { PrivateApiRefType } from '../core/useApiRef';
 
-export const getDialogueListeners: <DM extends DMessage, DD extends DDialogue<DM>>(dialogue: Dialogue<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (dialogue) =>
+export const getDialogueListeners: <DM extends DMessage, DD extends Thread<DM>>(dialogue: ThreadModel<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (dialogue) =>
   (key) => {
   // TODO: #ANY
   let value: any;
