@@ -10,7 +10,7 @@ const awaitSeconds = (seconds: number) => new Promise(resolve => setTimeout(reso
 const App: React.FC = () => {
   const [dialogues] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {

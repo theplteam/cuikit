@@ -5,7 +5,7 @@ import { ThreadModel } from '../../../../models/ThreadModel';
 
 type Props = {
   message: MessageModel;
-  dialogue: ThreadModel;
+  thread: ThreadModel;
   onClose: () => void;
 };
 

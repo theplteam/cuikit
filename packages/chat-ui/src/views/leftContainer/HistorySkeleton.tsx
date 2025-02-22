@@ -5,7 +5,7 @@ import MdListItemSkeleton from '../../ui/skeleton/MdListItemSkeleton';
 
 type Props = {};
 
-const ChatHistorySkeleton: React.FC<Props> = () => {
+const HistorySkeleton: React.FC<Props> = () => {
   return (
     <Stack width={'100%'}>
       <TimeGroupItem loading />
@@ -16,4 +16,4 @@ const ChatHistorySkeleton: React.FC<Props> = () => {
   );
 }
 
-export default ChatHistorySkeleton;
+export default HistorySkeleton;

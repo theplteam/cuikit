@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
-import ChatDialoguesListBlock from './ChatDialoguesListBlock';
+import ThreadsListBlock from './ThreadsListBlock';
 import { useChatContext } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import Scrollbar from '../../ui/Scrollbar';
@@ -11,16 +11,16 @@ import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {};
 
-const DialoguesList: React.FC<Props> = () => {
+const ThreadsList: React.FC<Props> = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
   const { handleCreateNewThread, apiRef } = useChatContext();
   const { slotProps, slots } = useChatSlots();
   const locale = useLocalizationContext();
 
   const openNewThread = () => {
-    const dialogue = handleCreateNewThread?.();
-    if (dialogue) {
-      apiRef.current?.openNewThread(dialogue);
+    const thread = handleCreateNewThread?.();
+    if (thread) {
+      apiRef.current?.openNewThread(thread);
     }
   }
 
@@ -35,7 +35,7 @@ const DialoguesList: React.FC<Props> = () => {
       <Box flex={1} ref={ref}>
         {!!height && (
           <Scrollbar style={{ minHeight: height -1, maxHeight: height -1 }}>
-            <ChatDialoguesListBlock />
+            <ThreadsListBlock />
           </Scrollbar>
         )}
       </Box>
@@ -43,4 +43,4 @@ const DialoguesList: React.FC<Props> = () => {
   );
 }
 
-export default DialoguesList;
+export default ThreadsList;

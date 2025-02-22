@@ -14,7 +14,7 @@ type Props = {
   thread: ThreadModel;
 };
 
-const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thread }) => {
+const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thread }) => {
   const { coreSlots } = useChatSlots();
   const locale = useLocalizationContext();
 
@@ -48,4 +48,4 @@ const DialogueListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, t
   );
 }
 
-export default DialogueListItemMenu;
+export default ThreadListItemMenu;

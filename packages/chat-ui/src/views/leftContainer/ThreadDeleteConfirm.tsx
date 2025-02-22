@@ -12,7 +12,7 @@ import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {};
 
-const DialogDeleteConfirm: React.FC<Props> = () => {
+const ThreadDeleteConfirm: React.FC<Props> = () => {
   const { model, onThreadDeleted } = useChatContext();
   const deleteItem = useObserverValue(model.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
@@ -63,4 +63,4 @@ const DialogDeleteConfirm: React.FC<Props> = () => {
   );
 };
 
-export default DialogDeleteConfirm;
+export default ThreadDeleteConfirm;

@@ -112,7 +112,7 @@ const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef>, handleD
 const App: React.FC = () => {
   const [dialogues] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {

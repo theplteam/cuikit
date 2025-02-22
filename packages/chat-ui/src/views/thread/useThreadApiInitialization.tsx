@@ -6,11 +6,11 @@ import { getThreadListeners } from '../utils/getThreadListeners';
 import { useThreadSendMessage } from './useThreadSendMessage';
 
 export const useThreadApiInitialization = (
-  dialogue: ThreadModel | undefined,
+  thread: ThreadModel | undefined,
   apiManager: ApiManager,
   onMessageSend: ReturnType<typeof useThreadSendMessage>,
 ) => {
-  const handleChangeStreamStatus = useMessageProgressStatus(dialogue);
+  const handleChangeStreamStatus = useMessageProgressStatus(thread);
 
   React.useMemo(() => {
     apiManager.setMethod('setProgressStatus', handleChangeStreamStatus);
@@ -21,9 +21,9 @@ export const useThreadApiInitialization = (
   }, [onMessageSend]);
 
   React.useMemo(() => {
-    if (!dialogue) return;
+    if (!thread) return;
 
-    const messages = dialogue.messages;
+    const messages = thread.messages;
 
     apiManager.setMethods({
       getAllMessages: () => messages.allMessages.value.map(v => v.data),
@@ -34,7 +34,7 @@ export const useThreadApiInitialization = (
 
     apiManager.setPrivateMethod('allMessages', messages.allMessages);
     apiManager.setPrivateMethod('branch', messages.currentMessages);
-    apiManager.setPrivateMethod('getListener', getThreadListeners(dialogue));
+    apiManager.setPrivateMethod('getListener', getThreadListeners(thread));
 
-  }, [dialogue]);
+  }, [thread]);
 }

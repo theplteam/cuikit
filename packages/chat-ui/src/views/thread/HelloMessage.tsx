@@ -6,10 +6,10 @@ import { ForceStream } from '../../models/stream/ForceStream';
 
 type Props = {
   text?: string;
-  dialogue?: ThreadModel;
+  thread?: ThreadModel;
 };
 
-const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
+const HelloMessage: React.FC<Props> = ({ text, thread }) => {
   const [message] = React.useState(new MessageModel({
     id: 'helloMessage' + randomId(),
     content: '',
@@ -18,9 +18,9 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
   }));
 
   React.useEffect(() => {
-    if (!dialogue || !text) return;
+    if (!thread || !text) return;
 
-    if (dialogue.messages.allMessages.value.length > 0) {
+    if (thread.messages.allMessages.value.length > 0) {
       message.observableText.value = text;
       return;
     }
@@ -34,9 +34,9 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
     return () => {
       stream.forceStop();
     }
-  }, [dialogue?.id, text]);
+  }, [thread?.id, text]);
 
-  if (!dialogue || !text) return null;
+  if (!thread || !text) return null;
 
   return (
     <ChatMessageComponent
@@ -44,7 +44,7 @@ const HelloMessage: React.FC<Props> = ({ text, dialogue }) => {
       key={'helloMessage'}
       isLatest={false}
       isFirst={false}
-      thread={dialogue}
+      thread={thread}
       enableAssistantActions={false}
     />
   );

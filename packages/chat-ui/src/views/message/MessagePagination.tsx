@@ -34,7 +34,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
   });
 
   /*console.log(branches);
-  console.log(dialogue.messages.map((v) => ({ text: v.text, id: v.parentId })));*/
+  console.log(thread.messages.map((v) => ({ text: v.text, id: v.parentId })));*/
   if (branches.length <= 1) return <Box height={MessagePaginationHeight} />;
 
   return (

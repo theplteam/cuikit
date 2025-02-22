@@ -2,10 +2,10 @@ import * as React from 'react';
 import ThreadComponent from './thread/ThreadComponent';
 import { ChatUsersProps, useChatProps } from './core/useChatProps';
 import { ChatGlobalProvider } from './core/ChatGlobalContext';
-import ChatAppDriver from './leftContainer/ChatAppDriver';
+import AppDrawer from './leftContainer/AppDrawer';
 import Box from '@mui/material/Box';
-import ChatDialoguesListBlock from './leftContainer/ChatDialoguesListBlock';
-import DialoguesList from './leftContainer/DialoguesList';
+import ThreadsListBlock from './leftContainer/ThreadsListBlock';
+import ThreadsList from './leftContainer/ThreadsList';
 import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
@@ -33,18 +33,18 @@ const Chat = <DM extends DMessage, DD extends Thread<DM>>(usersProps: React.Prop
           <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
             <slots.listDrawer>
               <HiddenDesktop>
-                <ChatAppDriver>
+                <AppDrawer>
                   <Box display={'flex'} flexDirection={'column'} height={500}>
-                    <ChatDialoguesListBlock />
+                    <ThreadsListBlock />
                   </Box>
-                </ChatAppDriver>
+                </AppDrawer>
               </HiddenDesktop>
             </slots.listDrawer>
             <slots.listContainer>
-              <DialoguesList />
+              <ThreadsList />
             </slots.listContainer>
             <slots.threadsList {...slotProps.threadsList}>
-              <ChatDialoguesListBlock />
+              <ThreadsListBlock />
             </slots.threadsList>
             <ThreadComponent
               enableBranches={props.enableBranches}

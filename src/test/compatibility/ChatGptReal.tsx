@@ -1,5 +1,5 @@
 import * as React from "react";
-import dialogues from "./chatgpt-dialogue-test.json";
+import threads from "./chatgpt-thread-test.json";
 import {
   ChatGptAdapter,
   ChatPage,
@@ -51,7 +51,7 @@ class ChatGptModel {
 
 
 const App: React.FC = () => {
-  const dd = dialogues as any;
+  const dd = threads as any;
 
   const model = React.useMemo(() => new ChatGptModel(), []);
 

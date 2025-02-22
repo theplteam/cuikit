@@ -26,7 +26,7 @@ const date = moment().utc().format('HH:mm:ss [as of] MMMM D, YYYY');
 
 const dialoguesDataArray = [
   {
-    id: "test-dialogue",
+    id: "test-thread",
     title: "Welcome message",
     messages: [
       {
@@ -40,7 +40,7 @@ const dialoguesDataArray = [
     ],
   },
   {
-    id: "test-dialogue-1",
+    id: "test-thread-1",
     title: "Conversation with assistant",
     messages: [
       {
@@ -54,7 +54,7 @@ const dialoguesDataArray = [
     ],
   },
   {
-    id: "test-dialogue-2",
+    id: "test-thread-2",
     title: "User's question",
     messages: [
       {
@@ -124,7 +124,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
             fullWidth
             variant="contained"
           >
-            Open new dialogue
+            Open new thread
           </Button>
         </Box>
         <Typography sx={{ pl: 1 }} fontWeight={'bold'}>

@@ -17,8 +17,8 @@ export const useApiRefInitialization = (
       model.currentThread.value = model.get(threadId);
     };
 
-    const openNewThread = (dialogue?: Thread) => {
-      const dialogueInstance = model.fromData(dialogue ?? ThreadModel.createEmptyData(), props.onUserMessageSent);
+    const openNewThread = (thread?: Thread) => {
+      const dialogueInstance = model.fromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);
       model.currentThread.value = dialogueInstance;
     };
 

@@ -6,7 +6,7 @@ import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = React.PropsWithChildren<{}>;
 
-const ChatAppDriver: React.FC<Props> = ({ children }) => {
+const AppDrawer: React.FC<Props> = ({ children }) => {
   const chat = useChatModel();
   const open = useObserverValue(chat.actions.menuDriverOpen) ?? false;
 
@@ -24,4 +24,4 @@ const ChatAppDriver: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default ChatAppDriver;
+export default AppDrawer;

@@ -9,8 +9,8 @@ import Box from "@mui/material/Box";
 const App: React.FC = () => {
   const [dialogues] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
-      title: "Second dialogue",
+      id: "test-thread",
+      title: "Second thread",
       date: (new Date('2025-01-18T12:00:00.000Z')).toISOString(),
       messages: [
         {
@@ -27,8 +27,8 @@ const App: React.FC = () => {
       ],
     },
     {
-      id: "test-dialogue2",
-      title: "First dialogue",
+      id: "test-thread2",
+      title: "First thread",
       date: (new Date('2024-12-12T12:00:00.000Z')).toISOString(),
       messages: [
         {

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import DialogDeleteConfirm from './DialogDeleteConfirm';
+import ThreadDeleteConfirm from './ThreadDeleteConfirm';
 import Stack from '@mui/material/Stack';
-import ChatHistorySkeleton from './ChatHistorySkeleton';
+import HistorySkeleton from './HistorySkeleton';
 import TimeGroupItem from './TimeGroupItem';
 import Box from '@mui/material/Box';
 import DialogueListItem from './DialogueListItem';
@@ -13,7 +13,7 @@ import { Thread } from '../../models';
 
 type Props = {};
 
-const ChatDialoguesListBlock: React.FC<Props> = () => {
+const ThreadsListBlock: React.FC<Props> = () => {
   const { loading, model, threads, thread: currentDialogue, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
@@ -28,9 +28,9 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
   return (
     <>
       <Stack position={'relative'}>
-        {loading && <ChatHistorySkeleton />}
+        {loading && <HistorySkeleton />}
         {!loading && (
-          <DelayRenderer timeout={200} fallback={<ChatHistorySkeleton />} once>
+          <DelayRenderer timeout={200} fallback={<HistorySkeleton />} once>
             <>
             {groupsValues.map((group) => (
               <React.Fragment key={group.id}>
@@ -59,9 +59,9 @@ const ChatDialoguesListBlock: React.FC<Props> = () => {
           </DelayRenderer>
         )}
       </Stack>
-      <DialogDeleteConfirm />
+      <ThreadDeleteConfirm />
     </>
   );
 };
 
-export default ChatDialoguesListBlock;
+export default ThreadsListBlock;

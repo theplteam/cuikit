@@ -39,7 +39,7 @@ const SaveTextButton = (props: { message: Extract<DMessage, { role: 'assistant' 
 const App: React.FC = () => {
   const [dialogues] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {

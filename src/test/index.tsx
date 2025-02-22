@@ -5,11 +5,11 @@ const MarkdownExample = React.lazy(() => import('./markdown/MarkdownExample'));
 const MarkdownCustomExample = React.lazy(() => import('./markdown/MarkdownCustomExample'));
 const CustomSlots = React.lazy(() => import('./customization/CustomSlots'));
 const BaseExample = React.lazy(() => import('./common/BaseExample'));
-const DialogueStructure = React.lazy(() => import('./common/DialogueStructure'));
+const ThreadStructure = React.lazy(() => import('./common/ThreadStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
-const DialoguesListPortal = React.lazy(() => import('./customization/DialoguesListPortal'));
+const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
 const UsingContext = React.lazy(() => import('./customization/UsingContext'));
 
 const App: React.FC = () => {
@@ -29,10 +29,10 @@ const App: React.FC = () => {
       case 'common': variant = BaseExample; break;
       case 'openai-adapter': variant = OpenAI; break;
       case 'awaiting-response': variant = AwaitingResponse; break;
-      case 'dialogue-structure': variant = DialogueStructure; break;
+      case 'thread-structure': variant = ThreadStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
-      case 'portal-list': variant = DialoguesListPortal; break;
+      case 'portal-list': variant = ThreadsListPortal; break;
       case 'context-usage': variant = UsingContext; break;
     }
 

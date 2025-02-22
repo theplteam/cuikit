@@ -5,7 +5,7 @@ import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { ChatUsersProps } from '../core/useChatProps';
 
 export const useThreadSendMessage = (
-  dialogue: ThreadModel | undefined,
+  thread: ThreadModel | undefined,
   onDialogueCreated: ChatUsersProps<any, any>['onThreadCreated'],
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
   scroller?: {
@@ -13,7 +13,7 @@ export const useThreadSendMessage = (
   }
 ) => {
   return React.useCallback((content: DMessage['content']) => {
-    const branchMessages = dialogue?.messages.currentMessages.value ?? [];
+    const branchMessages = thread?.messages.currentMessages.value ?? [];
     let text = '';
     let images: string[] = [];
 
@@ -25,21 +25,21 @@ export const useThreadSendMessage = (
     }
 
     return new Promise<boolean>(async (resolve) => {
-      if ((images?.length || text) && dialogue) {
+      if ((images?.length || text) && thread) {
         const lastMessage = arrayLast(branchMessages);
 
-        dialogue.streamStatus.value = StreamResponseState.START;
+        thread.streamStatus.value = StreamResponseState.START;
 
         try {
-          const createdNew = await dialogue.createIfEmpty();
+          const createdNew = await thread.createIfEmpty();
           if (createdNew) {
-            onDialogueCreated?.(dialogue.data.data);
+            onDialogueCreated?.(thread.data.data);
           }
-          dialogue.sendMessage(lastMessage, text, images)
+          thread.sendMessage(lastMessage, text, images)
             .then(() => {
               resolve(true);
-              onAssistantMessageTypingFinish?.(dialogue.data.data);
-              dialogue.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
+              onAssistantMessageTypingFinish?.(thread.data.data);
+              thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
             })
             .catch(() => resolve(false));
 
@@ -51,8 +51,8 @@ export const useThreadSendMessage = (
     });
 
   }, [
-    dialogue,
-    arrayPluck(dialogue?.messages.currentMessages.value ?? [], 'id').join(','),
+    thread,
+    arrayPluck(thread?.messages.currentMessages.value ?? [], 'id').join(','),
     onDialogueCreated,
     onAssistantMessageTypingFinish,
     scroller?.handleBottomScroll

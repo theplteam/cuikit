@@ -8,7 +8,7 @@ import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
-  dialogue: ThreadModel;
+  thread: ThreadModel;
 };
 
 const ContainerStyled = styled(Container)(() => ({
@@ -17,14 +17,14 @@ const ContainerStyled = styled(Container)(() => ({
   alignItems: 'center',
 }));
 
-const QuestionsList: React.FC<Props> = ({ dialogue }) => {
+const QuestionsList: React.FC<Props> = ({ thread }) => {
   const questions = useQuestionTemplates();
 
-  const messages = useObserverValue(dialogue.messages.allMessages) ?? [];
+  const messages = useObserverValue(thread.messages.allMessages) ?? [];
 
   const onClick = React.useCallback((_message: string) => {
-    // dialogue.sendMessage(message);
-  }, [dialogue]);
+    // thread.sendMessage(message);
+  }, [thread]);
 
   if (messages.length) return null;
 

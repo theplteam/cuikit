@@ -72,7 +72,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
             fullWidth
             variant="contained"
           >
-            Open new dialogue
+            Open new thread
           </Button>
         </Box>
         <Typography sx={{ pl: 1 }} fontWeight={'bold'}>
@@ -87,7 +87,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
 const App: React.FC = () => {
   const [dialogues] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {

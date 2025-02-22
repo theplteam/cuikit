@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import DialogueListItemMenu from './DialogueListItemMenu';
+import ThreadListItemMenu from './ThreadListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
@@ -121,7 +121,7 @@ const DialogueListItem: React.FC<Props> = ({ thread, model, currentThread, setTh
           <MoreVertIcon />
         </coreSlots.iconButton>
       </BoxStyled>
-      <DialogueListItemMenu
+      <ThreadListItemMenu
         anchorEl={anchorEl}
         handleClose={handleClose}
         model={model}

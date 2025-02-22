@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 const UserMessageEditingExample: React.FC = () => {
   const [dialogues] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {
