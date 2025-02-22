@@ -11,7 +11,7 @@ const helloMessage = `Hello! I am your AI assistant, and I’m ready to help you
 
 Feel free to ask – together we’ll find the best solutions!`;
 
-const dialogues = [
+const threads = [
   {
     "id": "test-id",
     "title": "Pleasant conversation",
@@ -92,7 +92,7 @@ const dialogues = [
 ];
 
 const App: React.FC = () => {
-  const dd = dialogues as Thread[];
+  const dd = threads as Thread[];
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();

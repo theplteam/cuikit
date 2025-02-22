@@ -20,12 +20,12 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
    */
   thread: ChildrenProps;
   /**
-   * Parent for the dialogues list
+   * Parent for the threads list
    * Will ignored if dialoguesList slot provided
    */
   listContainer: any;
   /**
-   * List of dialogues
+   * List of threads
    */
   threadsList: any;
   /**
@@ -33,16 +33,16 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
    */
   listSubtitle: TypographyProps;
   /**
-   * Typography component for rendering time text in the dialogues list (today, last week, last 30 days, etc.)
+   * Typography component for rendering time text in the threads list (today, last week, last 30 days, etc.)
    */
   listTimeText: TypographyProps;
   /**
-   * Driver component for the dialogues list (mobile version)
+   * Driver component for the threads list (mobile version)
    * Will ignored if dialoguesList slot provided
    */
   listDrawer: ChildrenProps;
   /**
-   * Title for the mobile dialogues list (same as listSubtitle)
+   * Title for the mobile threads list (same as listSubtitle)
    */
   listDrawerTitle: TypographyProps;
   /**

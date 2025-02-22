@@ -12,7 +12,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
    */
   getAllMessages: () => DM[];
   /**
-   * Get all dialogues
+   * Get all threads
    */
   getAllThreads: () => DD[];
   /**

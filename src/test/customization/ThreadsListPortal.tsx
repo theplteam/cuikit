@@ -85,7 +85,7 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
 };
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<Thread[]>([
+  const [threads] = React.useState<Thread[]>([
     {
       id: "test-thread",
       title: "Welcome message",
@@ -183,8 +183,8 @@ const App: React.FC = () => {
         ref={scrollRef}
       >
         <Chat
-          thread={dialogues[0]}
-          threads={dialogues}
+          thread={threads[0]}
+          threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
           onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}

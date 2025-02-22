@@ -29,7 +29,7 @@ type ProviderProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWith
 const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const [model] = React.useState(new Threads<DM, DD>());
   const currentDialogue = useObserverValue(model.currentThread);
-  const dialogues = useObserverValue(model.list) ?? [];
+  const threads = useObserverValue(model.list) ?? [];
 
   useApiRefInitialization(
     apiManager,
@@ -40,8 +40,8 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
   const dialogueAdapter = useAdapterContext();
 
   /**
-   * Effect to initialize the provider model with the dialogues provided in the props.
-   * It converts the dialogues into instances of the `Thread` class and synchronizes
+   * Effect to initialize the provider model with the threads provided in the props.
+   * It converts the threads into instances of the `Thread` class and synchronizes
    * the currently active thread (if defined in `props.thread`) with the `model`.
    */
   React.useEffect(() => {
@@ -58,11 +58,11 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
     ...props,
     apiRef: apiManager.apiRef,
     model,
-    threads: dialogues,
+    threads,
     thread: currentDialogue,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
     handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData as FnType<DD>,
-  }), [model, currentDialogue, props, props.loading, dialogues]);
+  }), [model, currentDialogue, props, props.loading, threads]);
 
   return (
     // TODO: #ANY - придумать как передать дженерик в контекст

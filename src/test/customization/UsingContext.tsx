@@ -166,7 +166,7 @@ const ChatAppBar: React.FC<{ handleDrawerToggle: () => void }> = ({ handleDrawer
 };
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<Thread[]>(dialoguesDataArray);
+  const [threads] = React.useState<Thread[]>(dialoguesDataArray);
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
   const toolsContainerRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -228,8 +228,8 @@ const App: React.FC = () => {
         ref={scrollRef}
       >
         <Chat
-          thread={dialogues[0]}
-          threads={dialogues}
+          thread={threads[0]}
+          threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
           onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}

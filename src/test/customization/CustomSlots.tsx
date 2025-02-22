@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import SendIcon from '@mui/icons-material/Send';
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<Thread[]>(dialoguesJson);
+  const [threads] = React.useState<Thread[]>(dialoguesJson);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
@@ -17,8 +17,8 @@ const App: React.FC = () => {
   return (
     <Box height={"100dvh"} width={"100dvw"}>
       <ChatPage
-        thread={dialogues[0]}
-        threads={dialogues}
+        thread={threads[0]}
+        threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}
         defaultTextFieldValue={'See you later!'}

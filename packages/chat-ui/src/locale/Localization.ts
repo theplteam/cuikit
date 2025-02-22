@@ -36,7 +36,7 @@ export type Localization = {
   codeCopyButton: string;
   codeEditButton: string;
 
-  //dialogues
+  //threads
   threadDeleteTitle: string;
   threadDeleteContent: string;
   threadDeletedSuccess: string;

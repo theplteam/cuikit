@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 const awaitSeconds = (seconds: number) => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<Thread[]>([
+  const [threads] = React.useState<Thread[]>([
     {
       id: "test-thread",
       title: "Welcome message",
@@ -43,8 +43,8 @@ const App: React.FC = () => {
   return (
     <Box height={"100dvh"} width={"100dvw"}>
       <ChatPage
-        thread={dialogues[0]}
-        threads={dialogues}
+        thread={threads[0]}
+        threads={threads}
         onUserMessageSent={onUserMessageSent}
         defaultTextFieldValue={'Test'}
       />
