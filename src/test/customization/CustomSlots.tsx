@@ -1,5 +1,5 @@
 import * as React from "react";
-import dialoguesJson from '../testDialogues.json';
+import threadsJson from '../testThreads.json';
 import {
   ChatPage,
   useAssistantAnswerMock,
@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import SendIcon from '@mui/icons-material/Send';
 
 const App: React.FC = () => {
-  const [threads] = React.useState<Thread[]>(dialoguesJson);
+  const [threads] = React.useState<Thread[]>(threadsJson);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();

@@ -74,7 +74,7 @@ const ThreadComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRe
             </>
           )}
         </MessagesRowStyled>
-        {/*(!thread && !chat.currentDialogueInit) && <ChatNoDialogue chat={chat} />*/}
+        {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
         <Watermark />
         <Stack position={'sticky'} bottom={0} zIndex={1}>
           <TextRowBlock>

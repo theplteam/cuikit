@@ -43,12 +43,12 @@ export type ChatModelProps<DM extends DMessage, DD extends Thread<DM>> = Partial
  * TODO: #MB NO NEEDED
  */
 export class ChatModel<DM extends DMessage, DD extends Thread<DM>> {
-  readonly dialogueActions: Props<DM, DD>;
+  readonly threadActions: Props<DM, DD>;
 
   readonly actions = new ChatActions<DM, DD>();
 
   constructor(props: ChatModelProps<DM, DD> | undefined) {
-    this.dialogueActions = {
+    this.threadActions = {
       openNew: props?.openNew ?? NOOP('openNew'),
       delete: props?.delete ?? NOOP('delete'),
       open: props?.open ?? NOOP('open'),

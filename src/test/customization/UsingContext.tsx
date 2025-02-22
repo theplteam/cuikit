@@ -24,7 +24,7 @@ const drawerWidth = 240;
 
 const date = moment().utc().format('HH:mm:ss [as of] MMMM D, YYYY');
 
-const dialoguesDataArray = [
+const threadsDataArray = [
   {
     id: "test-thread",
     title: "Welcome message",
@@ -81,7 +81,7 @@ const MainBoxStyled = styled(Box)(({ theme }) => ({
     left: 0,
     width: '100%',
   },
-  [`& .${chatClassNames.dialogueRoot}`]: {
+  [`& .${chatClassNames.threadRoot}`]: {
     height: '100%',
   },
 }));
@@ -166,7 +166,7 @@ const ChatAppBar: React.FC<{ handleDrawerToggle: () => void }> = ({ handleDrawer
 };
 
 const App: React.FC = () => {
-  const [threads] = React.useState<Thread[]>(dialoguesDataArray);
+  const [threads] = React.useState<Thread[]>(threadsDataArray);
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
   const toolsContainerRef = React.useRef<HTMLDivElement | null>(null);
 

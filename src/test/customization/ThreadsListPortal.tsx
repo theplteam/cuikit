@@ -34,7 +34,7 @@ const MainBoxStyled = styled(Box)(({ theme }) => ({
     left: 0,
     width: '100%',
   },
-  [`& .${chatClassNames.dialogueRoot}`]: {
+  [`& .${chatClassNames.threadRoot}`]: {
     height: '100%',
   },
 }));

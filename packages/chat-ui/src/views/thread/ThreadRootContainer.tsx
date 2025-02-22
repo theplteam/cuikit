@@ -12,7 +12,7 @@ const ThreadRootContainer: React.FC<Props> = (boxProps) => {
       display={'flex'}
       justifyContent={'center'}
       height={'inherit'}
-      className={chatClassNames.dialogueRoot}
+      className={chatClassNames.threadRoot}
     >
       <Box
         width={'100%'}
@@ -20,7 +20,7 @@ const ThreadRootContainer: React.FC<Props> = (boxProps) => {
         display={'flex'}
         flexDirection={'column'}
         {...boxProps}
-        className={clsx(chatClassNames.dialogueRoot, boxProps.className)}
+        className={clsx(chatClassNames.threadRoot, boxProps.className)}
       />
     </Box>
   );

@@ -9,7 +9,7 @@ import { langReplace } from '../../locale/langReplace';
 import { capitalizeFirstLetter } from '../../utils/stringUtils/capitalizeFirstLetter';
 import { Localization } from '../../locale/Localization';
 
-export type DialogueGroupType = {
+export type ThreadGroupType = {
   groupKey: string;
   thread: ThreadModel;
   time: number;
@@ -100,7 +100,7 @@ export const useThreadsGroupedList = (threads: ArrayType<ThreadModel>) => {
   return React.useMemo(() => {
     const groupsValues = sortByDesc(Object.values(threadGroups), 'timestamp');
 
-    const threadsInGroup: DialogueGroupType[] = [];
+    const threadsInGroup: ThreadGroupType[] = [];
     threads.forEach((thread) => {
       threadsInGroup.push({
         groupKey: groupsValues.find(v => v.timestamp <= thread.time)?.id ?? '',

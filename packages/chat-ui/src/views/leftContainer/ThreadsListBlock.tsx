@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import HistorySkeleton from './HistorySkeleton';
 import TimeGroupItem from './TimeGroupItem';
 import Box from '@mui/material/Box';
-import DialogueListItem from './DialogueListItem';
+import ThreadListItem from './ThreadListItem';
 import { useThreadsGroupedList } from './useThreadsGroupedList';
 import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
@@ -14,16 +14,16 @@ import { Thread } from '../../models';
 type Props = {};
 
 const ThreadsListBlock: React.FC<Props> = () => {
-  const { loading, model, threads, thread: currentDialogue, apiRef, onChangeCurrentThread } = useChatContext();
+  const { loading, model, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
-  const setDialogue = React.useCallback((thread: Thread) => {
-    if (currentDialogue?.id !== thread.id) {
+  const setThread = React.useCallback((thread: Thread) => {
+    if (currentThread?.id !== thread.id) {
       onChangeCurrentThread?.({ thread });
       apiRef.current?.onChangeThread(thread.id);
     }
-  }, [onChangeCurrentThread, currentDialogue, apiRef.current]);
+  }, [onChangeCurrentThread, currentThread, apiRef.current]);
 
   return (
     <>
@@ -44,9 +44,9 @@ const ThreadsListBlock: React.FC<Props> = () => {
                   if (groupKey !== group.id) return null;
                   return (
                     <Box key={thread.id}>
-                      <DialogueListItem
-                        currentThread={currentDialogue}
-                        setThread={setDialogue}
+                      <ThreadListItem
+                        currentThread={currentThread}
+                        setThread={setThread}
                         thread={thread}
                         model={model}
                       />

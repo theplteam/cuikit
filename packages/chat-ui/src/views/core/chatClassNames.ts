@@ -1,4 +1,4 @@
 export const chatClassNames = {
-  dialogueRoot: 'chatui-thread-root',
-  dialogueRootContainer: 'chatui-thread-root-container',
+  threadRoot: 'chatui-thread-root',
+  threadRootContainer: 'chatui-thread-root-container',
 };

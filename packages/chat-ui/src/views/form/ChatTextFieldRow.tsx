@@ -23,7 +23,7 @@ const inputClasses = {
 } as const;
 
 const paddingSidesSx = 1.5;
-const DialogueWidthBlockStyled = styled(Box)(({ theme }) => ({
+const ThreadWidthBlockStyled = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
   width: '100%',
   padding: theme.spacing(0, paddingSidesSx, 1, paddingSidesSx),
@@ -86,7 +86,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
   const disabled = !thread || isTyping;
 
   return (
-    <DialogueWidthBlockStyled>
+    <ThreadWidthBlockStyled>
       <InnerStackStyled>
         <ChatImagePreview images={images} setImages={setImages} />
         <Stack direction={'row'} alignItems={'flex-end'} gap={1}>
@@ -110,7 +110,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
           />
         </Stack>
       </InnerStackStyled>
-    </DialogueWidthBlockStyled>
+    </ThreadWidthBlockStyled>
   );
 };
 

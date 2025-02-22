@@ -21,7 +21,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   thread: ChildrenProps;
   /**
    * Parent for the threads list
-   * Will ignored if dialoguesList slot provided
+   * Will ignored if threadsList slot provided
    */
   listContainer: any;
   /**
@@ -38,7 +38,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   listTimeText: TypographyProps;
   /**
    * Driver component for the threads list (mobile version)
-   * Will ignored if dialoguesList slot provided
+   * Will ignored if threadsList slot provided
    */
   listDrawer: ChildrenProps;
   /**

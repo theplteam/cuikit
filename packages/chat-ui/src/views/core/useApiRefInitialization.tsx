@@ -11,23 +11,22 @@ export const useApiRefInitialization = (
   props: ChatPropsTypes<any, any>,
 ) => {
   React.useEffect(() => {
-    const getAllDialogues = () => model.list.value.map(v => v.data.data);
+    const getAllThreads = () => model.list.value.map(v => v.data.data);
 
-    const onChangeDialogue = (threadId: IdType) => {
+    const onChangeThread = (threadId: IdType) => {
       model.currentThread.value = model.get(threadId);
     };
 
     const openNewThread = (thread?: Thread) => {
-      const dialogueInstance = model.fromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);
-      model.currentThread.value = dialogueInstance;
+      const threadInstance = model.fromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);
+      model.currentThread.value = threadInstance;
     };
 
-    apiManager.setMethod('onChangeThread', onChangeDialogue);
-    apiManager.setMethod('getAllThreads', getAllDialogues);
+    apiManager.setMethod('onChangeThread', onChangeThread);
+    apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
     apiManager.setMethod('deleteThread', model.delete);
     apiManager.setMethod('getCurrentThread', () => model.currentThread.value?.data);
-    // apiManager.setMethod('sendUserMessage', model.currentDialogue.)
 
   }, [props, model]);
 }

@@ -20,7 +20,7 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
-export type DialogueHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
+export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
   | { role: ChatMessageOwner.ASSISTANT, content: MessageAssistantContent }
 
 export type MessageStreamingParams<DM extends DMessage = any> = {
@@ -29,7 +29,7 @@ export type MessageStreamingParams<DM extends DMessage = any> = {
   /** User's message */
   message: DM,
   /** Thread history */
-  history: DialogueHistoryItemType[],
+  history: ThreadHistoryItemType[],
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.
@@ -210,7 +210,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
         history: this.messages.currentMessages.value.map((message) => ({
           role: message.role,
           content: message.content,
-        }) as DialogueHistoryItemType),
+        }) as ThreadHistoryItemType),
         message: userMessage.data,
         setText: (text) => {
           assistantMessage.text = text;
@@ -233,7 +233,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
   static createEmptyData = <DD>() => {
     return ({
-      id: 'NEW_DIALOGUE_' + randomId(),
+      id: 'NEW_THREAD_' + randomId(),
       title: 'New thread',
       date: (new Date()).toISOString(),
       authorId: 0,

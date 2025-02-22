@@ -6,7 +6,7 @@ export type AdapterProviderProps = React.PropsWithChildren<Partial<AdapterType>>
 
 export const AdapterProvider = ({ children, transformThread, transformMessage }: AdapterProviderProps) => {
 
-  const baseDialogueTransormer = React.useCallback((thread: any) => {
+  const baseThreadTransformer = React.useCallback((thread: any) => {
     if (!!transformMessage && Array.isArray(thread.messages)) {
       return {
         ...thread,
@@ -18,8 +18,8 @@ export const AdapterProvider = ({ children, transformThread, transformMessage }:
   }, [transformMessage]);
 
   const value = React.useMemo(
-    () => ({ transformThread: transformThread ?? baseDialogueTransormer, transformMessage }),
-    [transformThread, transformMessage, baseDialogueTransormer]
+    () => ({ transformThread: transformThread ?? baseThreadTransformer, transformMessage }),
+    [transformThread, transformMessage, baseThreadTransformer]
   );
 
   return (

@@ -6,7 +6,7 @@ import { ChatUsersProps } from '../core/useChatProps';
 
 export const useThreadSendMessage = (
   thread: ThreadModel | undefined,
-  onDialogueCreated: ChatUsersProps<any, any>['onThreadCreated'],
+  onThreadCreated: ChatUsersProps<any, any>['onThreadCreated'],
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
   scroller?: {
     handleBottomScroll?: () => void;
@@ -33,7 +33,7 @@ export const useThreadSendMessage = (
         try {
           const createdNew = await thread.createIfEmpty();
           if (createdNew) {
-            onDialogueCreated?.(thread.data.data);
+            onThreadCreated?.(thread.data.data);
           }
           thread.sendMessage(lastMessage, text, images)
             .then(() => {
@@ -53,7 +53,7 @@ export const useThreadSendMessage = (
   }, [
     thread,
     arrayPluck(thread?.messages.currentMessages.value ?? [], 'id').join(','),
-    onDialogueCreated,
+    onThreadCreated,
     onAssistantMessageTypingFinish,
     scroller?.handleBottomScroll
   ]);

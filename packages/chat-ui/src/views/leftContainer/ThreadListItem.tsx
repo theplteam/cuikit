@@ -73,7 +73,7 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DialogueListItem: React.FC<Props> = ({ thread, model, currentThread, setThread }) => {
+const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThread }) => {
   const {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
@@ -131,7 +131,7 @@ const DialogueListItem: React.FC<Props> = ({ thread, model, currentThread, setTh
   );
 };
 
-export default React.memo(DialogueListItem, (prevProps, nextProps) => {
+export default React.memo(ThreadListItem, (prevProps, nextProps) => {
   return (prevProps.thread.id === prevProps.currentThread?.id) === (nextProps.thread.id === nextProps.currentThread?.id)
     && prevProps.thread.id === nextProps.thread.id;
 });
