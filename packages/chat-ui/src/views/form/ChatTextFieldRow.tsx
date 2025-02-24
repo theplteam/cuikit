@@ -88,7 +88,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
   return (
     <ThreadWidthBlockStyled>
       <InnerStackStyled>
-        <ChatImagePreview images={images} setImages={setImages} />
+        {!!images.length && <ChatImagePreview images={images} setImages={setImages} />}
         <Stack direction={'row'} alignItems={'flex-end'} gap={1}>
           <PinPictureButton
             images={images}
