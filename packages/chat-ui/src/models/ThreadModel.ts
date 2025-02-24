@@ -5,14 +5,11 @@ import { ThreadMessages } from './ThreadMessages';
 import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
-import { IdType } from '../types';
 
 export type NewMessageResponse = {
   user: DMessage,
   assistant: DMessage,
 };
-
-type ApiMethodPromise<T> = Promise<{ data?: T }>
 
 export enum StreamResponseState {
   START = 'start',
@@ -59,18 +56,17 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
   scrollY = -1;
 
-  private _threadCreating?: ApiMethodPromise<{ thread: DD }>;
+  // private _threadCreating?: ApiMethodPromise<{ thread: DD }>;
 
   // диалог уже создан на сервере, но пользователь ещё не отправил ни одного сообщения.
   // Установим этот ID сразу после отправки сообщения
-  private potentialId?: IdType;
+  // private potentialId?: IdType;
 
   readonly timestamp: ObservableReactValue<number>;
 
   constructor(
     _data: DD,
-    public readonly streamMessage: ((params: MessageStreamingParams<DM>) => void
-      ),
+    public readonly streamMessage: (params: MessageStreamingParams<DM>) => void,
   ) {
     this.data = new ThreadData(_data);
 
@@ -118,7 +114,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     // return !!this.data.authorId && ChatApp.userId && this.data.authorId === ChatApp.userId;
   }
 
-  createInstance = async (method: () => ApiMethodPromise<{ thread: DD }>) => {
+  /*createInstance = async (method: () => ApiMethodPromise<{ thread: DD }>) => {
     let res: { data?: { thread: DD } } | undefined;
 
     this._threadCreating = method();
@@ -130,12 +126,12 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     }
 
     this._threadCreating = undefined;
-  }
+  }*/
 
   /**
    * Создать новый диалог
    */
-  createIfEmpty = async () => {
+  /*createIfEmpty = async () => {
     let created = false;
 
     if (this.isEmpty.value) {
@@ -152,7 +148,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     }
 
     return created;
-  }
+  }*/
 
   editMessage = (
     messageEdit: MessageModel<DM>,
@@ -204,7 +200,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
 
   private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
-    return new Promise<void>((resolve) => {
+    return new Promise<{ message: DMessage }>((resolve) => {
       this.streamMessage({
         content,
         history: this.messages.currentMessages.value.map((message) => ({
@@ -222,7 +218,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
           assistantMessage.text += chunk;
         },
         onFinish: () => {
-          resolve();
+          resolve({ message: userMessage.data });
         },
         setStatus: (status) => {
           this.streamStatus.value = status;

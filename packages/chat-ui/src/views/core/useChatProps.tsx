@@ -9,7 +9,6 @@ import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
-import { FnType } from '../../models/types';
 
 type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
   /**
@@ -57,19 +56,19 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Callback fired after message streaming is complete.
    */
-  onAssistantMessageTypingFinish?: ChatEventListeners<{ message: DM }>;
+  onAssistantMessageTypingFinish?: ChatEventListeners<{ message: DM, thread: DD }>;
   /**
    * Call when user starts new thread
    */
-  handleCreateNewThread?: FnType<DD>;
+  handleCreateNewThread?: () => DD;
   /**
    * Invoked when the user clicks the stop streaming button.
    */
-  handleStopMessageStreaming?: FnType;
+  handleStopMessageStreaming?: () => void;
   /**
    * Callback fired when first message sent
    */
-  onThreadCreated?: ChatEventListeners<{ thread: DD }>;
+  onFirstMessageSent?: ChatEventListeners<{ thread: DD }>;
   /**
    * Callback fired when first message sent
    */

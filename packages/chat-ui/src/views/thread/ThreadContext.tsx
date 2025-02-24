@@ -9,6 +9,7 @@ import { PrivateApiRefType } from '../core/useApiRef';
 import { useThreadSendMessage } from './useThreadSendMessage';
 import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
+import { Threads } from '../../models/Threads';
 
 type ThreadContextType<DM extends DMessage, DD extends Thread<DM>> = {
   thread: ThreadModel<DM, DD> | undefined;
@@ -18,21 +19,23 @@ type ThreadContextType<DM extends DMessage, DD extends Thread<DM>> = {
 };
 
 type Props<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
+  model: Threads<DM, DD>;
   thread: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
-  globalProps: Pick<ChatGlobalContextType<any, any>, 'onThreadCreated' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
+  globalProps: Pick<ChatGlobalContextType<any, any>, 'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
 }>;
 
 const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
 
-const ThreadProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
+const ThreadProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
 
   const onMessageSend = useThreadSendMessage(
     thread,
-    globalProps.onThreadCreated,
+    model,
+    globalProps.onFirstMessageSent,
     globalProps.onAssistantMessageTypingFinish,
     scrollRef.current ?? undefined,
   );

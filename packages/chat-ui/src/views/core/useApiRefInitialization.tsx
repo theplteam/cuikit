@@ -17,9 +17,11 @@ export const useApiRefInitialization = (
       model.currentThread.value = model.get(threadId);
     };
 
-    const openNewThread = (thread?: Thread) => {
-      const threadInstance = model.fromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);
-      model.currentThread.value = threadInstance;
+    const openNewThread = (thread: Thread) => {
+      if (!thread.isNew) {
+        thread.isNew = true;
+      }
+      model.currentThread.value = model.createFromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);;
     };
 
     apiManager.setMethod('onChangeThread', onChangeThread);

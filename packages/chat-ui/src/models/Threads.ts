@@ -1,8 +1,9 @@
 import { DMessage } from './MessageModel';
 import { Thread } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers';
-import { ThreadModel } from './ThreadModel';
+import { MessageStreamingParams, ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
+import { AdapterType } from '../views/adapter/AdapterType';
 
 export class Threads<DM extends DMessage, DD extends Thread<DM>> {
   readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
@@ -10,6 +11,24 @@ export class Threads<DM extends DMessage, DD extends Thread<DM>> {
   readonly currentThread = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
 
   readonly actions = new ChatActions<DM, DD>();
+
+  constructor(
+    adapter: AdapterType,
+    threads: Thread[],
+    thread: Thread | undefined,
+    onUserMessageSent: (params: MessageStreamingParams<DM>) => void,
+  ) {
+    console.log('Threads');
+    const threadConstructor = ((t: Thread)=> new ThreadModel(
+      adapter.transformThread(t) as DD,
+      onUserMessageSent,
+    ));
+
+    this.list.value = threads.map(threadConstructor);
+    if (thread?.id) {
+      this.currentThread.value = this.get(thread.id);
+    }
+  }
 
   get = (id: DD['id']) => {
     return this.list.value.find(d => d.id === id);
@@ -37,5 +56,10 @@ export class Threads<DM extends DMessage, DD extends Thread<DM>> {
       this.list.value = [...this.list.value, thread];
     }
     return thread;
+  }
+
+  createFromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
+    const [data, streamFn] = params;
+    return new ThreadModel(data, streamFn);
   }
 }

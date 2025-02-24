@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/customization/UsingContext';
+import TestApp from './test/common/ThreadActions';
 
 const App: React.FC = () => {
   return (

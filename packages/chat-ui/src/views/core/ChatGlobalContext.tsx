@@ -27,7 +27,14 @@ type ProviderProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWith
 }>;
 
 const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
-  const [model] = React.useState(new Threads<DM, DD>());
+  const threadAdapter = useAdapterContext();
+  const model = React.useMemo(() => new Threads<DM, DD>(
+    threadAdapter,
+    props.threads,
+    props.thread,
+    props.onUserMessageSent,
+  ), []);
+
   const currentThread = useObserverValue(model.currentThread);
   const threads = useObserverValue(model.list) ?? [];
 
@@ -36,23 +43,6 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
     model,
     props,
   );
-
-  const threadAdapter = useAdapterContext();
-
-  /**
-   * Effect to initialize the provider model with the threads provided in the props.
-   * It converts the threads into instances of the `Thread` class and synchronizes
-   * the currently active thread (if defined in `props.thread`) with the `model`.
-   */
-  React.useEffect(() => {
-    model.list.value = props.threads.map(v => new ThreadModel(
-      threadAdapter.transformThread(v) as DD,
-      props.onUserMessageSent)
-    );
-    if (props.thread?.id) {
-      model.currentThread.value = model.get(props.thread.id);
-    }
-  }, []);
 
   const value: ChatGlobalContextType<DM, DD> = React.useMemo(() => ({
     ...props,

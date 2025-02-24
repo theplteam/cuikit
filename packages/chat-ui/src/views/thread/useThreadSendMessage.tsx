@@ -3,10 +3,12 @@ import { ThreadModel, DMessage, StreamResponseState, TextContent } from '../../m
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { ChatUsersProps } from '../core/useChatProps';
+import { Threads } from '../../models/Threads';
 
 export const useThreadSendMessage = (
   thread: ThreadModel | undefined,
-  onThreadCreated: ChatUsersProps<any, any>['onThreadCreated'],
+  model: Threads<any, any>,
+  onFirstMessageSent: ChatUsersProps<any, any>['onFirstMessageSent'],
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
   scroller?: {
     handleBottomScroll?: () => void;
@@ -25,26 +27,35 @@ export const useThreadSendMessage = (
     }
 
     return new Promise<boolean>(async (resolve) => {
+
       if ((images?.length || text) && thread) {
         const lastMessage = arrayLast(branchMessages);
 
         thread.streamStatus.value = StreamResponseState.START;
 
         try {
-          const createdNew = await thread.createIfEmpty();
-          if (createdNew) {
-            onThreadCreated?.(thread.data.data);
+          if (thread.isEmpty.value) {
+            if (onFirstMessageSent) {
+              await onFirstMessageSent?.({ thread: thread.data.data });
+            }
+
+            if (!model.get(thread.id)) {
+              model.list.value = [...model.list.value, thread];
+            }
+
+            thread.isEmpty.value = false;
           }
           thread.sendMessage(lastMessage, text, images)
-            .then(() => {
+            .then(({ message }) => {
               resolve(true);
-              onAssistantMessageTypingFinish?.(thread.data.data);
+              onAssistantMessageTypingFinish?.({ message, thread: thread.data.data });
               thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
             })
             .catch(() => resolve(false));
 
           scroller?.handleBottomScroll?.();
         } catch (e) {
+          console.error(e);
           resolve(false);
         }
       }
@@ -53,7 +64,7 @@ export const useThreadSendMessage = (
   }, [
     thread,
     arrayPluck(thread?.messages.currentMessages.value ?? [], 'id').join(','),
-    onThreadCreated,
+    onFirstMessageSent,
     onAssistantMessageTypingFinish,
     scroller?.handleBottomScroll
   ]);
