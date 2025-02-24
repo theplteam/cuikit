@@ -9,6 +9,7 @@ const ThreadStructure = React.lazy(() => import('./common/ThreadStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
+const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
 const UsingContext = React.lazy(() => import('./customization/UsingContext'));
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
       case 'api-reference': variant = ApiRefTest; break;
       case 'portal-list': variant = ThreadsListPortal; break;
       case 'context-usage': variant = UsingContext; break;
+      case 'thread-actions': variant = ThreadActions; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
