@@ -53,11 +53,11 @@ const App: React.FC = () => {
       messages: [
         {
           role: "user",
-          content: "Hello!",
+          content: "Hello, how are you today?",
         },
         {
           role: "assistant",
-          content: "Hello there! How can I assist you today?",
+          content: "Hi there! I'm doing great, thanks for asking. What can I help you with this morning?",
         },
       ],
     },
