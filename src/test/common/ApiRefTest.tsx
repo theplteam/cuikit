@@ -121,7 +121,7 @@ const App: React.FC = () => {
         },
         {
           role: "assistant",
-          content: "Hello there! How can I assist you today?",
+          content: "You can select one of the question templates in the menu on the left, and it will be sent using the `sendUserMessage` function via `apiRef`.",
         },
       ],
     },
