@@ -78,7 +78,7 @@ const App: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <Toolbar sx={{ maxWidth: 700, width: '100%' }}>
+        <Toolbar sx={{ maxWidth: 700, width: '100%', boxSizing: 'border-box' }}>
           <Typography variant="h6" noWrap component="div">
             Chat UI
           </Typography>

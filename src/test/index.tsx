@@ -11,6 +11,7 @@ const CustomAssistantActions = React.lazy(() => import('./customization/CustomAs
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
+const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
 const UsingContext = React.lazy(() => import('./customization/UsingContext'));
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
@@ -42,6 +43,7 @@ const App: React.FC = () => {
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
       case 'message-finishing': variant = MessagingFinishing; break;
+      case 'custom-scroll-container': variant = CustomScrollContainer; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
