@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { MessageStreamingParams } from '../../models/ThreadModel';
+import { MessageSentParams } from '../../models/ThreadModel';
 import { ChatMessageOwner, DMessage, RatingType } from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
@@ -22,7 +22,7 @@ type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
    * @param pushText - call for runtime updating assistant's message
    * @param onFinish - call for finishing
    */
-  onUserMessageSent: (params: MessageStreamingParams<DM>) => void;
+  onUserMessageSent: (params: MessageSentParams<DM>) => void;
 };
 
 // используется внутри библиотеки

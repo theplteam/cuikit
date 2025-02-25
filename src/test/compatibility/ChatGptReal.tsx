@@ -3,7 +3,7 @@ import threads from "./chatgpt-thread-test.json";
 import {
   ChatGptAdapter,
   ChatPage,
-  MessageStreamingParams,
+  MessageSentParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import OpenAI from 'openai';
@@ -24,7 +24,7 @@ class ChatGptModel {
     this._abortController?.abort();
   }
 
-  streamMessage = async (params: MessageStreamingParams) => {
+  streamMessage = async (params: MessageSentParams) => {
     const messages: OpenAI.ChatCompletionCreateParamsStreaming['messages'] = params.history;
     const stream = await this._instance.chat.completions.create({
       model: 'gpt-4o',

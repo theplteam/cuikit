@@ -20,7 +20,7 @@ export enum StreamResponseState {
 export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
   | { role: ChatMessageOwner.ASSISTANT, content: MessageAssistantContent }
 
-export type MessageStreamingParams<DM extends DMessage = any> = {
+export type MessageSentParams<DM extends DMessage = any> = {
   /** User's message content */
   content: DMessage['content'],
   /** User's message */
@@ -66,7 +66,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
   constructor(
     _data: DD,
-    public readonly streamMessage: (params: MessageStreamingParams<DM>) => void,
+    public readonly streamMessage: (params: MessageSentParams<DM>) => void,
   ) {
     this.data = new ThreadData(_data);
 

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { MessageStreamingParams } from '../../models';
+import { MessageSentParams } from '../../models';
 import { ForceStream } from '../../models/stream/ForceStream';
 import { generateRandomLoremIpsum } from '../../utils/stringUtils/generateLoremIpsum';
 import { NOOP } from '../../utils/NOOP';
 
 export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: number }>) => {
 
-  const onUserMessageSent = React.useCallback(async (params: MessageStreamingParams) => {
+  const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
     if (mockOptions?.delayTimeout) {
       await new Promise(resolve => setTimeout(resolve, mockOptions.delayTimeout));
     }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   ChatPage,
-  Thread, MessageStreamingParams,
+  Thread, MessageSentParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
@@ -25,7 +25,7 @@ const App: React.FC = () => {
     },
   ]);
 
-  const onUserMessageSent = React.useCallback(async (params: MessageStreamingParams) => {
+  const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
     await awaitSeconds(2);
     params.setStatus('We\'ve been waiting for 2 seconds already.');
     await awaitSeconds(3);

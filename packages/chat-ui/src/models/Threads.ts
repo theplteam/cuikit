@@ -1,7 +1,7 @@
 import { DMessage } from './MessageModel';
 import { Thread } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers';
-import { MessageStreamingParams, ThreadModel } from './ThreadModel';
+import { MessageSentParams, ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
 import { AdapterType } from '../views/adapter/AdapterType';
 
@@ -16,7 +16,7 @@ export class Threads<DM extends DMessage, DD extends Thread<DM>> {
     adapter: AdapterType,
     threads: Thread[],
     thread: Thread | undefined,
-    onUserMessageSent: (params: MessageStreamingParams<DM>) => void,
+    onUserMessageSent: (params: MessageSentParams<DM>) => void,
   ) {
     console.log('Threads');
     const threadConstructor = ((t: Thread)=> new ThreadModel(
