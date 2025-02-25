@@ -65,7 +65,7 @@ const App: React.FC = () => {
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
-    useAssistantAnswerMock();
+    useAssistantAnswerMock({ loremIpsumSize: 'large' });
 
   const apiRef = useChatApiRef();
 

@@ -1,36 +1,38 @@
 import * as React from 'react';
 import { MessageSentParams } from '../../models';
-import { ForceStream } from '../../models/stream/ForceStream';
-import { generateRandomLoremIpsum } from '../../utils/stringUtils/generateLoremIpsum';
-import { NOOP } from '../../utils/NOOP';
+import { generateRandomLoremIpsum, LoremIpsumSize } from '../../utils/stringUtils/generateLoremIpsum';
 
-export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: number }>) => {
+let stop = false;
+
+export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: number, loremIpsumSize: LoremIpsumSize }>) => {
 
   const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
     if (mockOptions?.delayTimeout) {
       await new Promise(resolve => setTimeout(resolve, mockOptions.delayTimeout));
     }
-    const text = generateRandomLoremIpsum("medium");
-    const forceStream = new ForceStream(text, undefined, params.pushChunk);
-    forceStream.start();
-    forceStream.promise?.then(() => {
-      params.setText(text);
-      params.onFinish();
-    });
+
+    const stream = streamGenerator();
+
+    for await (const chunk of stream) {
+      params.pushChunk(chunk);
+    }
+
+    params.onFinish();
   }, []);
 
   const streamGenerator = React.useCallback(async function* (
     text?: string,
-    params?: Partial<{ delay: number, chunkSize: number, loremIpsumSize?: 'small' | 'medium' | 'large' }>
+    params?: Partial<{ delay: number, chunkSize: number, loremIpsumSize?: LoremIpsumSize }>
   ) {
+    stop = false;
     if (!text) {
-      text = generateRandomLoremIpsum(params?.loremIpsumSize ?? "medium");
+      text = generateRandomLoremIpsum(params?.loremIpsumSize ?? mockOptions?.loremIpsumSize ?? "medium");
     }
 
-    const delay = params?.delay ?? 500;
-    const chunkSize = params?.chunkSize ?? 10;
+    const delay = params?.delay ?? 150;
+    const chunkSize = params?.chunkSize ?? 15;
     let index = 0;
-    while (index < text.length) {
+    while (index < text.length && !stop) {
       const chunk = text.slice(index, index + chunkSize);
 
       await new Promise(resolve => setTimeout(resolve, delay));
@@ -39,5 +41,9 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
     }
   }, []);
 
-  return { onUserMessageSent, handleStopMessageStreaming: NOOP, streamGenerator };
+  const handleStopMessageStreaming = React.useCallback(() => {
+    stop = true;
+  }, []);
+
+  return { onUserMessageSent, handleStopMessageStreaming, streamGenerator };
 }

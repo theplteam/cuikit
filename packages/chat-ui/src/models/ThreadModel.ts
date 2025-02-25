@@ -200,6 +200,10 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
 
   private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
+    const changeTypingStatus = (status: boolean) => {
+      assistantMessage.typing.value = status;
+    }
+
     return new Promise<{ message: DMessage }>((resolve, reject) => {
       const res = this.streamMessage({
         content,
@@ -209,15 +213,18 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
         }) as ThreadHistoryItemType),
         message: userMessage.data,
         setText: (text) => {
+          changeTypingStatus(true);
           assistantMessage.text = text;
         },
         pushChunk: (chunk) => {
           if (this.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
+            changeTypingStatus(true);
             this.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
           }
           assistantMessage.text += chunk;
         },
         onFinish: () => {
+          changeTypingStatus(false);
           resolve({ message: userMessage.data });
         },
         setStatus: (status) => {
@@ -228,9 +235,11 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
       if (res instanceof Promise) {
         res
           .then(() => {
+            changeTypingStatus(false);
             resolve({ message: userMessage.data });
           })
           .catch((reason) => {
+            changeTypingStatus(false);
             reject(reason);
           });
       }

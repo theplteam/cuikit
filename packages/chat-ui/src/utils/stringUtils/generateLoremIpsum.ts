@@ -9,8 +9,9 @@ export const generateLoremIpsum = (count: number) => {
   return loremArray.slice(0, len).join(' ');
 };
 
+export type LoremIpsumSize = 'small' | 'medium' | 'large';
 
-export const generateRandomLoremIpsum = (size: 'small' | 'medium' | 'large' = 'medium') => {
+export const generateRandomLoremIpsum = (size: LoremIpsumSize) => {
   let rand = 0;
   switch (size) {
     case "small": rand = randomInt(1, 10);break;

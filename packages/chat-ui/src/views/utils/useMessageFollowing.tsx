@@ -6,6 +6,7 @@ import { useThreadContext } from '../thread/ThreadContext';
 import { when } from '../../utils/observers/when';
 import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
+import { chatClassNames } from '../core/chatClassNames';
 
 class FollowingClass {
   private _observer?: ResizeObserver;
@@ -22,20 +23,27 @@ class FollowingClass {
     private _model: MessageModel,
     private getPosition: ChatScrollerType,
     private scrollTo: (y: number) => void,
-    // TODO: надо убрать
-    /** @deprecated */
-    private appBarHeight: number,
+    private marginTop: number,
   ) {}
 
   init = () => {
     when(
       this._model.typing,
-      () => this._model.typing.value,
+      () => !!this._model.typing.value,
       () => {
         const lastMessage = document.getElementById(ChatViewConstants.MESSAGE_BOX_ID)
           ?.querySelector(`[${ChatViewConstants.MESSAGE_DATA_SCROLL_ANCHOR}="true"]`);
 
         if (lastMessage) {
+          // Call disconnect listener
+          when(
+            this._model.typing,
+            () => this._model.typing.value === false,
+            () => {
+              this.disconnect();
+            },
+          );
+
           this._observer = new ResizeObserver(() => {
             this._scroll(lastMessage);
           });
@@ -46,13 +54,6 @@ class FollowingClass {
           if (scrollHeight <= offsetHeight) this.setFollowing(true);
         }
 
-        when(
-          this._model.typing,
-          () => !this._model.typing,
-          () => {
-            this.disconnect();
-          },
-        );
       },
     );
 
@@ -116,7 +117,7 @@ class FollowingClass {
       const position = this._elementPosition;
       const topPadding = 8;
       // Тут нужно минусовать высоту скролл бара, т.к. иначе верхушка сообщения будет оставаться за ним
-      const minus = position === 'top' ? this.appBarHeight + topPadding : 0;
+      const minus = position === 'top' ? this.marginTop + topPadding : 0;
 
       this.scrollTo(bounds[position] + scrollTop - minus);
     }
@@ -144,9 +145,12 @@ export const useMessageFollowing = (
   const theme = useTheme();
 
   React.useEffect(() => {
+    const dialogueContaier = document.getElementsByClassName(chatClassNames.threadRoot)[0];
+    const marginTop = dialogueContaier.getBoundingClientRect().top ?? 0;
+
     const newModel = lastMessageModel
       // TODO: hardcode
-      ? (new FollowingClass(lastMessageModel, getPosition, scrollTo, 64)).init()
+      ? (new FollowingClass(lastMessageModel, getPosition, scrollTo, marginTop)).init()
       : undefined;
 
     setFollowingModel(newModel);
