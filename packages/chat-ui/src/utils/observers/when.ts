@@ -6,7 +6,6 @@ export const when = <T>(
   observableValue: ObservableReactValue<T>,
   condition: (value: T) => boolean,
   callback: FnType,
-  options?: any,
 ) => {
   return new Promise<void>((resolve) => {
     const disposer = reaction(
