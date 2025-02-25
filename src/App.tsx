@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/common/ThreadActions';
+import TestApp from './test/messaging/MessagingFinishing';
 
 const App: React.FC = () => {
   return (

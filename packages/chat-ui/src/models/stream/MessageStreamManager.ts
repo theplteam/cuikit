@@ -9,6 +9,9 @@ export type MessageStreamManagerOptions<DM extends DMessage> = {
   clearStatusAfterFirstText?: boolean;
 }
 
+/**
+ * @deprecated - old stream version
+ */
 export class MessageStreamManager<DM extends DMessage, DD extends Thread<DM>> {
   // дополнительный стрим, чтобы печатание было более плавным, вместо рывков с большими кусками
   readonly smoother: StreamSmootherAbstract | undefined;

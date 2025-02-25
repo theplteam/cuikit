@@ -52,6 +52,8 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
 
   sendMessageButton: IconButtonProps;
 
+  messageRowInner: { thread: DD } & any;
+
   // MESSAGE
   /**
    * Render the pagination block for message branches

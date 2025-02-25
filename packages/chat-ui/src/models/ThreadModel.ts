@@ -66,7 +66,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
   constructor(
     _data: DD,
-    public readonly streamMessage: (params: MessageSentParams<DM>) => void,
+    public readonly streamMessage: (params: MessageSentParams<DM>) => void | Promise<void>,
   ) {
     this.data = new ThreadData(_data);
 
@@ -200,8 +200,8 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
 
 
   private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
-    return new Promise<{ message: DMessage }>((resolve) => {
-      this.streamMessage({
+    return new Promise<{ message: DMessage }>((resolve, reject) => {
+      const res = this.streamMessage({
         content,
         history: this.messages.currentMessages.value.map((message) => ({
           role: message.role,
@@ -224,6 +224,16 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
           this.streamStatus.value = status;
         }
       });
+
+      if (res instanceof Promise) {
+        res
+          .then(() => {
+            resolve({ message: userMessage.data });
+          })
+          .catch((reason) => {
+            reject(reason);
+          });
+      }
     });
   }
 

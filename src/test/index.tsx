@@ -12,6 +12,9 @@ const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
 const UsingContext = React.lazy(() => import('./customization/UsingContext'));
+const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
+const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
+const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -36,6 +39,9 @@ const App: React.FC = () => {
       case 'portal-list': variant = ThreadsListPortal; break;
       case 'context-usage': variant = UsingContext; break;
       case 'thread-actions': variant = ThreadActions; break;
+      case 'message-push-chunk': variant = MessagingPushChunk; break;
+      case 'message-push-all': variant = MessagingPushAll; break;
+      case 'message-finishing': variant = MessagingFinishing; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);

@@ -1,10 +1,5 @@
 export * from './MessageModel';
 export * from './ThreadModel';
-export * from './ThreadModel';
 export * from './ThreadData';
-export * from './ChatModel';
-export * from './stream/MessageStreamManager';
-export * from './stream/StreamSmootherAbstract';
-export * from './stream/StreamSmootherModel';
 export { chatGptStreamParser } from './stream/parsers/chatGptStreamParser';
 export { prepareStreamString } from './stream/parsers/prepareStreamString';

@@ -19,10 +19,8 @@ type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Callback fired when the user sends a message to the thread.
    * @param message - User's message
-   * @param pushText - call for runtime updating assistant's message
-   * @param onFinish - call for finishing
    */
-  onUserMessageSent: (params: MessageSentParams<DM>) => void;
+  onUserMessageSent: (params: MessageSentParams<DM>) => void | Promise<void>;
 };
 
 // используется внутри библиотеки

@@ -19,5 +19,25 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
     });
   }, []);
 
-  return { onUserMessageSent, handleStopMessageStreaming: NOOP };
+  const streamGenerator = React.useCallback(async function* (
+    text?: string,
+    params?: Partial<{ delay: number, chunkSize: number, loremIpsumSize?: 'small' | 'medium' | 'large' }>
+  ) {
+    if (!text) {
+      text = generateRandomLoremIpsum(params?.loremIpsumSize ?? "medium");
+    }
+
+    const delay = params?.delay ?? 500;
+    const chunkSize = params?.chunkSize ?? 10;
+    let index = 0;
+    while (index < text.length) {
+      const chunk = text.slice(index, index + chunkSize);
+
+      await new Promise(resolve => setTimeout(resolve, delay));
+      yield chunk;
+      index += chunkSize;
+    }
+  }, []);
+
+  return { onUserMessageSent, handleStopMessageStreaming: NOOP, streamGenerator };
 }

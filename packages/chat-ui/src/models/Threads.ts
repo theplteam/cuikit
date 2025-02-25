@@ -16,9 +16,8 @@ export class Threads<DM extends DMessage, DD extends Thread<DM>> {
     adapter: AdapterType,
     threads: Thread[],
     thread: Thread | undefined,
-    onUserMessageSent: (params: MessageSentParams<DM>) => void,
+    onUserMessageSent: (params: MessageSentParams<DM>) => void | Promise<void>,
   ) {
-    console.log('Threads');
     const threadConstructor = ((t: Thread)=> new ThreadModel(
       adapter.transformThread(t) as DD,
       onUserMessageSent,
