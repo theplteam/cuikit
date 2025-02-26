@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react'
 import checker from 'vite-plugin-checker';
 import md5 from 'md5';
 
-
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');

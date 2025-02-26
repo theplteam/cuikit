@@ -40,14 +40,28 @@ export default tseslint.config(
           "unnamedComponents": "arrow-function"
         }
       ],
-      "react/jsx-filename-extension": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
           ignoreRestSiblings: true,
           argsIgnorePattern: '^_'
         }
-      ]
+      ],
+      "react/jsx-max-depth": ["error", { "max": 5 }],
+      "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "always", "propElementValues": "always" }],
+
+
+      // OFF
+
+      "react/jsx-filename-extension": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "react/jsx-newline": "off",
+      "react/jsx-no-bind": "off",
+      // In tests, we declare multiple components in a single file for docs
+      "react/no-multi-comp": 'off'
+
+
+      // RULES END
     }
   },
 );
