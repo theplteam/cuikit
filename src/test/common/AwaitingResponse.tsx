@@ -41,12 +41,10 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
-        thread={threads[0]}
+        defaultTextFieldValue="Test" onUserMessageSent={onUserMessageSent} thread={threads[0]}
         threads={threads}
-        onUserMessageSent={onUserMessageSent}
-        defaultTextFieldValue={'Test'}
       />
     </Box>
   );
