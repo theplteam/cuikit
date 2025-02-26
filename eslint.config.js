@@ -20,7 +20,7 @@ export default tseslint.config(
     plugins: {
       'react': react,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'react-refresh': reactRefresh
     },
     rules: {
       ...react.configs.all.rules,
@@ -40,14 +40,14 @@ export default tseslint.config(
           "unnamedComponents": "arrow-function"
         }
       ],
-      "react/jsx-filename-extension": "off"
-    },
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        ignoreRestSiblings: true,
-        argsIgnorePattern: '^_'
-      }
-    ]
+      "react/jsx-filename-extension": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          ignoreRestSiblings: true,
+          argsIgnorePattern: '^_'
+        }
+      ]
+    }
   },
 );

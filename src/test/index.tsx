@@ -25,6 +25,7 @@ const App: React.FC = () => {
     const params = new URLSearchParams(querystring);
     const componentName = params.get('variant');
 
+    // npx eslint --fix
     let variant: React.JSXElementConstructor<any> | null = null;
     switch (componentName) {
       case 'message-editing': variant = UserMessageEditingExample; break;

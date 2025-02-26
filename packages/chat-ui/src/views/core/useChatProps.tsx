@@ -138,14 +138,5 @@ export const useChatProps = <DM extends DMessage, DD extends Thread<DM>>(userPro
   return React.useMemo(() => ({
     ...chatProps,
     loading: userProps.loading ?? false,
-
-    // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
-  }), [
-    userProps.loading,
-    userProps.threads,
-    userProps.processAssistantText,
-    userProps.assistantActions,
-    userProps.onChangeCurrentThread,
-    userProps.onChangeCurrentThread,
-  ]);
+  }), [chatProps, userProps.loading]);
 }
