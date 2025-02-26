@@ -30,10 +30,19 @@ const MdMenuItem: React.FC<MdMenuItemProps> = ({ children, startIcon, disabled, 
       disabled={disabled || loading}
     >
       {!!icon && (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
         <>
           {loading
-            ? <ListItemIcon><CircularProgress size={24}/></ListItemIcon>
-            : <ListItemIcon>{icon}</ListItemIcon>}
+            ? (
+              <ListItemIcon>
+                <CircularProgress size={24} />
+              </ListItemIcon>
+            )
+            : (
+              <ListItemIcon>
+                {icon}
+              </ListItemIcon>
+            )}
         </>
       )}
       {children}

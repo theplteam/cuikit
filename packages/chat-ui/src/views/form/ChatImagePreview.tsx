@@ -70,14 +70,17 @@ const ChatImagePreview: React.FC<Props> = ({ images, setImages }) => {
 
   return (
     <Scrollbar style={{ maxHeight: 64, borderRadius: 16 }}>
-      <Box display={'flex'} flexWrap={'wrap'} gap={1} paddingRight={'12px'} className="pswp-gallery" id={galleryId}>
+      <Box
+        display="flex" flexWrap="wrap" gap={1}
+        paddingRight="12px" className="pswp-gallery" id={galleryId}
+      >
         {items.map(({ src, width, height }, index) => (
           <BoxStyled key={index}>
             <a
+              key={`${galleryId}-${index}`}
               href={src}
               data-pswp-width={width}
               data-pswp-height={height}
-              key={`${galleryId}-${index}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -96,7 +99,8 @@ const ChatImagePreview: React.FC<Props> = ({ images, setImages }) => {
                   backgroundColor: materialDesignSysPalette.surfaceContainerLow,
                 },
               }}
-              onClick={() => handleClick(src)}>
+              onClick={() => handleClick(src)}
+            >
               <CloseIcon sx={{ width: 16, height: 16 }} />
             </coreSlots.iconButton>
           </BoxStyled>

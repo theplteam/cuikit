@@ -19,12 +19,12 @@ const MessagesList: React.FC<Props> = ({ messages, thread }) => {
       <slots.firstMessage thread={thread} />
       {messages.map((message, key) => (
         <ChatMessageComponent
+          key={message.id ?? key}
+          enableAssistantActions
           message={message}
           thread={thread}
-          key={message.id ?? key}
           isFirst={!key}
           isLatest={key === messagesLength -1}
-          enableAssistantActions
         />
       ))}
     </>

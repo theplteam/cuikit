@@ -34,15 +34,15 @@ const MessageUserEditorTextfield: React.FC<Props> = ({ newText, setNewText, onEn
 
   return (
     <TextFieldStyled
-      value={newText}
       multiline
+      value={newText}
       maxRows={7}
       // TODO: #ANY
       onChange={(event: any) => setNewText(event.target.value)}
-      onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
       onKeyUp={isTablet
         ? undefined
         : onEnterPress}
+      onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
     />
   );
 }

@@ -61,25 +61,25 @@ const ChatMessageGallery = ({ id, images }: Props) => {
   return (
     <GridBox
       id={galleryId}
-      display={'grid'}
+      display="grid"
       mx={1.5}
       gap={1}
       sx={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         direction: 'rtl',
       }}
-      overflow={'hidden'}
-      className={"pswp-gallery"}
+      overflow="hidden"
+      className="pswp-gallery"
     >
       {items.map((item, index) => (
         <ChatMessageGalleryItem
+          key={index}
           item={item}
           galleryId={galleryId}
           columns={columns}
           rows={rows}
           itemsCount={items.length}
           index={index}
-          key={index}
         />
       ))}
     </GridBox >

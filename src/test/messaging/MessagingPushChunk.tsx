@@ -15,14 +15,14 @@ const SendMessageRow: React.FC<{ apiRef: React.RefObject<ChatApiRef> }> = ({ api
     setIsLoading(false);
   };
   return (
-    <Box width={"100%"} display={"flex"} justifyContent={"center"}>
+    <Box width="100%" display="flex" justifyContent="center">
       <Button
-        onClick={onClick}
         disabled={isLoading}
         variant="contained"
         sx={{ width: "min(70%, 300px)" }}
+        onClick={onClick}
       >
-        Send test Message
+        {"Send test Message\r"}
       </Button>
     </Box>
   );
@@ -62,11 +62,10 @@ const App: React.FC = () => {
   const apiRef = useChatApiRef();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
         thread={threads[0]}
         threads={threads}
-        onUserMessageSent={onUserMessageSent}
         apiRef={apiRef}
         slots={{
           messageRowInner: SendMessageRow,
@@ -74,6 +73,7 @@ const App: React.FC = () => {
         slotProps={{
           messageRowInner: { apiRef },
         }}
+        onUserMessageSent={onUserMessageSent}
       />
     </Box>
   );

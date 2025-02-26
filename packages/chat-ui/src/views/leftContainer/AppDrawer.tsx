@@ -4,7 +4,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import MdBottomDriver from '../../ui/MdBottomDriver';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
-type Props = React.PropsWithChildren<{}>;
+type Props = React.PropsWithChildren;
 
 const AppDrawer: React.FC<Props> = ({ children }) => {
   const chat = useChatModel();
@@ -14,10 +14,10 @@ const AppDrawer: React.FC<Props> = ({ children }) => {
 
   return (
     <MdBottomDriver
-      open={open}
-      onClose={() => chat.actions.menuDriverOpen.value = false}
-      title={locale.historyTitle}
       keepMounted
+      open={open}
+      title={locale.historyTitle}
+      onClose={() => chat.actions.menuDriverOpen.value = false}
     >
       {children}
     </MdBottomDriver>

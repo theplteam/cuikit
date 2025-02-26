@@ -98,14 +98,14 @@ const App: React.FC = () => {
     useAssistantAnswerMock();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatGptAdapter>
         <ChatPage
           thread={dd[0]}
           threads={dd}
           handleStopMessageStreaming={handleStopMessageStreaming}
-          onUserMessageSent={onUserMessageSent}
           helloMessage={helloMessage}
+          onUserMessageSent={onUserMessageSent}
         />
       </ChatGptAdapter>
     </Box>

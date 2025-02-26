@@ -3,11 +3,9 @@ import Stack from '@mui/material/Stack';
 import TimeGroupItem from './TimeGroupItem';
 import MdListItemSkeleton from '../../ui/skeleton/MdListItemSkeleton';
 
-type Props = {};
-
-const HistorySkeleton: React.FC<Props> = () => {
+const HistorySkeleton: React.FC = () => {
   return (
-    <Stack width={'100%'}>
+    <Stack width="100%">
       <TimeGroupItem loading />
       <MdListItemSkeleton width={250} />
       <MdListItemSkeleton width={250} />

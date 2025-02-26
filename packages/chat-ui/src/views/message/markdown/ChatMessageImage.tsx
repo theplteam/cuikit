@@ -55,7 +55,7 @@ const ChatMessageImage: React.FC<Props> = (props) => {
         style={{
           lineHeight: 0,
           display: 'block',
-        }}
+        }} rel="noreferrer"
       >
         <img {...props} />
       </a>

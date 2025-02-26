@@ -39,7 +39,6 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   background: theme.palette.background.paper,
 }));
 
-
 const ThreadComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
@@ -77,7 +76,7 @@ const ThreadComponent = <DM extends DMessage, DD extends Thread<DM>>({ contentRe
         </MessagesRowStyled>
         {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
         <Watermark />
-        <Stack position={'sticky'} bottom={0} zIndex={1}>
+        <Stack position="sticky" bottom={0} zIndex={1}>
           <TextRowBlock>
             <ChatScroller thread={thread} contentRef={contentRef} scrollApiRef={scrollApiRef} />
             <ChatTextFieldRow thread={thread} />

@@ -28,18 +28,21 @@ const MessageActionFeedback: React.FC<Props> = ({ message }) => {
   }
 
   return (
-    <Stack ref={ref} gap={1.5} direction={'row'} alignItems={'center'} position={'relative'}>
+    <Stack
+      ref={ref} gap={1.5} direction="row"
+      alignItems="center" position="relative"
+    >
       <MessageFeedbackButton
         tooltip={lng(['Хороший ответ', 'Like message'])}
-        onClick={handleActionClick}
         type="like"
         activeType={message.rating}
+        onClick={handleActionClick}
       />
       <MessageFeedbackButton
         tooltip={lng(['Плохой ответ', 'Dislike message'])}
-        onClick={handleActionClick}
         type="dislike"
         activeType={message.rating}
+        onClick={handleActionClick}
       />
       <MessageFeedbackWindow
         message={message}

@@ -31,7 +31,6 @@ export const useChatScrollFunctions = (
     }, 300, { trailing: true }
   ), [showButton]);
 
-
   const handleSaveScrollPosition = React.useCallback(throttle(
     () => {
       if (thread) {
@@ -39,7 +38,6 @@ export const useChatScrollFunctions = (
       }
     }, 100
   ), [thread?.id]);
-
 
   const onScrollCallback = React.useCallback(() => {
     handleCheckButtonState();

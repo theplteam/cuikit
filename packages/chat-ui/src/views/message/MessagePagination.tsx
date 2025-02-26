@@ -39,10 +39,10 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
 
   return (
     <slots.messagePaginationRoot
-      direction={'row'}
+      direction="row"
       pr={0.5}
       gap={0.5}
-      alignItems={'center'}
+      alignItems="center"
       height={MessagePaginationHeight}
       className={classes.paginationClassName}
       {...slotProps?.messagePaginationRoot}
@@ -62,7 +62,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
         } else if (type === 'next' || type === 'previous') {
           children = (
             <slots.messagePaginationButton
-              size={'small'}
+              size="small"
               sx={{
                 color: (theme) => theme.palette.grey[600],
               }}
@@ -71,7 +71,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
               key={type}
               disabled={item.disabled || disabled}
             >
-              {type === 'next' ? <ArrowForwardIosIcon fontSize={'inherit'} /> : <ArrowBackIosIcon fontSize={'inherit'} />}
+              {type === 'next' ? <ArrowForwardIosIcon fontSize="inherit" /> : <ArrowBackIosIcon fontSize="inherit" />}
             </slots.messagePaginationButton>
           );
         }

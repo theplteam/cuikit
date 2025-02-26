@@ -8,8 +8,8 @@ type Props = {
 
 const ChatMessageContainerStyled = styled(
   Box,
-  { shouldForwardProp: (propName) => propName !== 'elevation' })
-  <Props>(({ theme, elevation }) => ({
+  { shouldForwardProp: (propName) => propName !== 'elevation' }
+)<Props>(({ theme, elevation }) => ({
   display: 'flex',
   borderRadius: 24,
   padding: theme.spacing(1, 3),

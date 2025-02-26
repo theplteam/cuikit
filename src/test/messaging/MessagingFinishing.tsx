@@ -12,21 +12,20 @@ import CloseIcon from '@mui/icons-material/Close';
 const SendMessageRow: React.FC<{ apiRef: React.RefObject<ChatApiRef> }> = ({ apiRef }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-
   const onClick = async () => {
     setIsLoading(true);
     await apiRef.current?.sendUserMessage('Run test');
     setIsLoading(false);
   };
   return (
-    <Box width={"100%"} display={"flex"} justifyContent={"center"}>
+    <Box width="100%" display="flex" justifyContent="center">
       <Button
-        onClick={onClick}
         disabled={isLoading}
         variant="contained"
         sx={{ width: "min(70%, 300px)" }}
+        onClick={onClick}
       >
-        Send test Message
+        {"Send test Message\r"}
       </Button>
     </Box>
   );
@@ -99,11 +98,10 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Box height={"100dvh"} width={"100dvw"}>
+      <Box height="100dvh" width="100dvw">
         <ChatPage
           thread={threads[0]}
           threads={threads}
-          onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}
           slots={{
             messageRowInner: SendMessageRow,
@@ -111,13 +109,14 @@ const App: React.FC = () => {
           slotProps={{
             messageRowInner: { apiRef },
           }}
+          onUserMessageSent={onUserMessageSent}
         />
       </Box>
       <Snackbar
         open={open}
-        onClose={handleClose}
         message={text}
         action={snackBarActions}
+        onClose={handleClose}
       />
     </>
   );

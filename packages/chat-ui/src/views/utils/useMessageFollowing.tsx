@@ -70,7 +70,6 @@ class FollowingClass {
     this._isFollowing = value;
   }
 
-
   private offFollowing = () => {
     this._isFollowing = false;
   }
@@ -78,7 +77,6 @@ class FollowingClass {
   private handleTouchStart = (event: TouchEvent) => {
     this._yDown = event.touches[0].clientY;
   }
-
 
   private handleTouchMove = (event: TouchEvent) => {
     if (!this._yDown) {
@@ -123,7 +121,6 @@ class FollowingClass {
     }
   }
 }
-
 
 export const useMessageFollowing = (
   showButton: boolean,

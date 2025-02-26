@@ -40,8 +40,8 @@ const HelloMessage: React.FC<Props> = ({ text, thread }) => {
 
   return (
     <ChatMessageComponent
+      key="helloMessage"
       message={message}
-      key={'helloMessage'}
       isLatest={false}
       isFirst={false}
       thread={thread}

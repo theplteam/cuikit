@@ -31,11 +31,11 @@ const MessageFeedbackButton: React.FC<Props> = ({ type, activeType, onClick, too
     <Tooltip title={tooltip}>
       <coreSlots.iconButton
         size='small'
-        onClick={() => onClick(type)}
         sx={{
           color: isActive ? materialDesignSysPalette.primary : undefined,
           backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined
         }}
+        onClick={() => onClick(type)}
       >
         {icon[type][isActive ? 'active' : 'default']}
       </coreSlots.iconButton>

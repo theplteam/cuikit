@@ -11,9 +11,7 @@ import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Thread } from '../../models';
 
-type Props = {};
-
-const ThreadsListBlock: React.FC<Props> = () => {
+const ThreadsListBlock: React.FC = () => {
   const { loading, model, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
@@ -27,20 +25,20 @@ const ThreadsListBlock: React.FC<Props> = () => {
 
   return (
     <>
-      <Stack position={'relative'}>
-        {loading && <HistorySkeleton />}
+      <Stack position="relative">
+        {loading ? <HistorySkeleton /> : null}
         {!loading && (
-          <DelayRenderer timeout={200} fallback={<HistorySkeleton />} once>
+          <DelayRenderer once timeout={200} fallback={<HistorySkeleton />}>
             <>
-            {groupsValues.map((group) => (
-              <React.Fragment key={group.id}>
-                <TimeGroupItem
-                  group={group}
-                  key={group.id}
-                  textComponent={slots.listTimeText}
-                  textComponentProps={slotProps.listTimeText}
-                />
-                {threadsInGroup.map(({ groupKey, thread }) => {
+              {groupsValues.map((group) => (
+                <React.Fragment key={group.id}>
+                  <TimeGroupItem
+                    key={group.id}
+                    group={group}
+                    textComponent={slots.listTimeText}
+                    textComponentProps={slotProps.listTimeText}
+                  />
+                  {threadsInGroup.map(({ groupKey, thread }) => {
                   if (groupKey !== group.id) return null;
                   return (
                     <Box key={thread.id}>
@@ -53,7 +51,7 @@ const ThreadsListBlock: React.FC<Props> = () => {
                     </Box>
                   );
                 })}
-              </React.Fragment>
+                </React.Fragment>
             ))}
             </>
           </DelayRenderer>

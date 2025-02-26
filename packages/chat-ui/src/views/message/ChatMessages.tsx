@@ -5,9 +5,7 @@ import MessagesList from './MessagesList';
 import { useThreadContext } from '../thread/ThreadContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 
-type Props = {};
-
-const ChatMessages: React.FC<Props> = () => {
+const ChatMessages: React.FC = () => {
   const { apiRef, thread } = useThreadContext();
 
   const messages = useObserverValue(apiRef.current?.getListener('branch'));
@@ -16,12 +14,12 @@ const ChatMessages: React.FC<Props> = () => {
     <Stack
       gap={3}
       flex={1}
-      alignItems={'flex-start'}
-      maxWidth={'100%'}
-      width={'100%'}
+      alignItems="flex-start"
+      maxWidth="100%"
+      width="100%"
       id={ChatViewConstants.MESSAGE_BOX_ID}
     >
-      {!!thread && <MessagesList thread={thread} messages={messages ?? []}/>}
+      {!!thread && <MessagesList thread={thread} messages={messages ?? []} />}
     </Stack>
   );
 };

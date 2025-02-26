@@ -9,9 +9,7 @@ import Scrollbar from '../../ui/Scrollbar';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
-type Props = {};
-
-const ThreadsList: React.FC<Props> = () => {
+const ThreadsList: React.FC = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
   const { handleCreateNewThread, apiRef } = useChatContext();
   const { slotProps, slots } = useChatSlots();
@@ -25,14 +23,14 @@ const ThreadsList: React.FC<Props> = () => {
   }
 
   return (
-    <Stack gap={2} height={'100%'}>
+    <Stack gap={2} height="100%">
       <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
           {locale.historyTitle}
         </slots.listSubtitle>
       </Box>
-      <Box flex={1} ref={ref}>
+      <Box ref={ref} flex={1}>
         {!!height && (
           <Scrollbar style={{ minHeight: height -1, maxHeight: height -1 }}>
             <ThreadsListBlock />

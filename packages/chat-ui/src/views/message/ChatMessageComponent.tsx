@@ -13,20 +13,19 @@ type Props = {
   isFirst?: boolean;
   enableAssistantActions?: boolean;
   style?: React.CSSProperties;
-  disableActions?: boolean;
   elevation?: boolean;
 };
 
-const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions, message, isLatest, isFirst, enableAssistantActions, thread}) => {
+const ChatMessageComponent: React.FC<Props> = ({style, elevation, message, isLatest, isFirst, enableAssistantActions, thread}) => {
   return (
     <Box
       justifyContent={message.isUser ? 'flex-end' : 'flex-start'}
       {...{
         [ChatViewConstants.MESSAGE_DATA_SCROLL_ANCHOR]: isLatest,
       }}
-      display={'flex'}
-      width={'100%'}
-      boxSizing={'border-box'}
+      display="flex"
+      width="100%"
+      boxSizing="border-box"
       style={style}
     >
       {message.isUser
@@ -36,7 +35,6 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, disableActions
             thread={thread}
             isFirst={isFirst}
             elevation={elevation}
-            disableActions={disableActions}
           />
         )
         : (

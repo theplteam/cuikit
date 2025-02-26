@@ -81,23 +81,21 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
 
   return (
     <ChatMessageContainerStyled
+      ref={setElement}
       gap={1}
       className={clsx(
         { [latestMessageClassName]: isLatest },
         { [hoverMessageClassName]: isHover },
       )}
-      ref={setElement}
       elevation={elevation}
     >
       {blockText}
-      {isLatest && <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} thread={thread} />}
-      {(!typing && !!text && enableAssistantActions) && (
-        <MessageActionsAssistant
-          message={message}
-          thread={thread}
-          className={actionsClassName}
-        />
-      )}
+      {isLatest ? <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} thread={thread} /> : null}
+      {(!typing && !!text && enableAssistantActions) ? <MessageActionsAssistant
+        message={message}
+        thread={thread}
+        className={actionsClassName}
+                                                       /> : null}
       <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={message} />
     </ChatMessageContainerStyled>
   );

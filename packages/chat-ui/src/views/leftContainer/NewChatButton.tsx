@@ -22,8 +22,8 @@ export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
   return (
     <coreSlots.iconButton
       disabled={disabled}
+      size="small"
       onClick={openNewThread}
-      size={'small'}
     >
       <AddIcon />
     </coreSlots.iconButton>
@@ -39,15 +39,15 @@ const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
     <Box
       pt={1.5}
       px={2}
-      width={'100%'}
-      boxSizing={'border-box'}
+      width="100%"
+      boxSizing="border-box"
     >
       <coreSlots.button
-        disabled={disabled}
-        onClick={openNewThread}
-        startIcon={<AddIcon />}
         fullWidth
-        variant={'outlined'}
+        disabled={disabled}
+        startIcon={<AddIcon />}
+        variant="outlined"
+        onClick={openNewThread}
       >
         {locale.newChat}
       </coreSlots.button>

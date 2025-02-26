@@ -32,14 +32,14 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
   return (
     <>
       <DrawerStyled
-        anchor={'bottom'}
+        anchor="bottom"
         open={open}
-        onClose={onClose}
         container={() => container.current}
         keepMounted={keepMounted}
+        onClose={onClose}
       >
         <Stack pt={0.5}>
-          <Stack px={0.5} direction={'row'} alignItems={'center'}>
+          <Stack px={0.5} direction="row" alignItems="center">
             <coreSlots.iconButton
               sx={{ color: () => materialDesignSysPalette.onSurfaceVariant }}
               onClick={onClose}
@@ -47,7 +47,7 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
               <CloseIcon />
             </coreSlots.iconButton>
             {!!title && (
-              <slots.listDrawerTitle variant={'subtitle1'} {...slotProps.listDrawerTitle}>
+              <slots.listDrawerTitle variant="subtitle1" {...slotProps.listDrawerTitle}>
                 {title}
               </slots.listDrawerTitle>
             )}

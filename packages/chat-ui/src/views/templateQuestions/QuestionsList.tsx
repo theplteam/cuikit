@@ -31,9 +31,9 @@ const QuestionsList: React.FC<Props> = ({ thread }) => {
   return (
     <ContainerStyled>
       <Stack
-        direction={'row'}
-        flexWrap={'wrap'}
-        justifyContent={'center'}
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="center"
       >
         {questions.map((questionItem, key) => (
           <QuestionItem

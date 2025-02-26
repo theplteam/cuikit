@@ -38,7 +38,6 @@ class ChatGptModel {
       stream: true,
     });
 
-
     this._abortController = stream.controller;
 
     for await (const chunk of stream) {
@@ -49,21 +48,20 @@ class ChatGptModel {
   }
 }
 
-
 const App: React.FC = () => {
   const dd = threads as any;
 
   const model = React.useMemo(() => new ChatGptModel(), []);
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatGptAdapter>
         <ChatPage
           thread={dd[0]}
           threads={dd}
           handleStopMessageStreaming={model.stopStreaming}
+          listPlacement="right"
           onUserMessageSent={model.streamMessage}
-          listPlacement={'right'}
         />
       </ChatGptAdapter>
     </Box>

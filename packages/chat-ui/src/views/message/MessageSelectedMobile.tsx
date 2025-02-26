@@ -73,7 +73,6 @@ const MessageSelectedMobileContent: React.FC<Props> = ({ mobileMessageActions, o
       ) : (
         <MessageMobileAssistantActions
           message={message}
-          thread={thread}
           onClose={mobileMessageActions.handleCloseSelection}
         />
       )}

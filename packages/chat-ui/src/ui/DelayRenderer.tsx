@@ -17,7 +17,8 @@ export const DelayRenderer: React.FC<React.PropsWithChildren<DelayedRendererType
 
   if (!ready) return fallback ?? null;
 
-  return <>{children}</>;
+  // eslint-disable-next-line
+  return (<>{children}</>);
 };
 
 export default DelayRenderer;

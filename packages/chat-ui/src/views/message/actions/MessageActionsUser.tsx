@@ -25,8 +25,8 @@ const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled 
 
   return (
     <RootStyled
-      direction={'row'}
-      alignItems={'center'}
+      direction="row"
+      alignItems="center"
       gap={1.5}
       className={className}
       px={1.5}
@@ -35,9 +35,9 @@ const MessageActionsUser: React.FC<Props> = ({ className, onClickEdit, disabled 
         title={locale.messageEdit}
       >
         <coreSlots.iconButton
-          size={'small'}
-          onClick={onClickEdit}
+          size="small"
           disabled={disabled}
+          onClick={onClickEdit}
         >
           <EditIcon />
         </coreSlots.iconButton>

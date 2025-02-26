@@ -79,7 +79,7 @@ export class MessageStreamManager<DM extends DMessage, DD extends Thread<DM>> {
                 // Get the data and send it to the browser via the controller
                 controller.enqueue(value);
                 // Check chunks by logging to the console
-                let string = new TextDecoder().decode(value);
+                const string = new TextDecoder().decode(value);
 
                 const jsonStrings = string.match(/data: (.*)/g);
 
@@ -112,6 +112,5 @@ export class MessageStreamManager<DM extends DMessage, DD extends Thread<DM>> {
       this.assistantMessage.text += text;
     }
   }
-
 
 }

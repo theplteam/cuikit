@@ -97,29 +97,28 @@ const App: React.FC = () => {
     </IconButton>
   ), [handleClose]);
 
-
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
   return (
     <>
-      <Box height={"100dvh"} width={"100dvw"}>
+      <Box height="100dvh" width="100dvw">
         <ChatPage
           thread={threads[0]}
           threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
+          handleCreateNewThread={handleCreateNewThread}
           onUserMessageSent={onUserMessageSent}
           onFirstMessageSent={onFirstMessageSent}
           onThreadDeleted={onThreadDeleted}
           onChangeCurrentThread={onChangeCurrentThread}
-          handleCreateNewThread={handleCreateNewThread}
         />
       </Box>
       <Snackbar
         open={open}
-        onClose={handleClose}
         message={text}
         action={snackBarActions}
+        onClose={handleClose}
       />
     </>
   );

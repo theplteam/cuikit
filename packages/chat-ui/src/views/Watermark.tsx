@@ -10,14 +10,15 @@ const Watermark: React.FC = () => {
   if (licenseStatus === LICENSE_STATUS.Valid) return null;
   return (
     <Stack
-      position={'sticky'}
-      bottom={'50%'}
-      width={'100%'}
-      textAlign={'center'}
+      position="sticky"
+      bottom="50%"
+      width="100%"
+      textAlign="center"
       zIndex={99999}
       sx={{
         pointerEvents: 'none',
-      }}>
+      }}
+    >
       <Typography variant='h5' letterSpacing={5} sx={{ color: 'rgba(130, 130, 130, 0.62)' }}>
         {`Chat UI ${licenseError}`}
       </Typography>

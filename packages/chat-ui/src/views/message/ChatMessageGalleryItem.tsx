@@ -87,10 +87,10 @@ const ChatMessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, in
       className={className}
     >
       <a
+        key={`${galleryId}-${index}`}
         href={src}
         data-pswp-width={width}
         data-pswp-height={height}
-        key={`${galleryId}-${index}`}
         target="_blank"
         rel="noreferrer"
       >

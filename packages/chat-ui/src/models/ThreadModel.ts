@@ -198,7 +198,6 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     return promise;
   }
 
-
   private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
     const changeTypingStatus = (status: boolean) => {
       assistantMessage.typing.value = status;

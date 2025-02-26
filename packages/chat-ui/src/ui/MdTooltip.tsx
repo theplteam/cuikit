@@ -9,7 +9,9 @@ export type MdTooltipProps = React.PropsWithChildren<{
 }> & TooltipProps;
 
 const TooltipStyled = styled(({ className, children, type, ...props }: MdTooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} children={children} />
+  <Tooltip {...props} classes={{ popper: className }} >
+    {children}
+  </Tooltip>
 ))(({ theme, type }) => ({
   fontSize: materialTheme.body.small.fontSize,
 

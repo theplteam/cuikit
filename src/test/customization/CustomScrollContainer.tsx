@@ -79,22 +79,22 @@ const App: React.FC = () => {
         }}
       >
         <Toolbar sx={{ maxWidth: 700, width: '100%', boxSizing: 'border-box' }}>
-          <Typography variant="h6" noWrap component="div">
-            Chat UI
+          <Typography noWrap variant="h6" component="div">
+            {"Chat UI\r"}
           </Typography>
         </Toolbar>
       </AppBar>
       <MainBoxStyled
-        component="main"
         ref={scrollRef}
+        component="main"
       >
         <Chat
           thread={threads[0]}
           threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
-          onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}
           scrollerRef={scrollRef}
+          onUserMessageSent={onUserMessageSent}
         />
       </MainBoxStyled>
     </Box>

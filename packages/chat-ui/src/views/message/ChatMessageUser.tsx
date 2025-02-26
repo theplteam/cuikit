@@ -27,7 +27,6 @@ type Props = {
   thread: ThreadModel;
   isFirst?: boolean;
   elevation?: boolean;
-  disableActions?: boolean;
 };
 
 const {
@@ -91,19 +90,17 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   const children = React.useMemo(() => (
     <>
       <ChatMarkdownBlock text={message.text} />
-      {((isFirst || message.parentId) && !!enableBranches) && (
-        <MessageActionsUser
-          className={actionsClassName}
-          onClickEdit={onClickEdit}
-          disabled={isTyping}
-        />
-      )}
+      {((isFirst || message.parentId) && !!enableBranches) ? <MessageActionsUser
+        className={actionsClassName}
+        disabled={isTyping}
+        onClickEdit={onClickEdit}
+                                                             /> : null}
     </>
   ), [message, thread, message.text, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (
-      <Stack width={'100%'} gap={1} alignItems={'flex-end'}>
+      <Stack width="100%" gap={1} alignItems="flex-end">
         {imageComponent}
         <MessageUserEditor
           text={message.text}
@@ -116,35 +113,35 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   return (
     <Stack
-      width={'100%'}
-      alignItems={'flex-end'}
+      width="100%"
+      alignItems="flex-end"
       sx={{ mb: 3 }}
       style={{ marginBottom: '-25px' }}
       gap={0.5}
     >
       <Box
-        width={'100%'}
-        display={'flex'}
-        alignItems={'flex-end'}
-        flexDirection={'column'}
+        width="100%"
+        display="flex"
+        alignItems="flex-end"
+        flexDirection="column"
         gap={1}
       >
         {imageComponent}
-        {message.text && (
+        {message.text ? (
           <ChatMessageContainerStyled
+            ref={setElement}
             gap={1}
             mx={1.5}
             className={clsx(
               { [hoverMessageClassName]: isHover || isTablet },
             )}
-            ref={setElement}
             elevation={elevation}
           >
             {children}
           </ChatMessageContainerStyled>
-        )}
+        ) : null}
       </Box>
-      {!!enableBranches ? (
+      {enableBranches ? (
         <MessagePagination
           disabled={isTyping}
           message={message}

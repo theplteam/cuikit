@@ -16,7 +16,6 @@ type Props = {
   isTyping?: boolean;
 };
 
-
 const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   const coreSlots = useChatCoreSlots();
   const ref = React.useRef<HTMLInputElement>(null);
@@ -55,10 +54,10 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
 
   return (
     <Stack
-      alignItems={'flex-end'}
+      alignItems="flex-end"
       width={48}
       height={40}
-      position={'relative'}
+      position="relative"
     >
       <coreSlots.iconButton disabled={disabled} onClick={handleClick}>
         <AddAPhotoIcon />
@@ -66,7 +65,6 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
       <MdMenu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'left',
@@ -75,6 +73,7 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
           vertical: 'top',
           horizontal: 'left',
         }}
+        onClose={() => setAnchorEl(null)}
       >
         <coreSlots.menuItem
           startIcon={PhotoCameraIcon}
@@ -91,21 +90,21 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
       </MdMenu>
       <input
         ref={mobileRef}
+        capture
         type="file"
         accept="image/png,image/jpeg"
-        capture
-        onChange={handleImageUpload}
         disabled={isTyping}
         style={{ display: 'none' }}
+        onChange={handleImageUpload}
       />
       <input
         ref={ref}
-        type="file"
         multiple
+        type="file"
         accept="image/png,image/jpeg"
-        onChange={handleImageUpload}
         disabled={isTyping}
         style={{ display: 'none' }}
+        onChange={handleImageUpload}
       />
     </Stack>
   );

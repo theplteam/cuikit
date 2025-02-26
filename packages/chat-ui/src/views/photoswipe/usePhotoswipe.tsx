@@ -69,7 +69,6 @@ export const usePhotoswipe = ({ gallery, onGalleryOpen, onSlideChange, elementsS
         return undefined;
       }
 
-
       const getCurrentItem = () => {
         const currSlide = lightbox.pswp?.currSlide;
         if (!currSlide) return undefined;
@@ -104,7 +103,6 @@ export const usePhotoswipe = ({ gallery, onGalleryOpen, onSlideChange, elementsS
       });
 
       lightbox.init();
-
 
       setPsClass(lightbox);
 

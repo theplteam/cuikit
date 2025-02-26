@@ -18,7 +18,9 @@ export const chatGptStreamParser = <T extends ChatGptResponseType>(value: string
     assistant.text += obj.choices[0].delta.content ?? '';
 
     return obj;
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 
   return undefined;
 }

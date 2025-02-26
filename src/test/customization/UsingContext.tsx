@@ -105,10 +105,10 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
     >
       <Toolbar sx={{ justifyContent: 'flex-end' }}>
         <IconButton
-          onClick={handleDrawerClose}
           sx={{
             display: { sm: 'none' },
           }}
+          onClick={handleDrawerClose}
         >
           <CloseIcon />
         </IconButton>
@@ -119,16 +119,16 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
       >
         <Box px={1.5} mt={2}>
           <Button
-            startIcon={<AddIcon />}
-            onClick={onOpenNew}
             fullWidth
+            startIcon={<AddIcon />}
             variant="contained"
+            onClick={onOpenNew}
           >
-            Open new thread
+            {"Open new thread\r"}
           </Button>
         </Box>
-        <Typography sx={{ pl: 1 }} fontWeight={'bold'}>
-          Threads list
+        <Typography sx={{ pl: 1 }} fontWeight="bold">
+          {"Threads list\r"}
         </Typography>
         {children}
       </Stack>
@@ -152,12 +152,12 @@ const ChatAppBar: React.FC<{ handleDrawerToggle: () => void }> = ({ handleDrawer
         <IconButton
           color="inherit"
           edge="start"
-          onClick={handleDrawerToggle}
           sx={{ mr: 2, display: { sm: 'none' } }}
+          onClick={handleDrawerToggle}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
+        <Typography noWrap variant="h6" component="div">
           {title}
         </Typography>
       </Toolbar>
@@ -207,8 +207,6 @@ const App: React.FC = () => {
         <Drawer
           variant={isMobile ? 'persistent' : 'permanent'}
           open={isMobile ? mobileOpen : true}
-          onTransitionEnd={handleDrawerTransitionEnd}
-          onClose={handleDrawerClose}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
@@ -219,22 +217,22 @@ const App: React.FC = () => {
               backgroundColor: '#F1F4F9',
             },
           }}
+          onTransitionEnd={handleDrawerTransitionEnd}
+          onClose={handleDrawerClose}
         >
           <Box ref={toolsContainerRef} />
         </Drawer>
       </Box>
       <MainBoxStyled
-        component="main"
         ref={scrollRef}
+        component="main"
       >
         <Chat
           thread={threads[0]}
           threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
-          onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}
           scrollerRef={scrollRef}
-          onChangeCurrentThread={handleDrawerClose}
           slots={{
             threadsList: ToolsPanelPortal,
           }}
@@ -244,6 +242,8 @@ const App: React.FC = () => {
               containerRef: toolsContainerRef,
             },
           }}
+          onUserMessageSent={onUserMessageSent}
+          onChangeCurrentThread={handleDrawerClose}
         >
           <ChatAppBar handleDrawerToggle={handleDrawerToggle} />
         </Chat>

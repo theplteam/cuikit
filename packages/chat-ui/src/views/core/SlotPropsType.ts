@@ -12,7 +12,7 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
 
-type ChildrenProps = React.PropsWithChildren<{}>;
+type ChildrenProps = React.PropsWithChildren;
 
 export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**

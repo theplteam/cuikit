@@ -4,7 +4,6 @@ import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { isDefined } from '../utils/isDefined';
 import { IdType } from '../types';
 
-
 type ParentMapValue<DM extends DMessage> = { messages: MessageModel<DM>[] };
 
 type MesagesMapType<DM extends DMessage> = Map<IdType, ParentMapValue<DM>>;

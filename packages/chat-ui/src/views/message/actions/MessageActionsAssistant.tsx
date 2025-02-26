@@ -15,18 +15,18 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className }
   const { actionsAssistant, disableMessageCopying } = useChatContext();
   return (
     <Stack
-      direction={'row'}
-      alignItems={'center'}
+      direction="row"
+      alignItems="center"
       gap={1.5}
       className={className}
     >
-      {!disableMessageCopying && <MessageActionCopy message={message}/>}
+      {!disableMessageCopying && <MessageActionCopy message={message} />}
       {/*!disableMessageRating && <MessageActionFeedback message={message} />*/}
       {actionsAssistant?.map((component, k) => (
         <component.element
+          key={k}
           thread={thread.data.data}
           message={message.data}
-          key={k}
         />
       ))}
     </Stack>

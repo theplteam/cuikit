@@ -36,11 +36,11 @@ const TimeGroupItem: React.FC<Props> = ({ group, loading, textComponent, textCom
     <BoxStyled>
       {loading
         ? (
-          <SkeletonStyled variant={'text'} width={100} />
+          <SkeletonStyled variant="text" width={100} />
         )
         : (
           <comp.textComponent
-            variant={'body2'}
+            variant="body2"
             {...textComponentProps}
           >
             {group?.label}

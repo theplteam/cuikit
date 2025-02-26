@@ -95,8 +95,8 @@ const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThre
   return (
     <>
       <BoxStyled
-        onClick={handleClickListItem}
         className={selected ? classSelected : undefined}
+        onClick={handleClickListItem}
       >
         <coreSlots.listItemText
           primary={title ?? 'TITLE'}
@@ -108,8 +108,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThre
         />
         <BoxShadowStyled className={classShadowRight} />
         <coreSlots.iconButton
-          size={'small'}
-          onClick={handleClick}
+          size="small"
           disabled={!thread.isOwner}
           sx={{
             position: 'absolute',
@@ -117,6 +116,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThre
             top: '50%',
             transform: 'translateY(-50%)',
           }}
+          onClick={handleClick}
         >
           <MoreVertIcon />
         </coreSlots.iconButton>

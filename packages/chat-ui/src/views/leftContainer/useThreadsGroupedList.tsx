@@ -57,7 +57,7 @@ export const useThreadsGroupedList = (threads: ArrayType<ThreadModel>) => {
 
     threads.forEach((item) => {
       const timestamp = item.timestamp.value;
-      if (!!timestamp) {
+      if (timestamp) {
         const basicGroupKey = basicKeys.find(v => timestamp >= basicGroups[v].timestamp);
         if (basicGroupKey) {
           results[basicGroupKey] = { ...basicGroups[basicGroupKey] };

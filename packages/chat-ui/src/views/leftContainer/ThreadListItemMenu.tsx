@@ -27,7 +27,6 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
     <MdMenu
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
-      onClose={handleClose}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'left',
@@ -36,11 +35,12 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
         vertical: 'top',
         horizontal: 'left',
       }}
+      onClose={handleClose}
     >
       <coreSlots.menuItem
         startIcon={DeleteIcon}
-        onClick={handleDelete}
         disabled={!thread.isOwner}
+        onClick={handleDelete}
       >
         {locale.threadActionDelete}
       </coreSlots.menuItem>

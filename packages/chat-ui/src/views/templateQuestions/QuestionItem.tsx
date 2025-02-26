@@ -33,8 +33,8 @@ const PaperStyled = styled(Paper)(({ theme }) => ({
 const QuestionItem: React.FC<Props> = ({ item, onClick }) => {
   return (
     <PaperStyled
-      onClick={() => onClick(item.message)}
       elevation={0}
+      onClick={() => onClick(item.message)}
     >
       <Typography>
         {item.title}

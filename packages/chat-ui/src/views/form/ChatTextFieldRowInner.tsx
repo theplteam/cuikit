@@ -48,7 +48,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     if (images.length) {
       content = images.map(v => ({ type: 'image_url', image_url: { url: v } }));
 
-      if (!!text) {
+      if (text) {
         content = [
           { type: 'text', text },
           ...content,
@@ -67,7 +67,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   return (
     <StackStyled>
       {!!images.length && <ChatImagePreview images={images} setImages={setImages} />}
-      <Stack direction={'row'} alignItems={'flex-end'} gap={1}>
+      <Stack direction="row" alignItems="flex-end" gap={1}>
         <PinPictureButton
           images={images}
           setImages={setImages}
@@ -76,15 +76,15 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
         <ChatTextField
           text={text}
           setText={setText}
-          onSendMessage={onSendMessage}
           disabled={disabled}
           classes={inputClasses}
+          onSendMessage={onSendMessage}
         />
         <SendMessageButton
-          onSendMessage={onSendMessage}
           isTyping={isTyping}
           text={text}
           images={images}
+          onSendMessage={onSendMessage}
         />
       </Stack>
     </StackStyled>

@@ -16,7 +16,7 @@ const ChatMobileAppBar: React.FC = () => {
 
   return (
     <Stack
-      justifyContent={'center'}
+      justifyContent="center"
       height={64}
       sx={{ backgroundColor: materialDesignSysPalette.surfaceContainerLow }}
       paddingX={1}

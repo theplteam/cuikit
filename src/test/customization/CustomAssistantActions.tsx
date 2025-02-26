@@ -58,14 +58,14 @@ const App: React.FC = () => {
     useAssistantAnswerMock();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
+        disableMessageCopying
         thread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        onUserMessageSent={onUserMessageSent}
-        disableMessageCopying
         assistantActions={[SaveTextButton]}
+        onUserMessageSent={onUserMessageSent}
       />
     </Box>
   );

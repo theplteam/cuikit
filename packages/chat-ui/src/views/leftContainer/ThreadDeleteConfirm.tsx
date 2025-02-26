@@ -10,9 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
-type Props = {};
-
-const ThreadDeleteConfirm: React.FC<Props> = () => {
+const ThreadDeleteConfirm: React.FC = () => {
   const { model, onThreadDeleted } = useChatContext();
   const deleteItem = useObserverValue(model.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
@@ -34,7 +32,7 @@ const ThreadDeleteConfirm: React.FC<Props> = () => {
 
   return (
     <Dialog
-      maxWidth={'sm'}
+      maxWidth="sm"
       open={!!deleteItem}
       onClose={handleClose}
     >
@@ -53,8 +51,8 @@ const ThreadDeleteConfirm: React.FC<Props> = () => {
           {locale.no}
         </coreSlots.button>
         <coreSlots.button
+          color="primary"
           onClick={handleDelete}
-          color={'primary'}
         >
           {locale.yes}
         </coreSlots.button>

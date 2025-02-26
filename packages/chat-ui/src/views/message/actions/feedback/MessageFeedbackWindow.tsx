@@ -54,7 +54,6 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   return (
     <Popover
       open={Boolean(anchorEl)}
-      onClose={onClose}
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       slotProps={{
@@ -70,9 +69,13 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           }
         }
       }}
+      onClose={onClose}
     >
-      <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-        <Box display={'flex'} gap={1} flexDirection={'row'} alignItems={'center'}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Box
+          display="flex" gap={1} flexDirection="row"
+          alignItems="center"
+        >
           <Typography variant='subtitle1'>
             {lng(['Почему вы выбрали этот рейтинг? ', 'Why did you choose this rating? '])}
           </Typography>
@@ -84,7 +87,10 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           <CloseIcon />
         </coreSlots.iconButton>
       </Stack>
-      <Stack width={'100%'} display={'flex'} direction={'row'} gap={1} flexWrap={'wrap'}>
+      <Stack
+        width="100%" display="flex" direction="row"
+        gap={1} flexWrap="wrap"
+      >
         {tagArray.map((tag, i) => {
           const isActive = tags.includes(tag);
 
@@ -92,30 +98,30 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
             <Box key={i}>
               <Chip
                 label={tag}
-                onClick={() => hangleTag(tag)}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{
                   color: isActive ? materialDesignSysPalette.primary : materialDesignSysPalette.secondary,
                   backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
                 }}
+                onClick={() => hangleTag(tag)}
               />
             </Box>
           )
         })}
       </Stack>
       <InputBase
+        multiline
         placeholder={lng(['Предоставьте дополнительную информацию', 'Provide additional feedback'])}
         value={feedback}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setFeedback(event.target.value);
-        }}
-        multiline
         maxRows={3}
         sx={{
           padding: 1,
           borderRadius: 2,
           border: '1px solid',
           borderColor: materialDesignSysPalette.outline,
+        }}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setFeedback(event.target.value);
         }}
       />
       <Typography variant='body2'>
@@ -127,8 +133,8 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
       <Box>
         <coreSlots.button
           disabled={!feedback && tags.length === 0}
-          onClick={handleSubmit}
           variant='text'
+          onClick={handleSubmit}
         >
           {lng(['Отправить', 'Submit'])}
         </coreSlots.button>

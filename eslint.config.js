@@ -6,7 +6,12 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  {
+    ignores: [
+      '**/dist/',
+      'docs'
+    ]
+  },
   {
     extends: [
       js.configs.recommended,
@@ -53,7 +58,7 @@ export default tseslint.config(
 
 
       // OFF
-
+      "react-refresh/only-export-components": "off",
       "react/jsx-filename-extension": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "react/jsx-newline": "off",
@@ -65,7 +70,15 @@ export default tseslint.config(
       "react/require-default-props": "off",
       "react-hooks/exhaustive-deps": "off",
       "react/jsx-props-no-spreading": "off",
-      "react/prop-types": "off"
+      "react/forbid-component-props": "off",
+      "react/prop-types": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "react/no-array-index-key": "off",
+      "no-async-promise-executor": "off",
+      "react/display-name": "off",
+      "react/react-in-jsx-scope": "off",
+      // TODO: Maybe we should turn it on
+      "react/jsx-handler-names": "off"
 
 
       // RULES END
