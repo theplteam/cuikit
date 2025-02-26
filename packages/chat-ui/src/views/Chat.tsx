@@ -34,7 +34,8 @@ const Chat = <DM extends DMessage, DD extends Thread<DM>>(usersProps: React.Prop
             <slots.listDrawer>
               <HiddenDesktop>
                 <AppDrawer>
-                  <Box display={'flex'} flexDirection={'column'} height={500}>
+                  <Box display="flex" flexDirection="column" height={500}>
+                    {/* eslint-disable-next-line react/jsx-max-depth */}
                     <ThreadsListBlock />
                   </Box>
                 </AppDrawer>

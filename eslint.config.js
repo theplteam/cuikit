@@ -47,8 +47,9 @@ export default tseslint.config(
           argsIgnorePattern: '^_'
         }
       ],
-      "react/jsx-max-depth": ["error", { "max": 5 }],
+      "react/jsx-max-depth": ["error", { "max": 6 }],
       "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "always", "propElementValues": "always" }],
+      "react/jsx-sort-props": ["error", { "ignoreCase": true, "callbacksLast": true, "shorthandFirst": true, "noSortAlphabetically": true, "reservedFirst": true }],
 
 
       // OFF
@@ -58,7 +59,13 @@ export default tseslint.config(
       "react/jsx-newline": "off",
       "react/jsx-no-bind": "off",
       // In tests, we declare multiple components in a single file for docs
-      "react/no-multi-comp": 'off'
+      "react/no-multi-comp": "off",
+      "react/prefer-read-only-props": "off",
+      "react/destructuring-assignment": "off",
+      "react/require-default-props": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off"
 
 
       // RULES END
