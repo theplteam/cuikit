@@ -38,6 +38,8 @@ export type MessageSentParams<DM extends DMessage = any> = {
   onFinish: () => void,
   /** Set awaiting status */
   setStatus: (status: string) => void,
+  pushReasoningChunk: (reasoning: string) => void,
+  setReasoning: (reasoning: string) => void,
 }
 
 export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any> {
@@ -228,6 +230,12 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
         },
         setStatus: (status) => {
           this.streamStatus.value = status;
+        },
+        pushReasoningChunk: (chunk) => {
+          assistantMessage.reasoning.value += chunk;
+        },
+        setReasoning: (reasoning) => {
+          assistantMessage.reasoning.value = reasoning;
         }
       });
 

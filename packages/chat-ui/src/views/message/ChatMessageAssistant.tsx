@@ -16,6 +16,7 @@ import { useElementRefState } from '../hooks/useElementRef';
 import PhotoSwipeLightbox from '../photoswipe/PhotoSwipeLightbox';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import MessageReasoning from './reasoning/MessageReasoning';
 
 type Props = {
   message: MessageModel;
@@ -91,6 +92,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     >
       {blockText}
       {isLatest ? <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} thread={thread} /> : null}
+      {isLatest ? <MessageReasoning message={message} /> : null}
       {(!typing && !!text && enableAssistantActions) ? <MessageActionsAssistant
         message={message}
         thread={thread}

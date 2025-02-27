@@ -40,6 +40,8 @@ export class MessageModel<DM extends DMessage = any> {
    */
   readonly observableText = new ObservableReactValue<string>('');
 
+  readonly reasoning = new ObservableReactValue<string>('');
+
   images?: string[];
 
   /**
