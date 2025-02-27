@@ -44,9 +44,9 @@ const ReasoningTextSmooth: React.FC<Props> = ({ text }) => {
           key={v+''+i+textLength}
           component="span"
           style={{
-            animation: `${animationName} 0.5s ease-in-out ${i * 0.06}s 1 normal forwards`
+            animation: `${animationName} 0.4s ease-in-out ${i * 0.05}s 1 normal forwards`
           }}
-          color="grey.500"
+          color="grey.700"
         >
           {v}
         </Typography>

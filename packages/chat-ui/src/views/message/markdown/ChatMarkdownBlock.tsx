@@ -8,6 +8,7 @@ import { materialTheme } from '../../../utils/materialDesign/materialTheme';
 type Props = {
   text: string;
   id?: string;
+  className?: string;
 };
 
 const BoxStyled = styled(Box)(() => ({
@@ -32,9 +33,9 @@ const BoxStyled = styled(Box)(() => ({
   },
 }));
 
-const ChatMarkdownBlock: React.FC<Props> = ({ text, id }) => {
+const ChatMarkdownBlock: React.FC<Props> = ({ text, id, className }) => {
   return (
-    <BoxStyled id={id}>
+    <BoxStyled id={id} className={className}>
       <ChatMarkdown text={text} />
     </BoxStyled>
   );

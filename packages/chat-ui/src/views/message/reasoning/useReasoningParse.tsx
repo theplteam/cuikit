@@ -9,14 +9,11 @@ export const useReasoningParse = (text: string) => {
     const matches = newText.split("\n\n").reverse();
     if (matches.length < 1) return undefined;
 
-    // console.log(matches);
-
     let titleIndex = -1;
     let textIndex = -1;
     for (let i = 1; i < matches.length; i++) {
       const titleMatches = matches[i].matchAll(/\*\*(.*?)\*\*/g).toArray();
       if (titleMatches.length) {
-        console.log(matches[i], titleMatches)
         titleIndex = i;
         break;
       } else {
@@ -40,7 +37,6 @@ export const useReasoningParse = (text: string) => {
     if (result) {
       const { newText, newTitle } = result;
 
-      // console.log({ newText, newTitle });
       if (!!newText && description !== newText) {
         setDescription(newText);
         setTitle(newTitle);

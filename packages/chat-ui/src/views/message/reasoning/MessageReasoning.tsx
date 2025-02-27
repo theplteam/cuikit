@@ -5,9 +5,7 @@ import { styled } from '@mui/material/styles';
 import { MessageModel } from '../../../models/MessageModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import MessageReasoningFull from './MessageReasoningFull';
-import { useReasoningParse } from './useReasoningParse';
-import { useThreadContext } from '../../thread/ThreadContext';
-import ReasoningTextSmooth from './ReasoningTextSmooth';
+import MessageReasoningShort from './MessageReasoningShort';
 
 type Props = {
   message: MessageModel;
@@ -16,8 +14,10 @@ type Props = {
 const LineBoxStyled = styled(Box)(({ theme }) => ({
   height: '100%',
   width: 4,
+  minWidth: 4,
   backgroundColor: theme.palette.grey[300],
   borderRadius: 999,
+  transition: theme.transitions.create('opacity', { duration: '.5s' }),
 }));
 
 const MessageReasoning: React.FC<Props> = ({ message }) => {
@@ -25,28 +25,18 @@ const MessageReasoning: React.FC<Props> = ({ message }) => {
 
   const reasoning = useObserverValue(message.reasoning) ?? '';
 
-  const { apiRef } = useThreadContext()
-
-  const { title, description } = useReasoningParse(reasoning);
-
   const handleExpandBlock = () => {
     setExpanded(true);
   }
 
-  React.useEffect(() => {
-    if (title) {
-      apiRef.current?.setProgressStatus(title);
-    }
-  }, [title]);
-
   return (
     <Stack direction="row" gap={2} alignItems="center">
-      <LineBoxStyled />
+      <LineBoxStyled sx={{ opacity: reasoning ? 1 : 0 }} />
       {expanded
         ? <MessageReasoningFull text={reasoning} />
         : (
           <Box onClick={handleExpandBlock}>
-            <ReasoningTextSmooth text={description} />
+            <MessageReasoningShort reasoning={reasoning} />
           </Box>
         )}
     </Stack>
