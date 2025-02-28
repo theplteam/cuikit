@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
 import ChatMarkdownBlock from '../markdown/ChatMarkdownBlock';
 import { styled } from '@mui/material/styles';
 
@@ -12,11 +11,7 @@ const ChatMarkdownBlockStyled = styled(ChatMarkdownBlock)(({ theme }) => ({
 }));
 
 const MessageReasoningFull: React.FC<Props> = ({ text }) => {
-  return (
-    <Stack gap={2}>
-      <ChatMarkdownBlockStyled text={text} />
-    </Stack>
-  );
+  return <ChatMarkdownBlockStyled text={text} />;
 }
 
 export default MessageReasoningFull;

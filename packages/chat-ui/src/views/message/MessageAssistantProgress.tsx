@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Box, { type BoxProps } from '@mui/material/Box';
+import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { ThreadModel, StreamResponseState } from '../../models';
+import { StreamResponseState, ThreadModel } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
+import Stack from '@mui/material/Stack';
 
 type Props = {
   thread: ThreadModel | undefined;
@@ -14,7 +15,7 @@ type Props = {
 const palette = materialDesignSysPalette;
 
 const keyframeName = 'pl-analyze-await';
-const BoxStyled = styled(Box)(() => ({
+export const StatusBoxStyled = styled(Stack)(() => ({
   [`@keyframes ${keyframeName}`]: {
     from: {
       backgroundPosition: '-100% top'
@@ -59,17 +60,22 @@ const MessageAssistantProgress: React.FC<Props> = ({ thread }) => {
     text = locale.thinking;
   }
 
-  if (!text || state === StreamResponseState.TYPING_MESSAGE || state === StreamResponseState.FINISH_MESSAGE) return null;
+  if (
+    !text
+    || state === StreamResponseState.TYPING_MESSAGE
+    || state === StreamResponseState.FINISH_MESSAGE
+    || state === StreamResponseState.REASONING
+  ) return null;
 
   return (
-    <BoxStyled>
+    <StatusBoxStyled>
       <slots.messageAssistantProgressText
         variant="body1"
         {...slotProps.messageAssistantProgressText}
       >
         {text}
       </slots.messageAssistantProgressText>
-    </BoxStyled>
+    </StatusBoxStyled>
   );
 };
 

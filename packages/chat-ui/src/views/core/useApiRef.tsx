@@ -46,6 +46,10 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
    */
   setProgressStatus: (status: string) => void;
   /**
+   * Get waiting status for a chat response.
+   */
+  getProgressStatus: () => string;
+  /**
    * Change thread branch
    */
   handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
@@ -62,6 +66,7 @@ export const useApiRef = <DM extends DMessage, DD extends Thread<DM>>(userApiRef
     onChangeThread: NOOP,
     openNewThread: NOOP,
     deleteThread: NOOP,
+    getProgressStatus: () => '',
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,

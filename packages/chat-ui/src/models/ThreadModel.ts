@@ -15,6 +15,7 @@ export enum StreamResponseState {
   START = 'start',
   TYPING_MESSAGE = 'typingMessage',
   FINISH_MESSAGE = 'finishMessage',
+  REASONING = 'reasoning',
 }
 
 export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }

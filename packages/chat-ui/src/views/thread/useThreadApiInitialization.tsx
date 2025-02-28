@@ -35,6 +35,7 @@ export const useThreadApiInitialization = (
     apiManager.setPrivateMethod('allMessages', messages.allMessages);
     apiManager.setPrivateMethod('branch', messages.currentMessages);
     apiManager.setPrivateMethod('getListener', getThreadListeners(thread));
+    apiManager.setMethod('getProgressStatus', () => thread.streamStatus.value ?? '');
 
   }, [thread]);
 }
