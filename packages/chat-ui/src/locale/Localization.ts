@@ -47,4 +47,6 @@ export type Localization = {
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;
+
+  reasonedFor: string;
 };

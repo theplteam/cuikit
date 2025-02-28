@@ -1,4 +1,4 @@
-import { Thread, type ThreadModel, DMessage } from '../../models';
+import { Thread, type ThreadModel, DMessage, MessageModel } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -78,7 +78,7 @@ export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */
-  messageAssistantProgress: BoxProps & { thread: ThreadModel<DM, DD> };
+  messageAssistantProgress: BoxProps & { thread: ThreadModel<DM, DD>, message: MessageModel<DM> };
   /**
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */

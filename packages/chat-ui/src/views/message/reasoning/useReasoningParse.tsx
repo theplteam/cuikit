@@ -1,8 +1,8 @@
 import * as React from 'react';
 import throttle from 'lodash.throttle';
+import { MessageModel } from '../../../models';
 
-export const useReasoningParse = (text: string) => {
-  const [title, setTitle] = React.useState('');
+export const useReasoningParse = (text: string, message: MessageModel) => {
   const [description, setDescription] = React.useState('');
 
   const parserFn = React.useCallback(throttle((newText: string) => {
@@ -39,12 +39,12 @@ export const useReasoningParse = (text: string) => {
 
       if (!!newText && description !== newText) {
         setDescription(newText);
-        setTitle(newTitle);
-      } else if (!!newTitle && (!description && !title)) {
-        setTitle(newTitle);
+        message.reasoningTitle.value = newTitle;
+      } else if (!!newTitle && (!description && !message.reasoningTitle.value)) {
+        message.reasoningTitle.value = newTitle;
       }
     }
   }, [text]);
 
-  return { title, description };
+  return description;
 }

@@ -5,6 +5,7 @@ import { ThreadMessages } from './ThreadMessages';
 import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
+import { MessageSender } from './MessageSender';
 
 export type NewMessageResponse = {
   user: DMessage,
@@ -15,7 +16,6 @@ export enum StreamResponseState {
   START = 'start',
   TYPING_MESSAGE = 'typingMessage',
   FINISH_MESSAGE = 'finishMessage',
-  REASONING = 'reasoning',
 }
 
 export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
@@ -41,6 +41,7 @@ export type MessageSentParams<DM extends DMessage = any> = {
   setStatus: (status: string) => void,
   pushReasoningChunk: (reasoning: string) => void,
   setReasoning: (reasoning: string) => void,
+  setReasoningTimeSec: (timeSec: number) => void,
 }
 
 export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any> {
@@ -202,52 +203,25 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
   }
 
   private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
-    const changeTypingStatus = (status: boolean) => {
-      assistantMessage.typing.value = status;
-    }
+    const messageSender = new MessageSender(
+      content,
+      userMessage,
+      assistantMessage,
+      this,
+    );
 
     return new Promise<{ message: DMessage }>((resolve, reject) => {
-      const res = this.streamMessage({
-        content,
-        history: this.messages.currentMessages.value.map((message) => ({
-          role: message.role,
-          content: message.content,
-        }) as ThreadHistoryItemType),
-        message: userMessage.data,
-        setText: (text) => {
-          changeTypingStatus(true);
-          assistantMessage.text = text;
-        },
-        pushChunk: (chunk) => {
-          if (this.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
-            changeTypingStatus(true);
-            this.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
-          }
-          assistantMessage.text += chunk;
-        },
-        onFinish: () => {
-          changeTypingStatus(false);
-          resolve({ message: userMessage.data });
-        },
-        setStatus: (status) => {
-          this.streamStatus.value = status;
-        },
-        pushReasoningChunk: (chunk) => {
-          assistantMessage.reasoning.value += chunk;
-        },
-        setReasoning: (reasoning) => {
-          assistantMessage.reasoning.value = reasoning;
-        }
-      });
+      const res = this.streamMessage(messageSender.getUserParams(resolve));
 
       if (res instanceof Promise) {
         res
           .then(() => {
-            changeTypingStatus(false);
+            messageSender.changeTypingStatus(false);
+            messageSender.updateReasoningTime();
             resolve({ message: userMessage.data });
           })
           .catch((reason) => {
-            changeTypingStatus(false);
+            messageSender.changeTypingStatus(false);
             reject(reason);
           });
       }

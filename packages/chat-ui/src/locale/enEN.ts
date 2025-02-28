@@ -39,4 +39,5 @@ export const CHAT_LOCALE: Localization = {
   textFieldPlaceholder: 'Message chat',
   attachmentImageShot: 'Take a photo',
   attachmentImageGallery: 'Select from gallery',
+  reasonedFor: 'Reasoned for {{time}}'
 };

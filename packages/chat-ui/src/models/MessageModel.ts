@@ -26,6 +26,11 @@ export type DMessage = {
   parentId?: IdType;
   time?: number;
   rating?: RatingType;
+  reasoning?: {
+    title?: string;
+    text?: string;
+    timeSec?: number;
+  };
 } & ({
   role: ChatMessageOwner.USER;
   content: MessageUserContent;
@@ -40,7 +45,9 @@ export class MessageModel<DM extends DMessage = any> {
    */
   readonly observableText = new ObservableReactValue<string>('');
 
+  readonly reasoningTitle = new ObservableReactValue<string>('');
   readonly reasoning = new ObservableReactValue<string>('');
+  readonly reasoningTimeSec = new ObservableReactValue<number>(0);
 
   images?: string[];
 
@@ -56,6 +63,20 @@ export class MessageModel<DM extends DMessage = any> {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
       this.observableText.value = (content.find(v => v.type === 'text') as TextContent)?.text || '';
       this.images = (content.filter(v => v.type === 'image_url') as ImageContent[])?.map((img) => img.image_url.url || '');
+    }
+
+    if (_data.reasoning) {
+      if (_data.reasoning.title) {
+        this.reasoningTitle.value = _data.reasoning.title;
+      }
+
+      if (_data.reasoning.text) {
+        this.reasoning.value = _data.reasoning.text;
+      }
+
+      if (_data.reasoning.timeSec) {
+        this.reasoningTimeSec.value = _data.reasoning.timeSec;
+      }
     }
   }
 

@@ -4,17 +4,20 @@ import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { StreamResponseState, ThreadModel } from '../../models';
+import { MessageModel, StreamResponseState, ThreadModel } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import Stack from '@mui/material/Stack';
 
 type Props = {
-  thread: ThreadModel | undefined;
+  thread: ThreadModel;
+  message: MessageModel;
+  stopAnimation?: boolean;
 } & BoxProps;
 
 const palette = materialDesignSysPalette;
 
-const keyframeName = 'pl-analyze-await';
+const keyframeName = 'chat-ui-analyze-await';
+
 export const StatusBoxStyled = styled(Stack)(() => ({
   [`@keyframes ${keyframeName}`]: {
     from: {
@@ -50,8 +53,9 @@ export const StatusBoxStyled = styled(Stack)(() => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ thread }) => {
-  const state = useObserverValue(thread?.streamStatus) as StreamResponseState | string | undefined;
+const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
+  const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
+  const reasoningTitle = useObserverValue(message.reasoningTitle) ?? '';
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
   let text = state;
@@ -64,7 +68,7 @@ const MessageAssistantProgress: React.FC<Props> = ({ thread }) => {
     !text
     || state === StreamResponseState.TYPING_MESSAGE
     || state === StreamResponseState.FINISH_MESSAGE
-    || state === StreamResponseState.REASONING
+    || !!reasoningTitle
   ) return null;
 
   return (
