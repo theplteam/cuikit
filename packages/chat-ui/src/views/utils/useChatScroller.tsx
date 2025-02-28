@@ -6,7 +6,7 @@ export const useChatScroller = (
   thread: ThreadModel | undefined,
   contentRef: React.RefObject<HTMLDivElement | null> | undefined
 ) => {
-  const { handleBottomScroll, scrollButtonEnabled, isTablet } = useChatScrollFunctions(
+  const { handleBottomScroll, scrollButtonEnabled, isTablet, handleCheckButtonState } = useChatScrollFunctions(
     thread,
     (top, behavior) => {
       requestAnimationFrame(() => {
@@ -42,6 +42,6 @@ export const useChatScroller = (
   );
 
   return {
-    handleBottomScroll, scrollButtonEnabled, isTablet
+    handleBottomScroll, scrollButtonEnabled, isTablet, handleCheckButtonState
   };
 }

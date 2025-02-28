@@ -93,6 +93,10 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
    * A flag indicating whether message copying is disabled
    */
   disableMessageCopying ?: boolean;
+  /**
+   * Enable chat reasoning functionality
+   */
+  enableReasoning?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату

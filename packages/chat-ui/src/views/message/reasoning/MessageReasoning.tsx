@@ -9,6 +9,7 @@ import { Collapse, Fade } from '@mui/material';
 import { useReasoningParse } from './useReasoningParse';
 import ReasoningTextSmooth from './ReasoningTextSmooth';
 import MessageReasoningTitle from './MessageReasoningTitle';
+import { useThreadContext } from '../../thread/ThreadContext';
 
 type Props = {
   message: MessageModel;
@@ -35,6 +36,8 @@ const MessageReasoning: React.FC<Props> = ({ message, thread }) => {
   const [viewType, setViewType] = React.useState<ViewType>(ViewType.SHORT);
   const [fullCollapseSize, setFullCollapseSize] = React.useState(0);
 
+  const { apiRef } = useThreadContext();
+
   const shortRef = React.useRef<HTMLDivElement | null>(null);
 
   const reasoning = useObserverValue(message.reasoning) ?? '';
@@ -54,6 +57,11 @@ const MessageReasoning: React.FC<Props> = ({ message, thread }) => {
     } else {
       setTimeout(() => setViewType(ViewType.SHORT),transitionDuration);
     }
+    setTimeout(
+      () => apiRef.current?.updateScrollButtonState(),
+      transitionDuration,
+    );
+
     // setTimeout(() => setViewType(newValue ? ViewType.FULL : ViewType.SHORT),transitionDuration);
   }
 

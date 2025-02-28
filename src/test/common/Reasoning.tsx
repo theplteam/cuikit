@@ -205,6 +205,7 @@ const App: React.FC = () => {
         component="main"
       >
         <Chat
+          enableReasoning
           thread={threads[0]}
           threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
