@@ -109,8 +109,6 @@ const App: React.FC = () => {
     useAssistantAnswerMock();
 
   const onUserMessageSent = async (params: MessageSentParams) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-
     const reasoningStream = reasoningGenerator();
 
     for await (const reasoningChunk of reasoningStream) {

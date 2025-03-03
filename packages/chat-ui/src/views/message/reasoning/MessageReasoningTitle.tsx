@@ -13,6 +13,7 @@ type Props = {
   thread: ThreadModel;
   isExpanding: boolean;
   handleExpandedChange: FnType;
+  isLatest: boolean | undefined;
 };
 
 const arrowClassName = 'chat-ui-message-reasoning-arrow';
@@ -28,11 +29,13 @@ const TitleStackStyled = styled(StatusBoxStyled)(({ theme }) => ({
   }
 }));
 
-const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, thread, handleExpandedChange }) => {
+const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, thread, handleExpandedChange, isLatest }) => {
   const reasoningTitle = useObserverValue(message.reasoningTitle) ?? '';
   const statusText = useObserverValue(thread.streamStatus) ?? '';
 
-  const reasoningEnded = statusText === StreamResponseState.TYPING_MESSAGE || statusText === StreamResponseState.FINISH_MESSAGE;
+  const reasoningEnded = statusText === StreamResponseState.TYPING_MESSAGE
+    || statusText === StreamResponseState.FINISH_MESSAGE
+    || !isLatest;
 
   useReasoningTimeText(message);
 
@@ -71,5 +74,6 @@ const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, thread, 
 
 export default React.memo(MessageReasoningTitle, (prevProps, nextProps) => {
   return prevProps.message.id === nextProps.message.id
-    && prevProps.isExpanding === nextProps.isExpanding;
+    && prevProps.isExpanding === nextProps.isExpanding
+    && prevProps.isLatest === nextProps.isLatest;
 });

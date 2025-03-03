@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/common/Reasoning';
+import TestApp from './test/reasoning/ReasoningStream';
 
 const App: React.FC = () => {
   return (

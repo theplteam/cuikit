@@ -15,6 +15,7 @@ import SimpleScrollbar from '../../../ui/SimpleScrollbar';
 type Props = {
   message: MessageModel;
   thread: ThreadModel;
+  isLatest: boolean | undefined;
 };
 
 const LineBoxStyled = styled(Box)(({ theme }) => ({
@@ -32,7 +33,7 @@ enum ViewType {
 
 const transitionDuration = 200;
 
-const MessageReasoning: React.FC<Props> = ({ message, thread }) => {
+const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
   const [isExpanding, setIsExpanding] = React.useState(false);
   const [viewType, setViewType] = React.useState<ViewType>(ViewType.SHORT);
   const [fullCollapseSize, setFullCollapseSize] = React.useState(0);
@@ -81,6 +82,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread }) => {
         message={message}
         thread={thread}
         isExpanding={isExpanding}
+        isLatest={isLatest}
         handleExpandedChange={handleExpandedChange}
       />
       <Stack

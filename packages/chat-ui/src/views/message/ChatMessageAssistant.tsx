@@ -92,7 +92,12 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
       )}
       elevation={elevation}
     >
-      {(isLatest && !!enableReasoning) ? <MessageReasoning message={message} thread={thread} /> : null}
+      {(enableReasoning) ? (
+        <MessageReasoning
+          message={message} thread={thread}
+          isLatest={isLatest}
+        />
+      ) : null}
       {blockText}
       {isLatest ? (
         <slots.messageAssistantProgress

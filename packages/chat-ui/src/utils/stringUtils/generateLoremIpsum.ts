@@ -15,8 +15,8 @@ export const generateRandomLoremIpsum = (size: LoremIpsumSize) => {
   let rand = 0;
   switch (size) {
     case "small": rand = randomInt(1, 10);break;
-    case "medium": rand = randomInt(10, 50);break;
-    case "large": rand = randomInt(50, loremMaxLength);break;
+    case "medium": rand = randomInt(30, 60);break;
+    case "large": rand = randomInt(80, loremMaxLength);break;
   }
 
   return generateLoremIpsum(rand);

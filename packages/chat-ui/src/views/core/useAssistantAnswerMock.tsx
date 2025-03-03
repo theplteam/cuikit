@@ -83,10 +83,15 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
     }
   }, []);
 
-  const reasoningGenerator = React.useCallback((params?: Partial<{ delay: number, chunkSize: number }>) => {
+  const reasoningGenerator = React.useCallback((params?: Partial<{ delay: number, chunkSize: number, loremIpsum?: LoremIpsumSize }>) => {
     const delay = params?.delay ?? 100;
     const chunkSize = params?.chunkSize ?? 8;
-    return streamGenerator(reasoningMock, { delay, chunkSize });
+
+    const text = params?.loremIpsum
+      ? generateRandomLoremIpsum(params.loremIpsum)
+      : reasoningMock;
+
+    return streamGenerator(text, { delay, chunkSize });
   }, []);
 
   const handleStopMessageStreaming = React.useCallback(() => {
