@@ -22,6 +22,7 @@ export const useReasoningParse = (text: string, message: MessageModel) => {
     let titleIndex = -1;
     let textIndex = -1;
     for (let i = 1; i < matches.length; i++) {
+      // @ts-ignore
       const titleMatches = matches[i].matchAll(/\*\*(.*?)\*\*/g).toArray();
       if (titleMatches.length) {
         titleIndex = i;
