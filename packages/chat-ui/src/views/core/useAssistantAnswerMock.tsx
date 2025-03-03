@@ -4,6 +4,8 @@ import { generateRandomLoremIpsum, LoremIpsumSize } from '../../utils/stringUtil
 
 let stop = false;
 
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const reasoningMock = `
 **Logical Deduction**
 
@@ -44,6 +46,242 @@ Considering different hypothetical situations provides a broad perspective on po
 **Neutral Synthesis**
 
 Combining different viewpoints without bias ensures a balanced conclusion that objectively takes multiple factors into account. Neutral synthesis involves integrating data from various sources, thoroughly analyzing the presented arguments, and excluding subjective assessments. This allows for forming universal recommendations that are applicable across a wide range of situations.
+`;
+
+const reasoningClaudeMock = `
+Let me create a React component based on the provided name:
+Component Name: Test ReactApp
+Since there isn't a specific description provided about the functionality of the TestReactApp component, I'll create a general test application that demonstrates core React concepts, including:
+1. Component structure
+2. State management with hooks (useState, useEffect)
+3. Basic event handling
+4. Conditional rendering
+5. Lists and keys
+6. Basic styling
+Here’s the React component I'll create:
+
+\`\`\`jsx
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import './TestReactApp.css'; // Assuming there would be a CSS file
+
+/**
+ * TestReactApp - A sample React application demonstrating core React concepts
+ * @param {Object} props - Component props
+ * @param {string} props.title - The title of the application
+ * @param {string} props.subtitle - The subtitle of the application
+ */
+const TestReactApp = ({ title = 'Test React Application', subtitle = 'A sample React app' }) => {
+  // State declarations
+  const [count, setCount] = useState(0);
+  const [items, setItems] = useState([]);
+  const [newItemText, setNewItemText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Simulate data fetching with useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Simulate API call with timeout
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Sample initial data
+        setItems([
+          { id: 1, text: 'Learn React' },
+          { id: 2, text: 'Build a test app' },
+          { id: 3, text: 'Share with others' }
+        ]);
+      } catch (err) {
+        setError('Failed to fetch data. Please try again later.');
+        console.error('Error fetching data:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+    
+    // Cleanup function
+    return () => {
+      console.log('Component unmounting, cleanup performed');
+    };
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Event handlers
+  const handleIncrement = () => {
+    setCount(prevCount => prevCount + 1);
+  };
+
+  const handleDecrement = () => {
+    setCount(prevCount => prevCount - 1);
+  };
+
+  const handleInputChange = (e) => {
+    setNewItemText(e.target.value);
+  };
+
+  const handleAddItem = () => {
+    // Validate input
+    if (!newItemText.trim()) {
+      setError('Please enter a valid item text');
+      return;
+    }
+
+    // Clear any existing errors
+    setError(null);
+
+    // Add new item with unique ID
+    const newItem = {
+      id: items.length > 0 ? Math.max(...items.map(item => item.id)) + 1 : 1,
+      text: newItemText.trim()
+    };
+
+    setItems([...items, newItem]);
+    setNewItemText(''); // Clear input after adding
+  };
+
+  const handleRemoveItem = (id) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  // Render helpers
+  const renderCounter = () => (
+    <div className="counter-section">
+      <h3>Counter: {count}</h3>
+      <div className="button-group">
+        <button onClick={handleDecrement} aria-label="Decrement count">-</button>
+        <button onClick={handleIncrement} aria-label="Increment count">+</button>
+      </div>
+    </div>
+  );
+
+  const renderItemList = () => (
+    <div className="item-list-section">
+      <h3>Todo Items</h3>
+      {items.length === 0 ? (
+        <p>No items yet. Add some below!</p>
+      ) : (
+        <ul className="item-list">
+          {items.map(item => (
+            <li key={item.id} className="item">
+              <span>{item.text}</span>
+              <button 
+                onClick={() => handleRemoveItem(item.id)}
+                className="remove-button"
+              >
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
+  const renderAddItemForm = () => (
+    <div className="add-item-section">
+      <h3>Add New Item</h3>
+      <div className="input-group">
+        <input
+          type="text"
+          value={newItemText}
+          onChange={handleInputChange}
+          placeholder="Enter item text"
+          aria-label="New item text"
+        />
+        <button 
+          onClick={handleAddItem}
+          disabled={!newItemText.trim()}
+          aria-label="Add item"
+        >
+          Add
+        </button>
+      </div>
+      {error && <p className="error-message">{error}</p>}
+    </div>
+  );
+
+  return (
+    <div className="test-react-app">
+      <header className="app-header">
+        <h1>{title}</h1>
+        <h2>{subtitle}</h2>
+      </header>
+      
+      <main className="app-content">
+        {isLoading ? (
+          <div className="loading">Loading data...</div>
+        ) : (
+          <>
+            {renderCounter()}
+            {renderItemList()}
+            {renderAddItemForm()}
+          </>
+        )}
+      </main>
+      
+      <footer className="app-footer">
+        <p>TestReactApp demonstration - {new Date().getFullYear()}</p>
+      </footer>
+    </div>
+  );
+};
+
+// PropTypes for type checking
+TestReactApp.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string
+};
+
+export default TestReactApp;
+\`\`\`
+
+This component:
+
+1. Uses modern React syntax with functional components and hooks  
+2. Imports necessary dependencies (React, hooks, PropTypes)  
+3. Uses proper ES6+ syntax with arrow functions, destructuring, etc.  
+4. Implements state management using useState for multiple state variables  
+5. Uses useEffect for data fetching simulation  
+6. Implements event handlers for various user interactions  
+7. Includes error handling and input validation  
+8. Uses conditional rendering for loading state and empty lists  
+9. Demonstrates proper list rendering with keys  
+10. Organizes the code into logical sections with helper render functions  
+11. Includes PropTypes for type checking  
+12. Uses semantic HTML and aria attributes for accessibility  
+13. Follows proper naming conventions (PascalCase for components, camelCase for variables and functions)
+
+The component demonstrates a simple todo list application with:
+- A counter that can be incremented/decremented
+- A list of items that can be added and removed
+- Basic form validation
+- Loading state simulation
+- Error handling
+
+This covers many of the core React concepts in a single test application, making it a good example for learning or testing purposes.
+
+Let me check if I missed anything from the requirements:
+
+1. ✅ Modern React syntax with functional components and hooks  
+2. ✅ Necessary dependencies imported  
+3. ✅ Functional component with the provided name (TestReactApp)  
+4. ✅ Functionality implemented (general React concepts since no specific functionality was requested)  
+5. ✅ Appropriate props and state management  
+6. ✅ Basic error handling and input validation  
+7. ✅ Comments to explain logic  
+8. ✅ ES6+ syntax  
+9. ✅ Proper React naming conventions  
+10. ✅ Proper indentation and formatting  
+11. ✅ Meaningful variable and function names  
+12. ✅ Component focused on a single responsibility (a test app)  
+13. ✅ PropTypes for type checking
+
+The component meets all the requirements specified in the instructions. I'll now format it as requested.
 `
 
 export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: number, loremIpsumSize: LoremIpsumSize }>) => {
@@ -86,7 +324,7 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
   const reasoningGenerator = React.useCallback((params?: Partial<{ delay: number, chunkSize: number }>) => {
     const delay = params?.delay ?? 100;
     const chunkSize = params?.chunkSize ?? 8;
-    return streamGenerator(reasoningMock, { delay, chunkSize });
+    return streamGenerator(reasoningClaudeMock, { delay, chunkSize });
   }, []);
 
   const handleStopMessageStreaming = React.useCallback(() => {
