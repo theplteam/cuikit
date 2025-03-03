@@ -18,6 +18,7 @@ const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll')
 const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
 const ReasoningWithHeadings = React.lazy(() => import('./reasoning/ReasoningWithHeadings'));
 const ReasoningStream = React.lazy(() => import('./reasoning/ReasoningStream'));
+const ReasoningHistory = React.lazy(() => import('./reasoning/ReasoningHistory'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -49,6 +50,7 @@ const App: React.FC = () => {
       case 'custom-scroll-container': variant = CustomScrollContainer; break;
       case 'reasoning-with-headings': variant = ReasoningWithHeadings; break;
       case 'reasoning-stream': variant = ReasoningStream; break;
+      case 'reasoning-history': variant = ReasoningHistory; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
