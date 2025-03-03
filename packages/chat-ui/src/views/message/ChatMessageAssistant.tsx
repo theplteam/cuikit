@@ -100,11 +100,13 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           message={message} thread={thread}
         />
       ) : null}
-      {(!typing && !!text && enableAssistantActions) ? <MessageActionsAssistant
-        message={message}
-        thread={thread}
-        className={actionsClassName}
-                                                       /> : null}
+      {(!typing && !!text && enableAssistantActions) ? (
+        <MessageActionsAssistant
+          message={message}
+          thread={thread}
+          className={actionsClassName}
+        />
+      ) : null}
       <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={message} />
     </ChatMessageContainerStyled>
   );
