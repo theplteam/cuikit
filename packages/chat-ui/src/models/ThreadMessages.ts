@@ -11,7 +11,7 @@ type MesagesMapType<DM extends DMessage> = Map<IdType, ParentMapValue<DM>>;
 const rootMessageHash = 'rootMessage';
 
 export class ThreadMessages<DM extends DMessage> {
-  allMessages = new ObservableReactValue<MessageModel<DM>[]>([], true);
+  allMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 
   currentMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 

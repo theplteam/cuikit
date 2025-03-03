@@ -56,6 +56,7 @@ export const StatusBoxStyled = styled(Stack)(() => ({
 const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
   const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
   const reasoningTitle = useObserverValue(message.reasoningTitle) ?? '';
+  const reasoningTime = useObserverValue(message.reasoningTimeSec) ?? '';
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
   let text = state;
@@ -69,6 +70,7 @@ const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
     || state === StreamResponseState.TYPING_MESSAGE
     || state === StreamResponseState.FINISH_MESSAGE
     || !!reasoningTitle
+    || !!reasoningTime
   ) return null;
 
   return (

@@ -10,7 +10,7 @@ export enum ReasoningType {
   HEADLINES
 }
 
-export const useReasoningParse = (text: string, message: MessageModel) => {
+export const useReasoningParse = (text: string, message: MessageModel, inProgress: boolean) => {
   const [description, setDescription] = React.useState('');
   const [reasoningType, setReasoningType] = React.useState<ReasoningType>(ReasoningType.HEADLINES);
   const locale = useLocalizationContext();
@@ -22,6 +22,7 @@ export const useReasoningParse = (text: string, message: MessageModel) => {
     let titleIndex = -1;
     let textIndex = -1;
     for (let i = 1; i < matches.length; i++) {
+      // TODO: docs building crushed
       // @ts-ignore
       const titleMatches = matches[i].matchAll(/\*\*(.*?)\*\*/g).toArray();
       if (titleMatches.length) {
@@ -49,21 +50,23 @@ export const useReasoningParse = (text: string, message: MessageModel) => {
 
     if (!result?.newTitle && text.length > 150) {
       setReasoningType(ReasoningType.STREAM);
-      message.reasoningTitle.value = locale.thinking;
+      if (inProgress) message.reasoningTitle.value = locale.thinking;
     } else {
       if (result) {
         const { newText, newTitle } = result;
 
         if (!!newText && description !== newText) {
           setDescription(newText);
-          message.reasoningTitle.value = newTitle;
-        } else if (!!newTitle && (!description && !message.reasoningTitle.value)) {
+          if (inProgress) {
+            message.reasoningTitle.value = newTitle;
+          }
+        } else if (!!newTitle && (!description && !message.reasoningTitle.value) && inProgress) {
           message.reasoningTitle.value = newTitle;
         }
       }
     }
 
-  }, [text]);
+  }, [text, inProgress]);
 
   return { description, reasoningType };
 }

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MessageReasoningFull from './MessageReasoningFull';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { MessageModel, ThreadModel } from '../../../models';
+import { MessageModel, StreamResponseState, ThreadModel } from '../../../models';
 import { Collapse, Fade } from '@mui/material';
 import { ReasoningType, useReasoningParse } from './useReasoningParse';
 import ReasoningTextSmooth from './ReasoningTextSmooth';
@@ -34,17 +34,21 @@ enum ViewType {
 const transitionDuration = 200;
 
 const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
-  const [isExpanding, setIsExpanding] = React.useState(false);
   const [viewType, setViewType] = React.useState<ViewType>(ViewType.SHORT);
   const [fullCollapseSize, setFullCollapseSize] = React.useState(0);
 
   const { apiRef } = useThreadContext();
 
+  const statusText = useObserverValue(thread.streamStatus) ?? '';
+
   const shortRef = React.useRef<HTMLDivElement | null>(null);
 
   const reasoning = useObserverValue(message.reasoning) ?? '';
 
-  const { reasoningType, description } = useReasoningParse(reasoning, message);
+  const inProgress = statusText === StreamResponseState.START && !!isLatest;
+
+  const [isExpanding, setIsExpanding] = React.useState(inProgress);
+  const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);
 
   const handleExpandedChange = () => {
     if (!isExpanding) {
@@ -68,7 +72,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
   }
 
   React.useEffect(() => {
-    if (reasoningType === ReasoningType.STREAM && !isExpanding) {
+    if (reasoningType === ReasoningType.STREAM && !isExpanding && inProgress) {
       setIsExpanding(true);
     }
   }, [reasoningType]);
@@ -80,9 +84,8 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
     <Stack gap={1.5}>
       <MessageReasoningTitle
         message={message}
-        thread={thread}
+        inProgress={inProgress}
         isExpanding={isExpanding}
-        isLatest={isLatest}
         handleExpandedChange={handleExpandedChange}
       />
       <Stack

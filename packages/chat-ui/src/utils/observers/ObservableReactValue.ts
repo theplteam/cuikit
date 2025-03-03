@@ -18,7 +18,7 @@ export class ObservableReactValue<T> {
   setValue(newValue: T) {
     if (this._value !== newValue) {
       this._value = newValue;
-      // if (this.debug) console.log('set new messages', newValue);
+      if (this.debug) console.trace('set new messages', newValue);
       this._listeners.map(v => v.fn());
     }
   }

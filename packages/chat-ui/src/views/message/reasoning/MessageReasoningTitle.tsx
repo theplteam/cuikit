@@ -2,7 +2,7 @@ import * as React from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { useChatSlots } from '../../core/ChatSlotsContext';
-import { MessageModel, StreamResponseState, ThreadModel } from '../../../models';
+import { MessageModel } from '../../../models';
 import { styled } from '@mui/material/styles';
 import { StatusBoxStyled } from '../MessageAssistantProgress';
 import { FnType } from '../../../models/types';
@@ -10,10 +10,9 @@ import { useReasoningTimeText } from './useReasoningTimeText';
 
 type Props = {
   message: MessageModel;
-  thread: ThreadModel;
   isExpanding: boolean;
   handleExpandedChange: FnType;
-  isLatest: boolean | undefined;
+  inProgress: boolean;
 };
 
 const arrowClassName = 'chat-ui-message-reasoning-arrow';
@@ -29,13 +28,10 @@ const TitleStackStyled = styled(StatusBoxStyled)(({ theme }) => ({
   }
 }));
 
-const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, thread, handleExpandedChange, isLatest }) => {
+const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, handleExpandedChange, inProgress }) => {
   const reasoningTitle = useObserverValue(message.reasoningTitle) ?? '';
-  const statusText = useObserverValue(thread.streamStatus) ?? '';
 
-  const reasoningEnded = statusText === StreamResponseState.TYPING_MESSAGE
-    || statusText === StreamResponseState.FINISH_MESSAGE
-    || !isLatest;
+  const reasoningEnded = !inProgress;
 
   useReasoningTimeText(message);
 
@@ -75,5 +71,5 @@ const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, thread, 
 export default React.memo(MessageReasoningTitle, (prevProps, nextProps) => {
   return prevProps.message.id === nextProps.message.id
     && prevProps.isExpanding === nextProps.isExpanding
-    && prevProps.isLatest === nextProps.isLatest;
+    && prevProps.inProgress === nextProps.inProgress;
 });
