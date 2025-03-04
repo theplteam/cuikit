@@ -43,13 +43,14 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
   }, 300, { leading: false, trailing: true }), []);
 
   React.useEffect(() => {
+    const reasoningTitle = message.reasoningManager.title;
     if (reasoningType === ReasoningType.STREAM) return;
 
     const result = parserFn(text);
 
     if (!result?.newTitle && text.length > 150) {
       setReasoningType(ReasoningType.STREAM);
-      if (inProgress) message.reasoningTitle.value = locale.thinking;
+      if (inProgress) reasoningTitle.value = locale.thinking;
     } else {
       if (result) {
         const { newText, newTitle } = result;
@@ -57,10 +58,10 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
         if (!!newText && description !== newText) {
           setDescription(newText);
           if (inProgress) {
-            message.reasoningTitle.value = newTitle;
+            reasoningTitle.value = newTitle;
           }
-        } else if (!!newTitle && (!description && !message.reasoningTitle.value) && inProgress) {
-          message.reasoningTitle.value = newTitle;
+        } else if (!!newTitle && (!description && !reasoningTitle.value) && inProgress) {
+          reasoningTitle.value = newTitle;
         }
       }
     }

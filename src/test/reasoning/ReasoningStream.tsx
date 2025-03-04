@@ -50,11 +50,11 @@ const App: React.FC = () => {
 
   const { reasoningGenerator, streamGenerator } = useAssistantAnswerMock()
 
-  const onUserMessageSent = async (params: MessageSentParams) => {
+  const onUserMessageSent = async ({ reasoning, ...params }: MessageSentParams) => {
     const reasoningStream = reasoningGenerator({ loremIpsum: 'large' });
 
     for await (const reasoningChunk of reasoningStream) {
-      params.pushReasoningChunk(reasoningChunk);
+      reasoning.pushChunk(reasoningChunk);
     }
 
     const stream = streamGenerator();

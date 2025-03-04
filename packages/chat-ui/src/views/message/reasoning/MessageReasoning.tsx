@@ -43,7 +43,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
 
   const shortRef = React.useRef<HTMLDivElement | null>(null);
 
-  const reasoning = useObserverValue(message.reasoning) ?? '';
+  const reasoning = useObserverValue(message.reasoningManager.text) ?? '';
 
   const inProgress = statusText === StreamResponseState.START && !!isLatest;
 

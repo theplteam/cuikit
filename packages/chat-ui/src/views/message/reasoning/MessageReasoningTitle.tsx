@@ -29,7 +29,7 @@ const TitleStackStyled = styled(StatusBoxStyled)(({ theme }) => ({
 }));
 
 const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, handleExpandedChange, inProgress }) => {
-  const reasoningTitle = useObserverValue(message.reasoningTitle) ?? '';
+  const reasoningTitle = useObserverValue(message.reasoningManager.title) ?? '';
 
   const reasoningEnded = !inProgress;
 

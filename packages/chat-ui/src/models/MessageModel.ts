@@ -1,5 +1,6 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
+import { MessageReasoning } from './MessageReasoning';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -45,9 +46,7 @@ export class MessageModel<DM extends DMessage = any> {
    */
   readonly observableText = new ObservableReactValue<string>('');
 
-  readonly reasoningTitle = new ObservableReactValue<string>('');
-  readonly reasoning = new ObservableReactValue<string>('');
-  readonly reasoningTimeSec = new ObservableReactValue<number>(0);
+  readonly reasoningManager = new MessageReasoning();
 
   images?: string[];
 
@@ -67,15 +66,15 @@ export class MessageModel<DM extends DMessage = any> {
 
     if (_data.reasoning) {
       if (_data.reasoning.title) {
-        this.reasoningTitle.value = _data.reasoning.title;
+        this.reasoningManager.title.value = _data.reasoning.title;
       }
 
       if (_data.reasoning.text) {
-        this.reasoning.value = _data.reasoning.text;
+        this.reasoningManager.text.value = _data.reasoning.text;
       }
 
       if (_data.reasoning.timeSec) {
-        this.reasoningTimeSec.value = _data.reasoning.timeSec;
+        this.reasoningManager.timeSec.value = _data.reasoning.timeSec;
       }
     }
   }

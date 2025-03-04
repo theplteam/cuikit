@@ -39,9 +39,27 @@ export type MessageSentParams<DM extends DMessage = any> = {
   onFinish: () => void,
   /** Set awaiting status */
   setStatus: (status: string) => void,
-  pushReasoningChunk: (reasoning: string) => void,
-  setReasoning: (reasoning: string) => void,
-  setReasoningTimeSec: (timeSec: number) => void,
+  /** Options for managing reasoning. */
+  reasoning: {
+    /** Push part of text to the previous text */
+    pushChunk: (reasoning: string) => void,
+    /** Replace full text */
+    setFull: (reasoning: string) => void,
+    /**
+     * Set the time spent on reasoning.
+     * This will lock automatic time managment. To unlock, call the unlock method.
+     */
+    setTimeSec: (timeSec: number) => void,
+    /**
+     * Set current reasoning header.
+     * This will lock automatic headers. To unlock, call the unlock method.
+     */
+    setTitle: (title: string) => void,
+    /**
+     * Unlock auto managment for locked options (after calling the setHeader and setTimeSec functions.)
+     */
+    unlockAutoManagment: (options?: ('headers' | 'time')[]) => void,
+  }
 }
 
 export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any> {
@@ -217,7 +235,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
         res
           .then(() => {
             messageSender.changeTypingStatus(false);
-            messageSender.updateReasoningTime();
+            assistantMessage.reasoningManager.updateTimeSec();
             resolve({ message: userMessage.data });
           })
           .catch((reason) => {

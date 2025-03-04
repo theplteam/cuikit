@@ -5,7 +5,7 @@ import { useLocalizationContext } from '../../core/LocalizationContext';
 import { langReplace } from '../../../locale/langReplace';
 
 export const useReasoningTimeText = (message: MessageModel) => {
-  const reasoningTime = useObserverValue(message.reasoningTimeSec) ?? 0;
+  const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? 0;
   const locale = useLocalizationContext();
 
   React.useEffect(() => {
@@ -21,6 +21,6 @@ export const useReasoningTimeText = (message: MessageModel) => {
       str = minutes + " minutes " + remainingSeconds + " seconds";
     }
 
-    message.reasoningTitle.value = langReplace(locale.reasonedFor, { time: str });
+    message.reasoningManager.title.value = langReplace(locale.reasonedFor, { time: str });
   }, [reasoningTime]);
 }
