@@ -35,7 +35,7 @@ export class MessageReasoning {
       this.lockedOptions.push('time');
     }
 
-    this.timeSec.value = value;
+    this.timeSec.value = Math.round(value);
   }
 
   setUserViewType = (value: 'stream' | 'headlines') => {

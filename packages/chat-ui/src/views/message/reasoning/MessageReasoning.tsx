@@ -6,11 +6,12 @@ import MessageReasoningFull from './MessageReasoningFull';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { MessageModel, StreamResponseState, ThreadModel } from '../../../models';
 import { Collapse, Fade } from '@mui/material';
-import { ReasoningType, useReasoningParse } from './useReasoningParse';
+import { useReasoningParse } from './useReasoningParse';
 import ReasoningTextSmooth from './ReasoningTextSmooth';
 import MessageReasoningTitle from './MessageReasoningTitle';
 import { useThreadContext } from '../../thread/ThreadContext';
 import SimpleScrollbar from '../../../ui/SimpleScrollbar';
+import { ReasoningViewType } from '../../../models/MessageReasoning';
 
 type Props = {
   message: MessageModel;
@@ -45,7 +46,12 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
 
   const reasoning = useObserverValue(message.reasoningManager.text) ?? '';
 
-  const inProgress = statusText === StreamResponseState.START && !!isLatest;
+  const inProgress = (!statusText
+    || (statusText !== StreamResponseState.TYPING_MESSAGE
+    && statusText !== StreamResponseState.FINISH_MESSAGE))
+    && !!isLatest;
+
+  console.log(inProgress, statusText);
 
   const [isExpanding, setIsExpanding] = React.useState(inProgress);
   const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);
@@ -72,7 +78,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
   }
 
   React.useEffect(() => {
-    if (reasoningType === ReasoningType.STREAM && !isExpanding && inProgress) {
+    if (reasoningType === ReasoningViewType.STREAM && !isExpanding && inProgress) {
       setIsExpanding(true);
     }
   }, [reasoningType]);
@@ -93,7 +99,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
         alignItems="center"
       >
         <LineBoxStyled sx={{ opacity: reasoning ? 1 : 0 }} />
-        {reasoningType === ReasoningType.STREAM && (
+        {reasoningType === ReasoningViewType.STREAM && (
         <Collapse in={isExpanding} timeout={transitionDuration} sx={{ flex: 1 }}>
           <Box
             ml={2}
@@ -105,7 +111,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
           </Box>
         </Collapse>
           )}
-        {reasoningType === ReasoningType.HEADLINES && (
+        {reasoningType === ReasoningViewType.HEADLINES && (
         <>
           <Collapse in={isExpanding} timeout={transitionDuration} collapsedSize={fullCollapseSize}>
             <Fade in={isExpanding} timeout={transitionDuration}>

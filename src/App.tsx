@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TestApp from './test/reasoning/ReasoningHistory';
+import TestApp from './test/reasoning/ReasoningUserSetup';
 import eruda from 'eruda';
 
 const App: React.FC = () => {
