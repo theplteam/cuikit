@@ -1,13 +1,24 @@
 import { ObservableReactValue } from '../utils/observers';
 
-type ManagmentValues = ('headers' | 'time');
+type ManagmentValues = ('headers' | 'time' | 'viewType');
+
+export enum ReasoningViewType {
+  // The text is not divided into segments. it's a continuous stream of thought
+  STREAM = 'stream',
+  // The text is divided into segments (headings), similar to ChatGPT.
+  HEADLINES = 'headlines',
+}
 
 export class MessageReasoning {
   private _reasoningTimeStart = 0;
 
   readonly title = new ObservableReactValue<string>('');
+
   readonly text = new ObservableReactValue<string>('');
+
   readonly timeSec = new ObservableReactValue<number>(0);
+
+  readonly viewType = new ObservableReactValue<ReasoningViewType>(ReasoningViewType.HEADLINES);
 
   lockedOptions: ManagmentValues[] = [];
 
@@ -25,6 +36,14 @@ export class MessageReasoning {
     }
 
     this.timeSec.value = value;
+  }
+
+  setUserViewType = (value: 'stream' | 'headlines') => {
+    if (!this.lockedOptions.includes('viewType')) {
+      this.lockedOptions.push('viewType');
+    }
+
+    this.viewType.value = value as ReasoningViewType;
   }
 
   unlockAutoManagment = (values?: ManagmentValues[]) => {

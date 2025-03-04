@@ -2,18 +2,14 @@ import * as React from 'react';
 import throttle from 'lodash.throttle';
 import { MessageModel } from '../../../models';
 import { useLocalizationContext } from '../../core/LocalizationContext';
-
-export enum ReasoningType {
-  // The text is not divided into segments. it's a continuous stream of thought
-  STREAM,
-  // The text is divided into segments (headings), similar to ChatGPT.
-  HEADLINES
-}
+import { useObserverValue } from '../../hooks/useObserverValue';
+import { ReasoningViewType } from '../../../models/MessageReasoning';
 
 export const useReasoningParse = (text: string, message: MessageModel, inProgress: boolean) => {
   const [description, setDescription] = React.useState('');
-  const [reasoningType, setReasoningType] = React.useState<ReasoningType>(ReasoningType.HEADLINES);
   const locale = useLocalizationContext();
+
+  const reasoningType = useObserverValue(message.reasoningManager.viewType) ?? ReasoningViewType.HEADLINES;
 
   const parserFn = React.useCallback(throttle((newText: string) => {
     const matches = newText.split("\n\n").reverse();
@@ -43,14 +39,18 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
   }, 300, { leading: false, trailing: true }), []);
 
   React.useEffect(() => {
-    const reasoningTitle = message.reasoningManager.title;
-    if (reasoningType === ReasoningType.STREAM) return;
+    const reasoningManager = message.reasoningManager;
+    if (reasoningType === ReasoningViewType.STREAM) return;
 
     const result = parserFn(text);
 
     if (!result?.newTitle && text.length > 150) {
-      setReasoningType(ReasoningType.STREAM);
-      if (inProgress) reasoningTitle.value = locale.thinking;
+      if (reasoningManager.lockedOptions.includes('viewType')) {
+        reasoningManager.viewType.value = ReasoningViewType.STREAM
+      }
+      if (inProgress) {
+        reasoningManager.setHeader(locale.thinking)
+      }
     } else {
       if (result) {
         const { newText, newTitle } = result;
@@ -58,10 +58,10 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
         if (!!newText && description !== newText) {
           setDescription(newText);
           if (inProgress) {
-            reasoningTitle.value = newTitle;
+            reasoningManager.setHeader(newTitle);
           }
-        } else if (!!newTitle && (!description && !reasoningTitle.value) && inProgress) {
-          reasoningTitle.value = newTitle;
+        } else if (!!newTitle && (!description && !reasoningManager.title.value) && inProgress) {
+          reasoningManager.setHeader(newTitle);
         }
       }
     }

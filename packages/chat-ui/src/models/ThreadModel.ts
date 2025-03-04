@@ -56,9 +56,14 @@ export type MessageSentParams<DM extends DMessage = any> = {
      */
     setTitle: (title: string) => void,
     /**
-     * Unlock auto managment for locked options (after calling the setHeader and setTimeSec functions.)
+     * Set current reasoning header.
+     * This will lock automatic headers. To unlock, call the unlock method.
      */
-    unlockAutoManagment: (options?: ('headers' | 'time')[]) => void,
+    setViewType: (viewType: 'stream' | 'headlines') => void,
+    /**
+     * Unlock auto managment for locked options (after calling the setHeader, setTimeSec, etc.)
+     */
+    unlockAutoManagment: (options?: ('headers' | 'time' | 'viewType')[]) => void,
   }
 }
 

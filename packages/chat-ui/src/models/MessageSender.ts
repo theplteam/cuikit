@@ -59,6 +59,7 @@ export class MessageSender<DM extends DMessage> {
         setFull: message.reasoningManager.setText,
         setTitle: message.reasoningManager.setUserHeader,
         setTimeSec: message.reasoningManager.setUserTimeSec,
+        setViewType: message.reasoningManager.setUserViewType,
         unlockAutoManagment: message.reasoningManager.unlockAutoManagment,
       },
     }
