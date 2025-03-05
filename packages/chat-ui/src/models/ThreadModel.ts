@@ -63,7 +63,7 @@ export type MessageSentParams<DM extends DMessage = any> = {
     /**
      * Unlock auto managment for locked options (after calling the setHeader, setTimeSec, etc.)
      */
-    unlockAutoManagment: (options?: ('headers' | 'time' | 'viewType')[]) => void,
+    unlockAutoManagement: (options?: ('headers' | 'time' | 'viewType')[]) => void,
   }
 }
 

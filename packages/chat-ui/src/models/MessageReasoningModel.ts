@@ -9,7 +9,7 @@ export enum ReasoningViewType {
   HEADLINES = 'headlines',
 }
 
-export class MessageReasoning {
+export class MessageReasoningModel {
   private _reasoningTimeStart = 0;
 
   readonly title = new ObservableReactValue<string>('');
@@ -25,6 +25,7 @@ export class MessageReasoning {
   setUserHeader = (value: string) => {
     if (!this.lockedOptions.includes('headers')) {
       this.lockedOptions.push('headers');
+      this.setUserViewType('stream');
     }
 
     this.title.value = value;
@@ -43,7 +44,9 @@ export class MessageReasoning {
       this.lockedOptions.push('viewType');
     }
 
-    this.viewType.value = value as ReasoningViewType;
+    if (this.viewType.value !== value) {
+      this.viewType.value = value as ReasoningViewType;
+    }
   }
 
   unlockAutoManagment = (values?: ManagmentValues[]) => {

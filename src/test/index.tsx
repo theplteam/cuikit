@@ -19,6 +19,7 @@ const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishi
 const ReasoningWithHeadings = React.lazy(() => import('./reasoning/ReasoningWithHeadings'));
 const ReasoningStream = React.lazy(() => import('./reasoning/ReasoningStream'));
 const ReasoningHistory = React.lazy(() => import('./reasoning/ReasoningHistory'));
+const ReasoningUserSetup = React.lazy(() => import('./reasoning/ReasoningUserSetup'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -51,6 +52,7 @@ const App: React.FC = () => {
       case 'reasoning-with-headings': variant = ReasoningWithHeadings; break;
       case 'reasoning-stream': variant = ReasoningStream; break;
       case 'reasoning-history': variant = ReasoningHistory; break;
+      case 'reasoning-user-setup': variant = ReasoningUserSetup; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);

@@ -62,7 +62,6 @@ const App: React.FC = () => {
     const thinkingTimeStart = performance.now();
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    reasoning.setViewType('stream');
     let i = 0;
     for await (const reasoningChunk of reasoningStream) {
       if (!(i % 20)) {

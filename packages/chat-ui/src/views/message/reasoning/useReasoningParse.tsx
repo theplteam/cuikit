@@ -3,7 +3,7 @@ import throttle from 'lodash.throttle';
 import { MessageModel } from '../../../models';
 import { useLocalizationContext } from '../../core/LocalizationContext';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { ReasoningViewType } from '../../../models/MessageReasoning';
+import { ReasoningViewType } from '../../../models/MessageReasoningModel';
 
 export const useReasoningParse = (text: string, message: MessageModel, inProgress: boolean) => {
   const [description, setDescription] = React.useState('');

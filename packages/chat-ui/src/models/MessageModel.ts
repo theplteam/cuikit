@@ -1,6 +1,6 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
-import { MessageReasoning } from './MessageReasoning';
+import { MessageReasoningModel } from './MessageReasoningModel';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -46,7 +46,7 @@ export class MessageModel<DM extends DMessage = any> {
    */
   readonly observableText = new ObservableReactValue<string>('');
 
-  readonly reasoningManager = new MessageReasoning();
+  readonly reasoningManager = new MessageReasoningModel();
 
   images?: string[];
 

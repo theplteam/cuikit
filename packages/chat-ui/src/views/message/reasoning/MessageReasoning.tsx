@@ -11,7 +11,7 @@ import ReasoningTextSmooth from './ReasoningTextSmooth';
 import MessageReasoningTitle from './MessageReasoningTitle';
 import { useThreadContext } from '../../thread/ThreadContext';
 import SimpleScrollbar from '../../../ui/SimpleScrollbar';
-import { ReasoningViewType } from '../../../models/MessageReasoning';
+import { ReasoningViewType } from '../../../models/MessageReasoningModel';
 
 type Props = {
   message: MessageModel;
