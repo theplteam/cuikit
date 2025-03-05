@@ -11,7 +11,7 @@ import { motion } from '../../utils/materialDesign/motion';
 import PinPictureButton from './PinPictureButton';
 import { useChatContext } from '../core/ChatGlobalContext';
 import ChatImagePreview from './ChatImagePreview';
-import { DMessage } from '../../models';
+import { Message } from '../../models';
 
 type Props = {
   thread?: ThreadModel;
@@ -44,7 +44,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const [images, setImages] = React.useState<string[]>([]);
 
   const onSendMessage = async () => {
-    let content: DMessage['content'] = text;
+    let content: Message['content'] = text;
     if (images.length) {
       content = images.map(v => ({ type: 'image_url', image_url: { url: v } }));
 

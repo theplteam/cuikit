@@ -1,8 +1,8 @@
-import { DMessage } from './MessageModel';
+import { Message } from './MessageModel';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
 
-export type Thread<DM extends DMessage = any> = {
+export type Thread<DM extends Message = any> = {
   id: IdType;
   title: string;
   date?: string;
@@ -10,7 +10,7 @@ export type Thread<DM extends DMessage = any> = {
   messages: DM[];
 } & { isNew?: boolean };
 
-export class ThreadData<DM extends DMessage, Data extends Thread<DM>> {
+export class ThreadData<DM extends Message, Data extends Thread<DM>> {
   readonly observableTitle = new ObservableReactValue('');
 
   constructor(readonly data: Data) {

@@ -1,4 +1,4 @@
-import { Thread, type ThreadModel, DMessage, MessageModel } from '../../models';
+import { Thread, type ThreadModel, Message, MessageModel } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -14,7 +14,7 @@ import type { BoxProps } from '@mui/material/Box';
 
 type ChildrenProps = React.PropsWithChildren;
 
-export type SlotPropsType<DM extends DMessage, DD extends Thread<DM>> = {
+export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Override the full thread component
    */

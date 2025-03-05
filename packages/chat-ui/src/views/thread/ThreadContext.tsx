@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MobileMessageActionsType, useMobileMessageActions } from '../message/hooks/useMobileMessageActions';
 import { MessagesModeType, useMessagesMode } from '../message/hooks/useMessagesMode';
 import { ThreadModel } from '../../models/ThreadModel';
-import { Thread, DMessage } from '../../models';
+import { Thread, Message } from '../../models';
 import { ApiManager } from '../core/useApiManager';
 import { useThreadApiInitialization } from './useThreadApiInitialization';
 import { PrivateApiRefType } from '../core/useApiRef';
@@ -11,14 +11,14 @@ import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
 import { Threads } from '../../models/Threads';
 
-type ThreadContextType<DM extends DMessage, DD extends Thread<DM>> = {
+type ThreadContextType<DM extends Message, DD extends Thread<DM>> = {
   thread: ThreadModel<DM, DD> | undefined;
   mobileMessageActions: MobileMessageActionsType;
   messageMode: MessagesModeType;
   apiRef: React.RefObject<PrivateApiRefType<DM>>;
 };
 
-type Props<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
+type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   model: Threads<DM, DD>;
   thread: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
@@ -28,7 +28,7 @@ type Props<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren
 
 const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
 
-const ThreadProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
+const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
 
@@ -66,7 +66,7 @@ const ThreadProvider = <DM extends DMessage, DD extends Thread<DM>>({ children, 
   );
 };
 
-const useThreadContext = <DM extends DMessage, DD extends Thread<DM>>(): ThreadContextType<DM, DD> => {
+const useThreadContext = <DM extends Message, DD extends Thread<DM>>(): ThreadContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {

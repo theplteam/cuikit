@@ -8,13 +8,13 @@ import HiddenContent from './../HiddenContent';
 import { ListContainer, ListContainerPortal } from './components/ListContainer';
 import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components/MobileAppBarContainer';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
-import { Thread, DMessage } from './../../models';
+import { Thread, Message } from './../../models';
 
-export type ChatUiProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
+export type ChatUiProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   listPlacement?: 'left' | 'right';
 }> & ChatUsersProps<DM, DD>;
 
-const ChatUi = <DM extends DMessage, DD extends Thread<DM>>(usersProps: ChatUiProps<DM, DD>) => {
+const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiProps<DM, DD>) => {
   const { slots, listPlacement = 'left', ...other } = usersProps;
 
   const ref = useElementRef();

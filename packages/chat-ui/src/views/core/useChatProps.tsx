@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { MessageSentParams } from '../../models/ThreadModel';
-import { ChatMessageOwner, DMessage, RatingType } from '../../models/MessageModel';
+import { ChatMessageOwner, Message, RatingType } from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -10,7 +10,7 @@ import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 
-type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
+type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Threads list
    * @required
@@ -24,7 +24,7 @@ type RequiredProps<DM extends DMessage, DD extends Thread<DM>> = {
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
+export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Show loading component
    */
@@ -100,7 +100,7 @@ export type ChatPropsTypes<DM extends DMessage, DD extends Thread<DM>> = {
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
-export type ChatUsersProps<DM extends DMessage, DD extends Thread<DM>> = Partial<{
+export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<{
   /**
    * ChatUI defaults to using the window for automatic conversation scrolling.
    * if you have embedded the chat within your own component, supply the container's ref to allow for proper scroll management.
@@ -133,7 +133,7 @@ export type ChatUsersProps<DM extends DMessage, DD extends Thread<DM>> = Partial
   userId: UserIdType;
 }> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 
-export const useChatProps = <DM extends DMessage, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
+export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
   const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, ...chatProps } = userProps;
 
   useLangInit(userProps.lang as LangKeys | undefined);

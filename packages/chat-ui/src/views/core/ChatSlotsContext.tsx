@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { SlotPropsType } from './SlotPropsType';
-import { Thread, DMessage } from '../../models';
+import { Thread, Message } from '../../models';
 
-type ChatSlotsContextType<DM extends DMessage, DD extends Thread<DM>> = {
+type ChatSlotsContextType<DM extends Message, DD extends Thread<DM>> = {
   slots: SlotsType<DM, DD>;
   coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<DM, DD>>;
@@ -11,13 +11,13 @@ type ChatSlotsContextType<DM extends DMessage, DD extends Thread<DM>> = {
 
 const Context = React.createContext<ChatSlotsContextType<any, any> | undefined>(undefined);
 
-type ProviderProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
+type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   slots: SlotsType<DM, DD>;
   coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<DM, DD>>;
 }>;
 
-const ChatSlotsProvider = <DM extends DMessage, DD extends Thread<DM>>({ slots, coreSlots, slotProps, children }: ProviderProps<DM, DD>) => {
+const ChatSlotsProvider = <DM extends Message, DD extends Thread<DM>>({ slots, coreSlots, slotProps, children }: ProviderProps<DM, DD>) => {
   const [value] = React.useState({ slots, coreSlots, slotProps });
   return (
     <Context.Provider value={value as ChatSlotsContextType<DM, DD>}>
@@ -26,7 +26,7 @@ const ChatSlotsProvider = <DM extends DMessage, DD extends Thread<DM>>({ slots, 
   );
 };
 
-const useChatSlots = <DM extends DMessage, DD extends Thread<DM>>(): ChatSlotsContextType<DM, DD> => {
+const useChatSlots = <DM extends Message, DD extends Thread<DM>>(): ChatSlotsContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {

@@ -1,4 +1,4 @@
-import { MessageModel, ChatMessageOwner, DMessage, MessageUserContent, MessageAssistantContent } from './MessageModel';
+import { MessageModel, ChatMessageOwner, Message, MessageUserContent, MessageAssistantContent } from './MessageModel';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { ThreadMessages } from './ThreadMessages';
@@ -8,8 +8,8 @@ import { randomId } from '../utils/numberUtils/randomInt';
 import { MessageSender } from './MessageSender';
 
 export type NewMessageResponse = {
-  user: DMessage,
-  assistant: DMessage,
+  user: Message,
+  assistant: Message,
 };
 
 export enum StreamResponseState {
@@ -21,9 +21,9 @@ export enum StreamResponseState {
 export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
   | { role: ChatMessageOwner.ASSISTANT, content: MessageAssistantContent }
 
-export type MessageSentParams<DM extends DMessage = any> = {
+export type MessageSentParams<DM extends Message = any> = {
   /** User's message content */
-  content: DMessage['content'],
+  content: Message['content'],
   /** User's message */
   message: DM,
   /** Thread history */
@@ -67,7 +67,7 @@ export type MessageSentParams<DM extends DMessage = any> = {
   }
 }
 
-export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any> {
+export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
 
@@ -225,7 +225,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     return promise;
   }
 
-  private _sendMessage = (content: DMessage['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
+  private _sendMessage = (content: Message['content'], userMessage: MessageModel<DM>, assistantMessage: MessageModel<DM>) => {
     const messageSender = new MessageSender(
       content,
       userMessage,
@@ -233,7 +233,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
       this,
     );
 
-    return new Promise<{ message: DMessage }>((resolve, reject) => {
+    return new Promise<{ message: Message }>((resolve, reject) => {
       const res = this.streamMessage(messageSender.getUserParams(resolve));
 
       if (res instanceof Promise) {
@@ -262,7 +262,7 @@ export class ThreadModel<DM extends DMessage = any, DD extends Thread<DM> = any>
     }) as DD;
   }
 
-  protected _createPair = (content: DMessage['content'], parentMessage: MessageModel<DM> | undefined) => {
+  protected _createPair = (content: Message['content'], parentMessage: MessageModel<DM> | undefined) => {
     const userMessage = new MessageModel({
       id: uuidv4(),
       content,

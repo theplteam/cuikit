@@ -20,7 +20,7 @@ import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
-import { Thread, DMessage } from '../../models';
+import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../thread/HelloMessage';
 import ChatMessageCode from '../message/markdown/ChatMessageCode';
@@ -39,16 +39,16 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-export type SlotsType<DM extends DMessage, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
+export type SlotsType<DM extends Message, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
   & ChatIconSlotsType;
 
-type SlotsReturnType<DM extends DMessage, DD extends Thread<DM>> = {
+type SlotsReturnType<DM extends Message, DD extends Thread<DM>> = {
   slots: SlotsType<DM, DD>;
   coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<DM, DD>>;
 };
 
-export const usePropsSlots = <DM extends DMessage, DD extends Thread<DM>>(
+export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
   usersProps: ChatUsersProps<DM, DD>
 ): SlotsReturnType<DM, DD> => {
   const { coreSlots, slots, slotProps, helloMessage } = usersProps;

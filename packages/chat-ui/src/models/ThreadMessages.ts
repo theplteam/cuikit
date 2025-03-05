@@ -1,16 +1,16 @@
-import { DMessage, MessageModel } from './MessageModel';
+import { Message, MessageModel } from './MessageModel';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { isDefined } from '../utils/isDefined';
 import { IdType } from '../types';
 
-type ParentMapValue<DM extends DMessage> = { messages: MessageModel<DM>[] };
+type ParentMapValue<DM extends Message> = { messages: MessageModel<DM>[] };
 
-type MesagesMapType<DM extends DMessage> = Map<IdType, ParentMapValue<DM>>;
+type MesagesMapType<DM extends Message> = Map<IdType, ParentMapValue<DM>>;
 
 const rootMessageHash = 'rootMessage';
 
-export class ThreadMessages<DM extends DMessage> {
+export class ThreadMessages<DM extends Message> {
   allMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 
   currentMessages = new ObservableReactValue<MessageModel<DM>[]>([]);

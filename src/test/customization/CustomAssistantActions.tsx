@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  Thread, DMessage,
+  Thread, Message,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import IconButton from '@mui/material/IconButton';
@@ -23,7 +23,7 @@ const saveTextAsFile = (text: string, filename: string) => {
   window.URL.revokeObjectURL(url);
 };
 
-const SaveTextButton = (props: { message: Extract<DMessage, { role: 'assistant' }> }) => {
+const SaveTextButton = (props: { message: Extract<Message, { role: 'assistant' }> }) => {
   const { content } = props.message;
   const text = typeof content === 'string' ? content : content[0].text;
 

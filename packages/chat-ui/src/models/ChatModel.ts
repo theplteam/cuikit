@@ -1,6 +1,6 @@
 import { ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
-import { DMessage } from './MessageModel';
+import { Message } from './MessageModel';
 import { Thread } from './ThreadData';
 import { PartialExcept } from './types';
 
@@ -10,7 +10,7 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-type Props<DM extends DMessage, DD extends Thread<DM>, D = ThreadModel<DM, DD>> = {
+type Props<DM extends Message, DD extends Thread<DM>, D = ThreadModel<DM, DD>> = {
   /**
    * Open empty thread
    */
@@ -37,12 +37,12 @@ type Props<DM extends DMessage, DD extends Thread<DM>, D = ThreadModel<DM, DD>> 
   edit?: (newData: PartialExcept<DD, 'id'>, thread: ThreadModel<DM, DD>) => any,
 };
 
-export type ChatModelProps<DM extends DMessage, DD extends Thread<DM>> = Partial<Props<DM, DD>>;
+export type ChatModelProps<DM extends Message, DD extends Thread<DM>> = Partial<Props<DM, DD>>;
 
 /**
  * TODO: #MB NO NEEDED
  */
-export class ChatModel<DM extends DMessage, DD extends Thread<DM>> {
+export class ChatModel<DM extends Message, DD extends Thread<DM>> {
   readonly threadActions: Props<DM, DD>;
 
   readonly actions = new ChatActions<DM, DD>();

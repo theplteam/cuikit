@@ -1,11 +1,11 @@
-import { DMessage } from './MessageModel';
+import { Message } from './MessageModel';
 import { Thread } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers';
 import { MessageSentParams, ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
 import { AdapterType } from '../views/adapter/AdapterType';
 
-export class Threads<DM extends DMessage, DD extends Thread<DM>> {
+export class Threads<DM extends Message, DD extends Thread<DM>> {
   readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
 
   readonly currentThread = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);

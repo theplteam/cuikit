@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ThreadModel, DMessage, StreamResponseState, TextContent } from '../../models';
+import { ThreadModel, Message, StreamResponseState, TextContent } from '../../models';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { ChatUsersProps } from '../core/useChatProps';
@@ -14,7 +14,7 @@ export const useThreadSendMessage = (
     handleBottomScroll?: () => void;
   }
 ) => {
-  return React.useCallback((content: DMessage['content']) => {
+  return React.useCallback((content: Message['content']) => {
     const branchMessages = thread?.messages.currentMessages.value ?? [];
     let text = '';
     let images: string[] = [];

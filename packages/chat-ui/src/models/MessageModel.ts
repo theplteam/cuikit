@@ -22,7 +22,7 @@ export type TextContent = {
 export type MessageUserContent = string | (ImageContent | TextContent)[];
 export type MessageAssistantContent = string | (TextContent)[];
 
-export type DMessage = {
+export type Message = {
   id: IdType;
   parentId?: IdType;
   time?: number;
@@ -40,7 +40,7 @@ export type DMessage = {
   content: MessageAssistantContent;
 })
 
-export class MessageModel<DM extends DMessage = any> {
+export class MessageModel<DM extends Message = any> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */
@@ -120,7 +120,7 @@ export class MessageModel<DM extends DMessage = any> {
   }
 
   get content() {
-    let data: DMessage['content'] = this.text;
+    let data: Message['content'] = this.text;
 
     if (this.images?.length) {
       const imgContent: ImageContent[] = this.images.map((img) => ({ type: 'image_url', image_url: { url: img } }));

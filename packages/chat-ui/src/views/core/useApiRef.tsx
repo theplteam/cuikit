@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Thread, DMessage, MessageModel } from '../../models';
+import { Thread, Message, MessageModel } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
 
-export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> = {
+export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
    * Get all messages from current thread
    */
@@ -31,7 +31,7 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
   /**
    * Send message to conversation
    */
-  sendUserMessage: (content: DMessage['content']) => Promise<boolean>;
+  sendUserMessage: (content: Message['content']) => Promise<boolean>;
   /**
    * Triggered when another thread is opened.
    */
@@ -55,14 +55,14 @@ export type ApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> =
   handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
 };
 
-export type PrivateApiRefType<DM extends DMessage = any, DD extends Thread<DM> = any> = {
+export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   allMessages: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
   branch: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
   getListener: <K extends keyof ThreadListenersMap<DM>>(key: K) => ThreadListenersMap<DM>[K] | undefined;
   updateScrollButtonState: () => void;
 } & ApiRefType<DM, DD>;
 
-export const useApiRef = <DM extends DMessage, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
+export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
   const apiRef = React.useRef<PrivateApiRefType<DM, DD>>({
     onChangeThread: NOOP,
     openNewThread: NOOP,

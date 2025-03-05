@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
-import { Thread, ThreadModel, DMessage } from '../../models';
+import { Thread, ThreadModel, Message } from '../../models';
 import { PrivateApiRefType } from './useApiRef';
 import { Threads } from '../../models/Threads';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -9,7 +9,7 @@ import { useAdapterContext } from '../adapter/AdapterContext';
 import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
-export type ChatGlobalContextType<DM extends DMessage, DD extends Thread<DM>> = {
+export type ChatGlobalContextType<DM extends Message, DD extends Thread<DM>> = {
   thread: ThreadModel<DM, DD> | undefined;
   threads: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
@@ -21,12 +21,12 @@ export type ChatGlobalContextType<DM extends DMessage, DD extends Thread<DM>> = 
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);
 
-type ProviderProps<DM extends DMessage, DD extends Thread<DM>> = React.PropsWithChildren<{
+type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   props: ChatPropsTypes<DM, DD>,
   apiManager: ApiManager;
 }>;
 
-const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
+const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const threadAdapter = useAdapterContext();
   const model = React.useMemo(() => new Threads<DM, DD>(
     threadAdapter,
@@ -62,7 +62,7 @@ const ChatGlobalProvider = <DM extends DMessage, DD extends Thread<DM>>({ props,
   );
 };
 
-const useChatContext = <DM extends DMessage, DD extends Thread<DM>>(): ChatGlobalContextType<DM, DD> => {
+const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobalContextType<DM, DD> => {
   const context = React.useContext(Context);
 
   if (!context) {

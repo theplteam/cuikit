@@ -1,8 +1,8 @@
 import { ThreadModel } from '../../models/ThreadModel';
-import { Thread, DMessage } from '../../models';
+import { Thread, Message } from '../../models';
 import { PrivateApiRefType } from '../core/useApiRef';
 
-export const getThreadListeners: <DM extends DMessage, DD extends Thread<DM>>(thread: ThreadModel<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (thread) =>
+export const getThreadListeners: <DM extends Message, DD extends Thread<DM>>(thread: ThreadModel<DM, DD>) => PrivateApiRefType<DM>['getListener'] = (thread) =>
   (key) => {
   // TODO: #ANY
   let value: any;

@@ -1,10 +1,10 @@
 import { StreamSmootherModel } from './StreamSmootherModel';
-import { DMessage, MessageModel } from '../MessageModel';
+import { Message, MessageModel } from '../MessageModel';
 import { StreamSmootherAbstract } from './StreamSmootherAbstract';
 import { ThreadModel } from '../ThreadModel';
 import { Thread } from '../ThreadData';
 
-export type MessageStreamManagerOptions<DM extends DMessage> = {
+export type MessageStreamManagerOptions<DM extends Message> = {
   smoother?: boolean | ((message: MessageModel<DM>) => StreamSmootherAbstract);
   clearStatusAfterFirstText?: boolean;
 }
@@ -12,7 +12,7 @@ export type MessageStreamManagerOptions<DM extends DMessage> = {
 /**
  * @deprecated - old stream version
  */
-export class MessageStreamManager<DM extends DMessage, DD extends Thread<DM>> {
+export class MessageStreamManager<DM extends Message, DD extends Thread<DM>> {
   // дополнительный стрим, чтобы печатание было более плавным, вместо рывков с большими кусками
   readonly smoother: StreamSmootherAbstract | undefined;
 

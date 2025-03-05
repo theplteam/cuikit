@@ -1,9 +1,9 @@
-import { DMessage, MessageModel } from './MessageModel';
+import { Message, MessageModel } from './MessageModel';
 import { MessageSentParams, StreamResponseState, ThreadHistoryItemType, ThreadModel } from './ThreadModel';
 
-export class MessageSender<DM extends DMessage> {
+export class MessageSender<DM extends Message> {
   constructor(
-    public readonly content: DMessage['content'],
+    public readonly content: Message['content'],
     private userMessage: MessageModel<DM>,
     private assistantMessage: MessageModel<DM>,
     private thread: ThreadModel<DM>,
@@ -40,7 +40,7 @@ export class MessageSender<DM extends DMessage> {
     }
   }
 
-  getUserParams = (resolver: (params: { message: DMessage }) => void): MessageSentParams<DM> => {
+  getUserParams = (resolver: (params: { message: Message }) => void): MessageSentParams<DM> => {
     const message = this.assistantMessage;
     return {
       content: this.content,
