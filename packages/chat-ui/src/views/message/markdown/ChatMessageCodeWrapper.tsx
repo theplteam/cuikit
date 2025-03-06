@@ -13,7 +13,7 @@ import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 type Props = React.JSX.IntrinsicElements['pre'];
 
 const PreStyled = styled('pre')(() => ({
-  '&&& div:first-child': {
+  '&&& div:first-of-type': {
     flexDirection: 'row',
   }
 }))

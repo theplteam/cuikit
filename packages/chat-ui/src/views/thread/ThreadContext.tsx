@@ -23,7 +23,7 @@ type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<
   thread: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
-  globalProps: Pick<ChatGlobalContextType<any, any>, 'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches'>;
+  globalProps: Pick<ChatGlobalContextType<any, any>, 'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'handleBundleBranch'>;
 }>;
 
 const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
@@ -43,7 +43,7 @@ const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, m
   useThreadApiInitialization(thread, apiManager, onMessageSend);
 
   React.useMemo(() => {
-    thread?.messages.init(globalProps.enableBranches);
+    thread?.messages.init(globalProps.enableBranches, globalProps.handleBundleBranch);
   }, [thread]);
 
   /*const [state, setState] = React.useState(0)

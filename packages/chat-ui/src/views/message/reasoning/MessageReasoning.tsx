@@ -48,10 +48,8 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
 
   const inProgress = (!statusText
     || (statusText !== StreamResponseState.TYPING_MESSAGE
-    && statusText !== StreamResponseState.FINISH_MESSAGE))
+      && statusText !== StreamResponseState.FINISH_MESSAGE))
     && !!isLatest;
-
-  console.log(inProgress, statusText);
 
   const [isExpanding, setIsExpanding] = React.useState(inProgress);
   const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);
@@ -67,7 +65,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
     if (newValue) {
       setViewType(ViewType.FULL);
     } else {
-      setTimeout(() => setViewType(ViewType.SHORT),transitionDuration);
+      setTimeout(() => setViewType(ViewType.SHORT), transitionDuration);
     }
     setTimeout(
       () => apiRef.current?.updateScrollButtonState(),
@@ -100,45 +98,45 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
       >
         <LineBoxStyled sx={{ opacity: reasoning ? 1 : 0 }} />
         {reasoningType === ReasoningViewType.STREAM && (
-        <Collapse in={isExpanding} timeout={transitionDuration} sx={{ flex: 1 }}>
-          <Box
-            ml={2}
-            flex={1}
-          >
-            <SimpleScrollbar style={{ maxHeight: 300 }}>
-              <MessageReasoningFull text={reasoning} />
-            </SimpleScrollbar>
-          </Box>
-        </Collapse>
-          )}
-        {reasoningType === ReasoningViewType.HEADLINES && (
-        <>
-          <Collapse in={isExpanding} timeout={transitionDuration} collapsedSize={fullCollapseSize}>
-            <Fade in={isExpanding} timeout={transitionDuration}>
-              <Box display={isFull ? undefined : 'none'} ml={2}>
+          <Collapse in={isExpanding} timeout={transitionDuration} sx={{ flex: 1 }}>
+            <Box
+              ml={2}
+              flex={1}
+            >
+              <SimpleScrollbar style={{ maxHeight: 300 }}>
                 <MessageReasoningFull text={reasoning} />
+              </SimpleScrollbar>
+            </Box>
+          </Collapse>
+        )}
+        {reasoningType === ReasoningViewType.HEADLINES && (
+          <>
+            <Collapse in={isExpanding} timeout={transitionDuration} collapsedSize={fullCollapseSize}>
+              <Fade in={isExpanding} timeout={transitionDuration}>
+                <Box display={isFull ? undefined : 'none'} ml={2}>
+                  <MessageReasoningFull text={reasoning} />
+                </Box>
+              </Fade>
+            </Collapse>
+            <Fade in={isShort} timeout={transitionDuration}>
+              <Box
+                // Animation replays after switching from display: none
+                // https://www.w3.org/TR/css-animations-1/#animations
+                // If an element has a display of none, updating display to a value other than none will start all animations applied to the element by the animation-name property,
+                // as well as all animations applied to descendants with display other than none.
+                ref={shortRef}
+                height={isFull ? 0 : 'auto'}
+                overflow="hidden"
+                width={isFull ? 0 : undefined}
+                visibility={isFull ? 'hidden' : 'visible'}
+                ml={2}
+                onClick={handleExpandedChange}
+              >
+                <ReasoningTextSmooth text={description} />
               </Box>
             </Fade>
-          </Collapse>
-          <Fade in={isShort} timeout={transitionDuration}>
-            <Box
-                  // Animation replays after switching from display: none
-                  // https://www.w3.org/TR/css-animations-1/#animations
-                  // If an element has a display of none, updating display to a value other than none will start all animations applied to the element by the animation-name property,
-                  // as well as all animations applied to descendants with display other than none.
-              ref={shortRef}
-              height={isFull ? 0 : 'auto'}
-              overflow="hidden"
-              width={isFull ? 0 : undefined}
-              visibility={isFull ? 'hidden' : 'visible'}
-              ml={2}
-              onClick={handleExpandedChange}
-            >
-              <ReasoningTextSmooth text={description} />
-            </Box>
-          </Fade>
-        </>
-      )}
+          </>
+        )}
       </Stack>
     </Stack>
 
