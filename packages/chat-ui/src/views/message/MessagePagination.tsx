@@ -26,8 +26,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
   const messages = useObserverValue(apiRef.current?.getListener('allMessages'), []);
 
   const makeBranch = (currentMessage: MessageModel, messages: MessageModel[]) => {
-    const filteredMessages = messages.filter(m => m.role === 'user' && (m.parentId === currentMessage.parentId));
-
+    const filteredMessages = messages.filter(m => (m.role === message.role) && (m.parentId === currentMessage.parentId));
     return filteredMessages;
   }
 
