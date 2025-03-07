@@ -7,6 +7,7 @@ import { useThreadContext } from '../thread/ThreadContext';
 import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 export type MessagePaginationProps = {
   message: MessageModel;
@@ -20,11 +21,17 @@ export const MessagePaginationHeight = 30
 
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
   const { apiRef } = useThreadContext();
+  const { handleBranchPagination } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const messages = useObserverValue(apiRef.current?.getListener('allMessages'), []);
-  const branches = messages?.filter(v => v.parentId === message.parentId) ?? [];
 
-  // console.log('page ' + (branches.findIndex(v => v.id === message.id) + 1), message.id, branches.map(v => v.id));
+  const makeBranch = (currentMessage: MessageModel, messages: MessageModel[]) => {
+    const filteredMessages = messages.filter(m => (m.role === message.role) && (m.parentId === currentMessage.parentId));
+    return filteredMessages;
+  }
+
+  const branches = handleBranchPagination?.(message, messages || []) ?? makeBranch(message, messages || []) ?? [];
+
   const { items } = usePagination({
     count: branches.length,
     boundaryCount: 0,
@@ -33,8 +40,6 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
     onChange: (_event, page) => apiRef.current?.handleChangeBranch(branches[page - 1]),
   });
 
-  /*console.log(branches);
-  console.log(thread.messages.map((v) => ({ text: v.text, id: v.parentId })));*/
   if (branches.length <= 1) return <Box height={MessagePaginationHeight} />;
 
   return (

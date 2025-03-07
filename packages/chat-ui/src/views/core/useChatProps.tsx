@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { MessageSentParams } from '../../models/ThreadModel';
-import { ChatMessageOwner, Message, RatingType } from '../../models/MessageModel';
+import { ChatMessageOwner, Message, MessageModel, RatingType } from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -64,6 +64,14 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   handleStopMessageStreaming?: () => void;
   /**
+   * This function builds a message branch.
+   */
+  handleBundleBranch?: (messages: MessageModel<DM>[], startFrom?: MessageModel<DM>,) => MessageModel<DM>[];
+  /**
+   * This function defines pagination for the branching point of the chat.
+   */
+  handleBranchPagination?: (currentMessage: MessageModel<DM>, messages: MessageModel<DM>[]) => MessageModel<DM>[];
+  /**
    * Callback fired when first message sent
    */
   onFirstMessageSent?: ChatEventListeners<{ thread: DD }>;
@@ -92,7 +100,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * A flag indicating whether message copying is disabled
    */
-  disableMessageCopying ?: boolean;
+  disableMessageCopying?: boolean;
   /**
    * Enable chat reasoning functionality
    */
@@ -134,13 +142,15 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
 }> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
-  const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, ...chatProps } = userProps;
+  const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;
 
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 
   return React.useMemo(() => ({
     ...chatProps,
+    thread,
+    threads,
     loading: userProps.loading ?? false,
-  }), [chatProps, userProps.loading]);
+  }), [chatProps, thread, threads.length, userProps.loading]);
 }
