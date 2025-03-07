@@ -51,6 +51,8 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
       && statusText !== StreamResponseState.FINISH_MESSAGE))
     && !!isLatest;
 
+  console.log(inProgress, statusText);
+
   const [isExpanding, setIsExpanding] = React.useState(inProgress);
   const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);
 

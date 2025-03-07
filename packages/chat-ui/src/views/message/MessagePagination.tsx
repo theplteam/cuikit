@@ -21,7 +21,7 @@ export const MessagePaginationHeight = 30
 
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
   const { apiRef } = useThreadContext();
-  const { handleBranch } = useChatContext();
+  const { handleBranchPagination } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const messages = useObserverValue(apiRef.current?.getListener('allMessages'), []);
 
@@ -30,7 +30,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
     return filteredMessages;
   }
 
-  const branches = handleBranch?.(message, messages || []) ?? makeBranch(message, messages || []) ?? [];
+  const branches = handleBranchPagination?.(message, messages || []) ?? makeBranch(message, messages || []) ?? [];
 
   const { items } = usePagination({
     count: branches.length,

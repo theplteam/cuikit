@@ -20,7 +20,7 @@ const BoxStyled = styled(Box)(() => ({
   '& ol, p, ul': {
     margin: 0,
   },
-  '& div:first-of-type': {
+  '& div:first-child': {
     display: 'flex',
     flexDirection: 'column',
     gap: 16,

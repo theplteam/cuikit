@@ -68,9 +68,9 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   handleBundleBranch?: (messages: MessageModel<DM>[], startFrom?: MessageModel<DM>,) => MessageModel<DM>[];
   /**
-   * This function defines the branching point of the chat.
+   * This function defines pagination for the branching point of the chat.
    */
-  handleBranch?: (currentMessage: MessageModel<DM>, messages: MessageModel<DM>[]) => MessageModel<DM>[];
+  handleBranchPagination?: (currentMessage: MessageModel<DM>, messages: MessageModel<DM>[]) => MessageModel<DM>[];
   /**
    * Callback fired when first message sent
    */
