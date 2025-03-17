@@ -89,7 +89,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThre
 
   const handleClickListItem = () => {
     model.actions.menuDriverOpen.value = false;
-    setThread(thread);
+    setThread(thread.data.data);
   }
 
   return (

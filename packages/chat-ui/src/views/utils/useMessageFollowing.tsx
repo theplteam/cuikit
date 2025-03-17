@@ -24,7 +24,7 @@ class FollowingClass {
     private getPosition: ChatScrollerType,
     private scrollTo: (y: number) => void,
     private marginTop: number,
-  ) {}
+  ) { }
 
   init = () => {
     when(
@@ -142,8 +142,8 @@ export const useMessageFollowing = (
   const theme = useTheme();
 
   React.useEffect(() => {
-    const dialogueContaier = document.getElementsByClassName(chatClassNames.threadRoot)[0];
-    const marginTop = dialogueContaier.getBoundingClientRect().top ?? 0;
+    const dialogueContaier = document.getElementById(chatClassNames.threadRoot);
+    const marginTop = dialogueContaier?.getBoundingClientRect().top ?? 0;
 
     const newModel = lastMessageModel
       // TODO: hardcode

@@ -14,6 +14,7 @@ import { Thread, Message } from '../../models';
 import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
+import { chatClassNames } from '../core/chatClassNames';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -63,32 +64,34 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
       }}
       scrollRef={scrollApiRef}
     >
-      <slots.thread {...slotProps.thread}>
-        <MessagesRowStyled
-          justifyContent={thread?.messages.length ? 'stretch' : 'center'}
-        >
-          {!!thread && (
-            <>
-              <ChatMessages />
-              {/*<QuestionsList thread={thread}/>*/}
-            </>
-          )}
-        </MessagesRowStyled>
-        {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
-        <Watermark />
-        <Stack position="sticky" bottom={0} zIndex={1}>
-          <TextRowBlock>
-            <ChatScroller
-              thread={thread}
-              contentRef={contentRef}
-              scrollApiRef={scrollApiRef}
-              apiManager={apiManager}
-            />
-            <ChatTextFieldRow thread={thread} />
-          </TextRowBlock>
-        </Stack>
-        <MessageSelectedMobile />
-      </slots.thread>
+      <div id={chatClassNames.threadRoot}>
+        <slots.thread {...slotProps.thread}>
+          <MessagesRowStyled
+            justifyContent={thread?.messages.length ? 'stretch' : 'center'}
+          >
+            {!!thread && (
+              <>
+                <ChatMessages />
+                {/*<QuestionsList thread={thread}/>*/}
+              </>
+            )}
+          </MessagesRowStyled>
+          {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
+          <Watermark />
+          <Stack position="sticky" bottom={0} zIndex={1}>
+            <TextRowBlock>
+              <ChatScroller
+                thread={thread}
+                contentRef={contentRef}
+                scrollApiRef={scrollApiRef}
+                apiManager={apiManager}
+              />
+              <ChatTextFieldRow thread={thread} />
+            </TextRowBlock>
+          </Stack>
+          <MessageSelectedMobile />
+        </slots.thread>
+      </div>
     </ThreadProvider>
   );
 };
