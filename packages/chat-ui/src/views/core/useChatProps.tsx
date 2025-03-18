@@ -152,5 +152,5 @@ export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProp
     thread,
     threads,
     loading: userProps.loading ?? false,
-  }), [chatProps, thread, threads.length, userProps.loading]);
+  }), [chatProps, userProps.loading]);
 }
