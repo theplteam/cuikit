@@ -6,7 +6,6 @@ import { useThreadContext } from '../thread/ThreadContext';
 import { when } from '../../utils/observers/when';
 import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { chatClassNames } from '../core/chatClassNames';
 
 class FollowingClass {
   private _observer?: ResizeObserver;
@@ -142,7 +141,7 @@ export const useMessageFollowing = (
   const theme = useTheme();
 
   React.useEffect(() => {
-    const dialogueContaier = document.getElementById(chatClassNames.threadRoot);
+    const dialogueContaier = document.getElementById(ChatViewConstants.DIALOGUE_ROOT_ID);
     const marginTop = dialogueContaier?.getBoundingClientRect().top ?? 0;
 
     const newModel = lastMessageModel

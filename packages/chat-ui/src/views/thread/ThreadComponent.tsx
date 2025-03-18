@@ -14,7 +14,6 @@ import { Thread, Message } from '../../models';
 import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
-import { chatClassNames } from '../core/chatClassNames';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -64,7 +63,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
       }}
       scrollRef={scrollApiRef}
     >
-      <div id={chatClassNames.threadRoot}>
+      <div id={ChatViewConstants.DIALOGUE_ROOT_ID}>
         <slots.thread {...slotProps.thread}>
           <MessagesRowStyled
             justifyContent={thread?.messages.length ? 'stretch' : 'center'}
