@@ -9,6 +9,8 @@ import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
+import SvgIcon from '@mui/material/SvgIcon';
+import { Threads } from '../../models/Threads';
 
 type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
   /**
@@ -38,6 +40,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Action buttons for the assistant's message.
    */
   assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: Thread<DM> }>[];
+  /**
+   * Action buttons for the thread's list item menu.
+   */
+  threadActions?: { onClick: (model: Threads<DM, DD>, thread: DD) => void; label: string, startIcon?: typeof SvgIcon, disabled?: boolean; }[];
   /**
    * Runtime processing of the assistant's message.
    * @param text

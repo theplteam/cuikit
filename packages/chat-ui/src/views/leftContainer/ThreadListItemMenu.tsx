@@ -5,6 +5,7 @@ import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Threads } from '../../models/Threads';
 import { useLocalizationContext } from '../core/LocalizationContext';
+import { useChatContext } from 'views/core/ChatGlobalContext';
 
 type Props = {
   anchorEl: null | HTMLElement;
@@ -16,6 +17,7 @@ type Props = {
 
 const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thread }) => {
   const { coreSlots } = useChatSlots();
+  const { threadActions } = useChatContext();
   const locale = useLocalizationContext();
 
   const handleDelete = () => {
@@ -37,6 +39,16 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
       }}
       onClose={handleClose}
     >
+      {threadActions?.map(({ disabled, startIcon, onClick, label }, index) => (
+        <coreSlots.menuItem
+          key={index}
+          startIcon={startIcon}
+          disabled={disabled}
+          onClick={() => onClick(model, thread.data.data)}
+        >
+          {label}
+        </coreSlots.menuItem>
+      ))}
       <coreSlots.menuItem
         startIcon={DeleteIcon}
         disabled={!thread.isOwner}
