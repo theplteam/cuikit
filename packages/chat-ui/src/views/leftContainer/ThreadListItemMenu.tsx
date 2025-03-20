@@ -5,7 +5,7 @@ import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Threads } from '../../models/Threads';
 import { useLocalizationContext } from '../core/LocalizationContext';
-import { useChatContext } from 'views/core/ChatGlobalContext';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
   anchorEl: null | HTMLElement;
@@ -44,7 +44,10 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
           key={index}
           startIcon={startIcon}
           disabled={disabled}
-          onClick={() => onClick(model, thread.data.data)}
+          onClick={() => {
+            handleClose();
+            onClick(model, thread.data.data)
+          }}
         >
           {label}
         </coreSlots.menuItem>

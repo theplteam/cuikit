@@ -6,7 +6,7 @@ export class ChatViewConstants {
 
   static readonly SCROLL_ID = 'chatScrollingBlockId';
 
-  static readonly DIALOGUE_ROOT_ID = 'chatScrollingBlockId';
+  static readonly DIALOGUE_ROOT_ID = 'chatRootBlockId';
 
   static readonly MESSAGE_BOX_ID = 'chatMessageBoxId';
 
