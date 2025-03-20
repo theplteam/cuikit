@@ -49,7 +49,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     if (!thread) {
       apiManager.apiRef.current?.openNewThread(handleCreateNewThread());
     }
-  }, [apiManager.apiRef.current]);
+  }, [apiManager.apiRef.current?.openNewThread]);
 
   return (
     <ThreadProvider
