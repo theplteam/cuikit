@@ -46,6 +46,7 @@ export class MessageSender<DM extends Message> {
       content: this.content,
       history: this.history,
       message: this.userMessage.data,
+      assistantMessage: message.data,
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,

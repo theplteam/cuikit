@@ -26,6 +26,8 @@ export type MessageSentParams<DM extends Message = any> = {
   content: Message['content'],
   /** User's message */
   message: DM,
+  /** Assistant's message */
+  assistantMessage: DM,
   /** Thread history */
   history: ThreadHistoryItemType[],
   /**
