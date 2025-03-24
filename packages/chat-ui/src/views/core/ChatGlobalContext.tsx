@@ -33,7 +33,7 @@ const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, 
     props.threads,
     props.thread,
     props.onUserMessageSent,
-  ), []);
+  ), [props.loading]);
 
   const currentThread = useObserverValue(model.currentThread);
   const threads = useObserverValue(model.list) ?? [];
