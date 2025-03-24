@@ -23,7 +23,7 @@ export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: Mess
 
 export type MessageSentParams<DM extends Message = any, DD extends Thread<DM> = any> = {
   /** Thread */
-  thread: DD,
+  thread: ThreadData<DM, DD>,
   /** User's message content */
   content: Message['content'],
   /** User's message */
