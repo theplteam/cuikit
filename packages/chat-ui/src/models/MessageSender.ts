@@ -43,7 +43,7 @@ export class MessageSender<DM extends Message> {
   getUserParams = (resolver: (params: { message: Message }) => void): MessageSentParams<DM> => {
     const message = this.assistantMessage;
     return {
-      thread: this.thread,
+      thread: this.thread.data.data,
       content: this.content,
       history: this.history,
       message: this.userMessage.data,
