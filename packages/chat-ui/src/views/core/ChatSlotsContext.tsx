@@ -18,7 +18,7 @@ type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithC
 }>;
 
 const ChatSlotsProvider = <DM extends Message, DD extends Thread<DM>>({ slots, coreSlots, slotProps, children }: ProviderProps<DM, DD>) => {
-  const [value] = React.useState({ slots, coreSlots, slotProps });
+  const value = React.useMemo(() => ({ slots, coreSlots, slotProps }), [slots, coreSlots, slotProps]);
   return (
     <Context.Provider value={value as ChatSlotsContextType<DM, DD>}>
       {children}

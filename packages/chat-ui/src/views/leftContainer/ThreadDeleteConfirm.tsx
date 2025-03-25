@@ -24,7 +24,7 @@ const ThreadDeleteConfirm: React.FC = () => {
   const handleDelete = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
-      onThreadDeleted?.({ thread: deleteItem['data']['data'] });
+      onThreadDeleted?.({ thread: deleteItem });
       snackbar.show(locale.threadDeletedSuccess);
     }
     handleClose();

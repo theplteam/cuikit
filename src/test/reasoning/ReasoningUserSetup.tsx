@@ -49,7 +49,6 @@ const App: React.FC = () => {
   ]);
 
   const { reasoningGenerator, streamGenerator } = useAssistantAnswerMock();
-
   const onUserMessageSent = async ({ reasoning, ...params }: MessageSentParams) => {
     const reasoningStream = reasoningGenerator({ loremIpsum: 'large' });
     const neutralHeadings = [

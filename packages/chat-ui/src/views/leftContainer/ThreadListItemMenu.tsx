@@ -22,7 +22,7 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
 
   const handleDelete = () => {
     handleClose();
-    model.actions.deleteItem.value = thread;
+    model.actions.deleteItem.value = thread.data.data;
   }
 
   return (
@@ -39,26 +39,23 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
       }}
       onClose={handleClose}
     >
-      {threadActions?.map(({ disabled, startIcon, onClick, label }, index) => (
-        <coreSlots.menuItem
-          key={index}
-          startIcon={startIcon}
-          disabled={disabled}
-          onClick={() => {
-            handleClose();
-            onClick(model, thread.data.data)
-          }}
-        >
-          {label}
-        </coreSlots.menuItem>
-      ))}
-      <coreSlots.menuItem
-        startIcon={DeleteIcon}
-        disabled={!thread.isOwner}
-        onClick={handleDelete}
-      >
-        {locale.threadActionDelete}
-      </coreSlots.menuItem>
+      {threadActions?.length
+        ? threadActions.map((ActionComponent, index) => (
+          <ActionComponent
+            key={index}
+            model={model}
+            thread={thread.data.data}
+            onClose={handleClose}
+          />
+        )) : (
+          <coreSlots.menuItem
+            startIcon={DeleteIcon}
+            disabled={!thread.isOwner}
+            onClick={handleDelete}
+          >
+            {locale.threadActionDelete}
+          </coreSlots.menuItem>
+        )}
     </MdMenu>
   );
 }

@@ -29,6 +29,7 @@ import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
+import useDeepMemo from '../utils/useDeepMemo';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -53,7 +54,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
 ): SlotsReturnType<DM, DD> => {
   const { coreSlots, slots, slotProps, helloMessage } = usersProps;
 
-  const res = React.useMemo(() => {
+  const res = useDeepMemo(() => {
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
       iconButton: coreSlots?.iconButton ?? IconButton,
