@@ -12,7 +12,7 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { Thread } from '../../models';
 
 const ThreadsListBlock: React.FC = () => {
-  const { loading, model, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
+  const { loading, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
