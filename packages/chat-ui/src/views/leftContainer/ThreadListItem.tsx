@@ -11,11 +11,9 @@ import { iconButtonClasses } from '@mui/material/IconButton';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatCoreSlots } from '../../views/core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
-import { Threads } from '../../models/Threads';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  // TODO: ANY
-  model: Threads<any, any>;
   thread: ThreadModel;
   currentThread: ThreadModel | undefined;
   setThread: (thread: ThreadModel['data']['data']) => void;
@@ -73,10 +71,12 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThread }) => {
+const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread }) => {
   const {
     anchorEl, handleClose, handleClick
   } = usePopoverState({ hideByAnchorElement: true });
+
+  const { apiRef } = useChatContext();
 
   const coreSlots = useChatCoreSlots();
 
@@ -88,7 +88,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThre
   const selected = currentThread?.id === thread.id;
 
   const handleClickListItem = () => {
-    model.actions.menuDriverOpen.value = false;
+    apiRef.current?.setMenuDriverOpen(false);
     setThread(thread.data.data);
   }
 
@@ -124,7 +124,6 @@ const ThreadListItem: React.FC<Props> = ({ thread, model, currentThread, setThre
       <ThreadListItemMenu
         anchorEl={anchorEl}
         handleClose={handleClose}
-        model={model}
         thread={thread}
       />
     </>

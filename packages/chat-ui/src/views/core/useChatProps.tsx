@@ -9,7 +9,6 @@ import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
-import { Threads } from '../../models/Threads';
 
 type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
   /**
@@ -42,7 +41,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Action buttons for the thread's list item menu.
    */
-  threadActions?: React.JSXElementConstructor<{ model: Threads<DM, DD>, thread: DD, onClose: () => void }>[];
+  threadActions?: React.JSXElementConstructor<{ thread: DD, onClose: () => void }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
@@ -113,7 +112,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Enable user's ability to add pictures in messages
    */
-  enableUserPictures?: boolean;
+  enableImageAttachments?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату

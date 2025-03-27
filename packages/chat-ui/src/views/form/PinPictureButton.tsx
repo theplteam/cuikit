@@ -19,7 +19,7 @@ type Props = {
 
 const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableUserPictures, thread } = useChatContext();
+  const { enableImageAttachments, thread } = useChatContext();
 
   const ref = React.useRef<HTMLInputElement>(null);
   const mobileRef = React.useRef<HTMLInputElement>(null);
@@ -55,7 +55,7 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   };
 
   const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping || !thread;
-  if (!enableUserPictures) return null;
+  if (!enableImageAttachments) return null;
   return (
     <Stack
       alignItems="flex-end"

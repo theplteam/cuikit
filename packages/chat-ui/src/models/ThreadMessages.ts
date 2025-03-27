@@ -29,7 +29,7 @@ export class ThreadMessages<DM extends Message> {
     if (enableBranches) {
       this.bundleBranch = userBundleBranch ?? this._bundleBranch;
 
-      const branch = this.bundleBranch(this.allMessagesArray, arrayLast(this.allMessagesArray));
+      const branch = this.bundleBranch(this.allMessagesArray, this._lastMessage ?? arrayLast(this.allMessagesArray));
       this._updateBranch(branch);
 
       // reaction to adding to the array of all messages to update the thread

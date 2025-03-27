@@ -3,26 +3,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ThreadModel } from '../../models/ThreadModel';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { Threads } from '../../models/Threads';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
   anchorEl: null | HTMLElement;
   handleClose: () => void;
-  // TODO #ANY
-  model: Threads<any, any>;
   thread: ThreadModel;
 };
 
-const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thread }) => {
+const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, thread }) => {
   const { coreSlots } = useChatSlots();
-  const { threadActions } = useChatContext();
+  const { threadActions, apiRef } = useChatContext();
   const locale = useLocalizationContext();
 
   const handleDelete = () => {
     handleClose();
-    model.actions.deleteItem.value = thread.data.data;
+    apiRef.current?.setDeleteThreadItem(thread.data.data);
   }
 
   return (
@@ -43,7 +40,6 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, model, thr
         ? threadActions.map((ActionComponent, index) => (
           <ActionComponent
             key={index}
-            model={model}
             thread={thread.data.data}
             onClose={handleClose}
           />
