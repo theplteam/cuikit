@@ -24,11 +24,21 @@ export const useApiRefInitialization = (
       model.currentThread.value = model.createFromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);;
     };
 
+    const setMenuDriverOpen = (value: boolean) => {
+      model.actions.menuDriverOpen.value = value;
+    };
+
+    const setDeleteThreadItem = (thread?: Thread) => {
+      model.actions.deleteItem.value = thread;
+    };
+
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
     apiManager.setMethod('deleteThread', model.delete);
     apiManager.setMethod('getCurrentThread', () => model.currentThread.value?.data);
+    apiManager.setMethod('setDeleteThreadItem', setDeleteThreadItem);
+    apiManager.setMethod('setMenuDriverOpen', setMenuDriverOpen);
 
   }, [props, model]);
 }

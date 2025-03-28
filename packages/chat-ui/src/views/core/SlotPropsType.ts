@@ -18,7 +18,7 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Override the full thread component
    */
-  thread: ChildrenProps;
+  thread: { id: string } & ChildrenProps;
   /**
    * Parent for the threads list
    * Will ignored if threadsList slot provided

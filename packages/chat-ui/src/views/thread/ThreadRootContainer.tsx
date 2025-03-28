@@ -3,11 +3,12 @@ import Box, { BoxProps } from '@mui/material/Box';
 import { chatClassNames } from '../core/chatClassNames';
 import clsx from 'clsx';
 
-type Props = BoxProps;
+type Props = { id: string } & BoxProps;
 
 const ThreadRootContainer: React.FC<Props> = (boxProps) => {
   return (
     <Box
+      id={boxProps.id}
       width="100%"
       display="flex"
       justifyContent="center"

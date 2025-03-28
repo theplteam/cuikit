@@ -21,11 +21,15 @@ export enum StreamResponseState {
 export type ThreadHistoryItemType = { role: ChatMessageOwner.USER, content: MessageUserContent }
   | { role: ChatMessageOwner.ASSISTANT, content: MessageAssistantContent }
 
-export type MessageSentParams<DM extends Message = any> = {
+export type MessageSentParams<DM extends Message = any, DD extends Thread<DM> = any> = {
+  /** Thread */
+  thread: ThreadData<DM, DD>,
   /** User's message content */
   content: Message['content'],
   /** User's message */
   message: DM,
+  /** Assistant's message */
+  assistantMessage: DM,
   /** Thread history */
   history: ThreadHistoryItemType[],
   /**

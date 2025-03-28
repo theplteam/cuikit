@@ -11,20 +11,20 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { model, onThreadDeleted } = useChatContext();
+  const { model, onThreadDeleted, apiRef } = useChatContext();
   const deleteItem = useObserverValue(model.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
   const snackbar = useSnackbar();
   const locale = useLocalizationContext();
 
   const handleClose = () => {
-    model.actions.deleteItem.value = undefined;
+    apiRef.current?.setDeleteThreadItem(undefined);
   }
 
   const handleDelete = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
-      onThreadDeleted?.({ thread: deleteItem['data']['data'] });
+      onThreadDeleted?.({ thread: deleteItem });
       snackbar.show(locale.threadDeletedSuccess);
     }
     handleClose();

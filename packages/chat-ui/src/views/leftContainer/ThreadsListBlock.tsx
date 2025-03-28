@@ -12,7 +12,7 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { Thread } from '../../models';
 
 const ThreadsListBlock: React.FC = () => {
-  const { loading, model, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
+  const { loading, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
@@ -39,20 +39,19 @@ const ThreadsListBlock: React.FC = () => {
                     textComponentProps={slotProps.listTimeText}
                   />
                   {threadsInGroup.map(({ groupKey, thread }) => {
-                  if (groupKey !== group.id) return null;
-                  return (
-                    <Box key={thread.id}>
-                      <ThreadListItem
-                        currentThread={currentThread}
-                        setThread={setThread}
-                        thread={thread}
-                        model={model}
-                      />
-                    </Box>
-                  );
-                })}
+                    if (groupKey !== group.id) return null;
+                    return (
+                      <Box key={thread.id}>
+                        <ThreadListItem
+                          currentThread={currentThread}
+                          setThread={setThread}
+                          thread={thread}
+                        />
+                      </Box>
+                    );
+                  })}
                 </React.Fragment>
-            ))}
+              ))}
             </>
           </DelayRenderer>
         )}
