@@ -73,7 +73,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     messageMode.view(message.id);
     const newMessage = thread.editMessage(message, newText);
     apiRef.current?.handleChangeBranch(newMessage);
-    onAssistantMessageTypingFinish?.(thread.data.data);
+    onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
   }
 
   const onClickCancelEdit = () => {

@@ -63,7 +63,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
       }}
       scrollRef={scrollApiRef}
     >
-      <slots.thread {...slotProps.thread}>
+      <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread}>
         <MessagesRowStyled
           justifyContent={thread?.messages.length ? 'stretch' : 'center'}
         >

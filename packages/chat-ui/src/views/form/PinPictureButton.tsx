@@ -7,8 +7,9 @@ import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import { ChatViewConstants } from '../../views/ChatViewConstants';
-import { useSnackbar } from '../../views/hooks/useSnackbar';
+import { ChatViewConstants } from '../ChatViewConstants';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
   images: string[];
@@ -18,12 +19,15 @@ type Props = {
 
 const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   const coreSlots = useChatCoreSlots();
+  const { enableImageAttachments, thread } = useChatContext();
+
   const ref = React.useRef<HTMLInputElement>(null);
   const mobileRef = React.useRef<HTMLInputElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const isMobile = useMobile();
-  const locale = useLocalizationContext();
   const snackbar = useSnackbar();
+  const locale = useLocalizationContext();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
@@ -50,8 +54,8 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
     if (isMobile) setAnchorEl(null);
   };
 
-  const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping;
-
+  const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping || !thread;
+  if (!enableImageAttachments) return null;
   return (
     <Stack
       alignItems="flex-end"

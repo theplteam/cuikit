@@ -39,6 +39,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: Thread<DM> }>[];
   /**
+   * Action buttons for the thread's list item menu.
+   */
+  threadActions?: React.JSXElementConstructor<{ thread: DD, onClose: () => void }>[];
+  /**
    * Runtime processing of the assistant's message.
    * @param text
    */
@@ -105,6 +109,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Enable chat reasoning functionality
    */
   enableReasoning?: boolean;
+  /**
+   * Enable user's ability to add pictures in messages
+   */
+  enableImageAttachments?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
@@ -152,5 +160,5 @@ export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProp
     thread,
     threads,
     loading: userProps.loading ?? false,
-  }), [chatProps, thread, threads.length, userProps.loading]);
+  }), [chatProps, userProps.loading]);
 }
