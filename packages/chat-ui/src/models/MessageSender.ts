@@ -40,6 +40,22 @@ export class MessageSender<DM extends Message> {
     }
   }
 
+  onFinish = (resolver: (params: { message: Message }) => void) => {
+    this.changeTypingStatus(false);
+    resolver({message: this.userMessage.data});
+    this.assistantMessage.reasoningManager.updateTimeSec();
+
+    const assistantData = {
+      ...this.assistantMessage.data,
+      content: this.assistantMessage.text,
+    };
+
+    const userMessage = this.thread.adapter?.messageOutputFormat?.(this.userMessage.data) ?? this.userMessage.data;
+    const assistantMessage = this.thread.adapter?.messageOutputFormat?.(assistantData) ?? assistantData;
+
+    return { userMessage, assistantMessage }
+  }
+
   getUserParams = (resolver: (params: { message: Message }) => void): MessageSentParams<DM> => {
     const message = this.assistantMessage;
     return {
@@ -51,11 +67,7 @@ export class MessageSender<DM extends Message> {
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,
-      onFinish: () => {
-        this.changeTypingStatus(false);
-        resolver({message: this.userMessage.data});
-        message.reasoningManager.updateTimeSec();
-      },
+      onFinish: () => this.onFinish(resolver),
       reasoning: {
         pushChunk: message.reasoningManager.pushChunk,
         setFull: message.reasoningManager.setText,

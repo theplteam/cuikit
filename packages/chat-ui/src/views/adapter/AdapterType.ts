@@ -7,5 +7,10 @@ export type AdapterType<D = any, M = any> = {
    * @param message
    */
   transformMessage?: (message: M) => Message;
+  /**
+   *  Function is used in onFinish in the parameters of sending a message.
+   *  With its help you can change the format of the message that the chat returns.
+   */
+  messageOutputFormat?: (message: Message) => M;
   transformHistory?: <T>(history: ThreadHistoryItemType[]) => T[];
 };

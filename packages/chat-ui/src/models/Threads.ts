@@ -21,6 +21,7 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
     const threadConstructor = ((t: Thread)=> new ThreadModel(
       adapter.transformThread(t) as DD,
       onUserMessageSent,
+      adapter,
     ));
 
     this.list.value = threads.map(threadConstructor);

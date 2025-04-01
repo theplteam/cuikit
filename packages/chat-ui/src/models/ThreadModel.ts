@@ -6,6 +6,7 @@ import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { MessageSender } from './MessageSender';
+import { AdapterType } from 'views/adapter/AdapterType';
 
 export type NewMessageResponse = {
   user: Message,
@@ -40,7 +41,7 @@ export type MessageSentParams<DM extends Message = any, DD extends Thread<DM> = 
   /** Update text message  */
   setText: (text: string) => void,
   /** Assistant's response answer is complete. */
-  onFinish: () => void,
+  onFinish: () => { userMessage: Message, assistantMessage: Message },
   /** Set awaiting status */
   setStatus: (status: string) => void,
   /** Options for managing reasoning. */
@@ -98,6 +99,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   constructor(
     _data: DD,
     public readonly streamMessage: (params: MessageSentParams<DM>) => void | Promise<void>,
+    readonly adapter?: AdapterType,
   ) {
     this.data = new ThreadData(_data);
 

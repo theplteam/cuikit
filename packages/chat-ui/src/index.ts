@@ -11,6 +11,7 @@ import { chatClassNames } from './views/core/chatClassNames';
 
 export * from './models';
 export * from './views/adapter';
+export * from './views/adapter/AdapterProvider';
 
 type ChatApiRef = ApiRefType | null;
 
