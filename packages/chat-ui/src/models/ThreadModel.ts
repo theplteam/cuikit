@@ -41,7 +41,7 @@ export type MessageSentParams<DM extends Message = any, DD extends Thread<DM> = 
   /** Update text message  */
   setText: (text: string) => void,
   /** Assistant's response answer is complete. */
-  onFinish: () => { userMessage: Message, assistantMessage: Message },
+  onFinish: () => { userMessage: DM, assistantMessage: DM },
   /** Set awaiting status */
   setStatus: (status: string) => void,
   /** Options for managing reasoning. */
