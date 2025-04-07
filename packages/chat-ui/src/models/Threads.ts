@@ -47,7 +47,7 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
    * @param params - The arguments required to create a Thread instance, including data and a stream function.
    * @returns The existing or newly created Thread instance.
    */
-  fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
+  /*fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;
     let thread = this.get(data.id);
     if (!thread) {
@@ -55,7 +55,7 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
       this.list.value = [...this.list.value, thread];
     }
     return thread;
-  }
+  }*/
 
   createFromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;

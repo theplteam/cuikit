@@ -109,7 +109,6 @@ const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread }) =
         <BoxShadowStyled className={classShadowRight} />
         <coreSlots.iconButton
           size="small"
-          disabled={!thread.isOwner}
           sx={{
             position: 'absolute',
             right: (theme) => theme.spacing(1.5),

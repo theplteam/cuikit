@@ -40,7 +40,7 @@ export type Message = {
   content: MessageAssistantContent;
 })
 
-export class MessageModel<DM extends Message = any> {
+export class MessageModel<DM extends Message = Message> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */

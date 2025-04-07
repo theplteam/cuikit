@@ -40,7 +40,7 @@ type Props<DM extends Message, DD extends Thread<DM>, D = ThreadModel<DM, DD>> =
 export type ChatModelProps<DM extends Message, DD extends Thread<DM>> = Partial<Props<DM, DD>>;
 
 /**
- * TODO: #MB NO NEEDED
+ * @deprecated
  */
 export class ChatModel<DM extends Message, DD extends Thread<DM>> {
   readonly threadActions: Props<DM, DD>;

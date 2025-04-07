@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { MessageSentParams } from '../../models/ThreadModel';
-import { ChatMessageOwner, Message, MessageModel, RatingType } from '../../models/MessageModel';
+import { ChatMessageOwner, Message, MessageModel, MessageUserContent, RatingType } from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -10,7 +10,7 @@ import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 
-type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
+type RequiredProps<DD extends Thread<any>> = {
   /**
    * Threads list
    * @required
@@ -20,7 +20,7 @@ type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
    * Callback fired when the user sends a message to the thread.
    * @param message - User's message
    */
-  onUserMessageSent: (params: MessageSentParams<DM>) => void | Promise<void>;
+  onUserMessageSent: (params: MessageSentParams<any>) => void | Promise<void>;
 };
 
 // используется внутри библиотеки
@@ -34,6 +34,14 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * If it isn’t in the thread list or if the parameter is not provided, an empty thread will open.
    */
   thread?: DD;
+
+  /**
+   * You can create your own messages from the user and assistant before sending, according to your architecture,
+   * after which the Chat UI will adjust them to its format via an Adapter.
+   */
+  beforeUserMessageSend?: (text: string | undefined, content: MessageUserContent, history: any[])
+    => Promise<{ userMessage: Message, assistantMessage: Message }> | { userMessage: Message, assistantMessage: Message };
+
   /**
    * Action buttons for the assistant's message.
    */
@@ -113,7 +121,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Enable user's ability to add pictures in messages
    */
   enableImageAttachments?: boolean;
-} & RequiredProps<DM, DD>;
+} & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату
 export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<{
@@ -147,7 +155,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
    */
   helloMessage?: string
   userId: UserIdType;
-}> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
+}> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
   const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;

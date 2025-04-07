@@ -1,5 +1,6 @@
 import { Message, MessageModel } from './MessageModel';
-import { MessageSentParams, StreamResponseState, ThreadHistoryItemType, ThreadModel } from './ThreadModel';
+import { MessageSentParams, StreamResponseState, ThreadModel } from './ThreadModel';
+import { IdType } from '../types';
 
 export class MessageSender<DM extends Message> {
   constructor(
@@ -23,13 +24,6 @@ export class MessageSender<DM extends Message> {
     this.assistantMessage.text += chunk;
   }
 
-  get history() {
-    return this.thread.messages.currentMessages.value.map((message) => ({
-      role: message.role,
-      content: message.content,
-    }) as ThreadHistoryItemType)
-  }
-
   setStatus = (status: string) => {
     this.thread.streamStatus.value = status;
   }
@@ -40,20 +34,23 @@ export class MessageSender<DM extends Message> {
     }
   }
 
-  getUserParams = (resolver: (params: { message: Message }) => void): MessageSentParams<DM> => {
+  getUserParams = (
+    resolver: (params: void) => void,
+    getInternalMessage: (message: MessageModel) => any,
+  ): MessageSentParams => {
     const message = this.assistantMessage;
     return {
-      thread: this.thread.data,
+      updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
       content: this.content,
-      history: this.history,
-      message: this.userMessage.data,
-      assistantMessage: message.data,
+      history: this.thread.messages.currentMessages.value.map(getInternalMessage),
+      message: getInternalMessage(this.userMessage),
+      assistantMessage: getInternalMessage(message),
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,
       onFinish: () => {
         this.changeTypingStatus(false);
-        resolver({message: this.userMessage.data});
+        resolver();
         message.reasoningManager.updateTimeSec();
       },
       reasoning: {

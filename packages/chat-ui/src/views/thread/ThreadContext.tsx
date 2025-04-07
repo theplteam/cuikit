@@ -23,7 +23,10 @@ type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<
   thread: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
-  globalProps: Pick<ChatGlobalContextType<any, any>, 'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'handleBundleBranch'>;
+  globalProps: Pick<
+    ChatGlobalContextType<any, any>,
+    'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'handleBundleBranch' | 'beforeUserMessageSend'
+  >;
 }>;
 
 const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
@@ -32,15 +35,16 @@ const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, m
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
 
-  const onMessageSend = useThreadSendMessage(
+  const { onSendNewsMessage, onEditMessage } = useThreadSendMessage(
     thread,
     model,
     globalProps.onFirstMessageSent,
+    globalProps.beforeUserMessageSend,
     globalProps.onAssistantMessageTypingFinish,
     scrollRef.current ?? undefined,
   );
 
-  useThreadApiInitialization(thread, apiManager, onMessageSend);
+  useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage);
 
   React.useMemo(() => {
     thread?.messages.init(globalProps.enableBranches, globalProps.handleBundleBranch);
