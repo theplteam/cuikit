@@ -31,25 +31,25 @@ export class ThreadMessages<DM extends Message> {
 
       const branch = this.bundleBranch(this.allMessagesArray, this._lastMessage ?? arrayLast(this.allMessagesArray));
       this._updateBranch(branch);
-
-      // reaction to adding to the array of all messages to update the thread
-      this.allMessages.subscribe(() => {
-        const newBranch = this.bundleBranch?.(this.allMessagesArray, arrayLast(this.allMessagesArray));
-        this._updateBranch(newBranch);
-      });
     } else {
       this.currentMessages.setValue(this.allMessagesArray);
     }
+
+    // reaction to adding to the array of all messages to update the thread
+    this.allMessages.subscribe(() => {
+      const newBranch = this.bundleBranch?.(this.allMessagesArray, arrayLast(this.allMessagesArray)) ?? this.allMessagesArray;
+      this._updateBranch(newBranch);
+    });
   }
 
   changeBranchesStatus = () => {
-    if(!this.isEnabled) return; 
+    if(!this.isEnabled) return;
     const branch = this.bundleBranch?.(this.allMessagesArray, this._lastMessage);
     this._updateBranch(branch);
   }
 
   handleChangeBranch = (message: MessageModel<DM>) => {
-    if(!this.isEnabled) return; 
+    if(!this.isEnabled) return;
     const branch = this.bundleBranch?.(this.allMessagesArray, message);
     this._updateBranch(branch);
   }
