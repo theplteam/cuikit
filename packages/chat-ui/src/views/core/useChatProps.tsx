@@ -102,6 +102,16 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: string[] }>;
   /**
+   * List of "like" options in feedback window.
+   * @default messageFeedbackLikeOptions
+   */
+  feedbackLikeOptions?: { [key: string]: string }[];
+  /**
+   * List of "dislike" options in feedback window.
+   * @default messageFeedbackDislikeOptions
+   */
+  feedbackDislikeOptions?: { [key: string]: string }[];
+  /**
    * A flag indicating whether message copying is disabled
    */
   disableMessageCopying?: boolean;

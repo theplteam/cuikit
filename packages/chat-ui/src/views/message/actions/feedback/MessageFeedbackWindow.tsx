@@ -12,6 +12,7 @@ import { Popover } from '@mui/material';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { MessageModel } from '../../../../models/MessageModel';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
+import { messageFeedbackDislikeOptions, messageFeedbackLikeOptions } from './DefaultTags';
 
 type Props = {
   message: MessageModel;
@@ -24,7 +25,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   const [tags, setTags] = React.useState<string[]>([]);
 
   const locale = useLocalizationContext();
-  const { onSendFeedback } = useChatContext();
+  const { onSendFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
   const coreSlots = useChatCoreSlots();
 
   const handelClear = () => {
@@ -36,7 +37,11 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
     if (anchorEl) handelClear();
   }, [anchorEl])
 
-  const tagArray = message.rating === 'like' ? locale.messageFeedbackLikeOptions : locale.messageFeedbackDislikeOptions;
+  const tagArray = React.useMemo(() => {
+    const likeOptions = feedbackLikeOptions || messageFeedbackLikeOptions;
+    const dislikeOptions = feedbackDislikeOptions || messageFeedbackDislikeOptions;
+    return Object.entries(message.rating === 'like' ? likeOptions : dislikeOptions);
+  }, [message.rating])
 
   const handleSubmit = () => {
     onSendFeedback?.({ message: message.data, feedback, tags });
@@ -92,19 +97,18 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
         width="100%" display="flex" direction="row"
         gap={1} flexWrap="wrap"
       >
-        {tagArray.map((tag, i) => {
-          const isActive = tags.includes(tag);
-
+        {tagArray.map(([key, value], i) => {
+          const isActive = tags.includes(key);
           return (
             <Box key={i}>
               <Chip
-                label={tag}
+                label={value}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{
                   color: isActive ? materialDesignSysPalette.primary : materialDesignSysPalette.secondary,
                   backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
                 }}
-                onClick={() => handleTag(tag)}
+                onClick={() => handleTag(key)}
               />
             </Box>
           )

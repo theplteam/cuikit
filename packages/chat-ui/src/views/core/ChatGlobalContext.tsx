@@ -16,7 +16,6 @@ export type ChatGlobalContextType<DM extends Message, DD extends Thread<DM>> = {
   model: Threads<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
   handleCreateNewThread: FnType<DD>;
-  disableMessageRating?: boolean;
 } & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'thread' | 'threads' | 'handleCreateNewThread'>;
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);

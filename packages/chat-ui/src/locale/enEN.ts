@@ -47,7 +47,21 @@ export const CHAT_LOCALE: Localization = {
   messageFeedbackSubmitButton: 'Submit',
   messageFeedbackLink: 'Learn more',
   messageFeedbackText: 'Opens in a new window about how your feedback is used to improve Chat UI.',
-  messageFeedbackLikeOptions: ['Factually correct', 'Easy to understand', 'Informative', 'Creative / Interesting', 'Well formatted', 'Other'],
-  messageFeedbackDislikeOptions: ['Offensive / Unsafe', 'Not factually correct', 'Didn\'t follow instructions', 'Wrong language', 'Poorly formatted', 'Generic / Bland'],
+  messageFeedbackLikeOptions: {
+    factuallyCorrect: 'Factually correct',
+    easyToUnderstand: 'Easy to understand',
+    informative: 'Informative',
+    creativeInteresting: 'Creative / Interesting',
+    wellFormatted: 'Well formatted',
+    other: 'Other'
+  },
+  messageFeedbackDislikeOptions: {
+    offensiveUnsafe: 'Offensive / Unsafe',
+    notFactuallyCorrect: 'Not factually correct',
+    didntFollowInstructions: 'Didn\'t follow instructions',
+    wrongLanguage: 'Wrong language',
+    poorlyFormatted: 'Poorly formatted',
+    genericBland: 'Generic / Bland'
+  },
   reasonedFor: 'Reasoned for {{time}}'
 };
