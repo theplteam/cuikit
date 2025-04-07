@@ -68,11 +68,9 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
     >
       <InputBaseStyled
         fullWidth
+        multiline
         placeholder={locale.textFieldPlaceholder}
         value={text}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setText(event.target.value);
-        }}
         className={clsx(
           {
             [classes.multiline]: isMultiline,
@@ -80,17 +78,19 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           }
         )}
         inputRef={inputRef}
-        onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
-        onKeyUp={isTablet
-          ? undefined
-          : onEnterPress}
         size="small"
-        multiline
         sx={{
           flex: 1,
           p: 1,
         }}
         disabled={disabled}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setText(event.target.value);
+        }}
+        onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
+        onKeyUp={isTablet
+          ? undefined
+          : onEnterPress}
         {...inputProps}
       />
     </SimpleScrollbar>

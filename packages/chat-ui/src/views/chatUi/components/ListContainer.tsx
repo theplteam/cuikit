@@ -6,7 +6,7 @@ import { materialDesignSysPalette } from './../../../utils/materialDesign/palett
 const containerId = 'chat-ui-list-container';
 
 const ListContainer = () => (
-  <Box width={'100%'} id={containerId} sx={{ background: materialDesignSysPalette.surfaceContainerLow }} />
+  <Box width="100%" id={containerId} sx={{ background: materialDesignSysPalette.surfaceContainerLow }} />
 );
 
 const ListContainerPortal = ({ children }: React.PropsWithChildren) => (

@@ -20,18 +20,15 @@ import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import ChatMarkdown from '../message/markdown/ChatMarkdown';
-import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { DDialogue, DMessage } from '../../models';
+import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
-import HelloMessage from '../dialogue/HelloMessage';
+import HelloMessage from '../thread/HelloMessage';
 import ChatMessageCode from '../message/markdown/ChatMessageCode';
 import ChatMessageBlockquote from '../message/markdown/ChatMessageBlockquote';
 import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
-import DialogueRootContainer from '../dialogue/DialogueRootContainer';
+import ThreadRootContainer from '../thread/ThreadRootContainer';
+import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -42,25 +39,16 @@ export type CoreSlots = {
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
-type SlotWithProps<DM extends DMessage, DD extends DDialogue<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
+export type SlotsType<DM extends Message, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
   & ChatIconSlotsType;
 
-enum SlotWithoutProps {
-  messageLikeOutlinedIcon = 'messageLikeOutlinedIcon',
-  messageLikeFilledIcon = 'messageLikeFilledIcon',
-  messageDislikeOutlinedIcon = 'messageDislikeOutlinedIcon',
-  messageDislikeFilledIcon = 'messageDislikeFilledIcon',
-}
-
-export type SlotsType<DM extends DMessage, DD extends DDialogue<DM>> = SlotWithProps<DM, DD> & { [key in SlotWithoutProps]: SlotValue };
-
-type SlotsReturnType<DM extends DMessage, DD extends DDialogue<DM>> = {
+type SlotsReturnType<DM extends Message, DD extends Thread<DM>> = {
   slots: SlotsType<DM, DD>;
   coreSlots: CoreSlots;
   slotProps: Partial<SlotPropsType<DM, DD>>;
 };
-// HelloMessage
-export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
+
+export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
   usersProps: ChatUsersProps<DM, DD>
 ): SlotsReturnType<DM, DD> => {
   const { coreSlots, slots, slotProps, helloMessage } = usersProps;
@@ -77,20 +65,16 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
       ...chatIconSlots,
       ...slots,
       firstMessage: slots?.firstMessage ?? HelloMessage,
-      dialogue: slots?.dialogue ?? DialogueRootContainer,
-      list: slots?.list ?? HiddenContent,
+      thread: slots?.thread ?? ThreadRootContainer,
+      listContainer: slots?.threadsList ? HiddenContent : slots?.listContainer ?? HiddenContent,
+      threadsList: slots?.threadsList ?? HiddenContent,
+      listDrawer: slots?.threadsList ? HiddenContent : slots?.listDrawer ?? React.Fragment,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
-      listDriver: slots?.listDriver ?? React.Fragment,
-      listDriverTitle: slots?.listDriverTitle ?? Typography,
+      listDrawerTitle: slots?.listDrawerTitle ?? Typography,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
-      //ICON
-      messageLikeOutlinedIcon: slots?.messageLikeOutlinedIcon ?? ThumbUpAltOutlinedIcon,
-      messageLikeFilledIcon: slots?.messageLikeFilledIcon ?? ThumbUpAltIcon,
-      messageDislikeOutlinedIcon: slots?.messageDislikeOutlinedIcon ?? ThumbDownOutlinedIcon,
-      messageDislikeFilledIcon: slots?.messageDislikeFilledIcon ?? ThumbDownIcon,
-
+      messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
       // MARKDOWN
       markdown: slots?.markdown ?? ChatMarkdown,
       markdownA: slots?.markdownA ?? Link,
@@ -140,7 +124,7 @@ export const usePropsSlots = <DM extends DMessage, DD extends DDialogue<DM>>(
 
     ...slotProps,
     firstMessage: {
-      dialogue: slotProps?.firstMessage?.dialogue,
+      thread: slotProps?.firstMessage?.thread,
       text: slotProps?.firstMessage?.text ?? helloMessage,
     },
   }) as SlotPropsType<DM, DD>, [slotProps])

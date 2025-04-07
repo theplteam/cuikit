@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AdapterType } from './AdapterType';
 
 const AdapterContext = React.createContext<AdapterType>({
-  transformDialogue: (dialogue: any) => dialogue,
+  transformThread: (thread: any) => thread,
 });
 
 const useAdapterContext = () => {

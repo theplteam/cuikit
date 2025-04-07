@@ -1,55 +1,56 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { MessageStreamingParams } from '../../models/Dialogue';
-import { ChatMessageOwner, DMessage, RatingType } from '../../models/Message';
+import { MessageSentParams } from '../../models/ThreadModel';
+import { ChatMessageOwner, Message, MessageModel, RatingType } from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
-import { DDialogue } from '../../models';
+import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
-import { FnType } from '../../models/types';
 
-type RequiredProps<DM extends DMessage, DD extends DDialogue<DM>> = {
+type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
   /**
-   * Dialogues list
+   * Threads list
    * @required
    */
-  dialogues: DD[];
+  threads: DD[];
   /**
-   * Callback fired when the user sends a message to the dialogue.
+   * Callback fired when the user sends a message to the thread.
    * @param message - User's message
-   * @param pushText - call for runtime updating assistant's message
-   * @param onFinish - call for finishing
    */
-  onUserMessageSent: (params: MessageStreamingParams<DM>) => void;
+  onUserMessageSent: (params: MessageSentParams<DM>) => void | Promise<void>;
 };
 
 // используется внутри библиотеки
-export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
+export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Show loading component
    */
   loading: boolean;
   /**
-   * This dialogue will open immediately after chat initialization, if it's in the dialogue list.
-   * If it isn’t in the dialogue list or if the parameter is not provided, an empty dialogue will open.
+   * This thread will open immediately after chat initialization, if it's in the thread list.
+   * If it isn’t in the thread list or if the parameter is not provided, an empty thread will open.
    */
-  dialogue?: DD;
+  thread?: DD;
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, dialogue: DDialogue<DM> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: Thread<DM> }>[];
+  /**
+   * Action buttons for the thread's list item menu.
+   */
+  threadActions?: React.JSXElementConstructor<{ thread: DD, onClose: () => void }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
    */
   processAssistantText?: ((text: string) => string);
   /**
-   * Callback fired when the current dialogue changes
+   * Callback fired when the current thread changes
    */
-  onChangeCurrentDialogue?: ChatEventListeners<{ dialogue: DD }>;
+  onChangeCurrentThread?: ChatEventListeners<{ thread: DD }>;
   /**
    * Callback fired when message branch changes
    */
@@ -57,23 +58,31 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Callback fired after message streaming is complete.
    */
-  onAssistantMessageTypingFinish?: ChatEventListeners<{ message: DM }>;
+  onAssistantMessageTypingFinish?: ChatEventListeners<{ message: DM, thread: DD }>;
   /**
-   * Call when user starts new dialogue
+   * Call when user starts new thread
    */
-  handleCreateNewDialogue?: FnType<DD>;
+  handleCreateNewThread?: () => DD;
   /**
    * Invoked when the user clicks the stop streaming button.
    */
-  handleStopMessageStreaming?: FnType;
+  handleStopMessageStreaming?: () => void;
+  /**
+   * This function builds a message branch.
+   */
+  handleBundleBranch?: (messages: MessageModel<DM>[], startFrom?: MessageModel<DM>,) => MessageModel<DM>[];
+  /**
+   * This function defines pagination for the branching point of the chat.
+   */
+  handleBranchPagination?: (currentMessage: MessageModel<DM>, messages: MessageModel<DM>[]) => MessageModel<DM>[];
   /**
    * Callback fired when first message sent
    */
-  onDialogueCreated?: ChatEventListeners<{ dialogue: DD }>;
+  onFirstMessageSent?: ChatEventListeners<{ thread: DD }>;
   /**
    * Callback fired when first message sent
    */
-  onDialogueDeleted?: ChatEventListeners<{ dialogue: DD }>;
+  onThreadDeleted?: ChatEventListeners<{ thread: DD }>;
   /**
    * Prefill textfield
    */
@@ -96,10 +105,18 @@ export type ChatPropsTypes<DM extends DMessage, DD extends DDialogue<DM>> = {
    * A flag indicating whether message copying is disabled
    */
   disableMessageCopying?: boolean;
+  /**
+   * Enable chat reasoning functionality
+   */
+  enableReasoning?: boolean;
+  /**
+   * Enable user's ability to add pictures in messages
+   */
+  enableImageAttachments?: boolean;
 } & RequiredProps<DM, DD>;
 
 // что передает пользователь, но не нужно чату
-export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Partial<{
+export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<{
   /**
    * ChatUI defaults to using the window for automatic conversation scrolling.
    * if you have embedded the chat within your own component, supply the container's ref to allow for proper scroll management.
@@ -126,29 +143,22 @@ export type ChatUsersProps<DM extends DMessage, DD extends DDialogue<DM>> = Part
    */
   apiRef: React.MutableRefObject<ApiRefType<DM, DD> | null>;
   /**
-   * Show a welcome message at the beginning of the dialogue.
+   * Show a welcome message at the beginning of the thread.
    */
   helloMessage?: string
   userId: UserIdType;
 }> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
 
-export const useChatProps = <DM extends DMessage, DD extends DDialogue<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
-  const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, ...chatProps } = userProps;
+export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
+  const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;
 
   useLangInit(userProps.lang as LangKeys | undefined);
   useUserInit(userProps.userId);
 
   return React.useMemo(() => ({
     ...chatProps,
+    thread,
+    threads,
     loading: userProps.loading ?? false,
-
-    // TODO: идея была не обновлять этот объект при изменении некоторых пропсов, мб надо пересмотреть
-  }), [
-    userProps.loading,
-    userProps.dialogues,
-    userProps.processAssistantText,
-    userProps.assistantActions,
-    userProps.onChangeCurrentDialogue,
-    userProps.onChangeCurrentDialogue,
-  ]);
+  }), [chatProps, userProps.loading]);
 }

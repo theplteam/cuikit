@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react'
 import checker from 'vite-plugin-checker';
 import md5 from 'md5';
 
-
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -28,6 +27,13 @@ export default defineConfig(({ mode }) => {
 // Фикс ошибки в MUI Popper https://stackoverflow.com/questions/72097831/popper-styled-default-is-not-a-function-mui-5-6-0-material-ui
   return {
     base: "",
+    optimizeDeps: {
+      include: [
+        '@emotion/react',
+        '@emotion/styled',
+        '@mui/material/Tooltip'
+      ],
+    },
     plugins: [
       react({
         jsxImportSource: '@emotion/react',

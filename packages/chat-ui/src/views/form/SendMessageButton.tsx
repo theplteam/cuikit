@@ -10,7 +10,6 @@ type Props = {
   onSendMessage: () => void;
 };
 
-
 const SendMessageButton: React.FC<Props> = ({ text, images, onSendMessage, isTyping }) => {
   const disabled = !isTyping && !text && !images.length;
   const { slots, slotProps } = useChatSlots();
@@ -25,17 +24,16 @@ const SendMessageButton: React.FC<Props> = ({ text, images, onSendMessage, isTyp
   };
   return (
     <Box
-      display={'flex'}
-      alignItems={'flex-end'}
-      justifyContent={'center'}
+      display="flex"
+      alignItems="flex-end"
+      justifyContent="center"
       width={48}
       height={40}
-      position={'relative'}
+      position="relative"
     >
       <slots.sendMessageButton
         {...slotProps.sendMessageButton}
         disabled={disabled || (!handleStopMessageStreaming && !!isTyping)}
-        onClick={onClick}
         sx={{
           position: 'absolute',
           left: '50%',
@@ -46,6 +44,7 @@ const SendMessageButton: React.FC<Props> = ({ text, images, onSendMessage, isTyp
           transition: (theme) => theme.transitions.create('color', { duration: '200ms' }),
           ...slotProps.sendMessageButton?.sx,
         }}
+        onClick={onClick}
       >
         {(!!isTyping && !!handleStopMessageStreaming) ? <slots.stopStreamIcon /> : <slots.sendMessageIcon />}
       </slots.sendMessageButton>

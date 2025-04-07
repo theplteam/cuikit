@@ -1,4 +1,4 @@
-import { Message } from '../../Message';
+import { MessageModel } from '../../MessageModel';
 import { prepareStreamString } from './prepareStreamString';
 
 type ChatGptResponseType = {
@@ -11,14 +11,16 @@ type ChatGptResponseType = {
 };
 
 // TODO: #ANY
-export const chatGptStreamParser = <T extends ChatGptResponseType>(value: string, assistant: Message<any>) => {
+export const chatGptStreamParser = <T extends ChatGptResponseType>(value: string, assistant: MessageModel<any>) => {
   const clearedValue = prepareStreamString(value);
   try {
     const obj = JSON.parse(clearedValue) as T;
     assistant.text += obj.choices[0].delta.content ?? '';
 
     return obj;
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 
   return undefined;
 }

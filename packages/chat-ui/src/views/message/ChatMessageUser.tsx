@@ -10,9 +10,9 @@ import MessagePagination, { MessagePaginationHeight } from './MessagePagination'
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { useDialogueContext } from '../dialogue/DialogueContext';
-import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { useThreadContext } from '../thread/ThreadContext';
+import { MessageModel } from '../../models/MessageModel';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useElementRefState } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -23,11 +23,10 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import ChatMessageGallery from './ChatMessageGallery';
 
 type Props = {
-  message: Message;
-  dialogue: Dialogue;
+  message: MessageModel;
+  thread: ThreadModel;
   isFirst?: boolean;
   elevation?: boolean;
-  disableActions?: boolean;
 };
 
 const {
@@ -54,12 +53,12 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   }
 }));
 
-const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevation }) => {
+const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
-  const isTyping = useObserverValue(dialogue?.isTyping);
+  const isTyping = useObserverValue(thread?.isTyping);
 
-  const { messageMode, apiRef } = useDialogueContext();
+  const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
 
   const mode = messageMode.values[message.id];
@@ -72,9 +71,9 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
-    const newMessage = dialogue.editMessage(message, newText);
+    const newMessage = thread.editMessage(message, newText);
     apiRef.current?.handleChangeBranch(newMessage);
-    onAssistantMessageTypingFinish?.(dialogue.data.data);
+    onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
   }
 
   const onClickCancelEdit = () => {
@@ -91,19 +90,17 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
   const children = React.useMemo(() => (
     <>
       <ChatMarkdownBlock text={message.text} />
-      {((isFirst || message.parentId) && !!enableBranches) && (
-        <MessageActionsUser
-          className={actionsClassName}
-          onClickEdit={onClickEdit}
-          disabled={isTyping}
-        />
-      )}
+      {((isFirst || message.parentId) && !!enableBranches) ? <MessageActionsUser
+        className={actionsClassName}
+        disabled={isTyping}
+        onClickEdit={onClickEdit}
+                                                             /> : null}
     </>
-  ), [message, dialogue, message.text, isFirst, isTyping]);
+  ), [message, thread, message.text, isFirst, isTyping]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (
-      <Stack width={'100%'} gap={1} alignItems={'flex-end'}>
+      <Stack width="100%" gap={1} alignItems="flex-end">
         {imageComponent}
         <MessageUserEditor
           text={message.text}
@@ -116,35 +113,35 @@ const ChatMessageUser: React.FC<Props> = ({ message, dialogue, isFirst, elevatio
 
   return (
     <Stack
-      width={'100%'}
-      alignItems={'flex-end'}
+      width="100%"
+      alignItems="flex-end"
       sx={{ mb: 3 }}
       style={{ marginBottom: '-25px' }}
       gap={0.5}
     >
       <Box
-        width={'100%'}
-        display={'flex'}
-        alignItems={'flex-end'}
-        flexDirection={'column'}
+        width="100%"
+        display="flex"
+        alignItems="flex-end"
+        flexDirection="column"
         gap={1}
       >
         {imageComponent}
-        {message.text && (
+        {message.text ? (
           <ChatMessageContainerStyled
+            ref={setElement}
             gap={1}
             mx={1.5}
             className={clsx(
               { [hoverMessageClassName]: isHover || isTablet },
             )}
-            ref={setElement}
             elevation={elevation}
           >
             {children}
           </ChatMessageContainerStyled>
-        )}
+        ) : null}
       </Box>
-      {!!enableBranches ? (
+      {enableBranches ? (
         <MessagePagination
           disabled={isTyping}
           message={message}

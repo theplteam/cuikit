@@ -24,7 +24,7 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
   return (
     <Stack
       gap={1.5}
-      width={'80%'}
+      width="80%"
       px={1.5}
     >
       <MessageUserEditorTextfield
@@ -32,17 +32,17 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
         setNewText={setNewText}
         onEnterPress={onClick}
       />
-      <Stack gap={1.5} direction={'row'}>
+      <Stack gap={1.5} direction="row">
         <coreSlots.button
+          variant="outlined"
           onClick={onClickCancel}
-          variant={'outlined'}
         >
           {locale.cancel}
         </coreSlots.button>
         <coreSlots.button
-          onClick={onClick}
           disabled={text === newText || !newText}
-          variant={'contained'}
+          variant="contained"
+          onClick={onClick}
         >
           {locale.send}
         </coreSlots.button>

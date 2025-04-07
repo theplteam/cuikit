@@ -1,9 +1,9 @@
 import * as React from "react";
-import dialogues from "./chatgpt-dialogue-test.json";
+import threads from "./chatgpt-thread-test.json";
 import {
   ChatGptAdapter,
   ChatPage,
-  MessageStreamingParams,
+  MessageSentParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import OpenAI from 'openai';
@@ -24,7 +24,7 @@ class ChatGptModel {
     this._abortController?.abort();
   }
 
-  streamMessage = async (params: MessageStreamingParams) => {
+  streamMessage = async (params: MessageSentParams) => {
     const messages: OpenAI.ChatCompletionCreateParamsStreaming['messages'] = params.history;
     const stream = await this._instance.chat.completions.create({
       model: 'gpt-4o',
@@ -38,7 +38,6 @@ class ChatGptModel {
       stream: true,
     });
 
-
     this._abortController = stream.controller;
 
     for await (const chunk of stream) {
@@ -49,21 +48,20 @@ class ChatGptModel {
   }
 }
 
-
 const App: React.FC = () => {
-  const dd = dialogues as any;
+  const dd = threads as any;
 
   const model = React.useMemo(() => new ChatGptModel(), []);
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatGptAdapter>
         <ChatPage
-          dialogue={dd[0]}
-          dialogues={dd}
+          thread={dd[0]}
+          threads={dd}
           handleStopMessageStreaming={model.stopStreaming}
+          listPlacement="right"
           onUserMessageSent={model.streamMessage}
-          listPlacement={'right'}
         />
       </ChatGptAdapter>
     </Box>

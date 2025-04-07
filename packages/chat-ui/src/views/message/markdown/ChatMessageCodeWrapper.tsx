@@ -54,12 +54,15 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
   return (
     <>
       <PreStyled {...other}>
-        <MenuBar flexDirection={'row'} padding={1} alignItems={'center'} justifyContent={'space-between'}>
+        <MenuBar
+          flexDirection="row" padding={1} alignItems="center"
+          justifyContent="space-between"
+        >
           <Typography>
             {codeLang}
           </Typography>
-          <Stack flexDirection={'row'} gap={1}>
-            <coreSlots.button size='small' onClick={handleCopy} startIcon={<ContentCopyIcon />}>
+          <Stack flexDirection="row" gap={1}>
+            <coreSlots.button size='small' startIcon={<ContentCopyIcon />} onClick={handleCopy}>
               {locale.codeCopyButton}
             </coreSlots.button>
             {/* <coreSlots.button size='small' onClick={handleEdit} startIcon={<EditIcon />}>
@@ -67,7 +70,10 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
             </coreSlots.button> */}
           </Stack>
         </MenuBar>
-        <PrismStyled showLineNumbers language={codeLang as string} style={dracula} PreTag={'div'}>
+        <PrismStyled
+          showLineNumbers language={codeLang as string} style={dracula}
+          PreTag="div"
+        >
           {codeText}
         </PrismStyled>
       </PreStyled >

@@ -1,43 +1,30 @@
 import React from 'react';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import { IdType } from '../../types';
 import 'photoswipe/style.css';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import { IdType } from '../../types';
 import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import ChatMessageGalleryItem from './ChatMessageGalleryItem';
 
 type Props = {
   id: IdType;
   images: string[];
 };
 
-const GridItem = styled(Grid)(() => ({
-  width: '100%',
-  backgroundColor: materialDesignSysPalette.surfaceContainerLow,
-  position: 'relative',
-  '& a': {
-    width: '100%',
-    height: '100%',
-    lineHeight: 0,
-    display: 'block',
+const GridBox = styled(Box)(() => ({
+  ".top-row.left-column": {
+    borderTopLeftRadius: '24px',
   },
-  '& img': {
-    maxHeight: 'min(200px, 80dvh)',
-    height: '100%',
-    width: "inherit",
-    objectFit: 'cover',
-    aspectRatio: 'auto',
-    objectPosition: 'center',
-    borderRadius: 16,
+  ".top-row.right-column": {
+    borderTopRightRadius: '24px',
   },
-  '&:last-child': {
-    borderRadius: '16px 16px 0 16px',
-    '& img': {
-      borderRadius: '16px 16px 0 16px',
-    }
+  ".bottom-row.left-column": {
+    borderBottomLeftRadius: '24px',
+  },
+  ".bottom-row.right-column": {
+    borderBottomRightRadius: '0px !important',
   },
 }));
-
 
 const ChatMessageGallery = ({ id, images }: Props) => {
   const [items, setItems] = React.useState<HTMLImageElement[]>([]);
@@ -68,31 +55,34 @@ const ChatMessageGallery = ({ id, images }: Props) => {
     setItems(imgElements);
   }, [images]);
 
-  const ratio = items.length === 4 ? 4 : 3;
+  const columns = React.useMemo(() => items.length === 4 ? 2 : 3, [items.length]);
+  const rows = React.useMemo(() => Math.ceil(items.length / columns), [columns, items.length]);
+
   return (
-    <Grid
-      container
-      gap={1}
-      className="pswp-gallery"
+    <GridBox
       id={galleryId}
+      display="grid"
       mx={1.5}
-      justifyContent={'flex-end'}
+      gap={1}
+      sx={{
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        direction: 'rtl',
+      }}
+      overflow="hidden"
+      className="pswp-gallery"
     >
-      {items.map(({ src, width, height }, index) => (
-        <GridItem item xs={ratio} key={index} borderRadius={4}>
-          <a
-            href={src}
-            data-pswp-width={width}
-            data-pswp-height={height}
-            key={`${galleryId}-${index}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img src={src} alt="" />
-          </a>
-        </GridItem>
+      {items.map((item, index) => (
+        <ChatMessageGalleryItem
+          key={index}
+          item={item}
+          galleryId={galleryId}
+          columns={columns}
+          rows={rows}
+          itemsCount={items.length}
+          index={index}
+        />
       ))}
-    </Grid>
+    </GridBox >
   );
 }
 

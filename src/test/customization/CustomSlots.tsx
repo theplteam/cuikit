@@ -1,27 +1,26 @@
 import * as React from "react";
-import dialoguesJson from '../testDialogues.json';
+import threadsJson from '../testThreads.json';
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue,
+  Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import SendIcon from '@mui/icons-material/Send';
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>(dialoguesJson);
+  const [threads] = React.useState<Thread[]>(threadsJson);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
-        dialogue={dialogues[0]}
-        dialogues={dialogues}
+        thread={threads[0]}
+        threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        onUserMessageSent={onUserMessageSent}
-        defaultTextFieldValue={'See you later!'}
+        defaultTextFieldValue="See you later!"
         slots={{
           sendMessageIcon: SendIcon,
         }}
@@ -33,6 +32,7 @@ const App: React.FC = () => {
             },
           },
         }}
+        onUserMessageSent={onUserMessageSent}
       />
     </Box>
   );

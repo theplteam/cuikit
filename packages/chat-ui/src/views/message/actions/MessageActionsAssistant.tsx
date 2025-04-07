@@ -1,33 +1,33 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
-import { Message } from '../../../models/Message';
+import { MessageModel } from '../../../models/MessageModel';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import { Dialogue } from '../../../models/Dialogue';
+import { ThreadModel } from '../../../models/ThreadModel';
 import MessageActionFeedback from './feedback/MessageActionFeedback';
 
 type Props = {
-  message: Message;
-  dialogue: Dialogue;
+  message: MessageModel;
+  thread: ThreadModel;
   className: string;
 };
 
-const MessageActionsAssistant: React.FC<Props> = ({ message, dialogue, className }) => {
+const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className }) => {
   const { actionsAssistant, disableMessageCopying, onSendRating } = useChatContext();
   return (
     <Stack
-      direction={'row'}
-      alignItems={'center'}
+      direction="row"
+      alignItems="center"
       gap={1.5}
       className={className}
     >
       {!disableMessageCopying && <MessageActionCopy message={message} />}
-      {onSendRating && <MessageActionFeedback message={message} />}
+      {onSendRating ? <MessageActionFeedback message={message} /> : null}
       {actionsAssistant?.map((component, k) => (
         <component.element
-          dialogue={dialogue.data.data}
-          message={message.data}
           key={k}
+          thread={thread.data.data}
+          message={message.data}
         />
       ))}
     </Stack>

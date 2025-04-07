@@ -3,7 +3,7 @@ import ChatPage from './views/chatUi/ChatPage';
 import ChatUi from './views/chatUi/ChatUi';
 import ChatLicenseInfo from './views/utils/ChatLicenseInfo';
 import { NewChatButton, NewChatIconButton, useChatContext } from './views';
-import { useDialogueContext } from './views/dialogue/DialogueContext';
+import { useThreadContext } from './views/thread/ThreadContext';
 import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
 import { useChatApiRef } from './views/hooks/useChatApiRef';
 import type { ApiRefType } from './views/core/useApiRef';
@@ -21,7 +21,7 @@ export {
   NewChatButton,
   NewChatIconButton,
   useChatContext,
-  useDialogueContext,
+  useThreadContext,
   ChatLicenseInfo,
   useAssistantAnswerMock,
   useChatApiRef,

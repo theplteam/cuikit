@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import { Message, RatingType } from '../../../../models/Message';
+import { MessageModel, RatingType } from '../../../../models/MessageModel';
 import MessageFeedbackButton from './MessageFeedbackButton';
 import MessageFeedbackWindow from './MessageFeedbackWindow';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
 
 type Props = {
-  message: Message;
+  message: MessageModel;
 };
 
 const MessageActionFeedback: React.FC<Props> = ({ message }) => {
@@ -31,18 +31,21 @@ const MessageActionFeedback: React.FC<Props> = ({ message }) => {
   }
 
   return (
-    <Stack ref={ref} gap={1.5} direction={'row'} alignItems={'center'} position={'relative'}>
+    <Stack
+      ref={ref} gap={1.5} direction="row"
+      alignItems="center" position="relative"
+    >
       <MessageFeedbackButton
         tooltip={locale.messageLikeTooltip}
-        onClick={handleActionClick}
         type="like"
         activeType={activeType}
+        onClick={handleActionClick}
       />
       <MessageFeedbackButton
         tooltip={locale.messageDislikeTooltip}
-        onClick={handleActionClick}
         type="dislike"
         activeType={activeType}
+        onClick={handleActionClick}
       />
       <MessageFeedbackWindow
         message={message}

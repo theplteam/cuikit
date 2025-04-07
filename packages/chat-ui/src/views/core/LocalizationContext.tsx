@@ -4,7 +4,7 @@ import { useLocalizationInit } from './useLocalizationInit';
 
 type LocalizationType = Localization;
 
-type Props = React.PropsWithChildren<{}>;
+type Props = React.PropsWithChildren;
 
 const Context = React.createContext<LocalizationType | undefined>(undefined);
 

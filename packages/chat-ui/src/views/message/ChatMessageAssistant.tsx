@@ -8,19 +8,21 @@ import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
 import { NOOP } from '../../utils/NOOP';
-import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { MessageModel } from '../../models/MessageModel';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import useHover from '../hooks/useHover';
 import { useElementRefState } from '../hooks/useElementRef';
 import PhotoSwipeLightbox from '../photoswipe/PhotoSwipeLightbox';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import MessageReasoning from './reasoning/MessageReasoning';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  message: Message;
+  message: MessageModel;
   enableAssistantActions?: boolean;
-  dialogue: Dialogue;
+  thread: ThreadModel;
   isLatest?: boolean;
   elevation?: boolean;
 };
@@ -47,7 +49,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   }
 }));
 
-const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, dialogue, isLatest, elevation }) => {
+const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
   const { element, setElement } = useElementRefState();
 
   const isHover = useHover(element);
@@ -55,6 +57,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const typing = useObserverValue(message.typing);
   const containerId = React.useState('pswp-chat-gallery' + randomId())[0];
   const { slots, slotProps } = useChatSlots();
+  const { enableReasoning } = useChatContext();
 
   React.useEffect(() => {
     if (typing) return NOOP;
@@ -81,23 +84,34 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
 
   return (
     <ChatMessageContainerStyled
+      ref={setElement}
       gap={1}
       className={clsx(
         { [latestMessageClassName]: isLatest },
         { [hoverMessageClassName]: isHover },
       )}
-      ref={setElement}
       elevation={elevation}
     >
+      {(enableReasoning) ? (
+        <MessageReasoning
+          message={message} thread={thread}
+          isLatest={isLatest}
+        />
+      ) : null}
       {blockText}
-      {isLatest && <slots.messageAssistantProgress {...slotProps.messageAssistantProgress} dialogue={dialogue} />}
-      {(!typing && !!text && enableAssistantActions) && (
+      {isLatest ? (
+        <slots.messageAssistantProgress
+          {...slotProps.messageAssistantProgress}
+          message={message} thread={thread}
+        />
+      ) : null}
+      {(!typing && !!text && enableAssistantActions) ? (
         <MessageActionsAssistant
           message={message}
-          dialogue={dialogue}
+          thread={thread}
           className={actionsClassName}
         />
-      )}
+      ) : null}
       <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={message} />
     </ChatMessageContainerStyled>
   );

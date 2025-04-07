@@ -1,20 +1,24 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Box, { type BoxProps } from '@mui/material/Box';
+import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { Dialogue, StreamResponseState } from '../../models';
+import { MessageModel, StreamResponseState, ThreadModel } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
+import Stack from '@mui/material/Stack';
 
 type Props = {
-  dialogue: Dialogue | undefined;
+  thread: ThreadModel;
+  message: MessageModel;
+  stopAnimation?: boolean;
 } & BoxProps;
 
 const palette = materialDesignSysPalette;
 
-const keyframeName = 'pl-analyze-await';
-const BoxStyled = styled(Box)(() => ({
+const keyframeName = 'chat-ui-analyze-await';
+
+export const StatusBoxStyled = styled(Stack)(() => ({
   [`@keyframes ${keyframeName}`]: {
     from: {
       backgroundPosition: '-100% top'
@@ -49,8 +53,10 @@ const BoxStyled = styled(Box)(() => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
-  const state = useObserverValue(dialogue?.streamStatus) as StreamResponseState | string | undefined;
+const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
+  const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
+  const reasoningTitle = useObserverValue(message.reasoningManager.title) ?? '';
+  const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? '';
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
   let text = state;
@@ -59,17 +65,23 @@ const MessageAssistantProgress: React.FC<Props> = ({ dialogue }) => {
     text = locale.thinking;
   }
 
-  if (!text || state === StreamResponseState.TYPING_MESSAGE || state === StreamResponseState.FINISH_MESSAGE) return null;
+  if (
+    !text
+    || state === StreamResponseState.TYPING_MESSAGE
+    || state === StreamResponseState.FINISH_MESSAGE
+    || !!reasoningTitle
+    || !!reasoningTime
+  ) return null;
 
   return (
-    <BoxStyled>
+    <StatusBoxStyled>
       <slots.messageAssistantProgressText
         variant="body1"
         {...slotProps.messageAssistantProgressText}
       >
         {text}
       </slots.messageAssistantProgressText>
-    </BoxStyled>
+    </StatusBoxStyled>
   );
 };
 

@@ -3,16 +3,15 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';
-import { Message } from '../../../models/Message';
+import { MessageModel } from '../../../models/MessageModel';
 import { usePopoverState } from '../../hooks/usePopoverState';
 import MdMenu from '../../../ui/menu/MdMenu';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import { useLocalizationContext } from '../../core/LocalizationContext';
 
-
 type Props = {
-  message: Message;
+  message: MessageModel;
 };
 
 const MessageActionCopy: React.FC<Props> = ({ message }) => {
@@ -37,7 +36,7 @@ const MessageActionCopy: React.FC<Props> = ({ message }) => {
       >
         <Box>
           <coreSlots.iconButton
-            size={'small'}
+            size="small"
             onClick={handleClick}
           >
             <ContentCopyIcon />
@@ -45,15 +44,15 @@ const MessageActionCopy: React.FC<Props> = ({ message }) => {
         </Box>
       </Tooltip>
       <MdMenu
-        open={!!anchorEl}
-        onClose={handleClose}
-        anchorEl={anchorEl}
         disablePortal
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        onClose={handleClose}
       >
         <MessageCopyMenuItems
+          short
           text={text}
           handleClose={handleClose}
-          short
         />
       </MdMenu>
     </>

@@ -1,22 +1,18 @@
 import * as React from 'react';
 import MessageCopyMenuItems from '../MessageCopyMenuItems';
-import { Message } from '../../../../models/Message';
-import { Dialogue } from '../../../../models/Dialogue';
+import { MessageModel } from '../../../../models/MessageModel';
 
 type Props = {
-  message: Message;
-  dialogue: Dialogue;
+  message: MessageModel;
   onClose: () => void;
 };
 
 const MessageMobileAssistantActions: React.FC<Props> = ({ message, onClose }) => {
   return (
-    <>
-      <MessageCopyMenuItems
-        text={message.text}
-        handleClose={onClose}
-      />
-    </>
+    <MessageCopyMenuItems
+      text={message.text}
+      handleClose={onClose}
+    />
   );
 }
 

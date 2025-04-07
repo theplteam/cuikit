@@ -2,8 +2,7 @@ import * as React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createBreakpoints } from '@mui/system';
 
-type Props = React.PropsWithChildren<{}>;
-
+type Props = React.PropsWithChildren
 
 const theme = createTheme({
   breakpoints: createBreakpoints({

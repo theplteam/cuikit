@@ -2,13 +2,13 @@ import * as React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { MessagesModeType } from '../../hooks/useMessagesMode';
-import { Message } from '../../../../models/Message';
+import { MessageModel } from '../../../../models/MessageModel';
 import { useSnackbar } from '../../../hooks/useSnackbar';
 import { useChatSlots } from '../../../core/ChatSlotsContext';
 import { useLocalizationContext } from '../../../core/LocalizationContext';
 
 type Props = {
-  message: Message;
+  message: MessageModel;
   modeManager: MessagesModeType;
   onClose: () => void;
 };

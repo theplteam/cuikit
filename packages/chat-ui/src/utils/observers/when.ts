@@ -12,9 +12,11 @@ export const when = <T>(
       observableValue,
       (value) => {
         if (condition(value)) {
-          callback();
-          disposer();
-          resolve();
+          requestAnimationFrame(() => {
+            callback();
+            disposer();
+            resolve();
+          });
         }
       },
       {

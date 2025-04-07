@@ -1,10 +1,9 @@
-import { Dialogue } from './Dialogue';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
-import { DMessage } from './Message';
-import { DDialogue } from './DialogueData';
+import { Message } from './MessageModel';
+import { Thread } from './ThreadData';
 
-export class ChatActions<DM extends DMessage, DD extends DDialogue<DM>> {
+export class ChatActions<DM extends Message, DD extends Thread<DM>> {
   readonly menuDriverOpen = new ObservableReactValue(false);
 
-  readonly deleteItem = new ObservableReactValue<Dialogue<DM, DD> | undefined>(undefined);
+  readonly deleteItem = new ObservableReactValue<DD | undefined>(undefined);
 }

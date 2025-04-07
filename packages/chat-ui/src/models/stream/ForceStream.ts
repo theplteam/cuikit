@@ -2,7 +2,6 @@ import { PromiseUtils } from '../../utils/PromiseUtils';
 import { arrayChunk } from '../../utils/arrayUtils/arrayChunk';
 import { randomInt } from '../../utils/numberUtils/randomInt';
 
-
 export class ForceStream {
 
   private _promise?: PromiseUtils<boolean>;

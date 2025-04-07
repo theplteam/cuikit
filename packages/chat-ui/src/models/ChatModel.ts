@@ -1,7 +1,7 @@
-import { Dialogue } from './Dialogue';
+import { ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
-import { DMessage } from './Message';
-import { DDialogue } from './DialogueData';
+import { Message } from './MessageModel';
+import { Thread } from './ThreadData';
 import { PartialExcept } from './types';
 
 const NOOP = (name?: string) => () => {
@@ -10,47 +10,50 @@ const NOOP = (name?: string) => () => {
   }
 }
 
-type Props<DM extends DMessage, DD extends DDialogue<DM>, D = Dialogue<DM, DD>> = {
+type Props<DM extends Message, DD extends Thread<DM>, D = ThreadModel<DM, DD>> = {
   /**
-   * Open empty dialogue
+   * Open empty thread
    */
   openNew: () => void;
   /**
-   * Delete selected dialogue
-   * @param dialogue
+   * Delete selected thread
+   * @param thread
    */
-  delete: (dialogue: D) => void;
+  delete: (thread: D) => void;
   /**
-   * Open selected dialogue
-   * @param dialogue
+   * Open selected thread
+   * @param thread
    */
-  open: (dialogue: D) => void;
+  open: (thread: D) => void;
   /**
-   * Update dialogue timestamp
-   * @param dialogue
+   * Update thread timestamp
+   * @param thread
    */
-  touch: (dialogue: D) => void;
+  touch: (thread: D) => void;
   /**
-   * Update dialogue data
-   * @param dialogue
+   * Update thread data
+   * @param thread
    */
-  edit?: (newData: PartialExcept<DD, 'id'>, dialogue: Dialogue<DM, DD>) => any,
+  edit?: (newData: PartialExcept<DD, 'id'>, thread: ThreadModel<DM, DD>) => any,
 };
 
-export type ChatModelProps<DM extends DMessage, DD extends DDialogue<DM>> = Partial<Props<DM, DD>>;
+export type ChatModelProps<DM extends Message, DD extends Thread<DM>> = Partial<Props<DM, DD>>;
 
-export class ChatModel<DM extends DMessage, DD extends DDialogue<DM>> {
-  readonly dialogueActions: Props<DM, DD>;
+/**
+ * TODO: #MB NO NEEDED
+ */
+export class ChatModel<DM extends Message, DD extends Thread<DM>> {
+  readonly threadActions: Props<DM, DD>;
 
   readonly actions = new ChatActions<DM, DD>();
 
   constructor(props: ChatModelProps<DM, DD> | undefined) {
-    this.dialogueActions = {
+    this.threadActions = {
       openNew: props?.openNew ?? NOOP('openNew'),
-      delete: props?.delete ?? NOOP('deleteDialogue'),
-      open: props?.open ?? NOOP('openDialogue'),
-      touch: props?.touch ?? NOOP('touchDialogue'),
-      edit: props?.edit ?? NOOP('editDialogue'),
+      delete: props?.delete ?? NOOP('delete'),
+      open: props?.open ?? NOOP('open'),
+      touch: props?.touch ?? NOOP('touch'),
+      edit: props?.edit ?? NOOP('edit'),
     };
 
   }

@@ -5,10 +5,10 @@ export const arrayChunk = <T>(array: T[], size: number | (() => number)) => {
   }
   let index = 0;
   let resIndex = 0;
-  let result: T[][] = [];
+  const result: T[][] = [];
 
   while (index < length) {
-    let sizeNow = typeof size === 'number' ? size : size();
+    const sizeNow = typeof size === 'number' ? size : size();
     result[resIndex++] = baseSlice(array, index, (index += sizeNow));
   }
   return result;
@@ -28,7 +28,7 @@ const baseSlice = <T>(array: T[], start: number, end: number) => {
   length = start > end ? 0 : ((end - start) >>> 0);
   start >>>= 0;
 
-  let result: T[] = Array(length);
+  const result: T[] = Array(length);
   while (++index < length) {
     result[index] = array[index + start];
   }

@@ -4,11 +4,11 @@ import { useQuestionTemplates } from './useQuestionTemplates';
 import QuestionItem from './QuestionItem';
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
-  dialogue: Dialogue;
+  thread: ThreadModel;
 };
 
 const ContainerStyled = styled(Container)(() => ({
@@ -17,23 +17,23 @@ const ContainerStyled = styled(Container)(() => ({
   alignItems: 'center',
 }));
 
-const QuestionsList: React.FC<Props> = ({ dialogue }) => {
+const QuestionsList: React.FC<Props> = ({ thread }) => {
   const questions = useQuestionTemplates();
 
-  const messages = useObserverValue(dialogue.messages.allMessages) ?? [];
+  const messages = useObserverValue(thread.messages.allMessages) ?? [];
 
   const onClick = React.useCallback((_message: string) => {
-    // dialogue.sendMessage(message);
-  }, [dialogue]);
+    // thread.sendMessage(message);
+  }, [thread]);
 
   if (messages.length) return null;
 
   return (
     <ContainerStyled>
       <Stack
-        direction={'row'}
-        flexWrap={'wrap'}
-        justifyContent={'center'}
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="center"
       >
         {questions.map((questionItem, key) => (
           <QuestionItem

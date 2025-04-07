@@ -10,11 +10,11 @@ import Link from '@mui/material/Link';
 import Chip from '@mui/material/Chip';
 import { Popover } from '@mui/material';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
-import { Message } from '../../../../models/Message';
+import { MessageModel } from '../../../../models/MessageModel';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
 
 type Props = {
-  message: Message;
+  message: MessageModel;
   anchorEl: HTMLElement | null;
   onClose: () => void;
 };
@@ -43,7 +43,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
     onClose();
   }
 
-  const hangleTag = (tag: string) => {
+  const handleTag = (tag: string) => {
     if (tags.includes(tag)) {
       setTags(tags.filter(t => t !== tag));
     } else {
@@ -55,7 +55,6 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   return (
     <Popover
       open={Boolean(anchorEl)}
-      onClose={onClose}
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       slotProps={{
@@ -71,9 +70,13 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           }
         }
       }}
+      onClose={onClose}
     >
-      <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-        <Box display={'flex'} gap={1} flexDirection={'row'} alignItems={'center'}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Box
+          display="flex" gap={1} flexDirection="row"
+          alignItems="center"
+        >
           <Typography variant='subtitle1'>
             {locale.messageFeedbackTitle}
           </Typography>
@@ -85,7 +88,10 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           <CloseIcon />
         </coreSlots.iconButton>
       </Stack>
-      <Stack width={'100%'} display={'flex'} direction={'row'} gap={1} flexWrap={'wrap'}>
+      <Stack
+        width="100%" display="flex" direction="row"
+        gap={1} flexWrap="wrap"
+      >
         {tagArray.map((tag, i) => {
           const isActive = tags.includes(tag);
 
@@ -93,24 +99,21 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
             <Box key={i}>
               <Chip
                 label={tag}
-                onClick={() => hangleTag(tag)}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{
                   color: isActive ? materialDesignSysPalette.primary : materialDesignSysPalette.secondary,
                   backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
                 }}
+                onClick={() => handleTag(tag)}
               />
             </Box>
           )
         })}
       </Stack>
       <InputBase
+        multiline
         placeholder={locale.messageFeedbackPlaceholder}
         value={feedback}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setFeedback(event.target.value);
-        }}
-        multiline
         maxRows={3}
         sx={{
           padding: 1,
@@ -118,19 +121,21 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           border: '1px solid',
           borderColor: materialDesignSysPalette.outline,
         }}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setFeedback(event.target.value);
+        }}
       />
       <Typography variant='body2'>
         <Link target='_blank' href=''>
           {locale.messageFeedbackLink}
         </Link>
-        {' '}
-        {locale.messageFeedbackText}
+        {` ${locale.messageFeedbackText}`}
       </Typography>
       <Box>
         <coreSlots.button
           disabled={!feedback && tags.length === 0}
-          onClick={handleSubmit}
           variant='text'
+          onClick={handleSubmit}
         >
           {locale.messageFeedbackSubmitButton}
         </coreSlots.button>

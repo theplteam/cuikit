@@ -1,21 +1,21 @@
 import * as React from 'react';
-import ChatDialogueComponent from './dialogue/ChatDialogueComponent';
+import ThreadComponent from './thread/ThreadComponent';
 import { ChatUsersProps, useChatProps } from './core/useChatProps';
 import { ChatGlobalProvider } from './core/ChatGlobalContext';
-import ChatAppDriver from './leftContainer/ChatAppDriver';
+import AppDrawer from './leftContainer/AppDrawer';
 import Box from '@mui/material/Box';
-import ChatDialoguesListBlock from './leftContainer/ChatDialoguesListBlock';
-import DialoguesList from './leftContainer/DialoguesList';
+import ThreadsListBlock from './leftContainer/ThreadsListBlock';
+import ThreadsList from './leftContainer/ThreadsList';
 import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
 import { useApiRef } from './core/useApiRef';
-import { DDialogue, DMessage } from '../models';
+import { Thread, Message } from '../models';
 import { LocalizationProvider } from './core/LocalizationContext';
 import { useApiManager } from './core/useApiManager';
 
-const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
+const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
   const userApiRef = usersProps.apiRef;
   const apiRef = useApiRef<DM, DD>(userApiRef);
   const apiManager = useApiManager(apiRef, userApiRef);
@@ -31,19 +31,23 @@ const Chat = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: React.P
       >
         <LocalizationProvider>
           <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
-            <slots.listDriver>
+            <slots.listDrawer>
               <HiddenDesktop>
-                <ChatAppDriver>
-                  <Box display={'flex'} flexDirection={'column'} height={500}>
-                    <ChatDialoguesListBlock />
+                <AppDrawer>
+                  <Box display="flex" flexDirection="column" height={500}>
+                    {/* eslint-disable-next-line react/jsx-max-depth */}
+                    <ThreadsListBlock />
                   </Box>
-                </ChatAppDriver>
+                </AppDrawer>
               </HiddenDesktop>
-            </slots.listDriver>
-            <slots.list>
-              <DialoguesList />
-            </slots.list>
-            <ChatDialogueComponent
+            </slots.listDrawer>
+            <slots.listContainer>
+              <ThreadsList />
+            </slots.listContainer>
+            <slots.threadsList {...slotProps.threadsList}>
+              <ThreadsListBlock />
+            </slots.threadsList>
+            <ThreadComponent
               enableBranches={props.enableBranches}
               apiManager={apiManager}
               contentRef={usersProps.scrollerRef}

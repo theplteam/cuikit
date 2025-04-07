@@ -4,7 +4,7 @@ export const arraySum  = (array: number[]) => {
   const length = array.length;
 
   while (++index < length) {
-    var current = array[index];
+    const current = array[index];
     if (current !== undefined) {
       result = result === undefined ? current : (result + current);
     }

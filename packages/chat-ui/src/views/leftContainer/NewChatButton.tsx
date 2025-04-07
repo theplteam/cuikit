@@ -7,30 +7,30 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
 type Props = {
-  openNewDialogue: () => void;
+  openNewThread: () => void;
 };
 
 const useDisabled = () => {
-  const { dialogue } = useChatContext();
-  const isEmpty = useObserverValue(dialogue?.isEmpty) as boolean;
+  const { thread } = useChatContext();
+  const isEmpty = useObserverValue(thread?.isEmpty) as boolean;
   return isEmpty;
 }
 
-export const NewChatIconButton: React.FC<Props> = ({ openNewDialogue }) => {
+export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
   return (
     <coreSlots.iconButton
       disabled={disabled}
-      onClick={openNewDialogue}
-      size={'small'}
+      size="small"
+      onClick={openNewThread}
     >
       <AddIcon />
     </coreSlots.iconButton>
   );
 };
 
-const NewChatButton: React.FC<Props> = ({ openNewDialogue }) => {
+const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
@@ -39,15 +39,15 @@ const NewChatButton: React.FC<Props> = ({ openNewDialogue }) => {
     <Box
       pt={1.5}
       px={2}
-      width={'100%'}
-      boxSizing={'border-box'}
+      width="100%"
+      boxSizing="border-box"
     >
       <coreSlots.button
-        disabled={disabled}
-        onClick={openNewDialogue}
-        startIcon={<AddIcon />}
         fullWidth
-        variant={'outlined'}
+        disabled={disabled}
+        startIcon={<AddIcon />}
+        variant="outlined"
+        onClick={openNewThread}
       >
         {locale.newChat}
       </coreSlots.button>

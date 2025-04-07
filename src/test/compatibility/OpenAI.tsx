@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatGptAdapter,
   ChatPage,
-  DDialogue,
+  Thread,
   useAssistantAnswerMock,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
@@ -11,7 +11,7 @@ const helloMessage = `Hello! I am your AI assistant, and I’m ready to help you
 
 Feel free to ask – together we’ll find the best solutions!`;
 
-const dialogues = [
+const threads = [
   {
     "id": "test-id",
     "title": "Pleasant conversation",
@@ -92,20 +92,20 @@ const dialogues = [
 ];
 
 const App: React.FC = () => {
-  const dd = dialogues as DDialogue[];
+  const dd = threads as Thread[];
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatGptAdapter>
         <ChatPage
-          dialogue={dd[0]}
-          dialogues={dd}
+          thread={dd[0]}
+          threads={dd}
           handleStopMessageStreaming={handleStopMessageStreaming}
-          onUserMessageSent={onUserMessageSent}
           helloMessage={helloMessage}
+          onUserMessageSent={onUserMessageSent}
         />
       </ChatGptAdapter>
     </Box>

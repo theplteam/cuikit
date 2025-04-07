@@ -3,12 +3,12 @@ import throttle from 'lodash.throttle';
 import { useMessageFollowing } from './useMessageFollowing';
 import { ChatScrollerType } from './ChatScrollerType';
 import { NOOP } from '../../utils/NOOP';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 import { useTablet } from '../../ui/Responsive';
 import { isWindowCheck } from '../hooks/useScrollSave';
 
 export const useChatScrollFunctions = (
-  dialogue: Dialogue | undefined,
+  thread: ThreadModel | undefined,
   scrollTo: (top: number, behavior?: 'smooth') => void,
   getPosition: ChatScrollerType,
   getScrollContainer: () => HTMLDivElement | undefined | Window,
@@ -31,15 +31,13 @@ export const useChatScrollFunctions = (
     }, 300, { trailing: true }
   ), [showButton]);
 
-
   const handleSaveScrollPosition = React.useCallback(throttle(
     () => {
-      if (dialogue) {
-        dialogue.scrollY = getPosition().scrollTop;
+      if (thread) {
+        thread.scrollY = getPosition().scrollTop;
       }
     }, 100
-  ), [dialogue?.id]);
-
+  ), [thread?.id]);
 
   const onScrollCallback = React.useCallback(() => {
     handleCheckButtonState();
@@ -50,8 +48,8 @@ export const useChatScrollFunctions = (
 
   // прокрутить диалог к концу списка или к предыдущему месту при открытии
   React.useEffect(() => {
-    if (dialogue) {
-      if (dialogue.scrollY < 0) {
+    if (thread) {
+      if (thread.scrollY < 0) {
         // TODO: в первом кадре высота неполная, потом обновляется
         setTimeout(() => {
           const scrollHeight = getPosition().scrollHeight * 1.5;
@@ -59,20 +57,20 @@ export const useChatScrollFunctions = (
         }, 100);
 
       } else {
-        scrollTo(dialogue.scrollY);
+        scrollTo(thread.scrollY);
       }
     }
-  }, [dialogue?.id]);
+  }, [thread?.id]);
 
   React.useEffect(() => {
-    if (!dialogue) return NOOP;
+    if (!thread) return NOOP;
     const scrollContainer = getScrollContainer();
     scrollContainer?.addEventListener('scroll', onScrollCallback);
 
     return () => {
       scrollContainer?.removeEventListener('scroll', onScrollCallback);
     }
-  }, [onScrollCallback, dialogue?.id]);
+  }, [onScrollCallback, thread?.id]);
 
   // Отслеживать изменения размеров диалога, чтобы скрывать/показывать кнопку "Вниз"
   React.useEffect(() => {

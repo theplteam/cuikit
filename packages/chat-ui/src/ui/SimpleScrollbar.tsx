@@ -45,8 +45,8 @@ const SimpleBarStyled = styled(SimpleBar, {
 const SimpleScrollbar: React.FC<Props> = ({ style, children, maxContent }) => {
   return (
     <SimpleBarStyled
-      style={style}
       forceVisible
+      style={style}
       autoHide={false}
       maxContent={maxContent}
     >

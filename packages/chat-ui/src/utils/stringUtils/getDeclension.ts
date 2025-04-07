@@ -1,6 +1,5 @@
 import { lng } from '../lng';
 
-
 export const getDeclension = (int: number, nouns: [one: string, two: string, five: string], insertNumFirst?: boolean) => {
   const [one, two, five] = nouns;
   let n = Math.abs(int);

@@ -1,24 +1,27 @@
 import { StreamSmootherModel } from './StreamSmootherModel';
-import { DMessage, Message } from '../Message';
+import { Message, MessageModel } from '../MessageModel';
 import { StreamSmootherAbstract } from './StreamSmootherAbstract';
-import { Dialogue } from '../Dialogue';
-import { DDialogue } from '../DialogueData';
+import { ThreadModel } from '../ThreadModel';
+import { Thread } from '../ThreadData';
 
-export type MessageStreamManagerOptions<DM extends DMessage> = {
-  smoother?: boolean | ((message: Message<DM>) => StreamSmootherAbstract);
+export type MessageStreamManagerOptions<DM extends Message> = {
+  smoother?: boolean | ((message: MessageModel<DM>) => StreamSmootherAbstract);
   clearStatusAfterFirstText?: boolean;
 }
 
-export class MessageStreamManager<DM extends DMessage, DD extends DDialogue<DM>> {
+/**
+ * @deprecated - old stream version
+ */
+export class MessageStreamManager<DM extends Message, DD extends Thread<DM>> {
   // дополнительный стрим, чтобы печатание было более плавным, вместо рывков с большими кусками
   readonly smoother: StreamSmootherAbstract | undefined;
 
   protected _closeConnection?: () => void;
 
   constructor(
-    readonly assistantMessage: Message<DM>,
-    readonly dialogue: Dialogue<DM, DD>,
-    readonly streamParser: (value: string[], assistantMessage: Message<DM>) => void,
+    readonly assistantMessage: MessageModel<DM>,
+    readonly thread: ThreadModel<DM, DD>,
+    readonly streamParser: (value: string[], assistantMessage: MessageModel<DM>) => void,
     private options?: MessageStreamManagerOptions<DM>,
   ) {
     if (typeof options?.smoother === 'boolean') {
@@ -76,13 +79,13 @@ export class MessageStreamManager<DM extends DMessage, DD extends DDialogue<DM>>
                 // Get the data and send it to the browser via the controller
                 controller.enqueue(value);
                 // Check chunks by logging to the console
-                let string = new TextDecoder().decode(value);
+                const string = new TextDecoder().decode(value);
 
                 const jsonStrings = string.match(/data: (.*)/g);
 
                 if (jsonStrings) {
                   if (!statusRemoved && !!this.options?.clearStatusAfterFirstText) {
-                    this.dialogue.streamStatus.value = undefined;
+                    this.thread.streamStatus.value = undefined;
                   }
                   this.streamParser(jsonStrings, this.assistantMessage);
                 }
@@ -109,6 +112,5 @@ export class MessageStreamManager<DM extends DMessage, DD extends DDialogue<DM>>
       this.assistantMessage.text += text;
     }
   }
-
 
 }

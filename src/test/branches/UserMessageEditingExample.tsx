@@ -2,14 +2,14 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue,
+  Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
 const UserMessageEditingExample: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [threads] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {
@@ -80,13 +80,13 @@ const UserMessageEditingExample: React.FC = () => {
     useAssistantAnswerMock();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
-        dialogue={dialogues[0]}
-        dialogues={dialogues}
+        enableBranches
+        thread={threads[0]}
+        threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}
-        enableBranches
       />
     </Box>
   );

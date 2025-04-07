@@ -1,16 +1,16 @@
 import * as React from "react";
 import {
   ChatPage,
-  DDialogue, MessageStreamingParams,
+  Thread, MessageSentParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
 const awaitSeconds = (seconds: number) => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [threads] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {
@@ -25,7 +25,7 @@ const App: React.FC = () => {
     },
   ]);
 
-  const onUserMessageSent = React.useCallback(async (params: MessageStreamingParams) => {
+  const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
     await awaitSeconds(2);
     params.setStatus('We\'ve been waiting for 2 seconds already.');
     await awaitSeconds(3);
@@ -41,12 +41,10 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
-        dialogue={dialogues[0]}
-        dialogues={dialogues}
+        defaultTextFieldValue="Test" thread={threads[0]} threads={threads}
         onUserMessageSent={onUserMessageSent}
-        defaultTextFieldValue={'Test'}
       />
     </Box>
   );

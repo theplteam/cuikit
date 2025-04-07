@@ -1,4 +1,4 @@
-import { DDialogue, type Dialogue, DMessage } from '../../models';
+import { Thread, type ThreadModel, Message, MessageModel } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -12,39 +12,47 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
 
-type ChildrenProps = React.PropsWithChildren<{}>;
+type ChildrenProps = React.PropsWithChildren;
 
-export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
+export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
-   * Override the full dialogue component
+   * Override the full thread component
    */
-  dialogue: ChildrenProps;
+  thread: { id: string } & ChildrenProps;
   /**
-   * Parent for the dialogues list
+   * Parent for the threads list
+   * Will ignored if threadsList slot provided
    */
-  list: ChildrenProps;
+  listContainer: any;
+  /**
+   * List of threads
+   */
+  threadsList: any;
   /**
    * Subtitle component for the list container
    */
   listSubtitle: TypographyProps;
   /**
-   * Typography component for rendering time text in the dialogues list (today, last week, last 30 days, etc.)
+   * Typography component for rendering time text in the threads list (today, last week, last 30 days, etc.)
    */
   listTimeText: TypographyProps;
   /**
-   * Driver component for the dialogues list (mobile version)
+   * Driver component for the threads list (mobile version)
+   * Will ignored if threadsList slot provided
    */
-  listDriver: ChildrenProps;
+  listDrawer: ChildrenProps;
   /**
-   * Title for the mobile dialogues list (same as listSubtitle)
+   * Title for the mobile threads list (same as listSubtitle)
    */
-  listDriverTitle: TypographyProps;
+  listDrawerTitle: TypographyProps;
   /**
-   * Welcome message from the assistant for a new dialogue or the initial message from the assistant in an existing dialogue.
+   * Welcome message from the assistant for a new thread or the initial message from the assistant in an existing thread.
    */
-  firstMessage: { dialogue: Dialogue<DM, DD>, text?: string };
+  firstMessage: { thread: ThreadModel<DM, DD>, text?: string };
 
   sendMessageButton: IconButtonProps;
+
+  messageRowInner: { thread: DD } & any;
 
   // MESSAGE
   /**
@@ -70,7 +78,7 @@ export type SlotPropsType<DM extends DMessage, DD extends DDialogue<DM>> = {
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */
-  messageAssistantProgress: BoxProps & { dialogue: Dialogue<DM, DD> };
+  messageAssistantProgress: BoxProps & { thread: ThreadModel<DM, DD>, message: MessageModel<DM> };
   /**
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */

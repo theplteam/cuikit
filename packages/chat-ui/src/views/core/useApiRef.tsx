@@ -1,82 +1,99 @@
 import * as React from 'react';
-import { DDialogue, DMessage, Message } from '../../models';
+import { Thread, Message, MessageModel } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 import { IdType } from '../../types';
-import { DialogueMessages } from '../../models/DialogueMessages';
+import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
-import { DialogueListenersMap } from '../dialogue/DialogueListenersMap';
+import { ThreadListenersMap } from '../thread/ThreadListenersMap';
 
-export type ApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
+export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
-   * Get all messages from current dialogue
+   * Get all messages from current thread
    */
   getAllMessages: () => DM[];
   /**
-   * Get all dialogues
+   * Get all threads
    */
-  getAllDialogues: () => DD[];
+  getAllThreads: () => DD[];
   /**
-   * Get current dialogue
+   * Get current thread
    */
-  getCurrentDialogue: () => DD | undefined;
+  getCurrentThread: () => DD | undefined;
   /**
    * Get messages from current branch
    * @see https://docs.playliner.com/introduction/branching/
    */
   getBranchMessages: () => DM[];
   /**
-   * Delete dialogue by id
+   * Delete thread by id
    */
-  deleteDialogue: (dialogueId: IdType) => void;
+  deleteThread: (threadId: IdType) => void;
   /**
    * Send message to conversation
    */
-  sendUserMessage: (content: DMessage['content']) => Promise<boolean>;
+  sendUserMessage: (content: Message['content']) => Promise<boolean>;
   /**
-   * Triggered when another dialogue is opened.
+   * Triggered when another thread is opened.
    */
-  onChangeDialogue: (dialogueId: IdType) => void;
+  onChangeThread: (threadId: IdType) => void;
   /**
-   * Triggered when a new dialogue is opened.
-   * @param dialogue
+   * Triggered when a new thread is opened.
+   * @param thread
    */
-  openNewDialogue: (dialogue: DD) => void;
+  openNewThread: (thread?: DD) => void;
   /**
    * Set your own waiting status for a chat response.
    */
   setProgressStatus: (status: string) => void;
   /**
-   * Change dialogue branch
+   * Get waiting status for a chat response.
    */
-  handleChangeBranch: DialogueMessages<DM>['handleChangeBranch'];
+  getProgressStatus: () => string;
+  /**
+   * Change thread branch
+   */
+  handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
+  /**
+   * Set menu driver open state
+   */
+  setMenuDriverOpen: (value: boolean) => void;
+  /**
+   * Set thread to delete, if provided delete dialog will be shown
+   */
+  setDeleteThreadItem: (thread?: DD) => void;
 };
 
-export type PrivateApiRefType<DM extends DMessage = any, DD extends DDialogue<DM> = any> = {
-  allMessages: ObservableReactValue<Readonly<Message<DM>[]>>;
-  branch: ObservableReactValue<Readonly<Message<DM>[]>>;
-  getListener: <K extends keyof DialogueListenersMap<DM>>(key: K) => DialogueListenersMap<DM>[K] | undefined;
+export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
+  allMessages: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
+  branch: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
+  getListener: <K extends keyof ThreadListenersMap<DM>>(key: K) => ThreadListenersMap<DM>[K] | undefined;
+  updateScrollButtonState: () => void;
 } & ApiRefType<DM, DD>;
 
-export const useApiRef = <DM extends DMessage, DD extends DDialogue<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
+export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
   const apiRef = React.useRef<PrivateApiRefType<DM, DD>>({
-    onChangeDialogue: NOOP,
-    openNewDialogue: NOOP,
-    deleteDialogue: NOOP,
+    onChangeThread: NOOP,
+    openNewThread: NOOP,
+    updateScrollButtonState: NOOP,
+    deleteThread: NOOP,
+    getProgressStatus: () => '',
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
-    getCurrentDialogue: () => undefined,
+    getCurrentThread: () => undefined,
     getAllMessages: () => [],
     getBranchMessages: () => [],
-    getAllDialogues: () => [],
+    getAllThreads: () => [],
     allMessages: new ObservableReactValue([]),
     branch: new ObservableReactValue([]),
+    setMenuDriverOpen: NOOP,
+    setDeleteThreadItem: NOOP,
     getListener: () => undefined,
   });
 
   React.useMemo(() => {
     if (userApiRef) {
-      const {getListener, branch, allMessages, ...otherProps} = apiRef.current;
+      const { getListener, branch, allMessages, updateScrollButtonState, ...otherProps } = apiRef.current;
       userApiRef.current = otherProps;
     }
   }, [userApiRef]);

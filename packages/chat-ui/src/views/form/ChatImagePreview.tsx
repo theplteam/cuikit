@@ -6,6 +6,7 @@ import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
 import { styled } from '@mui/material/styles';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import Scrollbar from '../../ui/Scrollbar';
 
 type Props = {
   images: string[];
@@ -14,16 +15,17 @@ type Props = {
 
 const BoxStyled = styled(Box)(() => ({
   position: 'relative',
+  height: 64,
+  width: 64,
   '& a': {
-    width: 100,
-    height: 100,
+    height: 'inherit',
+    width: 'inherit',
     lineHeight: 0,
     display: 'block',
   },
   '& img': {
-    maxHeight: 100,
-    height: 100,
-    width: "inherit",
+    height: 'inherit',
+    width: 'inherit',
     objectFit: 'cover',
     aspectRatio: 'auto',
     objectPosition: 'center',
@@ -67,38 +69,44 @@ const ChatImagePreview: React.FC<Props> = ({ images, setImages }) => {
   };
 
   return (
-    <Box display={'flex'} flexWrap={'wrap'} gap={1} className="pswp-gallery" id={galleryId}>
-      {items.map(({ src, width, height }, index) => (
-        <BoxStyled key={index}>
-          <a
-            href={src}
-            data-pswp-width={width}
-            data-pswp-height={height}
-            key={`${galleryId}-${index}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img src={src} alt="" />
-          </a>
-          <coreSlots.iconButton
-            size='small'
-            sx={{
-              position: 'absolute',
-              padding: 0,
-              top: 0,
-              right: 0,
-              outline: `4px solid ${materialDesignSysPalette.surfaceContainerLowest}`,
-              backgroundColor: materialDesignSysPalette.surfaceContainerHighest,
-              ":hover": {
-                backgroundColor: materialDesignSysPalette.surfaceContainerLow,
-              },
-            }}
-            onClick={() => handleClick(src)}>
-            <CloseIcon sx={{ width: 16, height: 16 }} />
-          </coreSlots.iconButton>
-        </BoxStyled>
-      ))}
-    </Box>
+    <Scrollbar style={{ maxHeight: 64, borderRadius: 16 }}>
+      <Box
+        display="flex" flexWrap="wrap" gap={1}
+        paddingRight="12px" className="pswp-gallery" id={galleryId}
+      >
+        {items.map(({ src, width, height }, index) => (
+          <BoxStyled key={index}>
+            <a
+              key={`${galleryId}-${index}`}
+              href={src}
+              data-pswp-width={width}
+              data-pswp-height={height}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={src} alt="" />
+            </a>
+            <coreSlots.iconButton
+              size='small'
+              sx={{
+                position: 'absolute',
+                padding: 0,
+                top: 0,
+                right: 0,
+                outline: `4px solid ${materialDesignSysPalette.surfaceContainerLowest}`,
+                backgroundColor: materialDesignSysPalette.surfaceContainerHighest,
+                ":hover": {
+                  backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+                },
+              }}
+              onClick={() => handleClick(src)}
+            >
+              <CloseIcon sx={{ width: 16, height: 16 }} />
+            </coreSlots.iconButton>
+          </BoxStyled>
+        ))}
+      </Box>
+    </Scrollbar>
   );
 };
 

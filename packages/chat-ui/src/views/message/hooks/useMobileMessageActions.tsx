@@ -1,31 +1,31 @@
 import * as React from 'react';
-import { Dialogue } from '../../../models/Dialogue';
-import { Message } from '../../../models/Message';
+import { ThreadModel } from '../../../models/ThreadModel';
+import { MessageModel } from '../../../models/MessageModel';
 
 export type StateType = {
   element: HTMLDivElement;
-  dialogue: Dialogue;
-  message: Message;
+  thread: ThreadModel;
+  message: MessageModel;
 };
 
 export type MobileMessageActionsType = {
   selectedValue?: {
-    dialogue: Dialogue;
-    message: Message;
+    thread: ThreadModel;
+    message: MessageModel;
     top: number;
     left: number;
     bottom: number;
     getBoundingClientRect: () => DOMRect;
   };
-  handleSelectMessage: (dialogue: Dialogue, message: Message, element: HTMLDivElement) => void,
+  handleSelectMessage: (thread: ThreadModel, message: MessageModel, element: HTMLDivElement) => void,
   handleCloseSelection: () => void,
 };
 
 export const useMobileMessageActions = (): MobileMessageActionsType => {
   const [_selectedValue, setSelectedValue] = React.useState<StateType | undefined>();
 
-  const handleSelectMessage = (dialogue: Dialogue, message: Message, element: HTMLDivElement) => {
-    setSelectedValue({ element, dialogue, message });
+  const handleSelectMessage = (thread: ThreadModel, message: MessageModel, element: HTMLDivElement) => {
+    setSelectedValue({ element, thread, message });
   }
 
   const handleCloseSelection = () => {
@@ -44,7 +44,7 @@ export const useMobileMessageActions = (): MobileMessageActionsType => {
 
     return {
       message: _selectedValue.message,
-      dialogue: _selectedValue.dialogue,
+      thread: _selectedValue.thread,
       top,
       bottom,
       left: bounds.left - parentBounds.left,

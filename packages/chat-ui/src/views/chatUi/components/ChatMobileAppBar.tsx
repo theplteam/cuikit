@@ -7,16 +7,16 @@ import { materialDesignSysPalette } from './../../../utils/materialDesign/palett
 import { Box } from '@mui/material';
 
 const ChatMobileAppBar: React.FC = () => {
-  const { model } = useChatContext();
+  const { apiRef } = useChatContext();
   const { coreSlots } = useChatSlots();
 
   const handleClick = () => {
-    model.actions.menuDriverOpen.value = true
+    apiRef.current?.setMenuDriverOpen(true);
   }
 
   return (
     <Stack
-      justifyContent={'center'}
+      justifyContent="center"
       height={64}
       sx={{ backgroundColor: materialDesignSysPalette.surfaceContainerLow }}
       paddingX={1}

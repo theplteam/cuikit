@@ -3,13 +3,14 @@ import usePagination from '@mui/material/usePagination';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
-import { useDialogueContext } from '../dialogue/DialogueContext';
-import { Message } from '../../models/Message';
+import { useThreadContext } from '../thread/ThreadContext';
+import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 export type MessagePaginationProps = {
-  message: Message;
+  message: MessageModel;
   classes: {
     paginationClassName: string;
   };
@@ -19,12 +20,18 @@ export type MessagePaginationProps = {
 export const MessagePaginationHeight = 30
 
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
-  const { apiRef } = useDialogueContext();
+  const { apiRef } = useThreadContext();
+  const { handleBranchPagination } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const messages = useObserverValue(apiRef.current?.getListener('allMessages'), []);
-  const branches = messages?.filter(v => v.parentId === message.parentId) ?? [];
 
-  // console.log('page ' + (branches.findIndex(v => v.id === message.id) + 1), message.id, branches.map(v => v.id));
+  const makeBranch = (currentMessage: MessageModel, messages: MessageModel[]) => {
+    const filteredMessages = messages.filter(m => (m.role === message.role) && (m.parentId === currentMessage.parentId));
+    return filteredMessages;
+  }
+
+  const branches = handleBranchPagination?.(message, messages || []) ?? makeBranch(message, messages || []) ?? [];
+
   const { items } = usePagination({
     count: branches.length,
     boundaryCount: 0,
@@ -33,16 +40,14 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
     onChange: (_event, page) => apiRef.current?.handleChangeBranch(branches[page - 1]),
   });
 
-  /*console.log(branches);
-  console.log(dialogue.messages.map((v) => ({ text: v.text, id: v.parentId })));*/
   if (branches.length <= 1) return <Box height={MessagePaginationHeight} />;
 
   return (
     <slots.messagePaginationRoot
-      direction={'row'}
+      direction="row"
       pr={0.5}
       gap={0.5}
-      alignItems={'center'}
+      alignItems="center"
       height={MessagePaginationHeight}
       className={classes.paginationClassName}
       {...slotProps?.messagePaginationRoot}
@@ -62,7 +67,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
         } else if (type === 'next' || type === 'previous') {
           children = (
             <slots.messagePaginationButton
-              size={'small'}
+              size="small"
               sx={{
                 color: (theme) => theme.palette.grey[600],
               }}
@@ -71,7 +76,7 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
               key={type}
               disabled={item.disabled || disabled}
             >
-              {type === 'next' ? <ArrowForwardIosIcon fontSize={'inherit'} /> : <ArrowBackIosIcon fontSize={'inherit'} />}
+              {type === 'next' ? <ArrowForwardIosIcon fontSize="inherit" /> : <ArrowBackIosIcon fontSize="inherit" />}
             </slots.messagePaginationButton>
           );
         }

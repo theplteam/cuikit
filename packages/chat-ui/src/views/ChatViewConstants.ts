@@ -6,6 +6,8 @@ export class ChatViewConstants {
 
   static readonly SCROLL_ID = 'chatScrollingBlockId';
 
+  static readonly DIALOGUE_ROOT_ID = 'chatRootBlockId';
+
   static readonly MESSAGE_BOX_ID = 'chatMessageBoxId';
 
   static readonly SIDE_CONTAINER_LARGE = 260;

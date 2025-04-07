@@ -5,7 +5,7 @@ type Props = TypographyProps;
 
 const ContainerSubtitle: React.FC<Props> = ({ children }) => {
   return (
-    <Typography variant={'subtitle1'}>
+    <Typography variant="subtitle1">
       {children}
     </Typography>
   );

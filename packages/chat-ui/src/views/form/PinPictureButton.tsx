@@ -7,8 +7,9 @@ import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import { ChatViewConstants } from '../../views/ChatViewConstants';
-import { useSnackbar } from '../../views/hooks/useSnackbar';
+import { ChatViewConstants } from '../ChatViewConstants';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
   images: string[];
@@ -16,15 +17,17 @@ type Props = {
   isTyping?: boolean;
 };
 
-
 const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   const coreSlots = useChatCoreSlots();
+  const { enableImageAttachments, thread } = useChatContext();
+
   const ref = React.useRef<HTMLInputElement>(null);
   const mobileRef = React.useRef<HTMLInputElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const isMobile = useMobile();
-  const locale = useLocalizationContext();
   const snackbar = useSnackbar();
+  const locale = useLocalizationContext();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
@@ -51,14 +54,14 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
     if (isMobile) setAnchorEl(null);
   };
 
-  const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping;
-
+  const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping || !thread;
+  if (!enableImageAttachments) return null;
   return (
     <Stack
-      alignItems={'flex-end'}
+      alignItems="flex-end"
       width={48}
       height={40}
-      position={'relative'}
+      position="relative"
     >
       <coreSlots.iconButton disabled={disabled} onClick={handleClick}>
         <AddAPhotoIcon />
@@ -66,7 +69,6 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
       <MdMenu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'left',
@@ -75,6 +77,7 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
           vertical: 'top',
           horizontal: 'left',
         }}
+        onClose={() => setAnchorEl(null)}
       >
         <coreSlots.menuItem
           startIcon={PhotoCameraIcon}
@@ -91,21 +94,21 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
       </MdMenu>
       <input
         ref={mobileRef}
+        capture
         type="file"
         accept="image/png,image/jpeg"
-        capture
-        onChange={handleImageUpload}
         disabled={isTyping}
         style={{ display: 'none' }}
+        onChange={handleImageUpload}
       />
       <input
         ref={ref}
-        type="file"
         multiple
+        type="file"
         accept="image/png,image/jpeg"
-        onChange={handleImageUpload}
         disabled={isTyping}
         style={{ display: 'none' }}
+        onChange={handleImageUpload}
       />
     </Stack>
   );

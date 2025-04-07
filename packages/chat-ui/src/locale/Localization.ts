@@ -36,11 +36,11 @@ export type Localization = {
   codeCopyButton: string;
   codeEditButton: string;
 
-  //dialogues
-  dialogueDeleteTitle: string;
-  dialogueDeleteContent: string;
-  dialogueDeletedSuccess: string;
-  dialogueActionDelete: string
+  //threads
+  threadDeleteTitle: string;
+  threadDeleteContent: string;
+  threadDeletedSuccess: string;
+  threadActionDelete: string
 
   // rating
   messageLikeTooltip: string;
@@ -59,4 +59,6 @@ export type Localization = {
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;
+
+  reasonedFor: string;
 };

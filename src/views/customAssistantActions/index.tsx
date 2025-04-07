@@ -11,16 +11,16 @@ export const useCustomAssistantActions = () => {
   return React.useMemo(() => [
     toConstructor(
       <IconButton
+        key="AcUnitIcon"
         onClick={() => console.log('click AcUnitIcon')}
-        key={'AcUnitIcon'}
       >
         <AcUnitIcon />
       </IconButton>
     ),
     toConstructor(
       <IconButton
+        key="BlindIcon"
         onClick={() => console.log('click BlindIcon')}
-        key={'BlindIcon'}
       >
         <BlindIcon />
       </IconButton>

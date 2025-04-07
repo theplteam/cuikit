@@ -15,6 +15,18 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
     text = processAssistantText(text);
   }
 
+  // TODO: Images are wrapped in a <p> tag. This is not a bug and will not be fixed.
+  //  @see https://github.com/quantizor/markdown-to-jsx/issues/209#issuecomment-417712075
+  const pFunction = React.useCallback((props: React.JSX.IntrinsicElements['p']) => {
+    return React.Children.toArray(props.children).some(child => typeof child === "string") ? (
+      <slots.markdownP {...slotProps.markdownP} {...props as TypographyProps} />
+    ) : (
+      <React.Fragment key={props.key}>
+        {props.children}
+      </React.Fragment>
+    )
+  }, []);
+
   return (
     <Markdown
       options={{
@@ -106,15 +118,7 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
             component: slots.markdownBlockquote,
             props: slotProps.markdownBlockquote,
           },
-          // TODO: картинки оборачивается в тег <p>, это не баг и фиксить не будут
-          //  @see https://github.com/quantizor/markdown-to-jsx/issues/209#issuecomment-417712075
-          p: (props: React.JSX.IntrinsicElements['p']) => {
-            return React.Children.toArray(props.children).some(child => typeof child === "string") ? (
-              <slots.markdownP {...slotProps.markdownP} {...props as TypographyProps} />
-            ) : (
-              <React.Fragment key={props.key} children={props.children} />
-            )
-          },
+          p: pFunction,
         },
       }}
     >

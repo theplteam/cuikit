@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   useAssistantAnswerMock,
-  DDialogue, Chat, ChatApiRef, useChatApiRef, chatClassNames,
+  Thread, Chat, ChatApiRef, useChatApiRef, chatClassNames,
 } from "@plteam/chat-ui";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -56,7 +56,7 @@ const MainBoxStyled = styled(Box)(({ theme }) => ({
     left: 0,
     width: '100%',
   },
-  [`& .${chatClassNames.dialogueRoot}`]: {
+  [`& .${chatClassNames.threadRoot}`]: {
     height: '100%',
   },
 }));
@@ -87,20 +87,22 @@ const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef>, handleD
       <Toolbar />
       <Divider />
       <Stack
-        width={'100%'}
         gap={1.5}
         pt={2}
+        width="100%"
       >
-        <Typography sx={{ pl: 1 }} fontWeight={'bold'}>
-          Question templates:
+        <Typography fontWeight="bold" sx={{ pl: 1 }}>
+          {"Question templates:"}
         </Typography>
         <Stack>
           {questionTemplates.map((template) => (
             <QuestionItemStyled
-              onClick={() => sendMessage(template.text)}
               key={template.id}
+              onClick={() => sendMessage(template.text)}
             >
-              <Typography>{template.title}</Typography>
+              <Typography>
+                {template.title}
+              </Typography>
             </QuestionItemStyled>
           ))}
         </Stack>
@@ -110,9 +112,9 @@ const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef>, handleD
 };
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>([
+  const [threads] = React.useState<Thread[]>([
     {
-      id: "test-dialogue",
+      id: "test-thread",
       title: "Welcome message",
       messages: [
         {
@@ -121,7 +123,7 @@ const App: React.FC = () => {
         },
         {
           role: "assistant",
-          content: "Hello there! How can I assist you today?",
+          content: "You can select one of the question templates in the menu on the left, and it will be sent using the `sendUserMessage` function via `apiRef`.",
         },
       ],
     },
@@ -166,59 +168,58 @@ const App: React.FC = () => {
           <IconButton
             color="inherit"
             edge="start"
-            onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none' } }}
+            onClick={handleDrawerToggle}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Chat UI
+          <Typography noWrap component="div" variant="h6">
+            {"Chat UI\r"}
           </Typography>
         </Toolbar>
       </AppBar>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
       >
         <Drawer
           container={() => document.body}
-          variant="temporary"
-          open={mobileOpen}
-          onTransitionEnd={handleDrawerTransitionEnd}
-          onClose={handleDrawerClose}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
+          open={mobileOpen}
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
+          variant="temporary"
+          onClose={handleDrawerClose}
+          onTransitionEnd={handleDrawerTransitionEnd}
         >
           <ToolsPanel apiRef={apiRef} handleDrawerClose={handleDrawerClose} />
         </Drawer>
         <Drawer
-          variant="permanent"
+          open
           sx={{
             display: { xs: 'none', sm: 'block' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
-          open
+          variant="permanent"
         >
           <ToolsPanel apiRef={apiRef} handleDrawerClose={handleDrawerClose} />
         </Drawer>
       </Box>
       <MainBoxStyled
-        component="main"
         ref={scrollRef}
+        component="main"
       >
         <Chat
-          dialogue={dialogues[0]}
-          dialogues={dialogues}
-          handleStopMessageStreaming={handleStopMessageStreaming}
-          onUserMessageSent={onUserMessageSent}
           apiRef={apiRef}
+          handleStopMessageStreaming={handleStopMessageStreaming}
           scrollerRef={scrollRef}
+          thread={threads[0]}
+          threads={threads}
+          onUserMessageSent={onUserMessageSent}
         />
       </MainBoxStyled>
     </Box>

@@ -8,13 +8,13 @@ import HiddenContent from './../HiddenContent';
 import { ListContainer, ListContainerPortal } from './components/ListContainer';
 import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components/MobileAppBarContainer';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
-import { DDialogue, DMessage } from './../../models';
+import { Thread, Message } from './../../models';
 
-export type ChatUiProps<DM extends DMessage, DD extends DDialogue<DM>> = React.PropsWithChildren<{
+export type ChatUiProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   listPlacement?: 'left' | 'right';
 }> & ChatUsersProps<DM, DD>;
 
-const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: ChatUiProps<DM, DD>) => {
+const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiProps<DM, DD>) => {
   const { slots, listPlacement = 'left', ...other } = usersProps;
 
   const ref = useElementRef();
@@ -24,46 +24,49 @@ const ChatUi = <DM extends DMessage, DD extends DDialogue<DM>>(usersProps: ChatU
   const listContainerComponent = React.useMemo(() => isMobile
     ? null
     : (
-      <Grid item container width={'100%'} maxWidth={isTablet ? 220 : 360}>
+      <Grid
+        item container width="100%"
+        maxWidth={isTablet ? 220 : 360}
+      >
         <ListContainer />
       </Grid>
     ), [isMobile, isTablet]);
 
   return (
     <Grid
-      flexDirection={{ xs: 'column', sm: 'row' }}
       container
-      height={'inherit'}
-      width={'inherit'}
-      position={'relative'}
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      height="inherit"
+      width="inherit"
+      position="relative"
     >
-      {isMobile && (
+      {isMobile ? (
         <Grid>
           <MobileAppBarContainer />
         </Grid>
-      )}
+      ) : null}
       {listPlacement === 'left' && listContainerComponent}
       <Grid
         ref={ref}
         flex={1}
-        height={'100%'}
-        width={'100%'}
-        overflow={'auto'}
-        position={'relative'}
+        height="100%"
+        width="100%"
+        overflow="auto"
+        position="relative"
       >
         <Chat
           scrollerRef={ref}
           slots={{
-            list: isMobile ? HiddenContent : ListContainerPortal,
+            listContainer: isMobile ? HiddenContent : ListContainerPortal,
             ...slots,
           }}
           {...other}
         >
-          {isMobile && (
+          {isMobile ? (
             <MobileAppBarContainerPortal>
               <ChatMobileAppBar />
             </MobileAppBarContainerPortal>
-          )}
+          ) : null}
         </Chat>
       </Grid>
       {listPlacement === 'right' && listContainerComponent}

@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  DDialogue,
+  Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import { styled } from '@mui/material/styles';
@@ -37,7 +37,7 @@ const BlockquoteStyled = styled('blockquote')(({ theme }) => ({
 }))
 
 const App: React.FC = () => {
-  const [dialogues] = React.useState<DDialogue[]>(
+  const [threads] = React.useState<Thread[]>(
     [
       {
         id: "1",
@@ -61,12 +61,11 @@ const App: React.FC = () => {
     useAssistantAnswerMock();
 
   return (
-    <Box height={"100dvh"} width={"100dvw"}>
+    <Box height="100dvh" width="100dvw">
       <ChatPage
-        dialogue={dialogues[0]}
-        dialogues={dialogues}
+        thread={threads[0]}
+        threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        onUserMessageSent={onUserMessageSent}
         slots={{
           markdownBlockquote: BlockquoteStyled,
         }}
@@ -84,6 +83,7 @@ const App: React.FC = () => {
             color: "primary",
           },
         }}
+        onUserMessageSent={onUserMessageSent}
       />
     </Box>
   );

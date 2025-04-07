@@ -1,30 +1,30 @@
 import * as React from 'react';
 import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { Message } from '../../models/Message';
-import { Dialogue } from '../../models/Dialogue';
+import { MessageModel } from '../../models/MessageModel';
+import { ThreadModel } from '../../models/ThreadModel';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 
 type Props = {
-  messages: Message[];
-  dialogue: Dialogue;
+  messages: MessageModel[];
+  thread: ThreadModel;
 };
 
-const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
+const MessagesList: React.FC<Props> = ({ messages, thread }) => {
   const messagesLength = messages.length;
   const { slots } = useChatSlots();
 
   return (
     <>
-      <slots.firstMessage dialogue={dialogue} />
+      <slots.firstMessage thread={thread} />
       {messages.map((message, key) => (
         <ChatMessageComponent
-          message={message}
-          dialogue={dialogue}
           key={message.id ?? key}
+          enableAssistantActions
+          message={message}
+          thread={thread}
           isFirst={!key}
           isLatest={key === messagesLength -1}
-          enableAssistantActions
         />
       ))}
     </>
@@ -32,6 +32,6 @@ const MessagesList: React.FC<Props> = ({ messages, dialogue }) => {
 }
 
 export default React.memo(MessagesList, (prevProps, nextProps) => {
-  return prevProps.dialogue.id === nextProps.dialogue.id
+  return prevProps.thread.id === nextProps.thread.id
     && arrayPluck(prevProps.messages, 'id').join() === arrayPluck(nextProps.messages, 'id').join('');
 });

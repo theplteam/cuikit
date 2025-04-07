@@ -1,1 +1,1 @@
-export type ChatEventListeners<T extends object> = (params: T) => void;
+export type ChatEventListeners<T extends object, R = any> = (params: T) => R;

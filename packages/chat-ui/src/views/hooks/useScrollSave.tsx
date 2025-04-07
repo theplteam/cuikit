@@ -1,7 +1,7 @@
 import throttle from "lodash.throttle";
 import * as React from 'react';
 
-export const isWindowCheck = <T extends unknown>(container: T | Window | null): container is Window => container instanceof Window;
+export const isWindowCheck = <T,>(container: T | Window | null): container is Window => container instanceof Window;
 
 const useScrollSave = (
   model?: {

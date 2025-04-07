@@ -1,11 +1,11 @@
-import { DDialogue, DialogueHistoryItemType, DMessage } from "../../models";
+import { Thread, ThreadHistoryItemType, Message } from "../../models";
 
 export type AdapterType<D = any, M = any> = {
-  transformDialogue: (dialogue: D) => DDialogue;
+  transformThread: (thread: D) => Thread;
   /**
-   * Transform message to our format. It will be ignored if `transformDialogue` was passed.
+   * Transform message to our format. It will be ignored if `transformThread` was passed.
    * @param message
    */
-  transformMessage?: (message: M) => DMessage;
-  transformHistory?: <T>(history: DialogueHistoryItemType[]) => T[];
+  transformMessage?: (message: M) => Message;
+  transformHistory?: <T>(history: ThreadHistoryItemType[]) => T[];
 };

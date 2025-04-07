@@ -18,9 +18,11 @@ const BoxStyled = styled(Box)(() => ({
 const ChatMessageTableCell: React.FC<Props> = ({ children, textComponent, textComponentProps, ...otherProps }) => {
   const comp = { textComponent: textComponent ?? Typography, textComponentProps };
   return (
-    <TableCell size={'small'} {...otherProps}>
+    <TableCell size="small" {...otherProps}>
       <BoxStyled>
-        <comp.textComponent {...comp.textComponentProps}>{children}</comp.textComponent>
+        <comp.textComponent {...comp.textComponentProps}>
+          {children}
+        </comp.textComponent>
       </BoxStyled>
     </TableCell>
   );

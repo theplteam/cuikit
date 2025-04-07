@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useChatScrollFunctions } from './useChatScrollFunctions';
-import { Dialogue } from '../../models/Dialogue';
+import { ThreadModel } from '../../models/ThreadModel';
 
 export const useChatScroller = (
-  dialogue: Dialogue | undefined,
+  thread: ThreadModel | undefined,
   contentRef: React.RefObject<HTMLDivElement | null> | undefined
 ) => {
-  const { handleBottomScroll, scrollButtonEnabled, isTablet } = useChatScrollFunctions(
-    dialogue,
+  const { handleBottomScroll, scrollButtonEnabled, isTablet, handleCheckButtonState } = useChatScrollFunctions(
+    thread,
     (top, behavior) => {
       requestAnimationFrame(() => {
         if (contentRef) {
@@ -42,6 +42,6 @@ export const useChatScroller = (
   );
 
   return {
-    handleBottomScroll, scrollButtonEnabled, isTablet
+    handleBottomScroll, scrollButtonEnabled, isTablet, handleCheckButtonState
   };
 }

@@ -3,7 +3,7 @@ import { MobileMessageActionsType } from './hooks/useMobileMessageActions';
 import MessageMobileUserActions from './actions/mobile/MessageMobileUserActions';
 import MessageMobileAssistantActions from './actions/mobile/MessageMobileAssistantActions';
 import { MessagesModeType } from './hooks/useMessagesMode';
-import { useDialogueContext } from '../dialogue/DialogueContext';
+import { useThreadContext } from '../thread/ThreadContext';
 import MdMenu from '../../ui/menu/MdMenu';
 
 type Props = {
@@ -19,7 +19,7 @@ const MessageSelectedMobile = () => {
   const {
     mobileMessageActions,
     messageMode
-  } = useDialogueContext();
+  } = useThreadContext();
 
   React.useEffect(() => {
     if (open && !mobileMessageActions.selectedValue) {
@@ -49,7 +49,7 @@ const MessageSelectedMobile = () => {
 }
 
 const MessageSelectedMobileContent: React.FC<Props> = ({ mobileMessageActions, open, modeManager }) => {
-  const { message, dialogue, ...position } = mobileMessageActions.selectedValue;
+  const { message, thread, ...position } = mobileMessageActions.selectedValue;
 
   return (
     <MdMenu
@@ -73,7 +73,6 @@ const MessageSelectedMobileContent: React.FC<Props> = ({ mobileMessageActions, o
       ) : (
         <MessageMobileAssistantActions
           message={message}
-          dialogue={dialogue}
           onClose={mobileMessageActions.handleCloseSelection}
         />
       )}
