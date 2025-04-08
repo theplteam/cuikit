@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
 import { MessageSentParams } from '../../models/ThreadModel';
-import { ChatMessageOwner, Message, MessageModel, MessageUserContent, RatingType } from '../../models/MessageModel';
+import {
+  ChatMessageOwner,
+  Message,
+  MessageModel,
+  RatingType
+} from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -9,6 +14,8 @@ import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
+import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
+import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -36,11 +43,15 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   thread?: DD;
 
   /**
+   * Advanced function for forming a sequence of messages to implement custom functionality of branches
+   */
+  getCurrentBranch?: GetCurrentBranchFnType;
+
+  /**
    * You can create your own messages from the user and assistant before sending, according to your architecture,
    * after which the Chat UI will adjust them to its format via an Adapter.
    */
-  beforeUserMessageSend?: (text: string | undefined, content: MessageUserContent, history: any[])
-    => { userMessage: Message, assistantMessage: Message } | Promise<{ userMessage: Message, assistantMessage: Message }>;
+  beforeUserMessageSend?: BeforeUserMessageSendFnType;
 
   /**
    * Action buttons for the assistant's message.

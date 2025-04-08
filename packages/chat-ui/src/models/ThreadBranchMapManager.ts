@@ -1,6 +1,7 @@
 import { Message, MessageModel } from './MessageModel';
 import { IdType } from '../types';
 import { isDefined } from '../utils/isDefined';
+import { arrayPluck } from '../utils/arrayUtils/arrayPluck';
 
 const rootMessageHash = 'rootMessage';
 
@@ -9,10 +10,14 @@ export type MesagesMapType<DM extends Message> = Map<IdType, { messages: Message
 /**
  * TODO: Created in case the user needs to build a message tree in their own way
  */
-export class ThreadBranchMapManager {
+export class ThreadBranchMapManager<DM extends Message> {
   private _mapObject: Record<IdType, IdType[]> = {};
 
-  pushValue = (messageId: IdType, parentId: IdType | undefined) => {
+  private _map: MesagesMapType<DM> = new Map();
+
+  private _currentMapId = '';
+
+  private pushValue = (messageId: IdType, parentId: IdType | undefined) => {
     if (!parentId) {
       parentId = rootMessageHash;
     }
@@ -24,7 +29,7 @@ export class ThreadBranchMapManager {
     this._mapObject[parentId].push(messageId);
   }
 
-  createDefaultMap = (messages: Readonly<MessageModel[]>) => {
+  private createDefaultMap = (messages: Readonly<MessageModel<DM>[]>) => {
     this.clear();
 
     for (const message of messages) {
@@ -33,7 +38,22 @@ export class ThreadBranchMapManager {
     return this;
   }
 
-  getMap = <DM extends Message>(messages: Readonly<MessageModel<DM>[]>) => {
+  createMap = (messages: Readonly<MessageModel<DM>[]>) => {
+    const newMapId = arrayPluck(messages, 'id').join('-');
+    if (newMapId === this._currentMapId) return this._map;
+
+    this._currentMapId = newMapId;
+
+    this.clear();
+
+    this.createDefaultMap(messages);
+
+    this._map = this.getMap(messages);
+
+    return this._map;
+  }
+
+  private getMap = (messages: Readonly<MessageModel<DM>[]>) => {
     const map: MesagesMapType<DM> = new Map();
 
     for (const parentId in this._mapObject) {
@@ -49,5 +69,7 @@ export class ThreadBranchMapManager {
 
   clear = () => {
     this._mapObject = {};
+    this._map = new Map();
+    this._currentMapId = '';
   }
 }

@@ -10,6 +10,7 @@ import { useThreadSendMessage } from './useThreadSendMessage';
 import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
 import { Threads } from '../../models/Threads';
+import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 
 type ThreadContextType<DM extends Message, DD extends Thread<DM>> = {
   thread: ThreadModel<DM, DD> | undefined;
@@ -25,7 +26,7 @@ type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<
   scrollRef: React.RefObject<ChatScrollApiRef>;
   globalProps: Pick<
     ChatGlobalContextType<any, any>,
-    'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'beforeUserMessageSend'
+    'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'beforeUserMessageSend' | 'getCurrentBranch'
   >;
 }>;
 
@@ -34,6 +35,7 @@ const Context = React.createContext<ThreadContextType<any, any> | undefined>(und
 const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
+  const internalMessageTransformer = useInternalMessageTransformer();
 
   const { onSendNewsMessage, onEditMessage } = useThreadSendMessage(
     thread,
@@ -47,7 +49,11 @@ const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, m
   useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage);
 
   React.useMemo(() => {
-    thread?.messages.init(globalProps.enableBranches);
+    if (thread) {
+      thread.messages.getCurrentBranchFn = globalProps.getCurrentBranch;
+      thread.messages.internalMessageTransformer = internalMessageTransformer;
+      thread.messages.init(globalProps.enableBranches);
+    }
   }, [thread]);
 
   /*const [state, setState] = React.useState(0)

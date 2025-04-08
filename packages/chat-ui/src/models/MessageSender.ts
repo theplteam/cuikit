@@ -43,6 +43,8 @@ export class MessageSender<DM extends Message> {
     const internalUserMessage = getInternalMessage(this.userMessage);
     return {
       updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
+      updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
+      updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
       content: this.content,
       history: this.thread.messages.currentMessages.value.map(getInternalMessage),
       message: internalUserMessage,

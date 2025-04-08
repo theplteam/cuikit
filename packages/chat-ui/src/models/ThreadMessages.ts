@@ -1,4 +1,4 @@
-import { Message, MessageModel } from './MessageModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { isDefined } from '../utils/isDefined';
@@ -6,12 +6,18 @@ import { MesagesMapType, ThreadBranchMapManager } from './ThreadBranchMapManager
 
 const rootMessageHash = 'rootMessage';
 
+export type GetCurrentBranchFnType = (lastMessage: InternalMessageType) => Message[];
+
 export class ThreadMessages<DM extends Message> {
   allMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 
   currentMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 
-  private branchMapManager = new ThreadBranchMapManager();
+  internalMessageTransformer!: (message: MessageModel) => InternalMessageType;
+
+  getCurrentBranchFn?: GetCurrentBranchFnType;
+
+  private branchMapManager = new ThreadBranchMapManager<DM>();
 
   get allMessagesArray() {
     return this.allMessages.value;
@@ -25,16 +31,13 @@ export class ThreadMessages<DM extends Message> {
   init = (enableBranches?: boolean) => {
     if (this._callbackInitiated) return;
 
-    const newObject = this._createNewMap(this.allMessagesArray);
-
-    const map = new Map(Object.entries(newObject));
+    const map = this._createNewMap(this.allMessagesArray);
 
     this._updateBranch(map, this._lastMessage, enableBranches);
 
     // reaction to adding to the array of all messages to update the thread
     this.allMessages.subscribe(() => {
-      const newObject = this._createNewMap(this.allMessagesArray);
-      const map = new Map(Object.entries(newObject));
+      const map = this._createNewMap(this.allMessagesArray);
 
       this._updateBranch(map, arrayLast(this.allMessagesArray as MessageModel<DM>[]), enableBranches);
     });
@@ -64,32 +67,41 @@ export class ThreadMessages<DM extends Message> {
     }
 
     if (!startFrom) startFrom = this._lastMessage;
-    const rootMessages = startFrom ? [startFrom] : map.get(rootMessageHash)?.messages ?? [];
+    let newBranch: MessageModel<DM>[] = [];
 
-    const branches: MessageModel<DM>[][] = [];
+    if (this.getCurrentBranchFn) {
+      newBranch = this.getCurrentBranchFn(startFrom ? this.internalMessageTransformer(startFrom) : undefined)
+        .map(v => this.allMessagesArray.find(m => m.id === v.id))
+        .filter(isDefined);
 
-    for (const rootMessage of rootMessages) {
-      branches.push(this._getBranchRecursive(rootMessage, map));
+    } else {
+      const rootMessages = startFrom ? [startFrom] : map.get(rootMessageHash)?.messages ?? [];
+
+      const branches: MessageModel<DM>[][] = [];
+
+      for (const rootMessage of rootMessages) {
+        branches.push(this._getBranchRecursive(rootMessage, map));
+      }
+
+      const topItems = branches.map(b => arrayLast(b))
+        .filter(isDefined);
+
+      const topItem = arrayLast(topItems);
+
+      /*console.log(
+        branches.length,
+        sortByDesc(branches[0]?.slice() ?? [], 'time').map((v) => ({
+          text: v.text,
+          pid: v.parentId,
+          id: v.id,
+          time: v.time - 1734000000,
+        }))
+      );
+
+      console.log(topItem, createTree(topItem, thread.messages));*/
+
+      newBranch = topItem?.parentId ? this._createTree(topItem, this.allMessagesArray) : this.allMessagesArray;
     }
-
-    const topItems = branches.map(b => arrayLast(b))
-      .filter(isDefined);
-
-    const topItem = arrayLast(topItems);
-
-    /*console.log(
-      branches.length,
-      sortByDesc(branches[0]?.slice() ?? [], 'time').map((v) => ({
-        text: v.text,
-        pid: v.parentId,
-        id: v.id,
-        time: v.time - 1734000000,
-      }))
-    );
-
-    console.log(topItem, createTree(topItem, thread.messages));*/
-
-    const newBranch = topItem?.parentId ? this._createTree(topItem, this.allMessagesArray) : this.allMessagesArray;
 
     this.currentMessages.setValue(newBranch);
 
@@ -134,11 +146,9 @@ export class ThreadMessages<DM extends Message> {
   }
 
   private _createNewMap = (messages: Readonly<MessageModel<DM>[]>) => {
-    this.branchMapManager.clear();
-
-    return this.branchMapManager
-      .createDefaultMap(messages)
-      .getMap(messages);
+    // not needed, since we don't use the map if getCurrentBranchFn provided
+    if (this.getCurrentBranchFn) return new Map();
+    return this.branchMapManager.createMap(messages);
   }
 
   push = (...newMessages: MessageModel<DM>[]) => {

@@ -16,11 +16,27 @@ import moment from 'moment/moment';
 import { randomId } from '../../utils/numberUtils/randomInt';
 import { MessageSender } from '../../models/MessageSender';
 
+type BeforeUserMessageSendFnParams = {
+  text: string;
+  content: MessageUserContent;
+  history: InternalMessageType[];
+  reason: 'editMessage' | 'newMessage';
+  parentMessage?: InternalMessageType;
+};
+
+export type BeforeUserMessageSendFnType = (params: BeforeUserMessageSendFnParams) => {
+  userMessage?: InternalMessageType;
+  assistantMessage?: InternalMessageType;
+} | Promise<{
+  userMessage?: InternalMessageType;
+  assistantMessage?: InternalMessageType;
+}>;
+
 export const useThreadSendMessage = (
   thread: ThreadModel | undefined,
   model: Threads<any, any>,
   onFirstMessageSent: ChatUsersProps<any, any>['onFirstMessageSent'],
-  beforeUserMessageSend: ChatUsersProps<any, any>['beforeUserMessageSend'],
+  beforeUserMessageSend: BeforeUserMessageSendFnType | undefined,
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
   scroller?: {
     handleBottomScroll?: () => void;
@@ -29,15 +45,25 @@ export const useThreadSendMessage = (
   const getInternalMessage = useInternalMessageTransformer();
   const { transformMessage } = useAdapterContext();
 
-  const onCreatePair = async (text: string | undefined, content: MessageUserContent, parentMessage?: MessageModel) => {
+  const onCreatePair = async (
+    text: string,
+    content: MessageUserContent,
+    reason: BeforeUserMessageSendFnParams['reason'],
+    parentMessage?: MessageModel
+  ) => {
     let userMessage: MessageModel;
     let assistantMessage: MessageModel;
     const branchMessages = thread?.messages.currentMessages.value ?? [];
 
     if (beforeUserMessageSend) {
+      // console.log('beforeUserMessageSend', branchMessages);
       const history = branchMessages.map(v => getInternalMessage(v));
 
-      const pairs = await beforeUserMessageSend(text, content, history);
+      const pairs = await beforeUserMessageSend({
+        text, content, history,
+        parentMessage: parentMessage ? getInternalMessage(parentMessage) : undefined,
+        reason,
+      });
 
       if (pairs.userMessage?.role !== ChatMessageOwner.USER) {
         throw new Error(`userMessage.role must be "user". ${pairs.userMessage?.role} given`);
@@ -87,7 +113,7 @@ export const useThreadSendMessage = (
 
     const content: MessageUserContent = [{ type: 'text', text: newText }];
 
-    const { userMessage, assistantMessage } = await onCreatePair(newText, content, parentMessage);
+    const { userMessage, assistantMessage } = await onCreatePair(newText, content, 'editMessage', parentMessage);
 
     thread.messages.push(userMessage, assistantMessage);
 
@@ -160,7 +186,7 @@ export const useThreadSendMessage = (
             thread.isEmpty.value = false;
           }
 
-          const pair = await onCreatePair(text, content);
+          const pair = await onCreatePair(text, content, 'newMessage');
 
           thread.messages.push(pair.userMessage, pair.assistantMessage);
 

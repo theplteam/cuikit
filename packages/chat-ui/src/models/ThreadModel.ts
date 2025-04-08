@@ -21,6 +21,10 @@ export enum StreamResponseState {
 export type MessageSentParams<DM = any> = {
   /** set your thread id */
   updateThreadId: (newId: IdType) => void;
+  /** set your user's message id */
+  updateUserMessageId: (newId: IdType) => void;
+  /** set your assistant's message id */
+  updateAssistantMessageId: (newId: IdType) => void;
   /** User's message content */
   content: Message['content'],
   /** User's message */

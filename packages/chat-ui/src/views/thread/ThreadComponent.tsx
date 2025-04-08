@@ -42,7 +42,15 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { thread, handleCreateNewThread, onAssistantMessageTypingFinish, onFirstMessageSent, model, beforeUserMessageSend } = useChatContext<DM, DD>();
+  const { thread,
+    handleCreateNewThread,
+    onAssistantMessageTypingFinish,
+    onFirstMessageSent,
+    getCurrentBranch,
+    model,
+    beforeUserMessageSend
+  } = useChatContext<DM, DD>();
+
   const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
@@ -61,6 +69,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
         enableBranches,
         onFirstMessageSent,
         beforeUserMessageSend,
+        getCurrentBranch,
       }}
       scrollRef={scrollApiRef}
     >
