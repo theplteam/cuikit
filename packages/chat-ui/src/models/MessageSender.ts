@@ -11,8 +11,12 @@ export class MessageSender<DM extends Message> {
   ) {
   }
 
+  private _finished = false;
+
   setText = (text: string) => {
-    this.changeTypingStatus(true);
+    if (!this._finished) {
+      this.changeTypingStatus(true);
+    }
     this.assistantMessage.text = text;
   }
 
@@ -31,6 +35,9 @@ export class MessageSender<DM extends Message> {
   changeTypingStatus = (status: boolean) => {
     if (status !== this.assistantMessage.typing.value) {
       this.assistantMessage.typing.value = status;
+      if (status) {
+        this._finished = true;
+      }
     }
   }
 

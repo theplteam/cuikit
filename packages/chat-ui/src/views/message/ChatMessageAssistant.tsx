@@ -105,7 +105,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           message={message} thread={thread}
         />
       ) : null}
-      {(!typing && !!text && enableAssistantActions) ? (
+      {((!typing && !!text) && enableAssistantActions) ? (
         <MessageActionsAssistant
           message={message}
           thread={thread}
