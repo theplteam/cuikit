@@ -19,6 +19,8 @@ export type TextContent = {
   text: string,
 }
 
+export type InternalMessageType = any;
+
 export type MessageUserContent = string | (ImageContent | TextContent)[];
 export type MessageAssistantContent = string | (TextContent)[];
 

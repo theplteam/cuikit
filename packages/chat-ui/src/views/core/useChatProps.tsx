@@ -40,7 +40,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * after which the Chat UI will adjust them to its format via an Adapter.
    */
   beforeUserMessageSend?: (text: string | undefined, content: MessageUserContent, history: any[])
-    => Promise<{ userMessage: Message, assistantMessage: Message }> | { userMessage: Message, assistantMessage: Message };
+    => { userMessage: Message, assistantMessage: Message } | Promise<{ userMessage: Message, assistantMessage: Message }>;
 
   /**
    * Action buttons for the assistant's message.
@@ -75,10 +75,6 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Invoked when the user clicks the stop streaming button.
    */
   handleStopMessageStreaming?: () => void;
-  /**
-   * This function builds a message branch.
-   */
-  handleBundleBranch?: (messages: MessageModel<DM>[], startFrom?: MessageModel<DM>,) => MessageModel<DM>[];
   /**
    * This function defines pagination for the branching point of the chat.
    */

@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  Thread,
+  Thread, Message,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
@@ -33,7 +33,24 @@ const App: React.FC = () => {
         thread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        onUserMessageSent={onUserMessageSent}
+        beforeUserMessageSend={(text) => {
+          return {
+            userMessage: {
+              id: 'cravra' + Math.random(),
+              role: 'user',
+              content: text
+            } as Message,
+            assistantMessage: {
+              id: 'dddddddd' + Math.random(),
+              role: 'assistant',
+              content: '',
+            } as Message,
+          };
+        }}
+        onUserMessageSent={(params) => {
+          console.log(params.history);
+          onUserMessageSent(params);
+        }}
       />
     </Box>
   );

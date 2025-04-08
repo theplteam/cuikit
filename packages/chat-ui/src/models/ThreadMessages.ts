@@ -1,17 +1,17 @@
 import { Message, MessageModel } from './MessageModel';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
+import { isDefined } from '../utils/isDefined';
+import { MesagesMapType, ThreadBranchMapManager } from './ThreadBranchMapManager';
 
-type BundleBranchType<DM extends Message> = (messages: MessageModel<DM>[], startFrom?: MessageModel<DM>) => MessageModel<DM>[]
+const rootMessageHash = 'rootMessage';
 
 export class ThreadMessages<DM extends Message> {
-  private isEnabled = false;
-
-  private bundleBranch?: BundleBranchType<DM>;
-
   allMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
 
   currentMessages = new ObservableReactValue<MessageModel<DM>[]>([]);
+
+  private branchMapManager = new ThreadBranchMapManager();
 
   get allMessagesArray() {
     return this.allMessages.value;
@@ -22,75 +22,123 @@ export class ThreadMessages<DM extends Message> {
 
   private _callbackInitiated = false;
 
-  init = (enableBranches: boolean = false, userBundleBranch?: BundleBranchType<DM>) => {
+  init = (enableBranches?: boolean) => {
     if (this._callbackInitiated) return;
 
-    this.isEnabled = enableBranches;
-    if (enableBranches) {
-      this.bundleBranch = userBundleBranch ?? this._bundleBranch;
+    const newObject = this._createNewMap(this.allMessagesArray);
 
-      const branch = this.bundleBranch(this.allMessagesArray, this._lastMessage ?? arrayLast(this.allMessagesArray));
-      this._updateBranch(branch);
-    } else {
-      this.currentMessages.setValue(this.allMessagesArray);
-    }
+    const map = new Map(Object.entries(newObject));
+
+    this._updateBranch(map, this._lastMessage, enableBranches);
 
     // reaction to adding to the array of all messages to update the thread
     this.allMessages.subscribe(() => {
-      const newBranch = this.bundleBranch?.(this.allMessagesArray, arrayLast(this.allMessagesArray)) ?? this.allMessagesArray;
-      this._updateBranch(newBranch);
+      const newObject = this._createNewMap(this.allMessagesArray);
+      const map = new Map(Object.entries(newObject));
+
+      this._updateBranch(map, arrayLast(this.allMessagesArray as MessageModel<DM>[]), enableBranches);
     });
   }
 
-  changeBranchesStatus = () => {
-    if(!this.isEnabled) return;
-    const branch = this.bundleBranch?.(this.allMessagesArray, this._lastMessage);
-    this._updateBranch(branch);
+  changeBranchesStatus = (enableBranches: boolean) => {
+    const map = this._createNewMap(this.allMessagesArray);
+
+    this._updateBranch(map, this._lastMessage, enableBranches);
   }
 
   handleChangeBranch = (message: MessageModel<DM>) => {
-    if(!this.isEnabled) return;
-    const branch = this.bundleBranch?.(this.allMessagesArray, message);
-    this._updateBranch(branch);
+    const parentId = message.parentId ?? rootMessageHash;
+
+    const map = this._createNewMap(this.allMessagesArray);
+
+    map.set(parentId, { messages: [message] });
+    // console.log(message, messagesParentMap);
+
+    this._updateBranch(map, message, true);
   }
 
-  private _updateBranch = (branch?: MessageModel<DM>[]) => {
-    if (!branch) return;
-    this.currentMessages.setValue(branch);
-    this._lastMessage = arrayLast(branch);
+  private _updateBranch = (map: MesagesMapType<DM>, startFrom?: MessageModel<DM>, enableBranches?: boolean) => {
+    if (enableBranches !== true) {
+      this.currentMessages.setValue(this.allMessagesArray);
+      return;
+    }
+
+    if (!startFrom) startFrom = this._lastMessage;
+    const rootMessages = startFrom ? [startFrom] : map.get(rootMessageHash)?.messages ?? [];
+
+    const branches: MessageModel<DM>[][] = [];
+
+    for (const rootMessage of rootMessages) {
+      branches.push(this._getBranchRecursive(rootMessage, map));
+    }
+
+    const topItems = branches.map(b => arrayLast(b))
+      .filter(isDefined);
+
+    const topItem = arrayLast(topItems);
+
+    /*console.log(
+      branches.length,
+      sortByDesc(branches[0]?.slice() ?? [], 'time').map((v) => ({
+        text: v.text,
+        pid: v.parentId,
+        id: v.id,
+        time: v.time - 1734000000,
+      }))
+    );
+
+    console.log(topItem, createTree(topItem, thread.messages));*/
+
+    const newBranch = topItem?.parentId ? this._createTree(topItem, this.allMessagesArray) : this.allMessagesArray;
+
+    this.currentMessages.setValue(newBranch);
+
+    this._lastMessage = arrayLast(newBranch);
+
+    return this._lastMessage;
   }
 
-  private _bundleBranch: BundleBranchType<DM> = (messages, startFrom = this._lastMessage) => {
-    if (!startFrom) return messages;
+  private _getBranchRecursive = (parent: MessageModel<DM>, map: MesagesMapType<DM>) => {
+    const branch = [parent];
 
-    const resultBefore: MessageModel<DM>[] = [];
-    const resultAfter: MessageModel<DM>[] = [];
-    const buildBefore = (message: MessageModel<DM>) => {
-      if (startFrom?.id !== message.id) resultBefore.push(message);
-      if (message.parentId) {
-        const parentMessage = messages.find(msg => msg.id === message.parentId);
-        if (parentMessage) {
-          buildBefore(parentMessage);
-        }
+    const parentMap = map.get(parent.id);
+
+    if (parentMap) {
+      // все ради цикла :)
+      const darkness = parentMap.messages;
+
+      for (const child of darkness) {
+        branch.push(...this._getBranchRecursive(child, map));
       }
     }
 
-    const buildAfter = (message: MessageModel<DM>) => {
-      if (startFrom?.id !== message.id) resultAfter.push(message);
-      const child = messages.find(msg => msg.parentId === message?.id);
-      if (child) buildAfter(child);
-    }
+    return branch;
+  }
 
-    buildBefore(startFrom);
-    buildAfter(startFrom);
-
+  private _createTree = (lastItem: MessageModel<DM>, messages: Readonly<MessageModel<DM>[]>) => {
     const branch: MessageModel<DM>[] = [];
 
-    if (resultBefore.length) branch.push(...resultBefore.reverse());
-    branch.push(startFrom);
-    if (resultAfter.length) branch.push(...resultAfter);
+    let nextItem: MessageModel<DM> | undefined = lastItem;
 
-    return branch;
+    while (nextItem) {
+      branch.push(nextItem);
+
+      if (nextItem.parentId) {
+        nextItem = messages.find(m => m.id === nextItem!.parentId);
+      } else {
+        nextItem = undefined;
+      }
+    }
+
+    return branch.reverse();
+  }
+
+  private _createNewMap = (messages: Readonly<MessageModel<DM>[]>) => {
+    this.branchMapManager.clear();
+
+    return this.branchMapManager
+      .createDefaultMap(messages)
+      .getMap(messages);
   }
 
   push = (...newMessages: MessageModel<DM>[]) => {

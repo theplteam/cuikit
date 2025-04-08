@@ -1,4 +1,4 @@
-import { Message, MessageModel } from './MessageModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
 import { MessageSentParams, StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 
@@ -35,23 +35,27 @@ export class MessageSender<DM extends Message> {
   }
 
   getUserParams = (
-    resolver: (params: void) => void,
-    getInternalMessage: (message: MessageModel) => any,
+    resolver: (params: { message: InternalMessageType }) => void,
+    getInternalMessage: (message: MessageModel) => InternalMessageType,
   ): MessageSentParams => {
     const message = this.assistantMessage;
+
+    const internalUserMessage = getInternalMessage(this.userMessage);
     return {
       updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
       content: this.content,
       history: this.thread.messages.currentMessages.value.map(getInternalMessage),
-      message: getInternalMessage(this.userMessage),
+      message: internalUserMessage,
       assistantMessage: getInternalMessage(message),
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,
       onFinish: () => {
         this.changeTypingStatus(false);
-        resolver();
+        resolver({ message: internalUserMessage });
         message.reasoningManager.updateTimeSec();
+        this.thread.isTyping.value = false;
+        message.data.content = message.text;
       },
       reasoning: {
         pushChunk: message.reasoningManager.pushChunk,

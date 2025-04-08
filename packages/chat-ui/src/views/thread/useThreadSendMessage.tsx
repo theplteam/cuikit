@@ -1,14 +1,13 @@
-import * as React from 'react';
 import {
   ThreadModel,
   StreamResponseState,
   TextContent,
   MessageUserContent,
   MessageModel,
-  ChatMessageOwner
+  ChatMessageOwner,
+  InternalMessageType
 } from '../../models';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
-import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
 import { ChatUsersProps } from '../core/useChatProps';
 import { Threads } from '../../models/Threads';
 import { useAdapterContext, useInternalMessageTransformer } from '../adapter/AdapterContext';
@@ -30,13 +29,13 @@ export const useThreadSendMessage = (
   const getInternalMessage = useInternalMessageTransformer();
   const { transformMessage } = useAdapterContext();
 
-  const onCreatePair = React.useCallback(async (text: string | undefined, content: MessageUserContent, parentMessage?: MessageModel) => {
+  const onCreatePair = async (text: string | undefined, content: MessageUserContent, parentMessage?: MessageModel) => {
     let userMessage: MessageModel;
     let assistantMessage: MessageModel;
     const branchMessages = thread?.messages.currentMessages.value ?? [];
 
     if (beforeUserMessageSend) {
-      const history = branchMessages.map(v => getInternalMessage(v.data));
+      const history = branchMessages.map(v => getInternalMessage(v));
 
       const pairs = await beforeUserMessageSend(text, content, history);
 
@@ -75,17 +74,13 @@ export const useThreadSendMessage = (
         time: moment().unix() + 1,
         parentId: userMessage.id,
       });
-
-      return {
-        userMessage, assistantMessage,
-      };
     }
 
     return { userMessage, assistantMessage }
 
-  }, [beforeUserMessageSend, getInternalMessage]);
+  };
 
-  const onEditMessage = React.useCallback(async (newText: string, messageEdit: MessageModel) => {
+  const onEditMessage = async (newText: string, messageEdit: MessageModel) => {
     if (!thread) return;
 
     const parentMessage = thread.messagesArray.find(v => v.id === messageEdit.parentId);
@@ -99,19 +94,19 @@ export const useThreadSendMessage = (
     onSendMessage(content, userMessage, assistantMessage);
 
     return userMessage;
-  }, []);
+  };
 
-  const onSendMessage = React.useCallback((
+  const onSendMessage = (
     content: MessageUserContent,
     userMessage: MessageModel,
     assistantMessage: MessageModel,
   ) => {
-    if (!thread) return undefined;
+    if (!thread) {
+      throw new Error('thread is undefined');
+    }
     if (typeof content === 'string') {
       content = [{ type: 'text', text: content }];
     }
-
-    const internalUserMessage = getInternalMessage(userMessage);
 
     thread.isTyping.value = true;
     const messageSender = new MessageSender(
@@ -121,29 +116,22 @@ export const useThreadSendMessage = (
       thread,
     );
 
-    return new Promise<void>((resolve, reject) => {
-      const res = thread.streamMessage(messageSender.getUserParams(resolve, getInternalMessage));
+    return new Promise<{ message: InternalMessageType }>((resolve, reject) => {
+      const streamParams = messageSender.getUserParams(resolve, getInternalMessage);
+        const res = thread.streamMessage(messageSender.getUserParams(resolve, getInternalMessage));
 
-      if (res instanceof Promise) {
-        res
-          .then(() => {
-            messageSender.changeTypingStatus(false);
-            thread.isTyping.value = false;
-            assistantMessage.reasoningManager.updateTimeSec();
-            onAssistantMessageTypingFinish?.({ message: internalUserMessage, thread: thread.data.data });
-            thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
-            resolve();
-          })
-          .catch((reason) => {
-            messageSender.changeTypingStatus(false);
-            reject(reason);
-          });
-      }
+        if (res instanceof Promise) {
+          res
+            .then(streamParams.onFinish)
+            .catch((reason) => {
+              messageSender.changeTypingStatus(false);
+              reject(reason);
+            });
+        }
     });
+  };
 
-  }, [onAssistantMessageTypingFinish]);
-
-  const onSendNewsMessage = React.useCallback((content: MessageUserContent) => {
+  const onSendNewsMessage = (content: MessageUserContent) => {
     let text = '';
     let images: string[] = [];
 
@@ -177,8 +165,12 @@ export const useThreadSendMessage = (
           thread.messages.push(pair.userMessage, pair.assistantMessage);
 
           onSendMessage(content, pair.userMessage, pair.assistantMessage)
-            ?.then(() => resolve(true))
-            ?.catch(() => resolve(false));
+            .then(({ message }) => {
+              resolve(true);
+              onAssistantMessageTypingFinish?.({ message, thread: thread.data.data });
+              thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
+            })
+            .catch(() => resolve(false));
 
           scroller?.handleBottomScroll?.();
         } catch (e) {
@@ -188,14 +180,7 @@ export const useThreadSendMessage = (
       }
     });
 
-  }, [
-    onCreatePair,
-    thread,
-    arrayPluck(thread?.messages.currentMessages.value ?? [], 'id').join(','),
-    onFirstMessageSent,
-    onAssistantMessageTypingFinish,
-    scroller?.handleBottomScroll
-  ]);
+  };
 
   return {
     onSendNewsMessage,
