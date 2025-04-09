@@ -47,6 +47,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
     public readonly streamMessage: (params: MessageSentParams) => void | Promise<void>,
   ) {
     this.data = new ThreadData(_data);
+    this.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
 
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];

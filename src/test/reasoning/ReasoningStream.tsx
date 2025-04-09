@@ -43,6 +43,9 @@ const App: React.FC = () => {
         {
           role: "assistant",
           content: "Hello! Click the \"Send Message\" button to test the reasoning visualization.\n\nA simulation of the AI assistant's stream of thoughts will be output.",
+          reasoning: {
+            text: 'Text from reasoning'
+          }
         },
       ],
     },
