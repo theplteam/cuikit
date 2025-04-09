@@ -140,4 +140,8 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
   );
 }
 
-export default MessageReasoning;
+export default React.memo(MessageReasoning, (prevProps, nextProps) => {
+  return prevProps.message.id === nextProps.message.id
+    && prevProps.thread.id === nextProps.thread.id
+    && prevProps.isLatest === nextProps.isLatest;
+});;
