@@ -19,6 +19,7 @@ export type TextContent = {
   text: string,
 }
 
+// TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 
 export type MessageUserContent = string | (ImageContent | TextContent)[];

@@ -5,7 +5,7 @@ import { ThreadMessages } from './ThreadMessages';
 import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
-import { IdType } from '../types';
+import { MessageSentParams } from './MessageSentParams';
 
 export type NewMessageResponse = {
   user: Message,
@@ -16,60 +16,6 @@ export enum StreamResponseState {
   START = 'start',
   TYPING_MESSAGE = 'typingMessage',
   FINISH_MESSAGE = 'finishMessage',
-}
-
-export type MessageSentParams<DM = any> = {
-  /** set your thread id */
-  updateThreadId: (newId: IdType) => void;
-  /** set your user's message id */
-  updateUserMessageId: (newId: IdType) => void;
-  /** set your assistant's message id */
-  updateAssistantMessageId: (newId: IdType) => void;
-  /** User's message content */
-  content: Message['content'],
-  /** User's message */
-  message: DM,
-  /** Assistant's message */
-  assistantMessage: DM,
-  /** Thread history */
-  history: DM[],
-  /**
-   *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
-   *  Will be added to the current message.
-   */
-  pushChunk: (chunk: string) => void,
-  /** Update text message  */
-  setText: (text: string) => void,
-  /** Assistant's response answer is complete. */
-  onFinish: () => void,
-  /** Set awaiting status */
-  setStatus: (status: string) => void,
-  /** Options for managing reasoning. */
-  reasoning: {
-    /** Push part of text to the previous text */
-    pushChunk: (reasoning: string) => void,
-    /** Replace full text */
-    setFull: (reasoning: string) => void,
-    /**
-     * Set the time spent on reasoning.
-     * This will lock automatic time managment. To unlock, call the unlock method.
-     */
-    setTimeSec: (timeSec: number) => void,
-    /**
-     * Set current reasoning header.
-     * This will lock automatic headers. To unlock, call the unlock method.
-     */
-    setTitle: (title: string) => void,
-    /**
-     * Set current reasoning header.
-     * This will lock automatic headers. To unlock, call the unlock method.
-     */
-    setViewType: (viewType: 'stream' | 'headlines') => void,
-    /**
-     * Unlock auto managment for locked options (after calling the setHeader, setTimeSec, etc.)
-     */
-    unlockAutoManagement: (options?: ('headers' | 'time' | 'viewType')[]) => void,
-  }
 }
 
 export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {
@@ -98,7 +44,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   constructor(
     _data: DD,
-    public readonly streamMessage: (params: MessageSentParams<DM>) => void | Promise<void>,
+    public readonly streamMessage: (params: MessageSentParams) => void | Promise<void>,
   ) {
     this.data = new ThreadData(_data);
 

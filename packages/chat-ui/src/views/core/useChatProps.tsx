@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { MessageSentParams } from '../../models/ThreadModel';
 import {
   ChatMessageOwner,
   Message,
@@ -16,6 +15,7 @@ import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
+import { MessageSentParams } from '../../models/MessageSentParams';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -27,7 +27,7 @@ type RequiredProps<DD extends Thread<any>> = {
    * Callback fired when the user sends a message to the thread.
    * @param message - User's message
    */
-  onUserMessageSent: (params: MessageSentParams<any>) => void | Promise<void>;
+  onUserMessageSent: (params: MessageSentParams) => void | Promise<void>;
 };
 
 // используется внутри библиотеки

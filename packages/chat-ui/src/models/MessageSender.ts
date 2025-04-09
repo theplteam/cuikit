@@ -1,6 +1,7 @@
 import { InternalMessageType, Message, MessageModel } from './MessageModel';
-import { MessageSentParams, StreamResponseState, ThreadModel } from './ThreadModel';
+import { StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
+import { MessageSentParams } from './MessageSentParams';
 
 export class MessageSender<DM extends Message> {
   constructor(
@@ -49,9 +50,6 @@ export class MessageSender<DM extends Message> {
 
     const internalUserMessage = getInternalMessage(this.userMessage);
     return {
-      updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
-      updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
-      updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
       content: this.content,
       history: this.thread.messages.currentMessages.value.map(getInternalMessage),
       message: internalUserMessage,
@@ -73,6 +71,12 @@ export class MessageSender<DM extends Message> {
         setTimeSec: message.reasoningManager.setUserTimeSec,
         setViewType: message.reasoningManager.setUserViewType,
         unlockAutoManagement: message.reasoningManager.unlockAutoManagment,
+      },
+      actions: {
+        updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
+        updateThreadTitle: (newTitle) => this.thread.data.observableTitle.value = newTitle,
+        updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
+        updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
       },
     }
   }
