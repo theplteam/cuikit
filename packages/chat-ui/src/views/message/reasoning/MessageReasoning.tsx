@@ -12,6 +12,7 @@ import MessageReasoningTitle from './MessageReasoningTitle';
 import { useThreadContext } from '../../thread/ThreadContext';
 import SimpleScrollbar from '../../../ui/SimpleScrollbar';
 import { ReasoningViewType } from '../../../models/MessageReasoningModel';
+import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = {
   message: MessageModel;
@@ -49,11 +50,9 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
   const inProgress = (!statusText
     || (statusText !== StreamResponseState.TYPING_MESSAGE
       && statusText !== StreamResponseState.FINISH_MESSAGE))
-    && !!isLatest;
+    && !!isLatest && !!reasoning;
 
-  console.log(inProgress, statusText);
-
-  const [isExpanding, setIsExpanding] = React.useState(inProgress);
+  const [isExpanding, setIsExpanding] = React.useState(false);
   const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);
 
   const handleExpandedChange = () => {
@@ -77,17 +76,13 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
     // setTimeout(() => setViewType(newValue ? ViewType.FULL : ViewType.SHORT),transitionDuration);
   }
 
-  React.useEffect(() => {
-    if (reasoningType === ReasoningViewType.STREAM && !isExpanding && inProgress) {
-      setIsExpanding(true);
-    }
-  }, [reasoningType]);
-
   const isFull = viewType === ViewType.FULL;
   const isShort = viewType === ViewType.SHORT;
 
+  if (!reasoning) return null;
+
   return (
-    <Stack gap={1.5}>
+    <Stack gap={1.5} className={chatClassNames.messageReasoningRoot}>
       <MessageReasoningTitle
         message={message}
         inProgress={inProgress}

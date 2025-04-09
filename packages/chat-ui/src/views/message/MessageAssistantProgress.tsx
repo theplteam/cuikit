@@ -55,7 +55,7 @@ export const StatusBoxStyled = styled(Stack)(() => ({
 
 const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
   const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
-  const reasoningTitle = useObserverValue(message.reasoningManager.title) ?? '';
+  const reasoningTitle = useObserverValue(message.reasoningManager.text) ?? '';
   const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? '';
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
