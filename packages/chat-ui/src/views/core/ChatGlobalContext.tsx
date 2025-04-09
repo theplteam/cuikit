@@ -10,7 +10,6 @@ import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
 export type ChatGlobalContextType<DM extends Message, DD extends Thread<DM>> = {
-  thread: ThreadModel<DM, DD> | undefined;
   threads: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
   model: Threads<DM, DD>;
@@ -28,14 +27,14 @@ type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithC
 
 const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const threadAdapter = useAdapterContext();
+
   const model = React.useMemo(() => new Threads<DM, DD>(
     threadAdapter,
     props.threads,
     props.thread,
     props.onUserMessageSent,
-  ), [props.loading]);
+  ), []);
 
-  const currentThread = useObserverValue(model.currentThread);
   const threads = useObserverValue(model.list) ?? [];
 
   useApiRefInitialization(
@@ -49,10 +48,9 @@ const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, 
     apiRef: apiManager.apiRef,
     model,
     threads,
-    thread: currentThread,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
     handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData as FnType<DD>,
-  }), [model, currentThread, props, props.loading, threads]);
+  }), [model, props, props.loading, threads]);
 
   return (
     // TODO: #ANY - придумать как передать дженерик в контекст

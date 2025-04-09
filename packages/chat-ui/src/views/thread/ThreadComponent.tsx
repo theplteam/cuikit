@@ -14,6 +14,7 @@ import { Thread, Message } from '../../models';
 import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
+import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -42,7 +43,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
 const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { thread,
+  const {
     handleCreateNewThread,
     onAssistantMessageTypingFinish,
     onFirstMessageSent,
@@ -50,6 +51,8 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     model,
     beforeUserMessageSend
   } = useChatContext<DM, DD>();
+
+  const thread = useObserverValue(model.currentThread);
 
   const { slots, slotProps } = useChatSlots();
 
