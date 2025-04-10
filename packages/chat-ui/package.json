@@ -15,7 +15,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
-    "@mui/system": "^5.15.14",
+    "@mui/system": "^5.15.14 || ^6.0.0",
     "@mui/utils": "^5.15.14",
     "clsx": "^2.1.0",
     "hex-to-rgba": "^2.0.1",

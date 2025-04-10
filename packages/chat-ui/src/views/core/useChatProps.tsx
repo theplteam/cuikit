@@ -56,7 +56,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: Thread<DM> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: DD }>[];
   /**
    * Action buttons for the thread's list item menu.
    */

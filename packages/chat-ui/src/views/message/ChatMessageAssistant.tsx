@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatMessageContainer from './ChatMessageContainer';
-import { randomId } from '../../utils/numberUtils/randomInt';
 import { ChatViewConstants } from '../ChatViewConstants';
 import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
@@ -56,28 +55,30 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const isHover = useHover(element);
   const text = useObserverValue(message.observableText);
   const typing = useObserverValue(message.typing);
-  const containerId = React.useState('pswp-chat-gallery' + randomId())[0];
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
   const getInternalMessage = useInternalMessageTransformer();
 
+  const containerId = message.photoswipeContainerId;
+
   React.useEffect(() => {
     if (typing) return NOOP;
-
     const lightbox = PhotoSwipeLightbox({
-      gallery: `#${containerId}`,
+      gallery: `#${message.photoswipeContainerId}`,
       children: `a.${ChatViewConstants.MARKDOWN_IMAGE_CLASSNAME}`,
       pswpModule: () => import('photoswipe'),
       zoom: false,
       showHideAnimationType: 'fade',
     });
 
-    lightbox.init();
+    setTimeout(() => {
+      lightbox.init();
+    }, 2000);
 
     return () => {
       lightbox.destroy();
     }
-  }, [typing]);
+  }, [typing, containerId]);
 
   const blockText = React.useMemo(
     () => text ? <ChatMarkdownBlock id={containerId} text={text} /> : null,
@@ -116,7 +117,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           className={actionsClassName}
         />
       ) : null}
-      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={getInternalMessage(message)} />
+      {!!enableAssistantActions && <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={getInternalMessage(message)} />}
     </ChatMessageContainerStyled>
   );
 };

@@ -92,11 +92,13 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   const children = React.useMemo(() => (
     <>
       <ChatMarkdownBlock text={message.text} />
-      {((isFirst || message.parentId) && !!enableBranches) ? <MessageActionsUser
-        className={actionsClassName}
-        disabled={isTyping}
-        onClickEdit={onClickEdit}
-                                                             /> : null}
+      {((isFirst || message.parentId) && !!enableBranches) ? (
+        <MessageActionsUser
+          className={actionsClassName}
+          disabled={isTyping}
+          onClickEdit={onClickEdit}
+        />
+      ) : null}
     </>
   ), [message, thread, message.text, isFirst, isTyping]);
 

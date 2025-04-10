@@ -1,6 +1,7 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
 import { MessageReasoningModel } from './MessageReasoningModel';
+import { randomInt } from '../utils/numberUtils/randomInt';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -57,6 +58,8 @@ export class MessageModel<DM extends Message = Message> {
    * An observable flag indicating the start/finish of message typing.
    */
   typing = new ObservableReactValue(false);
+
+  photoswipeContainerId = 'photoswipe-container-' + randomInt(100, 100000);
 
   constructor(private _data: DM) {
     if (typeof _data.content === 'string') {
