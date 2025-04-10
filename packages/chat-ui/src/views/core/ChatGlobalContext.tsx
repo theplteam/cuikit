@@ -25,7 +25,7 @@ type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithC
   apiManager: ApiManager;
 }>;
 
-const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
+const ChatGlobalProviderComponent = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const threadAdapter = useAdapterContext();
 
   const model = React.useMemo(() => new Threads<DM, DD>(
@@ -72,5 +72,11 @@ const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobal
 };
 
 const useChatModel = () => useChatContext().model;
+
+const ChatGlobalProvider = React.memo(ChatGlobalProviderComponent, (prevProps, nextProps) => {
+  return Object.keys(prevProps).join('') === Object.keys(nextProps).join('')
+    && prevProps.props.threads.length === nextProps.props.threads.length
+    && prevProps.props.loading === nextProps.props.loading;
+});
 
 export { ChatGlobalProvider, useChatContext, useChatModel };

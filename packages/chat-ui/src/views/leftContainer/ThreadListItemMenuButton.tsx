@@ -8,7 +8,7 @@ type Props = IconButtonProps & {
   threadId: IdType;
 };
 
-const ThreadListItemMenuButton: React.FC<Props> = (props) => {
+const ThreadListItemMenuButton: React.FC<Props> = ({ threadId, ...props }) => {
   const coreSlots = useChatCoreSlots();
 
   return (

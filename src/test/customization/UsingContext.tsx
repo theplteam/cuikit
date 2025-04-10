@@ -19,6 +19,7 @@ import { Portal } from '@mui/base/Portal';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CloseIcon from '@mui/icons-material/Close';
 import moment from 'moment';
+import { useObserverValue } from '../../../packages/chat-ui/src/views/hooks/useObserverValue.tsx';
 
 const drawerWidth = 240;
 
@@ -137,7 +138,9 @@ const ToolsPanelPortal: React.FC<ToolsPanelProps> = ({ handleDrawerClose, childr
 };
 
 const ChatAppBar: React.FC<{ handleDrawerToggle: () => void }> = ({ handleDrawerToggle }) => {
-  const { thread } = useChatContext();
+  const { model } = useChatContext();
+
+  const thread = useObserverValue(model.currentThread);
 
   const title = thread?.title || 'Chat UI';
   return (
