@@ -18,6 +18,7 @@ import { motion } from '../../utils/materialDesign/motion';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import MessageReasoning from './reasoning/MessageReasoning';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 
 type Props = {
   message: MessageModel;
@@ -58,6 +59,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const containerId = React.useState('pswp-chat-gallery' + randomId())[0];
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
+  const getInternalMessage = useInternalMessageTransformer();
 
   React.useEffect(() => {
     if (typing) return NOOP;
@@ -114,7 +116,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           className={actionsClassName}
         />
       ) : null}
-      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={message} />
+      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={getInternalMessage(message)} />
     </ChatMessageContainerStyled>
   );
 };

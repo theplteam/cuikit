@@ -1,4 +1,4 @@
-import { Thread, type ThreadModel, Message, MessageModel } from '../../models';
+import { Thread, type ThreadModel, Message, MessageModel, InternalMessageType } from '../../models';
 import * as React from 'react';
 import type { LinkProps } from '@mui/material/Link';
 import type { TableProps } from '@mui/material/Table';
@@ -11,6 +11,7 @@ import type { MessagePaginationProps } from '../message/MessagePagination';
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
+import { IdType } from '../../types';
 
 type ChildrenProps = React.PropsWithChildren;
 
@@ -28,6 +29,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * List of threads
    */
   threadsList: any;
+  /**
+   * Thread menu button in the threads list
+   **/
+  threadListItemMenuButton: IconButtonProps & { threadId: IdType; };
   /**
    * Subtitle component for the list container
    */
@@ -74,7 +79,7 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Render some information under the assistant's message.
    */
-  messageAssistantFooter: { message: any };
+  messageAssistantFooter: { message: InternalMessageType };
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */

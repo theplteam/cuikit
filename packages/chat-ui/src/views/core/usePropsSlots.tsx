@@ -29,6 +29,7 @@ import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
+import ThreadListItemMenuButton from '../leftContainer/ThreadListItemMenuButton';
 
 type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -68,6 +69,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       thread: slots?.thread ?? ThreadRootContainer,
       listContainer: slots?.threadsList ? HiddenContent : slots?.listContainer ?? HiddenContent,
       threadsList: slots?.threadsList ?? HiddenContent,
+      threadListItemMenuButton: slots?.threadListItemMenuButton ?? ThreadListItemMenuButton,
       listDrawer: slots?.threadsList ? HiddenContent : slots?.listDrawer ?? React.Fragment,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
