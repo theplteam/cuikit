@@ -9,7 +9,7 @@ const ChatMessageUl = styled('ul')(({ theme }) => ({
     '&:last-child': {
       marginBottom: 0,
     },
-    ...theme.typography.body2,
+    ...theme.typography.body1,
     position: 'relative',
     '&::before': {
       content: '""',
@@ -36,10 +36,10 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
     '&:last-child': {
       marginBottom: 0,
     },
-    ...theme.typography.body2,
+    ...theme.typography.body1,
     position: 'relative',
     '&::marker': {
-      ...theme.typography.body2,
+      ...theme.typography.body1,
     },
     '& ul': {
       marginTop: theme.spacing(1.5),
