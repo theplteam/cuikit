@@ -15,6 +15,7 @@ export type NewMessageResponse = {
 export enum StreamResponseState {
   START = 'start',
   TYPING_MESSAGE = 'typingMessage',
+  THINKING = 'thinking',
   FINISH_MESSAGE = 'finishMessage',
 }
 

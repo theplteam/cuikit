@@ -65,7 +65,12 @@ export class MessageSender<DM extends Message> {
         message.data.content = message.text;
       },
       reasoning: {
-        pushChunk: message.reasoningManager.pushChunk,
+        pushChunk: (chunk) => {
+          if (this.thread.streamStatus.value !== StreamResponseState.THINKING) {
+            this.thread.streamStatus.value = StreamResponseState.THINKING;
+          }
+          message.reasoningManager.pushChunk(chunk);
+        },
         setFull: message.reasoningManager.setText,
         setTitle: message.reasoningManager.setUserHeader,
         setTimeSec: message.reasoningManager.setUserTimeSec,

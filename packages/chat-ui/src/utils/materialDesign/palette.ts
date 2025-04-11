@@ -1,3 +1,4 @@
+/** @deprecated - dont use */
 export const materialDesignSysPalette = {
   background: '#F7F9FF',
   error: '#BA1A1A',

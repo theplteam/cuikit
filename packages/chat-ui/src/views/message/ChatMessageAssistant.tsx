@@ -71,9 +71,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
       showHideAnimationType: 'fade',
     });
 
-    setTimeout(() => {
-      lightbox.init();
-    }, 2000);
+    lightbox.init();
 
     return () => {
       lightbox.destroy();
@@ -81,8 +79,15 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   }, [typing, containerId]);
 
   const blockText = React.useMemo(
-    () => text ? <ChatMarkdownBlock id={containerId} text={text} /> : null,
-    [text]
+    () => text ? (
+      <ChatMarkdownBlock
+        id={containerId}
+        text={text}
+        rootComponent={slots.markdownMessageRoot}
+        rootComponentProps={slotProps.markdownMessageRoot}
+      />
+    ) : null,
+    [text, slots.markdownMessageRoot, slotProps.markdownMessageRoot]
   );
 
   return (

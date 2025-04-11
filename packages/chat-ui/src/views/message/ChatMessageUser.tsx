@@ -21,6 +21,7 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 import ChatMessageGallery from './ChatMessageGallery';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   message: MessageModel;
@@ -60,6 +61,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
+  const { slots, slotProps } = useChatSlots();
 
   const mode = messageMode.values[message.id];
 
@@ -91,7 +93,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const children = React.useMemo(() => (
     <>
-      <ChatMarkdownBlock text={message.text} />
+      <ChatMarkdownBlock
+        text={message.text}
+        rootComponent={slots.markdownMessageRoot}
+        rootComponentProps={slotProps.markdownMessageRoot}
+      />
       {((isFirst || message.parentId) && !!enableBranches) ? (
         <MessageActionsUser
           className={actionsClassName}
@@ -100,7 +106,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         />
       ) : null}
     </>
-  ), [message, thread, message.text, isFirst, isTyping]);
+  ), [message, thread, message.text, isFirst, isTyping, slots.markdownMessageRoot]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (

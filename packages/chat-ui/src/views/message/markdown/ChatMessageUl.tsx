@@ -1,6 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
-import { materialTheme } from '../../../utils/materialDesign/materialTheme';
 
 const ChatMessageUl = styled('ul')(({ theme }) => ({
   listStyle: 'none',
@@ -11,7 +9,7 @@ const ChatMessageUl = styled('ul')(({ theme }) => ({
     '&:last-child': {
       marginBottom: 0,
     },
-    ...materialTheme.body.mediumArticle,
+    ...theme.typography.body2,
     position: 'relative',
     '&::before': {
       content: '""',
@@ -22,7 +20,7 @@ const ChatMessageUl = styled('ul')(({ theme }) => ({
       height: 6,
       display: 'inline-block',
       borderRadius: '50%',
-      background: materialDesignSysPalette.onPrimaryFixedVariant,
+      background: theme.palette.primary.main,
     },
     'ul': {
       marginTop: theme.spacing(1.5),
@@ -38,10 +36,10 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
     '&:last-child': {
       marginBottom: 0,
     },
-    ...materialTheme.body.mediumArticle,
+    ...theme.typography.body2,
     position: 'relative',
     '&::marker': {
-      ...materialTheme.body.mediumArticle,
+      ...theme.typography.body2,
     },
     '& ul': {
       marginTop: theme.spacing(1.5),
