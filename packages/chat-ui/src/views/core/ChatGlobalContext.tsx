@@ -33,7 +33,9 @@ const ChatGlobalProviderComponent = <DM extends Message, DD extends Thread<DM>>(
     props.threads,
     props.thread,
     props.onUserMessageSent,
-  ), []);
+  // Model is not needed while data for the chat is loading
+  // therefore it needs to be recreated, since changes may occur during loading
+  ), [props.loading]);
 
   const threads = useObserverValue(model.list) ?? [];
 

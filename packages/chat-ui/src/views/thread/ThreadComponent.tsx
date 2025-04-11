@@ -18,7 +18,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
-  disabled?: boolean;
+  loading?: boolean;
   enableBranches: boolean | undefined;
   apiManager: ApiManager;
 };
@@ -40,7 +40,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   background: theme.palette.background.paper,
 }));
 
-const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
+const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, loading, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const {
@@ -57,10 +57,10 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
   const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
-    if (!thread) {
+    if (!thread && !loading) {
       apiManager.apiRef.current?.openNewThread(handleCreateNewThread());
     }
-  }, []);
+  }, [loading]);
 
   return (
     <ThreadProvider
