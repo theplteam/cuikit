@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatMessageContainer from './ChatMessageContainer';
-import { randomId } from '../../utils/numberUtils/randomInt';
 import { ChatViewConstants } from '../ChatViewConstants';
 import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
@@ -18,6 +17,7 @@ import { motion } from '../../utils/materialDesign/motion';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import MessageReasoning from './reasoning/MessageReasoning';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 
 type Props = {
   message: MessageModel;
@@ -55,15 +55,16 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const isHover = useHover(element);
   const text = useObserverValue(message.observableText);
   const typing = useObserverValue(message.typing);
-  const containerId = React.useState('pswp-chat-gallery' + randomId())[0];
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
+  const getInternalMessage = useInternalMessageTransformer();
+
+  const containerId = message.photoswipeContainerId;
 
   React.useEffect(() => {
     if (typing) return NOOP;
-
     const lightbox = PhotoSwipeLightbox({
-      gallery: `#${containerId}`,
+      gallery: `#${message.photoswipeContainerId}`,
       children: `a.${ChatViewConstants.MARKDOWN_IMAGE_CLASSNAME}`,
       pswpModule: () => import('photoswipe'),
       zoom: false,
@@ -75,11 +76,18 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     return () => {
       lightbox.destroy();
     }
-  }, [typing]);
+  }, [typing, containerId]);
 
   const blockText = React.useMemo(
-    () => text ? <ChatMarkdownBlock id={containerId} text={text} /> : null,
-    [text]
+    () => text ? (
+      <ChatMarkdownBlock
+        id={containerId}
+        text={text}
+        rootComponent={slots.markdownMessageRoot}
+        rootComponentProps={slotProps.markdownMessageRoot}
+      />
+    ) : null,
+    [text, slots.markdownMessageRoot, slotProps.markdownMessageRoot]
   );
 
   return (
@@ -94,25 +102,27 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     >
       {(enableReasoning) ? (
         <MessageReasoning
-          message={message} thread={thread}
+          message={message}
+          thread={thread}
           isLatest={isLatest}
         />
       ) : null}
-      {blockText}
       {isLatest ? (
         <slots.messageAssistantProgress
           {...slotProps.messageAssistantProgress}
-          message={message} thread={thread}
+          message={message}
+          thread={thread}
         />
       ) : null}
-      {(!typing && !!text && enableAssistantActions) ? (
+      {blockText}
+      {((!typing && !!text) && enableAssistantActions) ? (
         <MessageActionsAssistant
           message={message}
           thread={thread}
           className={actionsClassName}
         />
       ) : null}
-      <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={message} />
+      {!!enableAssistantActions && <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={getInternalMessage(message)} />}
     </ChatMessageContainerStyled>
   );
 };

@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import { StatusBoxStyled } from '../MessageAssistantProgress';
 import { FnType } from '../../../models/types';
 import { useReasoningTimeText } from './useReasoningTimeText';
+import { useLocalizationContext } from '../../core/LocalizationContext';
 
 type Props = {
   message: MessageModel;
@@ -29,7 +30,8 @@ const TitleStackStyled = styled(StatusBoxStyled)(({ theme }) => ({
 }));
 
 const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, handleExpandedChange, inProgress }) => {
-  const reasoningTitle = useObserverValue(message.reasoningManager.title) ?? '';
+  const locale = useLocalizationContext();
+  const reasoningTitle = useObserverValue(message.reasoningManager.title) || locale.thinking;
 
   const reasoningEnded = !inProgress;
 
@@ -37,7 +39,6 @@ const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, handleEx
 
   const { slots, slotProps } = useChatSlots();
 
-  if (!reasoningTitle) return null;
   return (
     <TitleStackStyled
       direction="row"

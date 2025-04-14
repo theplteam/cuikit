@@ -10,6 +10,7 @@ import { useThreadSendMessage } from './useThreadSendMessage';
 import { type ChatGlobalContextType } from '../core/ChatGlobalContext';
 import { ChatScrollApiRef } from './ChatScroller';
 import { Threads } from '../../models/Threads';
+import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 
 type ThreadContextType<DM extends Message, DD extends Thread<DM>> = {
   thread: ThreadModel<DM, DD> | undefined;
@@ -23,7 +24,10 @@ type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<
   thread: ThreadModel<DM, DD> | undefined;
   apiManager: ApiManager;
   scrollRef: React.RefObject<ChatScrollApiRef>;
-  globalProps: Pick<ChatGlobalContextType<any, any>, 'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'handleBundleBranch'>;
+  globalProps: Pick<
+    ChatGlobalContextType<any, any>,
+    'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'beforeUserMessageSend' | 'getCurrentBranch'
+  >;
 }>;
 
 const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
@@ -31,19 +35,25 @@ const Context = React.createContext<ThreadContextType<any, any> | undefined>(und
 const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
+  const internalMessageTransformer = useInternalMessageTransformer();
 
-  const onMessageSend = useThreadSendMessage(
+  const { onSendNewsMessage, onEditMessage } = useThreadSendMessage(
     thread,
     model,
     globalProps.onFirstMessageSent,
+    globalProps.beforeUserMessageSend,
     globalProps.onAssistantMessageTypingFinish,
     scrollRef.current ?? undefined,
   );
 
-  useThreadApiInitialization(thread, apiManager, onMessageSend);
+  useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage);
 
   React.useMemo(() => {
-    thread?.messages.init(globalProps.enableBranches, globalProps.handleBundleBranch);
+    if (thread) {
+      thread.messages.getCurrentBranchFn = globalProps.getCurrentBranch;
+      thread.messages.internalMessageTransformer = internalMessageTransformer;
+      thread.messages.init(globalProps.enableBranches);
+    }
   }, [thread]);
 
   /*const [state, setState] = React.useState(0)

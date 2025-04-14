@@ -1,3 +1,4 @@
+/** @deprecated - dont use */
 export const materialTheme = {
   body: {
     small: {

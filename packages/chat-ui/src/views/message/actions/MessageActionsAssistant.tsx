@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
-import { MessageModel } from '../../../models/MessageModel';
+import { ChatMessageOwner, Message, MessageModel } from '../../../models/MessageModel';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import { ThreadModel } from '../../../models/ThreadModel';
 
@@ -26,7 +26,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className }
         <component.element
           key={k}
           thread={thread.data.data}
-          message={message.data}
+          message={message.data as Extract<Message, { role: ChatMessageOwner.ASSISTANT }>}
         />
       ))}
     </Stack>

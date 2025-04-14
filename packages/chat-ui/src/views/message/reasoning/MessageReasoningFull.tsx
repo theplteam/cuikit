@@ -1,17 +1,25 @@
 import * as React from 'react';
-import ChatMarkdownBlock from '../markdown/ChatMarkdownBlock';
+import ChatMarkdownBlock, { ChatMarkdownBlockRoot } from '../markdown/ChatMarkdownBlock';
 import { styled } from '@mui/material/styles';
+import { useChatSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   text: string;
 };
 
-const ChatMarkdownBlockStyled = styled(ChatMarkdownBlock)(({ theme }) => ({
+export const ChatMarkdownReasoningBlockRoot = styled(ChatMarkdownBlockRoot)(({ theme }) => ({
   color: theme.palette.grey[700],
 }));
 
 const MessageReasoningFull: React.FC<Props> = ({ text }) => {
-  return <ChatMarkdownBlockStyled text={text} />;
+  const { slots, slotProps } = useChatSlots();
+  return (
+    <ChatMarkdownBlock
+      text={text}
+      rootComponent={slots.markdownReasoningRoot}
+      rootComponentProps={slotProps.markdownReasoningRoot}
+    />
+  );
 }
 
 export default MessageReasoningFull;

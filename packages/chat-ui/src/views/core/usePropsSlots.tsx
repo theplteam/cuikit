@@ -19,7 +19,6 @@ import Stack from '@mui/material/Stack';
 import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
-import ChatMarkdown from '../message/markdown/ChatMarkdown';
 import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../thread/HelloMessage';
@@ -29,8 +28,11 @@ import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
+import ThreadListItemMenuButton from '../leftContainer/ThreadListItemMenuButton';
+import { ChatMarkdownBlockRoot } from '../message/markdown/ChatMarkdownBlock';
+import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
 
-type SlotValue<T = any> = React.JSXElementConstructor<T>;
+export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
 export type CoreSlots = {
   button: SlotValue<ButtonProps>;
@@ -68,6 +70,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       thread: slots?.thread ?? ThreadRootContainer,
       listContainer: slots?.threadsList ? HiddenContent : slots?.listContainer ?? HiddenContent,
       threadsList: slots?.threadsList ?? HiddenContent,
+      threadListItemMenuButton: slots?.threadListItemMenuButton ?? ThreadListItemMenuButton,
       listDrawer: slots?.threadsList ? HiddenContent : slots?.listDrawer ?? React.Fragment,
       listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
       listTimeText: slots?.listTimeText ?? Typography,
@@ -76,7 +79,8 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
 
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
       // MARKDOWN
-      markdown: slots?.markdown ?? ChatMarkdown,
+      markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
+      markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
       markdownA: slots?.markdownA ?? Link,
       markdownTable: slots?.markdownTable ?? ChatMessageTable,
       markdownThead: slots?.markdownThead ?? TableHead,

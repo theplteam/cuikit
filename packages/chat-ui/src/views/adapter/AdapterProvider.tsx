@@ -4,7 +4,7 @@ import { AdapterContext } from './AdapterContext';
 
 export type AdapterProviderProps = React.PropsWithChildren<Partial<AdapterType>>;
 
-export const AdapterProvider = ({ children, transformThread, transformMessage, messageOutputFormat }: AdapterProviderProps) => {
+export const AdapterProvider = ({ children, transformThread, transformMessage, reverseMessageTransforming }: AdapterProviderProps) => {
 
   const baseThreadTransformer = React.useCallback((thread: any) => {
     if (!!transformMessage && Array.isArray(thread.messages)) {
@@ -18,8 +18,12 @@ export const AdapterProvider = ({ children, transformThread, transformMessage, m
   }, [transformMessage]);
 
   const value = React.useMemo(
-    () => ({ transformThread: transformThread ?? baseThreadTransformer, transformMessage, messageOutputFormat }),
-    [transformThread, transformMessage, baseThreadTransformer, messageOutputFormat]
+    () => ({
+      transformThread: transformThread ?? baseThreadTransformer,
+      transformMessage,
+      reverseMessageTransforming,
+    }),
+    [transformThread, transformMessage, baseThreadTransformer, reverseMessageTransforming]
   );
 
   return (

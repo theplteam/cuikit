@@ -21,6 +21,7 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 import ChatMessageGallery from './ChatMessageGallery';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   message: MessageModel;
@@ -60,6 +61,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
+  const { slots, slotProps } = useChatSlots();
 
   const mode = messageMode.values[message.id];
 
@@ -71,9 +73,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
-    const newMessage = thread.editMessage(message, newText);
-    apiRef.current?.handleChangeBranch(newMessage);
-    onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
+    const newMessage = await apiRef.current?.onEditMessage(newText, message);
+    if (newMessage) {
+      apiRef.current?.handleChangeBranch(newMessage);
+      onAssistantMessageTypingFinish?.({message: message.data, thread: thread.data.data});
+    }
   }
 
   const onClickCancelEdit = () => {
@@ -89,14 +93,20 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const children = React.useMemo(() => (
     <>
-      <ChatMarkdownBlock text={message.text} />
-      {((isFirst || message.parentId) && !!enableBranches) ? <MessageActionsUser
-        className={actionsClassName}
-        disabled={isTyping}
-        onClickEdit={onClickEdit}
-                                                             /> : null}
+      <ChatMarkdownBlock
+        text={message.text}
+        rootComponent={slots.markdownMessageRoot}
+        rootComponentProps={slotProps.markdownMessageRoot}
+      />
+      {((isFirst || message.parentId) && !!enableBranches) ? (
+        <MessageActionsUser
+          className={actionsClassName}
+          disabled={isTyping}
+          onClickEdit={onClickEdit}
+        />
+      ) : null}
     </>
-  ), [message, thread, message.text, isFirst, isTyping]);
+  ), [message, thread, message.text, isFirst, isTyping, slots.markdownMessageRoot]);
 
   if (mode === MessageStateEnum.EDIT) {
     return (

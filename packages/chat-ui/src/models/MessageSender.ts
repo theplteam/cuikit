@@ -1,5 +1,7 @@
-import { Message, MessageModel } from './MessageModel';
-import { MessageSentParams, StreamResponseState, ThreadHistoryItemType, ThreadModel } from './ThreadModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
+import { StreamResponseState, ThreadModel } from './ThreadModel';
+import { IdType } from '../types';
+import { MessageSentParams } from './MessageSentParams';
 
 export class MessageSender<DM extends Message> {
   constructor(
@@ -10,8 +12,12 @@ export class MessageSender<DM extends Message> {
   ) {
   }
 
+  private _finished = false;
+
   setText = (text: string) => {
-    this.changeTypingStatus(true);
+    if (!this._finished) {
+      this.changeTypingStatus(true);
+    }
     this.assistantMessage.text = text;
   }
 
@@ -23,13 +29,6 @@ export class MessageSender<DM extends Message> {
     this.assistantMessage.text += chunk;
   }
 
-  get history() {
-    return this.thread.messages.currentMessages.value.map((message) => ({
-      role: message.role,
-      content: message.content,
-    }) as ThreadHistoryItemType)
-  }
-
   setStatus = (status: string) => {
     this.thread.streamStatus.value = status;
   }
@@ -37,44 +36,52 @@ export class MessageSender<DM extends Message> {
   changeTypingStatus = (status: boolean) => {
     if (status !== this.assistantMessage.typing.value) {
       this.assistantMessage.typing.value = status;
+      if (status) {
+        this._finished = true;
+      }
     }
   }
 
-  onFinish = (resolver: (params: { message: Message }) => void) => {
-    this.changeTypingStatus(false);
-    resolver({message: this.userMessage.data});
-    this.assistantMessage.reasoningManager.updateTimeSec();
-
-    const assistantData = {
-      ...this.assistantMessage.data,
-      content: this.assistantMessage.text,
-    };
-
-    const userMessage = this.thread.adapter?.messageOutputFormat?.(this.userMessage.data) ?? this.userMessage.data;
-    const assistantMessage = this.thread.adapter?.messageOutputFormat?.(assistantData) ?? assistantData;
-
-    return { userMessage, assistantMessage }
-  }
-
-  getUserParams = (resolver: (params: { message: Message }) => void): MessageSentParams<DM> => {
+  getUserParams = (
+    resolver: (params: { message: InternalMessageType }) => void,
+    getInternalMessage: (message: MessageModel) => InternalMessageType,
+  ): MessageSentParams => {
     const message = this.assistantMessage;
+
+    const internalUserMessage = getInternalMessage(this.userMessage);
     return {
-      thread: this.thread.data,
       content: this.content,
-      history: this.history,
-      message: this.userMessage.data,
-      assistantMessage: message.data,
+      history: this.thread.messages.currentMessages.value.map(getInternalMessage),
+      message: internalUserMessage,
+      assistantMessage: getInternalMessage(message),
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,
-      onFinish: () => this.onFinish(resolver),
+      onFinish: () => {
+        this.changeTypingStatus(false);
+        resolver({ message: internalUserMessage });
+        message.reasoningManager.updateTimeSec();
+        this.thread.isTyping.value = false;
+        message.data.content = message.text;
+      },
       reasoning: {
-        pushChunk: message.reasoningManager.pushChunk,
+        pushChunk: (chunk) => {
+          if (this.thread.streamStatus.value !== StreamResponseState.THINKING) {
+            this.thread.streamStatus.value = StreamResponseState.THINKING;
+          }
+          message.reasoningManager.pushChunk(chunk);
+        },
         setFull: message.reasoningManager.setText,
         setTitle: message.reasoningManager.setUserHeader,
         setTimeSec: message.reasoningManager.setUserTimeSec,
         setViewType: message.reasoningManager.setUserViewType,
         unlockAutoManagement: message.reasoningManager.unlockAutoManagment,
+      },
+      actions: {
+        updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
+        updateThreadTitle: (newTitle) => this.thread.data.observableTitle.value = newTitle,
+        updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
+        updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
       },
     }
   }

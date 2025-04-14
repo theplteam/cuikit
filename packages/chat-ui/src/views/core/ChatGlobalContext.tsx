@@ -10,7 +10,6 @@ import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
 export type ChatGlobalContextType<DM extends Message, DD extends Thread<DM>> = {
-  thread: ThreadModel<DM, DD> | undefined;
   threads: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
   model: Threads<DM, DD>;
@@ -26,16 +25,18 @@ type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithC
   apiManager: ApiManager;
 }>;
 
-const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
+const ChatGlobalProviderComponent = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
   const threadAdapter = useAdapterContext();
+
   const model = React.useMemo(() => new Threads<DM, DD>(
     threadAdapter,
     props.threads,
     props.thread,
     props.onUserMessageSent,
+  // Model is not needed while data for the chat is loading
+  // therefore it needs to be recreated, since changes may occur during loading
   ), [props.loading]);
 
-  const currentThread = useObserverValue(model.currentThread);
   const threads = useObserverValue(model.list) ?? [];
 
   useApiRefInitialization(
@@ -49,10 +50,9 @@ const ChatGlobalProvider = <DM extends Message, DD extends Thread<DM>>({ props, 
     apiRef: apiManager.apiRef,
     model,
     threads,
-    thread: currentThread,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
     handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData as FnType<DD>,
-  }), [model, currentThread, props, props.loading, threads]);
+  }), [model, props, props.loading, threads]);
 
   return (
     // TODO: #ANY - придумать как передать дженерик в контекст
@@ -74,5 +74,11 @@ const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobal
 };
 
 const useChatModel = () => useChatContext().model;
+
+const ChatGlobalProvider = React.memo(ChatGlobalProviderComponent, (prevProps, nextProps) => {
+  return Object.keys(prevProps).join('') === Object.keys(nextProps).join('')
+    && prevProps.props.threads.length === nextProps.props.threads.length
+    && prevProps.props.loading === nextProps.props.loading;
+});
 
 export { ChatGlobalProvider, useChatContext, useChatModel };

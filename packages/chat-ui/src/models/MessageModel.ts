@@ -1,6 +1,7 @@
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { IdType } from '../types';
 import { MessageReasoningModel } from './MessageReasoningModel';
+import { randomInt } from '../utils/numberUtils/randomInt';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -18,6 +19,9 @@ export type TextContent = {
   type: 'text',
   text: string,
 }
+
+// TODO: Should be "external", because it's a type of message that we return to the user in their format
+export type InternalMessageType = any;
 
 export type MessageUserContent = string | (ImageContent | TextContent)[];
 export type MessageAssistantContent = string | (TextContent)[];
@@ -40,7 +44,7 @@ export type Message = {
   content: MessageAssistantContent;
 })
 
-export class MessageModel<DM extends Message = any> {
+export class MessageModel<DM extends Message = Message> {
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */
@@ -54,6 +58,8 @@ export class MessageModel<DM extends Message = any> {
    * An observable flag indicating the start/finish of message typing.
    */
   typing = new ObservableReactValue(false);
+
+  photoswipeContainerId = 'photoswipe-container-' + randomInt(100, 100000);
 
   constructor(private _data: DM) {
     if (typeof _data.content === 'string') {
