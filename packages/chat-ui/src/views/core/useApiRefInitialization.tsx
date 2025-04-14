@@ -32,13 +32,27 @@ export const useApiRefInitialization = (
       model.actions.deleteItem.value = thread;
     };
 
+    const handleDeleteThread = (id: IdType) => {
+      model.delete(id);
+    };
+
+    const getThreadById = (id: IdType) => {
+      return model.get(id);
+    };
+
+    const getCurrentThread = () => {
+      return model.currentThread.value?.data.data;
+    };
+
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
     apiManager.setMethod('deleteThread', model.delete);
-    apiManager.setMethod('getCurrentThread', () => model.currentThread.value?.data);
+    apiManager.setMethod('getCurrentThread', getCurrentThread);
     apiManager.setMethod('setDeleteThreadItem', setDeleteThreadItem);
     apiManager.setMethod('setMenuDriverOpen', setMenuDriverOpen);
+    apiManager.setMethod('handleDeleteThread', handleDeleteThread);
+    apiManager.setMethod('getThreadById', getThreadById);
 
   }, [props, model]);
 }
