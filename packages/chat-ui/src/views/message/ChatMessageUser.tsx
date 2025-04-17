@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
 import { messageActionsClasses } from './messageActionsClasses';
 import MessageActionsUser from './actions/MessageActionsUser';
-import clsx from 'clsx';
 import MessageUserEditor from './editor/MessageUserEditor';
 import MessagePagination, { MessagePaginationHeight } from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
@@ -13,12 +12,8 @@ import Box from '@mui/material/Box';
 import { useThreadContext } from '../thread/ThreadContext';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
-import { useElementRefState } from '../hooks/useElementRef';
-import { useTablet } from '../../ui/Responsive';
 import { useObserverValue } from '../hooks/useObserverValue';
-import useHover from '../hooks/useHover';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 import ChatMessageGallery from './ChatMessageGallery';
 import { useChatSlots } from '../core/ChatSlotsContext';
@@ -32,7 +27,6 @@ type Props = {
 
 const {
   actionsClassName,
-  hoverMessageClassName,
   paginationClassName,
 } = messageActionsClasses;
 
@@ -40,7 +34,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   width: '80%',
   background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
-  [`& .${actionsClassName}`]: {
+  /*[`& .${actionsClassName}`]: {
     opacity: 0,
     transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
   },
@@ -48,15 +42,15 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
     [`& .${actionsClassName}`]: {
       opacity: 1,
     },
-  },
+  },*/
   [`:has(.${paginationClassName})`]: {
     marginBottom: theme.spacing(1.5),
   }
 }));
 
 const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
-  const { element, setElement } = useElementRefState();
-  const isTablet = useTablet();
+  // const { element, setElement } = useElementRefState();
+  // const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
 
   const { messageMode, apiRef } = useThreadContext();
@@ -65,7 +59,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const mode = messageMode.values[message.id];
 
-  const isHover = useHover(element);
+  // const isHover = useHover(element);
 
   const onClickEdit = () => {
     messageMode.edit(message.id);
@@ -139,12 +133,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         {imageComponent}
         {message.text ? (
           <ChatMessageContainerStyled
-            ref={setElement}
             gap={1}
             mx={1.5}
-            className={clsx(
+            /*className={clsx(
               { [hoverMessageClassName]: isHover || isTablet },
-            )}
+            )}*/
             elevation={elevation}
           >
             {children}

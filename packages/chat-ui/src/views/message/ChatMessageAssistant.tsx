@@ -10,10 +10,7 @@ import { NOOP } from '../../utils/NOOP';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import useHover from '../hooks/useHover';
-import { useElementRefState } from '../hooks/useElementRef';
 import PhotoSwipeLightbox from '../photoswipe/PhotoSwipeLightbox';
-import { motion } from '../../utils/materialDesign/motion';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import MessageReasoning from './reasoning/MessageReasoning';
 import { useChatContext } from '../core/ChatGlobalContext';
@@ -30,13 +27,12 @@ type Props = {
 const {
   latestMessageClassName,
   actionsClassName,
-  hoverMessageClassName,
 } = messageActionsClasses;
 
-const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => ({
+const ChatMessageContainerStyled = styled(ChatMessageContainer)(() => ({
   width: '100%',
   flexDirection: 'column',
-  [`&:not(.${latestMessageClassName})`]: {
+  /*[`&:not(.${latestMessageClassName})`]: {
     [`& .${actionsClassName}`]: {
       opacity: 0,
       transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
@@ -46,13 +42,13 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
     [`& .${actionsClassName}`]: {
       opacity: 1,
     },
-  }
+  }*/
 }));
 
 const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
-  const { element, setElement } = useElementRefState();
+  // const { element, setElement } = useElementRefState();
 
-  const isHover = useHover(element);
+  // const isHover = useHover(element);
   const text = useObserverValue(message.observableText);
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
@@ -92,11 +88,11 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
 
   return (
     <ChatMessageContainerStyled
-      ref={setElement}
+      // ref={setElement}
       gap={1}
       className={clsx(
         { [latestMessageClassName]: isLatest },
-        { [hoverMessageClassName]: isHover },
+        // { [hoverMessageClassName]: isHover },
       )}
       elevation={elevation}
     >
