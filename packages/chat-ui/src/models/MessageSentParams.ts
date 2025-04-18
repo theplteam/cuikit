@@ -56,5 +56,6 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
     updateUserMessageId: (newId: IdType) => void;
     /** set your assistant's message id */
     updateAssistantMessageId: (newId: IdType) => void;
+    updateCurrentTextIndex: () => void;
   },
 }

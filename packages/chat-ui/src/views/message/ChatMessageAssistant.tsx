@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatMessageContainer from './ChatMessageContainer';
 import { ChatViewConstants } from '../ChatViewConstants';
-import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
@@ -15,6 +14,8 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import MessageReasoning from './reasoning/MessageReasoning';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useInternalMessageTransformer } from '../adapter/AdapterContext';
+import Stack from '@mui/material/Stack';
+import AssistantTextBlock from './AssistantTextBlock';
 
 type Props = {
   message: MessageModel;
@@ -49,7 +50,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
-  const text = useObserverValue(message.observableText);
+  const texts = useObserverValue(message.texts) ?? [];
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
@@ -74,18 +75,6 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     }
   }, [typing, containerId]);
 
-  const blockText = React.useMemo(
-    () => text ? (
-      <ChatMarkdownBlock
-        id={containerId}
-        text={text}
-        rootComponent={slots.markdownMessageRoot}
-        rootComponentProps={slotProps.markdownMessageRoot}
-      />
-    ) : null,
-    [text, slots.markdownMessageRoot, slotProps.markdownMessageRoot]
-  );
-
   return (
     <ChatMessageContainerStyled
       // ref={setElement}
@@ -103,15 +92,18 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           isLatest={isLatest}
         />
       ) : null}
-      {isLatest ? (
-        <slots.messageAssistantProgress
-          {...slotProps.messageAssistantProgress}
-          message={message}
-          thread={thread}
-        />
-      ) : null}
-      {blockText}
-      {((!typing && !!text) && enableAssistantActions) ? (
+      <Stack id={containerId}>
+        {texts.map((text, index) => (
+          <AssistantTextBlock
+            key={text.modelId}
+            message={message}
+            thread={thread}
+            messageText={text}
+            showStatus={!!isLatest && (index === texts.length - 1)}
+          />
+        ))}
+      </Stack>
+      {(!typing && enableAssistantActions) ? (
         <MessageActionsAssistant
           message={message}
           thread={thread}

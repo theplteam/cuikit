@@ -2,6 +2,7 @@ import { InternalMessageType, Message, MessageModel } from './MessageModel';
 import { StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
+import { MessageText } from './MessageText';
 
 export class MessageSender<DM extends Message> {
   constructor(
@@ -42,6 +43,13 @@ export class MessageSender<DM extends Message> {
     }
   }
 
+  updateCurrentTextIndex = () => {
+    this.assistantMessage.texts.value = [
+      ...this.assistantMessage.texts.value,
+      new MessageText(''),
+    ];
+  }
+
   getUserParams = (
     resolver: (params: { message: InternalMessageType }) => void,
     getInternalMessage: (message: MessageModel) => InternalMessageType,
@@ -62,7 +70,11 @@ export class MessageSender<DM extends Message> {
         resolver({ message: internalUserMessage });
         message.reasoningManager.updateTimeSec();
         this.thread.isTyping.value = false;
-        message.data.content = message.text;
+
+        message.data.content = message.texts.value.map((v) => ({
+          type: 'text',
+          text: v.text,
+        }));
       },
       reasoning: {
         pushChunk: (chunk) => {
@@ -82,6 +94,7 @@ export class MessageSender<DM extends Message> {
         updateThreadTitle: (newTitle) => this.thread.data.observableTitle.value = newTitle,
         updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
         updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
+        updateCurrentTextIndex: this.updateCurrentTextIndex,
       },
     }
   }
