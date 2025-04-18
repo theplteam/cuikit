@@ -31,6 +31,7 @@ import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import ThreadListItemMenuButton from '../leftContainer/ThreadListItemMenuButton';
 import { ChatMarkdownBlockRoot } from '../message/markdown/ChatMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
+import { Divider } from '@mui/material';
 
 export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -101,6 +102,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       markdownImg: slots?.markdownImg ?? ChatMessageImage,
       markdownCodeWrapper: slots?.markdownCodeWrapper ?? ChatMessageCodeWrapper,
       markdownCode: slots?.markdownCode ?? ChatMessageCode,
+      markdownHr: slots?.markdownHr ?? Divider,
       markdownBlockquote: slots?.markdownBlockquote ?? ChatMessageBlockquote,
       markdownP: slots?.markdownP ?? Typography,
       messagePagination: slots?.messagePagination ?? MessagePagination,

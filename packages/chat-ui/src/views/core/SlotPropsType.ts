@@ -179,6 +179,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    */
   markdownCode: React.JSX.IntrinsicElements['code'];
   /**
+   * Render code (<hr>)
+   */
+  markdownHr: any;
+  /**
    * Render blockquote (<blockquote>)
    */
   markdownBlockquote: React.JSX.IntrinsicElements['blockquote'];

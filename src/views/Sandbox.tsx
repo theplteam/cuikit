@@ -17,7 +17,7 @@ const threadsData: Thread[] = Array(50).fill(0)
       },
       {
         role: "assistant",
-        content: "Hello there! How can I assist you today?",
+        content: "Hello there! How can I assist you today?\n\n----\n\nDivider under me",
       },
     ],
   }))
