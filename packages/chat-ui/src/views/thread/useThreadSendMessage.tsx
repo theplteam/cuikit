@@ -135,6 +135,7 @@ export const useThreadSendMessage = (
     }
 
     thread.isTyping.value = true;
+    assistantMessage.typing.value = true;
     const messageSender = new MessageSender(
       content,
       userMessage,
@@ -151,6 +152,7 @@ export const useThreadSendMessage = (
             .then(streamParams.onFinish)
             .catch((reason) => {
               messageSender.changeTypingStatus(false);
+              thread.isTyping.value = false;
               reject(reason);
             });
         }

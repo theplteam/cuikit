@@ -6,7 +6,7 @@ import {
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
-const threadsData: Thread[] = Array(500).fill(0)
+const threadsData: Thread[] = Array(50).fill(0)
   .map((_, i) => ({
     id: `test-thread-${i}`,
     title: "Welcome message",
@@ -34,10 +34,9 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     setTimeout(() => {
-      console.log('set thread')
       setThread(threads[0]);
       setLoading(false);
-    }, 3000);
+    }, 100);
   });
 
   React.useEffect(() => {

@@ -24,7 +24,6 @@ export class MessageSender<DM extends Message> {
 
   pushChunk = (chunk: string) => {
     if (this.thread.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
-      this.changeTypingStatus(true);
       this.thread.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
     }
     this.assistantMessage.text += chunk;
@@ -37,7 +36,7 @@ export class MessageSender<DM extends Message> {
   changeTypingStatus = (status: boolean) => {
     if (status !== this.assistantMessage.typing.value) {
       this.assistantMessage.typing.value = status;
-      if (status) {
+      if (!status) {
         this._finished = true;
       }
     }

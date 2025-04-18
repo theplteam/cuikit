@@ -92,7 +92,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           isLatest={isLatest}
         />
       ) : null}
-      <Stack id={containerId}>
+      <Stack id={containerId} gap={1}>
         {texts.map((text, index) => (
           <AssistantTextBlock
             key={text.modelId}
