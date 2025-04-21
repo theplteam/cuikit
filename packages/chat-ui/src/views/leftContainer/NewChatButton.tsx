@@ -11,7 +11,9 @@ type Props = {
 };
 
 const useDisabled = () => {
-  const { thread } = useChatContext();
+  const { model } = useChatContext();
+  const thread = useObserverValue(model.currentThread);
+
   const isEmpty = useObserverValue(thread?.isEmpty) as boolean;
   return isEmpty;
 }

@@ -1,4 +1,4 @@
-import { Thread, ThreadHistoryItemType, Message } from "../../models";
+import { Thread, Message, InternalMessageType } from "../../models";
 
 export type AdapterType<D = any, M = any> = {
   transformThread: (thread: D) => Thread;
@@ -7,5 +7,5 @@ export type AdapterType<D = any, M = any> = {
    * @param message
    */
   transformMessage?: (message: M) => Message;
-  transformHistory?: <T>(history: ThreadHistoryItemType[]) => T[];
+  reverseMessageTransforming?: (message: Message) => InternalMessageType;
 };

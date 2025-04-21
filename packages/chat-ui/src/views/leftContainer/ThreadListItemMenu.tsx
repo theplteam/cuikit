@@ -46,7 +46,6 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, thread }) 
         )) : (
           <coreSlots.menuItem
             startIcon={DeleteIcon}
-            disabled={!thread.isOwner}
             onClick={handleDelete}
           >
             {locale.threadActionDelete}

@@ -1,22 +1,23 @@
 import { Message } from './MessageModel';
 import { Thread } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers';
-import { MessageSentParams, ThreadModel } from './ThreadModel';
+import { ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
 import { AdapterType } from '../views/adapter/AdapterType';
+import { MessageSentParams } from './MessageSentParams';
 
 export class Threads<DM extends Message, DD extends Thread<DM>> {
   readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
 
   readonly currentThread = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
 
-  readonly actions = new ChatActions<DM, DD>();
+  readonly actions = new ChatActions();
 
   constructor(
     adapter: AdapterType,
     threads: Thread[],
     thread: Thread | undefined,
-    onUserMessageSent: (params: MessageSentParams<DM>) => void | Promise<void>,
+    onUserMessageSent: (params: MessageSentParams) => void | Promise<void>,
   ) {
     const threadConstructor = ((t: Thread)=> new ThreadModel(
       adapter.transformThread(t) as DD,
@@ -47,7 +48,7 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
    * @param params - The arguments required to create a Thread instance, including data and a stream function.
    * @returns The existing or newly created Thread instance.
    */
-  fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
+  /*fromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;
     let thread = this.get(data.id);
     if (!thread) {
@@ -55,7 +56,7 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
       this.list.value = [...this.list.value, thread];
     }
     return thread;
-  }
+  }*/
 
   createFromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;

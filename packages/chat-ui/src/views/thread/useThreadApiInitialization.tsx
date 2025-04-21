@@ -5,10 +5,14 @@ import { ApiManager } from '../core/useApiManager';
 import { getThreadListeners } from '../utils/getThreadListeners';
 import { useThreadSendMessage } from './useThreadSendMessage';
 
+type OnMessageSendType = ReturnType<typeof useThreadSendMessage>['onSendNewsMessage'];
+type OnEditMessageType = ReturnType<typeof useThreadSendMessage>['onEditMessage'];
+
 export const useThreadApiInitialization = (
   thread: ThreadModel | undefined,
   apiManager: ApiManager,
-  onMessageSend: ReturnType<typeof useThreadSendMessage>,
+  onMessageSend: OnMessageSendType,
+  onEditMessage: OnEditMessageType,
 ) => {
   const handleChangeStreamStatus = useMessageProgressStatus(thread);
 
@@ -18,6 +22,7 @@ export const useThreadApiInitialization = (
 
   React.useMemo(() => {
     apiManager.setMethod('sendUserMessage', onMessageSend);
+    apiManager.setPrivateMethod('onEditMessage', onEditMessage);
   }, [onMessageSend]);
 
   React.useMemo(() => {

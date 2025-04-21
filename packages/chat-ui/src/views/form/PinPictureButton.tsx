@@ -10,6 +10,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { ChatViewConstants } from '../ChatViewConstants';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { useThreadContext } from '../thread/ThreadContext';
 
 type Props = {
   images: string[];
@@ -19,7 +20,8 @@ type Props = {
 
 const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableImageAttachments, thread } = useChatContext();
+  const { enableImageAttachments } = useChatContext();
+  const { thread } = useThreadContext();
 
   const ref = React.useRef<HTMLInputElement>(null);
   const mobileRef = React.useRef<HTMLInputElement>(null);

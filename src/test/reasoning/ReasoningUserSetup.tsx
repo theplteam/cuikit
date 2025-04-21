@@ -50,7 +50,7 @@ const App: React.FC = () => {
 
   const { reasoningGenerator, streamGenerator } = useAssistantAnswerMock();
   const onUserMessageSent = async ({ reasoning, ...params }: MessageSentParams) => {
-    const reasoningStream = reasoningGenerator({ loremIpsum: 'large' });
+    const reasoningStream = reasoningGenerator({ loremIpsumSize: 'large' });
     const neutralHeadings = [
       "Analysis and Interpretation", "Patterns and Trends", "Context and Meaning", "Logic and Structure",
       "Probability and Outcomes", "Neutral Observations", "Connections and Relations"

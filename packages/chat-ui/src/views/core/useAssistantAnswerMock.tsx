@@ -46,6 +46,8 @@ Considering different hypothetical situations provides a broad perspective on po
 Combining different viewpoints without bias ensures a balanced conclusion that objectively takes multiple factors into account. Neutral synthesis involves integrating data from various sources, thoroughly analyzing the presented arguments, and excluding subjective assessments. This allows for forming universal recommendations that are applicable across a wide range of situations.
 `;
 
+type TestParams = Partial<{ delay: number, chunkSize: number, loremIpsumSize: LoremIpsumSize }>;
+
 export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: number, loremIpsumSize: LoremIpsumSize }>) => {
 
   const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
@@ -64,7 +66,7 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
 
   const streamGenerator = React.useCallback(async function* (
     text?: string,
-    params?: Partial<{ delay: number, chunkSize: number, loremIpsumSize?: LoremIpsumSize }>
+    params?: TestParams
   ) {
     stop = false;
     if (!text) {
@@ -83,12 +85,12 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
     }
   }, []);
 
-  const reasoningGenerator = React.useCallback((params?: Partial<{ delay: number, chunkSize: number, loremIpsum?: LoremIpsumSize }>) => {
+  const reasoningGenerator = React.useCallback((params?: TestParams) => {
     const delay = params?.delay ?? 100;
     const chunkSize = params?.chunkSize ?? 8;
 
-    const text = params?.loremIpsum
-      ? generateRandomLoremIpsum(params.loremIpsum)
+    const text = params?.loremIpsumSize
+      ? generateRandomLoremIpsum(params.loremIpsumSize)
       : reasoningMock;
 
     return streamGenerator(text, { delay, chunkSize });
@@ -98,5 +100,13 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
     stop = true;
   }, []);
 
-  return { onUserMessageSent, handleStopMessageStreaming, streamGenerator, reasoningGenerator };
+  const runStream = React.useCallback(async (pushChunkFn: (chunk: string) => void, params?: TestParams) => {
+    const stream = streamGenerator(undefined, params);
+
+    for await (const chunk of stream) {
+      pushChunkFn(chunk);
+    }
+  }, [streamGenerator]);
+
+  return { onUserMessageSent, handleStopMessageStreaming, streamGenerator, reasoningGenerator, runStream };
 }

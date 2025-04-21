@@ -21,11 +21,11 @@ const HelloMessage: React.FC<Props> = ({ text, thread }) => {
     if (!thread || !text) return;
 
     if (thread.messages.allMessages.value.length > 0) {
-      message.observableText.value = text;
+      message.texts.value[0].observableText.value = text;
       return;
     }
 
-    message.observableText.value = '';
+    message.texts.value[0].observableText.value = '';
     const stream = new ForceStream(text, message);
     stream.chunkSize = 'medium';
     stream.speed = { min: 50, max: 200 };

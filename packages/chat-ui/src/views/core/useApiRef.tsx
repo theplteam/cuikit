@@ -68,6 +68,7 @@ export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = 
   branch: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
   getListener: <K extends keyof ThreadListenersMap<DM>>(key: K) => ThreadListenersMap<DM>[K] | undefined;
   updateScrollButtonState: () => void;
+  onEditMessage: (newText: string, messageEdit: MessageModel) => Promise<MessageModel | undefined>;
 } & ApiRefType<DM, DD>;
 
 export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
@@ -78,6 +79,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     deleteThread: NOOP,
     getProgressStatus: () => '',
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
+    onEditMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
     getCurrentThread: () => undefined,

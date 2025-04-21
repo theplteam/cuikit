@@ -4,24 +4,24 @@ import Stack from '@mui/material/Stack';
 import HistorySkeleton from './HistorySkeleton';
 import TimeGroupItem from './TimeGroupItem';
 import Box from '@mui/material/Box';
-import ThreadListItem from './ThreadListItem';
 import { useThreadsGroupedList } from './useThreadsGroupedList';
 import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Thread } from '../../models';
+import ThreadListItemObserver from './ThreadListItemObserver';
 
 const ThreadsListBlock: React.FC = () => {
-  const { loading, threads, thread: currentThread, apiRef, onChangeCurrentThread } = useChatContext();
+  const { loading, threads, apiRef, onChangeCurrentThread, model } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
-  const setThread = React.useCallback((thread: Thread) => {
-    if (currentThread?.id !== thread.id) {
+  const setThread = (thread: Thread) => {
+    if (model.currentThread.value?.id !== thread.id) {
       onChangeCurrentThread?.({ thread });
       apiRef.current?.onChangeThread(thread.id);
     }
-  }, [onChangeCurrentThread, currentThread, apiRef.current]);
+  };
 
   return (
     <>
@@ -42,8 +42,8 @@ const ThreadsListBlock: React.FC = () => {
                     if (groupKey !== group.id) return null;
                     return (
                       <Box key={thread.id}>
-                        <ThreadListItem
-                          currentThread={currentThread}
+                        <ThreadListItemObserver
+                          model={model}
                           setThread={setThread}
                           thread={thread}
                         />

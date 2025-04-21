@@ -114,6 +114,10 @@ const ChatMarkdown: React.FC<Props> = ({ text }) => {
             component: slots.markdownCode,
             props: slotProps.markdownCode,
           },
+          hr: {
+            component: slots.markdownHr,
+            props: slotProps.markdownHr,
+          },
           blockquote: {
             component: slots.markdownBlockquote,
             props: slotProps.markdownBlockquote,

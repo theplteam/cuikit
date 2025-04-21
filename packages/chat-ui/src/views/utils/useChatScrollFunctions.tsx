@@ -46,15 +46,16 @@ export const useChatScrollFunctions = (
     [handleCheckButtonState, handleSaveScrollPosition]
   );
 
-  // прокрутить диалог к концу списка или к предыдущему месту при открытии
+  // scroll the dialog to the end of the list or to the previous location when opening
   React.useEffect(() => {
     if (thread) {
       if (thread.scrollY < 0) {
-        // TODO: в первом кадре высота неполная, потом обновляется
-        setTimeout(() => {
+        // feature removed because the auto-scroll when opening a thread was annoying
+        // TODO: in the first frame the height is incomplete, then updates
+        /*setTimeout(() => {
           const scrollHeight = getPosition().scrollHeight * 1.5;
           scrollTo(scrollHeight, 'smooth');
-        }, 100);
+        }, 100);*/
 
       } else {
         scrollTo(thread.scrollY);

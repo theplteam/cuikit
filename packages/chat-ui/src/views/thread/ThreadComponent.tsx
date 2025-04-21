@@ -14,10 +14,11 @@ import { Thread, Message } from '../../models';
 import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
+import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
-  disabled?: boolean;
+  loading?: boolean;
   enableBranches: boolean | undefined;
   apiManager: ApiManager;
 };
@@ -39,17 +40,27 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   background: theme.palette.background.paper,
 }));
 
-const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, apiManager, enableBranches }: Props) => {
+const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, loading, apiManager, enableBranches }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
-  const { thread, handleCreateNewThread, onAssistantMessageTypingFinish, onFirstMessageSent, model } = useChatContext<DM, DD>();
+  const {
+    handleCreateNewThread,
+    onAssistantMessageTypingFinish,
+    onFirstMessageSent,
+    getCurrentBranch,
+    model,
+    beforeUserMessageSend
+  } = useChatContext<DM, DD>();
+
+  const thread = useObserverValue(model.currentThread);
+
   const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
-    if (!thread) {
+    if (!thread && !loading) {
       apiManager.apiRef.current?.openNewThread(handleCreateNewThread());
     }
-  }, []);
+  }, [loading]);
 
   return (
     <ThreadProvider
@@ -60,6 +71,8 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
         onAssistantMessageTypingFinish,
         enableBranches,
         onFirstMessageSent,
+        beforeUserMessageSend,
+        getCurrentBranch,
       }}
       scrollRef={scrollApiRef}
     >

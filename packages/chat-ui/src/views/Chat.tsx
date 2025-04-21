@@ -26,6 +26,8 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
   return (
     <>
       <ChatGlobalProvider
+        // TODO: fix types
+        // @ts-ignore
         props={props}
         apiManager={apiManager}
       >
@@ -51,6 +53,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
               enableBranches={props.enableBranches}
               apiManager={apiManager}
               contentRef={usersProps.scrollerRef}
+              loading={usersProps.loading}
             />
             {usersProps.children}
           </ChatSlotsProvider>

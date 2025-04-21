@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { CoreSlots, SlotsType } from './usePropsSlots';
-import { MessageSentParams } from '../../models/ThreadModel';
-import { ChatMessageOwner, Message, MessageModel, RatingType } from '../../models/MessageModel';
+import {
+  ChatMessageOwner,
+  Message,
+  MessageModel,
+  RatingType
+} from '../../models/MessageModel';
 import { LangKeys, UserIdType } from '../../models/ChatApp';
 import { useLangInit } from './useLangInit';
 import { useUserInit } from './useUserInit';
@@ -10,8 +14,11 @@ import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 import { TagType } from 'types';
+import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
+import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
+import { MessageSentParams } from '../../models/MessageSentParams';
 
-type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
+type RequiredProps<DD extends Thread<any>> = {
   /**
    * Threads list
    * @required
@@ -21,7 +28,7 @@ type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
    * Callback fired when the user sends a message to the thread.
    * @param message - User's message
    */
-  onUserMessageSent: (params: MessageSentParams<DM>) => void | Promise<void>;
+  onUserMessageSent: (params: MessageSentParams) => void | Promise<void>;
 };
 
 // используется внутри библиотеки
@@ -35,10 +42,22 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * If it isn’t in the thread list or if the parameter is not provided, an empty thread will open.
    */
   thread?: DD;
+
+  /**
+   * Advanced function for forming a sequence of messages to implement custom functionality of branches
+   */
+  getCurrentBranch?: GetCurrentBranchFnType;
+
+  /**
+   * You can create your own messages from the user and assistant before sending, according to your architecture,
+   * after which the Chat UI will adjust them to its format via an Adapter.
+   */
+  beforeUserMessageSend?: BeforeUserMessageSendFnType;
+
   /**
    * Action buttons for the assistant's message.
    */
-  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: Thread<DM> }>[];
+  assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: DD }>[];
   /**
    * Action buttons for the thread's list item menu.
    */
@@ -68,10 +87,6 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Invoked when the user clicks the stop streaming button.
    */
   handleStopMessageStreaming?: () => void;
-  /**
-   * This function builds a message branch.
-   */
-  handleBundleBranch?: (messages: MessageModel<DM>[], startFrom?: MessageModel<DM>,) => MessageModel<DM>[];
   /**
    * This function defines pagination for the branching point of the chat.
    */
@@ -124,7 +139,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Enable user's ability to add pictures in messages
    */
   enableImageAttachments?: boolean;
-} & RequiredProps<DM, DD>;
+} & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату
 export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<{
@@ -158,7 +173,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
    */
   helloMessage?: string
   userId: UserIdType;
-}> & RequiredProps<DM, DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DM, DD>>>;
+}> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
   const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;

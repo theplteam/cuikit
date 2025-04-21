@@ -1,22 +1,20 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import ChatMarkdown from './ChatMarkdown';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
-import { materialTheme } from '../../../utils/materialDesign/materialTheme';
+import { SlotValue } from '../../core/usePropsSlots';
 
 type Props = {
   text: string;
   id?: string;
-  className?: string;
+  rootComponent: SlotValue<BoxProps>;
+  rootComponentProps: BoxProps | undefined;
 };
 
-const BoxStyled = styled(Box)(() => ({
-  ...materialTheme.body.mediumArticle,
+export const ChatMarkdownBlockRoot = styled(Box)(({theme}) => ({
+  ...theme.typography.body2,
   width: '100%',
   wordWrap: 'break-word',
-  fontFamily: 'Roboto',
-  color: materialDesignSysPalette.onSurface,
   '& ol, p, ul': {
     margin: 0,
   },
@@ -33,11 +31,11 @@ const BoxStyled = styled(Box)(() => ({
   },
 }));
 
-const ChatMarkdownBlock: React.FC<Props> = ({ text, id, className }) => {
+const ChatMarkdownBlock: React.FC<Props> = ({ text, id, ...otherProps }) => {
   return (
-    <BoxStyled id={id} className={className}>
+    <otherProps.rootComponent {...otherProps.rootComponentProps} id={id}>
       <ChatMarkdown text={text} />
-    </BoxStyled>
+    </otherProps.rootComponent>
   );
 }
 

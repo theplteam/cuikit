@@ -9,7 +9,7 @@ import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import { useChatCoreSlots } from '../../views/core/ChatSlotsContext';
+import { useChatSlots } from '../../views/core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 
@@ -78,7 +78,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread }) =
 
   const { apiRef } = useChatContext();
 
-  const coreSlots = useChatCoreSlots();
+  const { coreSlots, slots } = useChatSlots();
 
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.data.observableTitle);
@@ -107,19 +107,19 @@ const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread }) =
           }}
         />
         <BoxShadowStyled className={classShadowRight} />
-        <coreSlots.iconButton
+        <slots.threadListItemMenuButton
           size="small"
-          disabled={!thread.isOwner}
           sx={{
             position: 'absolute',
             right: (theme) => theme.spacing(1.5),
             top: '50%',
             transform: 'translateY(-50%)',
           }}
+          threadId={thread.id}
           onClick={handleClick}
         >
           <MoreVertIcon />
-        </coreSlots.iconButton>
+        </slots.threadListItemMenuButton>
       </BoxStyled>
       <ThreadListItemMenu
         anchorEl={anchorEl}
