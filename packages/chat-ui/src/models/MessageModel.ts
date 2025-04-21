@@ -52,6 +52,8 @@ export class MessageModel<DM extends Message = Message> {
    */
   readonly texts = new ObservableReactValue<MessageText[]>([]);
 
+  readonly rating = new ObservableReactValue<RatingType | undefined>(undefined);
+
   readonly reasoningManager = new MessageReasoningModel();
 
   images?: string[];
@@ -73,6 +75,10 @@ export class MessageModel<DM extends Message = Message> {
       );
 
       this.images = (content.filter(v => v.type === 'image_url') as ImageContent[])?.map((img) => img.image_url.url || '');
+    }
+
+    if (_data.rating) {
+      this.rating.value = _data.rating;
     }
 
     if (_data.reasoning) {
@@ -104,14 +110,6 @@ export class MessageModel<DM extends Message = Message> {
 
   set parentId(val: IdType|undefined) {
     this._data.parentId = val;
-  }
-
-  get rating() {
-    return this._data.rating;
-  }
-
-  set rating(value) {
-    this._data.rating = value;
   }
 
   get time() {

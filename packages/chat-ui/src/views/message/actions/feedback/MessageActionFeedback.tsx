@@ -5,25 +5,25 @@ import MessageFeedbackButton from './MessageFeedbackButton';
 import MessageFeedbackWindow from './MessageFeedbackWindow';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
+import { useObserverValue } from '../../../../views/hooks/useObserverValue';
 
 type Props = {
   message: MessageModel;
 };
 
 const MessageActionFeedback: React.FC<Props> = ({ message }) => {
-  const [activeType, setActiveType] = React.useState(message.rating);
+  const messageRating = useObserverValue(message.rating);
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
   const ref = React.useRef<HTMLDivElement | null>(null);
 
-  const { onSendRating, onSendFeedback } = useChatContext();
+  const { onChangeMessageRating, onSendMessageFeedback } = useChatContext();
   const locale = useLocalizationContext();
 
   const handleActionClick = (action: RatingType) => {
-    const newValue = message.rating === action ? undefined : action;
-    if (newValue && onSendFeedback) setAnchorEl(ref.current);
-    onSendRating?.({ message: message.data, rating: newValue });
-    setActiveType(newValue);
-    message.rating = newValue;
+    const newValue = message.rating.value === action ? undefined : action;
+    if (newValue && onSendMessageFeedback) setAnchorEl(ref.current);
+    onChangeMessageRating?.({ message: message.data, rating: newValue });
+    message.rating.value = newValue;
   }
 
   const handleClose = () => {
@@ -38,13 +38,13 @@ const MessageActionFeedback: React.FC<Props> = ({ message }) => {
       <MessageFeedbackButton
         tooltip={locale.messageLikeTooltip}
         type="like"
-        activeType={activeType}
+        activeType={messageRating}
         onClick={handleActionClick}
       />
       <MessageFeedbackButton
         tooltip={locale.messageDislikeTooltip}
         type="dislike"
-        activeType={activeType}
+        activeType={messageRating}
         onClick={handleActionClick}
       />
       <MessageFeedbackWindow

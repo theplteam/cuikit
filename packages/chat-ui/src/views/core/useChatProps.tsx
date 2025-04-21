@@ -112,11 +112,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * If callback is set, rating buttons appear. Callback fired when message rating sent
    */
-  onSendRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
+  onChangeMessageRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
   /**
    * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent 
    */
-  onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: TagType[] }>;
+  onSendMessageFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: TagType[] }>;
   /**
    * List of "like" options in feedback window.
    * @default messageFeedbackLikeOptions

@@ -25,7 +25,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   const [tags, setTags] = React.useState<TagType[]>([]);
 
   const locale = useLocalizationContext();
-  const { onSendFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
+  const { onSendMessageFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
   const coreSlots = useChatCoreSlots();
 
   const handelClear = () => {
@@ -38,11 +38,11 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   }, [anchorEl])
 
   const tagArray = React.useMemo(() => {
-    return message.rating === 'like' ? feedbackLikeOptions : feedbackDislikeOptions;
-  }, [message.rating])
+    return message.rating.value === 'like' ? feedbackLikeOptions : feedbackDislikeOptions;
+  }, [message.rating.value])
 
   const handleSubmit = () => {
-    onSendFeedback?.({ message: message.data, feedback, tags });
+    onSendMessageFeedback?.({ message: message.data, feedback, tags });
     onClose();
   }
 
@@ -54,7 +54,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
     }
   }
 
-  if (!onSendFeedback) return null;
+  if (!onSendMessageFeedback) return null;
   return (
     <Popover
       open={Boolean(anchorEl)}
