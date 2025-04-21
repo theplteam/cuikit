@@ -10,9 +10,8 @@ import Link from '@mui/material/Link';
 import Chip from '@mui/material/Chip';
 import { Popover } from '@mui/material';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
-import { MessageModel } from '../../../../models/MessageModel';
+import { MessageFeedbackTagType, MessageModel } from '../../../../models/MessageModel';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
-import { TagType } from 'types';
 
 type Props = {
   message: MessageModel;
@@ -22,7 +21,7 @@ type Props = {
 
 const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) => {
   const [feedback, setFeedback] = React.useState('');
-  const [tags, setTags] = React.useState<TagType[]>([]);
+  const [tags, setTags] = React.useState<MessageFeedbackTagType[]>([]);
 
   const locale = useLocalizationContext();
   const { onSendMessageFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
@@ -38,15 +37,15 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   }, [anchorEl])
 
   const tagArray = React.useMemo(() => {
-    return message.rating.value === 'like' ? feedbackLikeOptions : feedbackDislikeOptions;
-  }, [message.rating.value])
+    return message.rating === 'like' ? feedbackLikeOptions : feedbackDislikeOptions;
+  }, [message.rating])
 
   const handleSubmit = () => {
     onSendMessageFeedback?.({ message: message.data, feedback, tags });
     onClose();
   }
 
-  const handleTag = (tag: TagType) => {
+  const handleTag = (tag: MessageFeedbackTagType) => {
     if (tags.find(t => t.id === tag.id)) {
       setTags(tags.filter(t => t.id !== tag.id));
     } else {

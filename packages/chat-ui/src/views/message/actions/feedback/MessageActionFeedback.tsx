@@ -5,14 +5,13 @@ import MessageFeedbackButton from './MessageFeedbackButton';
 import MessageFeedbackWindow from './MessageFeedbackWindow';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
-import { useObserverValue } from '../../../../views/hooks/useObserverValue';
 
 type Props = {
   message: MessageModel;
 };
 
 const MessageActionFeedback: React.FC<Props> = ({ message }) => {
-  const messageRating = useObserverValue(message.rating);
+  const [messageRating, setMessageRating] = React.useState<RatingType | undefined>(message.rating);
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
   const ref = React.useRef<HTMLDivElement | null>(null);
 
@@ -20,10 +19,11 @@ const MessageActionFeedback: React.FC<Props> = ({ message }) => {
   const locale = useLocalizationContext();
 
   const handleActionClick = (action: RatingType) => {
-    const newValue = message.rating.value === action ? undefined : action;
+    const newValue = message.rating === action ? undefined : action;
     if (newValue && onSendMessageFeedback) setAnchorEl(ref.current);
     onChangeMessageRating?.({ message: message.data, rating: newValue });
-    message.rating.value = newValue;
+    setMessageRating(newValue);
+    message.rating = newValue;
   }
 
   const handleClose = () => {

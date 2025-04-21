@@ -3,6 +3,7 @@ import { CoreSlots, SlotsType } from './usePropsSlots';
 import {
   ChatMessageOwner,
   Message,
+  MessageFeedbackTagType,
   MessageModel,
   RatingType
 } from '../../models/MessageModel';
@@ -13,7 +14,6 @@ import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
-import { TagType } from 'types';
 import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
@@ -116,17 +116,17 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent 
    */
-  onSendMessageFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: TagType[] }>;
+  onSendMessageFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: MessageFeedbackTagType[] }>;
   /**
    * List of "like" options in feedback window.
    * @default messageFeedbackLikeOptions
    */
-  feedbackLikeOptions?: TagType[];
+  feedbackLikeOptions?: MessageFeedbackTagType[];
   /**
    * List of "dislike" options in feedback window.
    * @default messageFeedbackDislikeOptions
    */
-  feedbackDislikeOptions?: TagType[];
+  feedbackDislikeOptions?: MessageFeedbackTagType[];
   /**
    * A flag indicating whether message copying is disabled
    */

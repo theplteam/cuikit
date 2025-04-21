@@ -51,22 +51,6 @@ export type Localization = {
   messageFeedbackSubmitButton: string;
   messageFeedbackLink: string;
   messageFeedbackText: string;
-  messageFeedbackLikeOptions: {
-    factuallyCorrect: string;
-    easyToUnderstand: string;
-    informative: string;
-    creativeInteresting: string;
-    wellFormatted: string;
-    other: string;
-  };
-  messageFeedbackDislikeOptions: {
-    offensiveUnsafe: string;
-    notFactuallyCorrect: string;
-    didntFollowInstructions: string;
-    wrongLanguage: string;
-    poorlyFormatted: string;
-    genericBland: string;
-  };
 
   // other
   maxImageWarning: string;

@@ -13,7 +13,7 @@ type Props = {
 };
 
 const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className }) => {
-  const { actionsAssistant, disableMessageCopying, onSendRating } = useChatContext();
+  const { actionsAssistant, disableMessageCopying, onChangeMessageRating } = useChatContext();
   return (
     <Stack
       direction="row"
@@ -21,8 +21,8 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className }
       gap={1.5}
       className={className}
     >
+      {onChangeMessageRating ? <MessageActionFeedback message={message} /> : null}
       {!disableMessageCopying && <MessageActionCopy message={message} />}
-      {onSendRating ? <MessageActionFeedback message={message} /> : null}
       {actionsAssistant?.map((component, k) => (
         <component.element
           key={k}
