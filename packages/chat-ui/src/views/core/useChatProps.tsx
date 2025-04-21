@@ -9,6 +9,7 @@ import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
+import { TagType } from 'types';
 
 type RequiredProps<DM extends Message, DD extends Thread<DM>> = {
   /**
@@ -100,17 +101,17 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent 
    */
-  onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: string[] }>;
+  onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: TagType[] }>;
   /**
    * List of "like" options in feedback window.
    * @default messageFeedbackLikeOptions
    */
-  feedbackLikeOptions?: { [key: string]: string }[];
+  feedbackLikeOptions?: TagType[];
   /**
    * List of "dislike" options in feedback window.
    * @default messageFeedbackDislikeOptions
    */
-  feedbackDislikeOptions?: { [key: string]: string }[];
+  feedbackDislikeOptions?: TagType[];
   /**
    * A flag indicating whether message copying is disabled
    */

@@ -65,9 +65,8 @@ export const useThreadsGroupedList = (threads: ArrayType<ThreadModel>) => {
           const month = moment.unix(timestamp);
 
           const monthEn = capitalizeFirstLetter(month.locale('en').format('MMMM'));
-
           results[monthEn] = {
-            label: locale[`history${monthEn}` as keyof Localization],
+            label: locale[`history${monthEn}` as keyof Localization] as string,
             timestamp: month.unix(),
             id: monthEn,
           };

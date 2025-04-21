@@ -12,7 +12,7 @@ import { Popover } from '@mui/material';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { MessageModel } from '../../../../models/MessageModel';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
-import { messageFeedbackDislikeOptions, messageFeedbackLikeOptions } from './DefaultTags';
+import { TagType } from 'types';
 
 type Props = {
   message: MessageModel;
@@ -22,7 +22,7 @@ type Props = {
 
 const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) => {
   const [feedback, setFeedback] = React.useState('');
-  const [tags, setTags] = React.useState<string[]>([]);
+  const [tags, setTags] = React.useState<TagType[]>([]);
 
   const locale = useLocalizationContext();
   const { onSendFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
@@ -38,9 +38,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
   }, [anchorEl])
 
   const tagArray = React.useMemo(() => {
-    const likeOptions = feedbackLikeOptions || messageFeedbackLikeOptions;
-    const dislikeOptions = feedbackDislikeOptions || messageFeedbackDislikeOptions;
-    return Object.entries(message.rating === 'like' ? likeOptions : dislikeOptions);
+    return message.rating === 'like' ? feedbackLikeOptions : feedbackDislikeOptions;
   }, [message.rating])
 
   const handleSubmit = () => {
@@ -48,9 +46,9 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
     onClose();
   }
 
-  const handleTag = (tag: string) => {
-    if (tags.includes(tag)) {
-      setTags(tags.filter(t => t !== tag));
+  const handleTag = (tag: TagType) => {
+    if (tags.find(t => t.id === tag.id)) {
+      setTags(tags.filter(t => t.id !== tag.id));
     } else {
       setTags([...tags, tag]);
     }
@@ -97,18 +95,18 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
         width="100%" display="flex" direction="row"
         gap={1} flexWrap="wrap"
       >
-        {tagArray.map(([key, value], i) => {
-          const isActive = tags.includes(key);
+        {tagArray?.map((tag) => {
+          const isActive = tags.find((t) => t.id === tag.id);
           return (
-            <Box key={i}>
+            <Box key={tag.id}>
               <Chip
-                label={value}
+                label={tag.label}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{
                   color: isActive ? materialDesignSysPalette.primary : materialDesignSysPalette.secondary,
                   backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
                 }}
-                onClick={() => handleTag(key)}
+                onClick={() => handleTag(tag)}
               />
             </Box>
           )

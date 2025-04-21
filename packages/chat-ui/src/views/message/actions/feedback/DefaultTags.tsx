@@ -1,19 +1,63 @@
+import { TagType } from 'types';
 import { CHAT_LOCALE } from '../../../../locale/enEN';
 
-export const messageFeedbackLikeOptions = {
-  factuallyCorrect: CHAT_LOCALE.messageFeedbackLikeOptions.factuallyCorrect,
-  easyToUnderstand: CHAT_LOCALE.messageFeedbackLikeOptions.easyToUnderstand,
-  informative: CHAT_LOCALE.messageFeedbackLikeOptions.informative,
-  creativeInteresting: CHAT_LOCALE.messageFeedbackLikeOptions.creativeInteresting,
-  wellFormatted: CHAT_LOCALE.messageFeedbackLikeOptions.wellFormatted,
-  other: CHAT_LOCALE.messageFeedbackLikeOptions.other
-};
+export const messageFeedbackLikeOptions: TagType[] = [
+  {
+    id: 1,
+    label: CHAT_LOCALE.messageFeedbackLikeOptions.factuallyCorrect,
+    value: 'factuallyCorrect',
+  }, {
+    id: 2,
+    label: CHAT_LOCALE.messageFeedbackLikeOptions.easyToUnderstand,
+    value: 'easyToUnderstand',
+  }, {
+    id: 3,
+    label: CHAT_LOCALE.messageFeedbackLikeOptions.informative,
+    value: 'informative'
+  }, {
+    id: 4,
+    label: CHAT_LOCALE.messageFeedbackLikeOptions.creativeInteresting,
+    value: 'creativeInteresting'
+  }, {
+    id: 5,
+    label: CHAT_LOCALE.messageFeedbackLikeOptions.wellFormatted,
+    value: 5
+  }, {
+    id: 6,
+    label: CHAT_LOCALE.messageFeedbackLikeOptions.other,
+    value: 'other'
+  },
+];
 
-export const messageFeedbackDislikeOptions = {
-  offensiveUnsafe: CHAT_LOCALE.messageFeedbackDislikeOptions.offensiveUnsafe,
-  notFactuallyCorrect: CHAT_LOCALE.messageFeedbackDislikeOptions.notFactuallyCorrect,
-  didntFollowInstructions: CHAT_LOCALE.messageFeedbackDislikeOptions.didntFollowInstructions,
-  wrongLanguage: CHAT_LOCALE.messageFeedbackDislikeOptions.wrongLanguage,
-  poorlyFormatted: CHAT_LOCALE.messageFeedbackDislikeOptions.poorlyFormatted,
-  genericBland: CHAT_LOCALE.messageFeedbackDislikeOptions.genericBland
-};
+export const messageFeedbackDislikeOptions: TagType[] = [
+  {
+    id: 1,
+    label: CHAT_LOCALE.messageFeedbackDislikeOptions.offensiveUnsafe,
+    value: 'offensiveUnsafe'
+  },
+  {
+    id: 2,
+    label: CHAT_LOCALE.messageFeedbackDislikeOptions.notFactuallyCorrect,
+    value: 'notFactuallyCorrect'
+  },
+  {
+    id: 3,
+    label: CHAT_LOCALE.messageFeedbackDislikeOptions.didntFollowInstructions,
+    value: 'didntFollowInstructions'
+  },
+  {
+    id: 4,
+    label: CHAT_LOCALE.messageFeedbackDislikeOptions.wrongLanguage,
+    value: 'wrongLanguage'
+  },
+  {
+    id: 5,
+    label: CHAT_LOCALE.messageFeedbackDislikeOptions.poorlyFormatted,
+    value: 'poorlyFormatted'
+  },
+  {
+    id: 6,
+    label: CHAT_LOCALE.messageFeedbackDislikeOptions.genericBland,
+    value: 'genericBland'
+  }
+];
