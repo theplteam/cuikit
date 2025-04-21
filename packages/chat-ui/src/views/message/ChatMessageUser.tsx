@@ -17,6 +17,11 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatContext } from '../core/ChatGlobalContext';
 import ChatMessageGallery from './ChatMessageGallery';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { motion } from '../../utils/materialDesign/motion';
+import { useElementRefState } from '../hooks/useElementRef';
+import useHover from '../hooks/useHover';
+import { useTablet } from '../../ui/Responsive';
+import clsx from 'clsx';
 
 type Props = {
   message: MessageModel;
@@ -28,13 +33,14 @@ type Props = {
 const {
   actionsClassName,
   paginationClassName,
+  hoverMessageClassName,
 } = messageActionsClasses;
 
 const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => ({
   width: '80%',
   background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
-  /*[`& .${actionsClassName}`]: {
+  [`& .${actionsClassName}`]: {
     opacity: 0,
     transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
   },
@@ -42,15 +48,15 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
     [`& .${actionsClassName}`]: {
       opacity: 1,
     },
-  },*/
+  },
   [`:has(.${paginationClassName})`]: {
     marginBottom: theme.spacing(1.5),
   }
 }));
 
 const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
-  // const { element, setElement } = useElementRefState();
-  // const isTablet = useTablet();
+  const { element, setElement } = useElementRefState();
+  const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
 
   const { messageMode, apiRef } = useThreadContext();
@@ -59,7 +65,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const mode = messageMode.values[message.id];
 
-  // const isHover = useHover(element);
+  const isHover = useHover(element);
 
   const onClickEdit = () => {
     messageMode.edit(message.id);
@@ -133,11 +139,12 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         {imageComponent}
         {message.text ? (
           <ChatMessageContainerStyled
+            ref={setElement}
             gap={1}
             mx={1.5}
-            /*className={clsx(
+            className={clsx(
               { [hoverMessageClassName]: isHover || isTablet },
-            )}*/
+            )}
             elevation={elevation}
           >
             {children}

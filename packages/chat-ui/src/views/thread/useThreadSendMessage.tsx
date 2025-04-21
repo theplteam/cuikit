@@ -112,6 +112,7 @@ export const useThreadSendMessage = (
     const parentMessage = thread.messagesArray.find(v => v.id === messageEdit.parentId);
 
     const content: MessageUserContent = [{ type: 'text', text: newText }];
+    thread.streamStatus.value = StreamResponseState.START;
 
     const { userMessage, assistantMessage } = await onCreatePair(newText, content, 'editMessage', parentMessage);
 

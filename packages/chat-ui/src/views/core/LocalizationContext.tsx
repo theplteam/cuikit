@@ -4,12 +4,12 @@ import { useLocalizationInit } from './useLocalizationInit';
 
 type LocalizationType = Localization;
 
-type Props = React.PropsWithChildren;
+type Props = React.PropsWithChildren<{ locale?: string }>;
 
 const Context = React.createContext<LocalizationType | undefined>(undefined);
 
-const LocalizationProvider = ({children}: Props) => {
-  const value = useLocalizationInit();
+const LocalizationProvider = ({children, locale}: Props) => {
+  const value = useLocalizationInit(locale);
 
   return (
     <Context.Provider value={value}>
