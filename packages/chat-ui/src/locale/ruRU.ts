@@ -38,5 +38,13 @@ export const ruRU: Localization = {
   textFieldPlaceholder: 'Сообщение',
   attachmentImageShot: 'Сделать фото',
   attachmentImageGallery: 'Выбрать из галереи',
+  messageLikeTooltip: 'Понравилось',
+  messageDislikeTooltip: 'Не понравилось',
+  messageFeedbackTitle: 'Почему вы поставили эту оценку?',
+  messageFeedbackSecondTitle: '(опционально)',
+  messageFeedbackPlaceholder: 'Добавьте дополнительную информацию',
+  messageFeedbackSubmitButton: 'Отправить',
+  messageFeedbackLink: 'Узнать больше',
+  messageFeedbackText: 'Открывается в новом окне о том, как ваш отзыв используется для улучшения Chat UI.',
   reasonedFor: 'Думал {{time}}'
 };
