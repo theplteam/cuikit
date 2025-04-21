@@ -2,49 +2,82 @@ import * as React from "react";
 import {
   ChatPage,
   useAssistantAnswerMock,
-  Thread, MessageSentParams, useChatApiRef,
+  Thread, MessageSentParams,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
-const threadsData: Thread[] = Array(50).fill(0)
-  .map((_, i) => ({
-    id: `test-thread-${i}`,
-    title: "Welcome message",
-    messages: [
-      {
-        role: "user",
-        content: `Hello ${i}`,
-      },
-      {
-        role: "assistant",
-        content: "Hello there! How can I assist you today?\n\n----\n\nDivider under me",
-      },
-    ],
-  }))
-
-const App: React.FC = () => {
-  const [threads] = React.useState<Thread[]>(threadsData);
-  const [thread, setThread] = React.useState<Thread | undefined>();
-  const [loading, setLoading] = React.useState(true);
-
-  const apiRef = useChatApiRef();
+const UserMessageEditingExample: React.FC = () => {
+  const [threads] = React.useState<Thread[]>([
+    {
+      id: "test-thread",
+      title: "Welcome message",
+      messages: [
+        {
+          id: "1",
+          role: "user",
+          content: "Hello!",
+        },
+        {
+          id: "2",
+          parentId: "1",
+          role: "assistant",
+          content: "Hello there! How can I assist you today?",
+        },
+        {
+          id: "3-1",
+          parentId: "2",
+          role: "user",
+          content: "Explain gravity in simple terms.",
+        },
+        {
+          id: "4-1",
+          parentId: "3-1",
+          role: "assistant",
+          content: "Sure. Gravity is a pull between masses. It makes apples fall. It keeps us on the ground.",
+        },
+        {
+          id: "5-1-1",
+          parentId: "4-1",
+          role: "user",
+          content: "Got it. Can you do a quick math problem? What's 12% of 250?",
+        },
+        {
+          id: "6-1-1",
+          parentId: "5-1-1",
+          role: "assistant",
+          content: "Yes. Multiply 250 by 0.12. The answer is 30.",
+        },
+        // User message 3-1 has been edited, creating a branch.
+        {
+          id: "3-2",
+          parentId: "2",
+          role: "user",
+          content: "Let's talk about healthy eating.",
+        },
+        {
+          id: "4-2",
+          parentId: "3-2",
+          role: "assistant",
+          content: "Great choice. What do you need help with?",
+        },
+        {
+          id: "5-2-1",
+          parentId: "4-2",
+          role: "user",
+          content: "I need simple dinner ideas.",
+        },
+        {
+          id: "6-2-1",
+          parentId: "5-2-1",
+          role: "assistant",
+          content: "How about grilled chicken with veggies?",
+        },
+      ],
+    },
+  ]);
 
   const { runStream, handleStopMessageStreaming } =
     useAssistantAnswerMock();
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setThread(threads[0]);
-      setLoading(false);
-    }, 100);
-  });
-
-  React.useEffect(() => {
-    console.log(thread?.id, apiRef.current?.getCurrentThread()?.id)
-    if (thread && apiRef.current?.getCurrentThread()?.id !== thread.id) {
-      apiRef.current?.onChangeThread(thread.id);
-    }
-  }, [thread?.id]);
 
   const onSent = async (params: MessageSentParams) => {
     await new Promise(resolve => setTimeout(resolve, 3000));
@@ -69,17 +102,15 @@ const App: React.FC = () => {
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
-        enableReasoning
-        apiRef={apiRef}
+        enableBranches
+        thread={threads[0]}
         threads={threads}
-        loading={loading}
-        defaultTextFieldValue="Text"
         handleStopMessageStreaming={handleStopMessageStreaming}
-        onChangeCurrentThread={({ thread }) => setThread(thread)}
+        lang="ru"
         onUserMessageSent={onSent}
       />
     </Box>
   );
 }
 
-export default App;
+export default UserMessageEditingExample;

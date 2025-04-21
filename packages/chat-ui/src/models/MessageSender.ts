@@ -23,7 +23,7 @@ export class MessageSender<DM extends Message> {
   }
 
   pushChunk = (chunk: string) => {
-    if (this.thread.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
+    if (!this.assistantMessage.text && this.thread.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
       this.thread.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
     }
     this.assistantMessage.text += chunk;

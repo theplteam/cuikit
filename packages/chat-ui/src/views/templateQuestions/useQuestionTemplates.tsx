@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ChatApp, LangKeys } from '../../models/ChatApp';
 
 export type QuestionTemplateType = {
   title: string;
@@ -44,5 +43,5 @@ export const useQuestionTemplates = (): QuestionTemplateType[] => {
         message: "Как мобильные игры интегрируются в экосистему киберспорта, и какое влияние это оказывает на вовлеченность игроков и развитие соревновательной сцены?"
       },
     ]
-  ][+(ChatApp.lang === LangKeys.RU)]), []);
+  ][0]), []);
 }

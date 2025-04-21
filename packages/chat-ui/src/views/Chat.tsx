@@ -31,7 +31,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
         props={props}
         apiManager={apiManager}
       >
-        <LocalizationProvider>
+        <LocalizationProvider locale={usersProps.lang}>
           <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
             <slots.listDrawer>
               <HiddenDesktop>

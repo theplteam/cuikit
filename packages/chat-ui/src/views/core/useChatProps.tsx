@@ -6,9 +6,6 @@ import {
   MessageModel,
   RatingType
 } from '../../models/MessageModel';
-import { LangKeys, UserIdType } from '../../models/ChatApp';
-import { useLangInit } from './useLangInit';
-import { useUserInit } from './useUserInit';
 import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
@@ -152,7 +149,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
   /**
    * The language in which the chat interface will be displayed.
    */
-  lang: 'en' | 'ru' | LangKeys;
+  lang: 'en' | 'ru' | string;
   /**
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
@@ -161,14 +158,10 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
    * Show a welcome message at the beginning of the thread.
    */
   helloMessage?: string
-  userId: UserIdType;
 }> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
-  const { lang, userId, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;
-
-  useLangInit(userProps.lang as LangKeys | undefined);
-  useUserInit(userProps.userId);
+  const { lang, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;
 
   return React.useMemo(() => ({
     ...chatProps,
