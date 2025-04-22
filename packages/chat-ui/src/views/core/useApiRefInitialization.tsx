@@ -47,11 +47,10 @@ export const useApiRefInitialization = (
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
-    apiManager.setMethod('deleteThread', model.delete);
+    apiManager.setMethod('deleteThread', handleDeleteThread);
     apiManager.setMethod('getCurrentThread', getCurrentThread);
     apiManager.setMethod('setDeleteThreadItem', setDeleteThreadItem);
     apiManager.setMethod('setMenuDriverOpen', setMenuDriverOpen);
-    apiManager.setMethod('handleDeleteThread', handleDeleteThread);
     apiManager.setMethod('getThreadById', getThreadById);
 
   }, [props, model]);
