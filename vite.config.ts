@@ -45,13 +45,6 @@ export default defineConfig(({ mode }) => {
         typescript: true,
       }),
     ],
-    optimizeDeps: {
-      include: [
-        '@emotion/react', 
-        '@emotion/styled', 
-        '@mui/material/Tooltip'
-      ],
-    },
     resolve: {
       alias: {
         '@plteam/chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
