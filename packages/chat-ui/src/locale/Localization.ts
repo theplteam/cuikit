@@ -42,6 +42,16 @@ export type Localization = {
   threadDeletedSuccess: string;
   threadActionDelete: string
 
+  // rating
+  messageLikeTooltip: string;
+  messageDislikeTooltip: string;
+  messageFeedbackTitle: string;
+  messageFeedbackSecondTitle: string;
+  messageFeedbackPlaceholder: string;
+  messageFeedbackSubmitButton: string;
+  messageFeedbackLink: string;
+  messageFeedbackText: string;
+
   // other
   maxImageWarning: string;
   textFieldPlaceholder: string;

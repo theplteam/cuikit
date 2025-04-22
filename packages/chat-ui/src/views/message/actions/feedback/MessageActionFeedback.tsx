@@ -1,25 +1,28 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import { RatingType } from '../../../../models/MessageModel';
-import { lng } from '../../../../utils/lng';
+import { MessageModel, RatingType } from '../../../../models/MessageModel';
 import MessageFeedbackButton from './MessageFeedbackButton';
 import MessageFeedbackWindow from './MessageFeedbackWindow';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
+import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
 
 type Props = {
-  // TODO: #ANY
-  message: any;
+  message: MessageModel;
 };
 
 const MessageActionFeedback: React.FC<Props> = ({ message }) => {
-  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [messageRating, setMessageRating] = React.useState<RatingType | undefined>(message.rating);
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
-  const chatContext = useChatContext();
+  const ref = React.useRef<HTMLDivElement | null>(null);
+
+  const { onChangeMessageRating, onSendMessageFeedback } = useChatContext();
+  const locale = useLocalizationContext();
 
   const handleActionClick = (action: RatingType) => {
     const newValue = message.rating === action ? undefined : action;
-    if (newValue) setAnchorEl(ref.current);
-    chatContext.onSendRating?.({ message, rating: newValue });
+    if (newValue && onSendMessageFeedback) setAnchorEl(ref.current);
+    onChangeMessageRating?.({ message: message.data, rating: newValue });
+    setMessageRating(newValue);
     message.rating = newValue;
   }
 
@@ -33,15 +36,15 @@ const MessageActionFeedback: React.FC<Props> = ({ message }) => {
       alignItems="center" position="relative"
     >
       <MessageFeedbackButton
-        tooltip={lng(['Хороший ответ', 'Like message'])}
+        tooltip={locale.messageLikeTooltip}
         type="like"
-        activeType={message.rating}
+        activeType={messageRating}
         onClick={handleActionClick}
       />
       <MessageFeedbackButton
-        tooltip={lng(['Плохой ответ', 'Dislike message'])}
+        tooltip={locale.messageDislikeTooltip}
         type="dislike"
-        activeType={message.rating}
+        activeType={messageRating}
         onClick={handleActionClick}
       />
       <MessageFeedbackWindow

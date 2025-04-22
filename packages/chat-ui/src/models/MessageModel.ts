@@ -12,6 +12,8 @@ export enum ChatMessageOwner {
 
 export type RatingType = 'like' | 'dislike';
 
+export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
+
 export type ImageContent = {
   type: 'image_url',
   image_url: { url: string }
@@ -105,7 +107,7 @@ export class MessageModel<DM extends Message = Message> {
   set parentId(val: IdType|undefined) {
     this._data.parentId = val;
   }
-
+  
   get rating() {
     return this._data.rating;
   }

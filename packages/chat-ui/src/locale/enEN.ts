@@ -39,5 +39,13 @@ export const CHAT_LOCALE: Localization = {
   textFieldPlaceholder: 'Message chat',
   attachmentImageShot: 'Take a photo',
   attachmentImageGallery: 'Select from gallery',
+  messageLikeTooltip: 'Like message',
+  messageDislikeTooltip: 'Dislike message',
+  messageFeedbackTitle: 'Why did you choose this rating?',
+  messageFeedbackSecondTitle: '(optional)',
+  messageFeedbackPlaceholder: 'Provide additional feedback',
+  messageFeedbackSubmitButton: 'Submit',
+  messageFeedbackLink: 'Learn more',
+  messageFeedbackText: 'Opens in a new window about how your feedback is used to improve Chat UI.',
   reasonedFor: 'Reasoned for {{time}}'
 };

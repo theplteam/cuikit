@@ -3,6 +3,7 @@ import { CoreSlots, SlotsType } from './usePropsSlots';
 import {
   ChatMessageOwner,
   Message,
+  MessageFeedbackTagType,
   MessageModel,
   RatingType
 } from '../../models/MessageModel';
@@ -106,13 +107,23 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableBranches?: boolean;
   /**
-   * Callback fired when message rating sent
+   * If callback is set, rating buttons appear. Callback fired when message rating sent
    */
-  onSendRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
+  onChangeMessageRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
   /**
-   * Callback fired when message feedback sent
+   * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent 
    */
-  onSendFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: string[] }>;
+  onSendMessageFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: MessageFeedbackTagType[] }>;
+  /**
+   * List of "like" options in feedback window.
+   * @default messageFeedbackLikeOptions
+   */
+  feedbackLikeOptions?: MessageFeedbackTagType[];
+  /**
+   * List of "dislike" options in feedback window.
+   * @default messageFeedbackDislikeOptions
+   */
+  feedbackDislikeOptions?: MessageFeedbackTagType[];
   /**
    * A flag indicating whether message copying is disabled
    */

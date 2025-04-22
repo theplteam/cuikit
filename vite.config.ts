@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
       }
     };
   }
-
+// Фикс ошибки в MUI Popper https://stackoverflow.com/questions/72097831/popper-styled-default-is-not-a-function-mui-5-6-0-material-ui
   return {
     base: "",
     optimizeDeps: {
@@ -45,6 +45,13 @@ export default defineConfig(({ mode }) => {
         typescript: true,
       }),
     ],
+    optimizeDeps: {
+      include: [
+        '@emotion/react', 
+        '@emotion/styled', 
+        '@mui/material/Tooltip'
+      ],
+    },
     resolve: {
       alias: {
         '@plteam/chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),

@@ -3,28 +3,28 @@ import { materialDesignSysPalette } from '../../../../utils/materialDesign/palet
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import InputBase from '@mui/material/InputBase';
-import { lng } from '../../../../utils/lng';
 import { useChatCoreSlots } from '../../../core/ChatSlotsContext';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import { dislikeFeedbackTags, likeFeedbackTags } from './feedbackTags';
 import Chip from '@mui/material/Chip';
 import { Popover } from '@mui/material';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
+import { MessageFeedbackTagType, MessageModel } from '../../../../models/MessageModel';
+import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
 
 type Props = {
-  // TODO: #ANY
-  message: any;
+  message: MessageModel;
   anchorEl: HTMLElement | null;
   onClose: () => void;
 };
 
 const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) => {
   const [feedback, setFeedback] = React.useState('');
-  const [tags, setTags] = React.useState<string[]>([]);
+  const [tags, setTags] = React.useState<MessageFeedbackTagType[]>([]);
 
-  const chatContext = useChatContext();
+  const locale = useLocalizationContext();
+  const { onSendMessageFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
   const coreSlots = useChatCoreSlots();
 
   const handelClear = () => {
@@ -36,21 +36,24 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
     if (anchorEl) handelClear();
   }, [anchorEl])
 
-  const tagArray = message.rating === 'like' ? likeFeedbackTags : dislikeFeedbackTags;
+  const tagArray = React.useMemo(() => {
+    return message.rating === 'like' ? feedbackLikeOptions : feedbackDislikeOptions;
+  }, [message.rating])
 
   const handleSubmit = () => {
-    chatContext.onSendFeedback?.({ message, feedback, tags });
+    onSendMessageFeedback?.({ message: message.data, feedback, tags });
     onClose();
   }
 
-  const hangleTag = (tag: string) => {
-    if (tags.includes(tag)) {
-      setTags(tags.filter(t => t !== tag));
+  const handleTag = (tag: MessageFeedbackTagType) => {
+    if (tags.find(t => t.id === tag.id)) {
+      setTags(tags.filter(t => t.id !== tag.id));
     } else {
       setTags([...tags, tag]);
     }
   }
 
+  if (!onSendMessageFeedback) return null;
   return (
     <Popover
       open={Boolean(anchorEl)}
@@ -77,10 +80,10 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           alignItems="center"
         >
           <Typography variant='subtitle1'>
-            {lng(['Почему вы выбрали этот рейтинг? ', 'Why did you choose this rating? '])}
+            {locale.messageFeedbackTitle}
           </Typography>
           <Typography variant='body2'>
-            {lng(['(опционально)', '(optional)'])}
+            {locale.messageFeedbackSecondTitle}
           </Typography>
         </Box>
         <coreSlots.iconButton size='small' onClick={onClose}>
@@ -91,19 +94,18 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
         width="100%" display="flex" direction="row"
         gap={1} flexWrap="wrap"
       >
-        {tagArray.map((tag, i) => {
-          const isActive = tags.includes(tag);
-
+        {tagArray?.map((tag) => {
+          const isActive = tags.find((t) => t.id === tag.id);
           return (
-            <Box key={i}>
+            <Box key={tag.id}>
               <Chip
-                label={tag}
+                label={tag.label}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{
                   color: isActive ? materialDesignSysPalette.primary : materialDesignSysPalette.secondary,
                   backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
                 }}
-                onClick={() => hangleTag(tag)}
+                onClick={() => handleTag(tag)}
               />
             </Box>
           )
@@ -111,7 +113,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
       </Stack>
       <InputBase
         multiline
-        placeholder={lng(['Предоставьте дополнительную информацию', 'Provide additional feedback'])}
+        placeholder={locale.messageFeedbackPlaceholder}
         value={feedback}
         maxRows={3}
         sx={{
@@ -126,9 +128,9 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
       />
       <Typography variant='body2'>
         <Link target='_blank' href=''>
-          {lng(['Узнайте больше', 'Learn more'])}
+          {locale.messageFeedbackLink}
         </Link>
-        {lng([' Открывается в новом окне, как ваши отзывы используются для улучшения Chat UI. ', ' Opens in a new window about how your feedback is used to improve Chat UI.'])}
+        {` ${locale.messageFeedbackText}`}
       </Typography>
       <Box>
         <coreSlots.button
@@ -136,7 +138,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           variant='text'
           onClick={handleSubmit}
         >
-          {lng(['Отправить', 'Submit'])}
+          {locale.messageFeedbackSubmitButton}
         </coreSlots.button>
       </Box>
     </Popover>
