@@ -5,6 +5,7 @@ import { ThreadModel } from './ThreadModel';
 import { ChatActions } from './ChatActions';
 import { AdapterType } from '../views/adapter/AdapterType';
 import { MessageSentParams } from './MessageSentParams';
+import { ThreadListCache } from './ThreadListCache';
 
 export class Threads<DM extends Message, DD extends Thread<DM>> {
   readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
@@ -12,6 +13,8 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
   readonly currentThread = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
 
   readonly actions = new ChatActions();
+
+  readonly listGroups = new ThreadListCache();
 
   constructor(
     adapter: AdapterType,

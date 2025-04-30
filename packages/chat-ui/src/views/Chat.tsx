@@ -4,7 +4,6 @@ import { ChatUsersProps, useChatProps } from './core/useChatProps';
 import { ChatGlobalProvider } from './core/ChatGlobalContext';
 import AppDrawer from './leftContainer/AppDrawer';
 import Box from '@mui/material/Box';
-import ThreadsListBlock from './leftContainer/ThreadsListBlock';
 import ThreadsList from './leftContainer/ThreadsList';
 import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
@@ -38,7 +37,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
                 <AppDrawer>
                   <Box display="flex" flexDirection="column" height={500}>
                     {/* eslint-disable-next-line react/jsx-max-depth */}
-                    <ThreadsListBlock />
+                    <ThreadsList />
                   </Box>
                 </AppDrawer>
               </HiddenDesktop>
@@ -47,7 +46,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
               <ThreadsList />
             </slots.listContainer>
             <slots.threadsList {...slotProps.threadsList}>
-              <ThreadsListBlock />
+              <ThreadsList />
             </slots.threadsList>
             <ThreadComponent
               enableBranches={props.enableBranches}

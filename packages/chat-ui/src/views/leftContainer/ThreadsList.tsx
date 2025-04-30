@@ -2,12 +2,12 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
-import ThreadsListBlock from './ThreadsListBlock';
 import { useChatContext } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import Scrollbar from '../../ui/Scrollbar';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useLocalizationContext } from '../core/LocalizationContext';
+import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
 
 const ThreadsList: React.FC = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
@@ -33,7 +33,7 @@ const ThreadsList: React.FC = () => {
       <Box ref={ref} flex={1}>
         {!!height && (
           <Scrollbar style={{ minHeight: height -1, maxHeight: height -1 }}>
-            <ThreadsListBlock />
+            <ThreadsListMapBlock />
           </Scrollbar>
         )}
       </Box>
