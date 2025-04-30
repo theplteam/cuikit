@@ -62,7 +62,7 @@ export const useThreadsGroupedList = (threads: ArrayType<ThreadModel>) => {
         if (basicGroupKey) {
           results[basicGroupKey] = { ...basicGroups[basicGroupKey] };
         } else if (timestamp >= startOfYear) {
-          const month = moment.unix(timestamp);
+          const month = moment.unix(timestamp).startOf('month');
 
           const monthEn = capitalizeFirstLetter(month.locale('en').format('MMMM'));
           results[monthEn] = {
