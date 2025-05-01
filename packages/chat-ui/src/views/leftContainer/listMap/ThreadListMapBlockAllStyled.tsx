@@ -27,6 +27,18 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
         transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
       },
     },
+    [`& .${classShadowRight}`]: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      height: '100%',
+      width: 65,
+      pointerEvents: 'none',
+      backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
+      [theme.breakpoints.down('sm')]: {
+        backgroundImage: getGradient('#fff'),
+      },
+    },
     '&:hover': {
       background: materialDesignSysPalette.surfaceContainerHigh,
       [`& .${classShadowRight}`]: {
