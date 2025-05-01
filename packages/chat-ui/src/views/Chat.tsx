@@ -25,8 +25,6 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
   return (
     <>
       <ChatGlobalProvider
-        // TODO: fix types
-        // @ts-ignore
         props={props}
         apiManager={apiManager}
       >

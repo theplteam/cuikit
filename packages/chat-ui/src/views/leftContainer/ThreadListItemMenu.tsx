@@ -1,25 +1,40 @@
 import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ThreadModel } from '../../models/ThreadModel';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { Threads } from '../../models/Threads';
+import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
-  anchorEl: null | HTMLElement;
-  handleClose: () => void;
-  thread: ThreadModel;
+  model: Threads<any, any>;
 };
 
-const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, thread }) => {
+const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
+  const menuConfig = model.listGroups.menuConfig;
+  const config = useObserverValue(menuConfig);
   const { coreSlots } = useChatSlots();
   const { threadActions, apiRef } = useChatContext();
   const locale = useLocalizationContext();
 
+  const anchorEl = config?.anchorEl;
+  const thread = config?.thread;
+
+  const handleClose = () => {
+    if (menuConfig.value) {
+      menuConfig.value = {
+        anchorEl: null,
+        thread: menuConfig.value.thread,
+      };
+    }
+  }
+
   const handleDelete = () => {
     handleClose();
-    apiRef.current?.setDeleteThreadItem(thread.data.data);
+    if (thread) {
+      apiRef.current?.setDeleteThreadItem(thread.data.data);
+    }
   }
 
   return (
@@ -36,7 +51,7 @@ const ThreadListItemMenu: React.FC<Props> = ({ anchorEl, handleClose, thread }) 
       }}
       onClose={handleClose}
     >
-      {threadActions?.length
+      {(threadActions?.length && thread)
         ? threadActions.map((ActionComponent, index) => (
           <ActionComponent
             key={index}

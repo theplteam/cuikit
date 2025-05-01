@@ -45,6 +45,9 @@ export type CoreSlots = {
 export type SlotsType<DM extends Message, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
   & ChatIconSlotsType;
 
+// TODO: Kludge because it's inconvenient to use generic every time
+export type SlotsTypeEase = SlotsType<any, any>;
+
 type SlotsReturnType<DM extends Message, DD extends Thread<DM>> = {
   slots: SlotsType<DM, DD>;
   coreSlots: CoreSlots;
@@ -60,6 +63,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
       iconButton: coreSlots?.iconButton ?? IconButton,
+      // TODO: Props error
       listItemText: coreSlots?.listItemText ?? ListItemText,
       menuItem: coreSlots?.menuItem ?? MdMenuItem,
     };

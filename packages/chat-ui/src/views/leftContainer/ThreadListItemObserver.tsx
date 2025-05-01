@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { ThreadModel } from '../../models';
-import { Threads } from '../../models/Threads';
+import ThreadListItemNew from './ThreadListItemNew';
+import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 import { useObserverValue } from '../hooks/useObserverValue';
-import ThreadListItem from './ThreadListItem';
+import { Threads } from '../../models/Threads';
 
 type Props = {
   thread: ThreadModel;
-  model: Threads<any, any>;
   setThread: (thread: ThreadModel['data']['data']) => void;
+  model: Threads<any, any>;
+  slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
 };
 
-const ThreadListItemObserver: React.FC<Props> = ({ thread, setThread, model }) => {
+const ThreadListItemObserver: React.FC<Props> = ({ thread, setThread, model, slots }) => {
   const currentThread = useObserverValue(model.currentThread);
 
   return (
-    <ThreadListItem
-      currentThread={currentThread}
+    <ThreadListItemNew
+      selected={thread.id === currentThread?.id}
       setThread={setThread}
       thread={thread}
+      listModel={model.listGroups}
+      slots={slots}
     />
   );
 }

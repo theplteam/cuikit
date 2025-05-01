@@ -9,13 +9,14 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Thread } from '../../models';
-import ThreadListItemObserver from './ThreadListItemObserver';
 
 const ThreadsListBlock: React.FC = () => {
   const { loading, threads, apiRef, onChangeCurrentThread, model } = useChatContext();
   const { slots, slotProps } = useChatSlots();
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const setThread = (thread: Thread) => {
     if (model.currentThread.value?.id !== thread.id) {
       onChangeCurrentThread?.({ thread });
@@ -42,11 +43,11 @@ const ThreadsListBlock: React.FC = () => {
                     if (groupKey !== group.id) return null;
                     return (
                       <Box key={thread.id}>
-                        <ThreadListItemObserver
-                          model={model}
+                        {/*<ThreadListItemObserver
                           setThread={setThread}
                           thread={thread}
-                        />
+                          listModel={model.listGroups}
+                        />*/}
                       </Box>
                     );
                   })}

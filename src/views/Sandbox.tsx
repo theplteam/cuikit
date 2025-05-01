@@ -6,10 +6,10 @@ import {
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 
-const startDateTime = (new Date().getTime()) - 300 * 24 * 60 * 60 * 1000;
-const timesAdd = 86400 / 2 * 1000;
+const startDateTime = (new Date().getTime()) - 365 * 24 * 60 * 60 * 1000;
+const timesAdd = 86400 / 5.5 * 1000;
 
-const threadsData: Thread[] = Array(500).fill(0)
+const threadsData: Thread[] = Array(2000).fill(0)
   .map((_, i) => ({
     id: `test-thread-${i}`,
     title: `Welcome message ${i}`,
@@ -27,7 +27,7 @@ const threadsData: Thread[] = Array(500).fill(0)
   }))
 
 const UserMessageEditingExample: React.FC = () => {
-  const [threads] = React.useState<Thread[]>([
+  const [threads, setThreads] = React.useState<Thread[]>([
     {
       id: "test-thread",
       title: "Welcome message",
@@ -127,6 +127,18 @@ const UserMessageEditingExample: React.FC = () => {
         enableBranches
         thread={threads[0]}
         threads={threads}
+        handleCreateNewThread={() => {
+          const newThread: Thread = {
+            id: 'new' + Math.random(),
+            title: 'new thread',
+            date: (new Date()).toISOString(),
+            messages: [],
+          };
+
+          setThreads((old) => [...old, newThread]);
+
+          return newThread;
+        }}
         handleStopMessageStreaming={handleStopMessageStreaming}
         lang="ru"
         onUserMessageSent={onSent}

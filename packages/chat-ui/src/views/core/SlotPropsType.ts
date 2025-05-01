@@ -191,3 +191,4 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    */
   markdownP: TypographyProps;
 };
+

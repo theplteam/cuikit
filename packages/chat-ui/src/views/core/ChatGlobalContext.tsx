@@ -9,7 +9,7 @@ import { useAdapterContext } from '../adapter/AdapterContext';
 import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
-export type ChatGlobalContextType<DM extends Message, DD extends Thread<DM>> = {
+export type ChatGlobalContextType<DM extends Message = any, DD extends Thread<DM> = any> = {
   threads: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
   model: Threads<DM, DD>;
@@ -19,15 +19,15 @@ export type ChatGlobalContextType<DM extends Message, DD extends Thread<DM>> = {
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);
 
-type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
+type ProviderProps<DM extends Message = any, DD extends Thread<DM> = any> = React.PropsWithChildren<{
   props: ChatPropsTypes<DM, DD>,
   apiManager: ApiManager;
 }>;
 
-const ChatGlobalProviderComponent = <DM extends Message, DD extends Thread<DM>>({ props, children, apiManager }: ProviderProps<DM, DD>) => {
+const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderProps) => {
   const threadAdapter = useAdapterContext();
 
-  const model = React.useMemo(() => new Threads<DM, DD>(
+  const model = React.useMemo(() => new Threads(
     threadAdapter,
     props.threads,
     props.thread,
@@ -44,18 +44,17 @@ const ChatGlobalProviderComponent = <DM extends Message, DD extends Thread<DM>>(
     props,
   );
 
-  const value: ChatGlobalContextType<DM, DD> = React.useMemo(() => ({
+  const value: ChatGlobalContextType = React.useMemo(() => ({
     ...props,
     apiRef: apiManager.apiRef,
     model,
     threads,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
-    handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData as FnType<DD>,
+    handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
   }), [model, props, props.loading, threads]);
 
   return (
-    // TODO: #ANY - придумать как передать дженерик в контекст
-    <Context.Provider value={value as any}>
+    <Context.Provider value={value}>
       {children}
     </Context.Provider>
   );
@@ -68,15 +67,14 @@ const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobal
     throw new Error("useMessagesContext must be used within a ChatGlobalProvider");
   }
 
-  /// TODO: #ANY
-  return context as any;
+  return context;
 };
 
 const useChatModel = () => useChatContext().model;
 
 const ChatGlobalProvider = React.memo(ChatGlobalProviderComponent, (prevProps, nextProps) => {
   return Object.keys(prevProps).join('') === Object.keys(nextProps).join('')
-    && prevProps.props.threads.length === nextProps.props.threads.length
+    // && prevProps.props.threads.length === nextProps.props.threads.length
     && prevProps.props.loading === nextProps.props.loading;
 });
 

@@ -10,6 +10,11 @@ import { ThreadListGroupItem } from './ThreadListGroupItem';
 export class ThreadListCache {
   groupValues = new ObservableReactValue<Record<string, ThreadListGroupItem>>({});
 
+  readonly menuConfig = new ObservableReactValue<{
+    anchorEl: null | HTMLElement;
+    thread: ThreadModel;
+  } | undefined>(undefined);
+
   audit = (locale: Localization, threads: ThreadModel[]) => {
     const currentMap = this.groupValues.value;
 

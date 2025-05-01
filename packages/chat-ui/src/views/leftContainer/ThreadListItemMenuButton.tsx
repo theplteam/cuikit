@@ -1,7 +1,6 @@
 import * as React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButtonProps } from '@mui/material/IconButton';
-import { useChatCoreSlots } from '../core/ChatSlotsContext';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { IdType } from '../../types';
 
 type Props = IconButtonProps & {
@@ -9,15 +8,15 @@ type Props = IconButtonProps & {
 };
 
 const ThreadListItemMenuButton: React.FC<Props> = ({ threadId, ...props }) => {
-  const coreSlots = useChatCoreSlots();
-
   return (
-    <coreSlots.iconButton
+    <IconButton
       {...props}
     >
       <MoreVertIcon />
-    </coreSlots.iconButton>
+    </IconButton>
   );
 }
 
-export default ThreadListItemMenuButton;
+export default React.memo(ThreadListItemMenuButton, (prevProps, nextProps) => {
+  return prevProps.threadId === nextProps.threadId;
+});;

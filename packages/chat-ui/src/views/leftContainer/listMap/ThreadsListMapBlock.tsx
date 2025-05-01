@@ -2,11 +2,12 @@ import * as React from 'react';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 import { Thread } from '../../../models';
-import Stack from '@mui/material/Stack';
 import HistorySkeleton from '../HistorySkeleton';
 import ThreadDeleteConfirm from '../ThreadDeleteConfirm';
 import { useThreadsList } from './useThreadsList';
 import ThreadListMapBlockGroupItem from './ThreadListMapBlockGroupItem';
+import ThreadListItemMenu from '../ThreadListItemMenu';
+import ThreadListMapBlockAllStyled from './ThreadListMapBlockAllStyled';
 
 const ThreadsListMapBlock: React.FC = () => {
   const { loading, threads, apiRef, onChangeCurrentThread, model } = useChatContext();
@@ -22,7 +23,7 @@ const ThreadsListMapBlock: React.FC = () => {
 
   return (
     <>
-      <Stack position="relative">
+      <ThreadListMapBlockAllStyled position="relative">
         {loading ? <HistorySkeleton /> : null}
         {!loading && groupsMap.map((groupModel, key) => (
           <ThreadListMapBlockGroupItem
@@ -30,12 +31,13 @@ const ThreadsListMapBlock: React.FC = () => {
             listGroupItem={groupModel}
             slot={slots.listTimeText}
             slotProps={slotProps.listTimeText}
-            model={model}
             setThread={setThread}
             index={key}
+            model={model}
           />
-        ))}
-      </Stack>
+          ))}
+        <ThreadListItemMenu model={model} />
+      </ThreadListMapBlockAllStyled>
       <ThreadDeleteConfirm />
     </>
   );

@@ -1,22 +1,22 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import ThreadListItemMenu from './ThreadListItemMenu';
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import hexToRgba from 'hex-to-rgba';
 import { ThreadModel } from '../../models/ThreadModel';
-import { usePopoverState } from '../hooks/usePopoverState';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../../views/core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { ThreadListCache } from '../../models/ThreadListCache';
 
 type Props = {
   thread: ThreadModel;
   currentThread: ThreadModel | undefined;
   setThread: (thread: ThreadModel['data']['data']) => void;
+  listModel: ThreadListCache;
 };
 
 const classSelected = 'boxSelected';
@@ -71,10 +71,15 @@ const BoxShadowStyled = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread }) => {
-  const {
-    anchorEl, handleClose, handleClick
-  } = usePopoverState({ hideByAnchorElement: true });
+const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread, listModel }) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    listModel.menuConfig.value = {
+      anchorEl: event.currentTarget,
+      thread,
+    };
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   const { apiRef } = useChatContext();
 
@@ -93,40 +98,33 @@ const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread }) =
   }
 
   return (
-    <>
-      <BoxStyled
-        className={selected ? classSelected : undefined}
-        onClick={handleClickListItem}
-      >
-        <coreSlots.listItemText
-          primary={title ?? 'TITLE'}
-          sx={{
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-          }}
-        />
-        <BoxShadowStyled className={classShadowRight} />
-        <slots.threadListItemMenuButton
-          size="small"
-          sx={{
-            position: 'absolute',
-            right: (theme) => theme.spacing(1.5),
-            top: '50%',
-            transform: 'translateY(-50%)',
-          }}
-          threadId={thread.id}
-          onClick={handleClick}
-        >
-          <MoreVertIcon />
-        </slots.threadListItemMenuButton>
-      </BoxStyled>
-      <ThreadListItemMenu
-        anchorEl={anchorEl}
-        handleClose={handleClose}
-        thread={thread}
+    <BoxStyled
+      className={selected ? classSelected : undefined}
+      onClick={handleClickListItem}
+    >
+      <coreSlots.listItemText
+        primary={title ?? 'TITLE'}
+        sx={{
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+        }}
       />
-    </>
+      <BoxShadowStyled className={classShadowRight} />
+      <slots.threadListItemMenuButton
+        size="small"
+        sx={{
+          position: 'absolute',
+          right: (theme) => theme.spacing(1.5),
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }}
+        threadId={thread.id}
+        onClick={handleClick}
+      >
+        <MoreVertIcon />
+      </slots.threadListItemMenuButton>
+    </BoxStyled>
   );
 };
 
