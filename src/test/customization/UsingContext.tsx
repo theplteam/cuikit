@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import { Portal } from '@mui/base/Portal';
+import Portal from '@mui/material/Portal';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CloseIcon from '@mui/icons-material/Close';
 import moment from 'moment';
