@@ -1,13 +1,21 @@
 import * as React from 'react';
 import { AdapterType } from './AdapterType';
 import { MessageModel } from '../../models';
+import { AdapterModel } from '../../models/AdapterModel';
 
+/**
+ * @deprecated - We abandoned (perhaps temporarily) React Context because it created unnecessary renders and slowed down the chat
+ */
 const AdapterContext = React.createContext<AdapterType>({
   transformThread: (thread: any) => thread,
 });
 
-const useAdapterContext = () => {
-  return React.useContext(AdapterContext);
+const useAdapterContext = (): Partial<AdapterType> => {
+  return React.useMemo(() => ({
+    transformThread: AdapterModel.transformThread,
+    transformMessage: AdapterModel.transformMessage,
+    reverseMessageTransforming: AdapterModel.reverseMessageTransforming,
+  }), [AdapterModel.version]);
 };
 
 /**
