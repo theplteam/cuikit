@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Portal } from '@mui/base/Portal';
+import { Portal } from '@mui/material';
 import Box from '@mui/material/Box';
 
 const containerId = 'chat-ui-mobile-app-bar-container';
