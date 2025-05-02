@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Portal } from '@mui/material';
+import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
 import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
 
