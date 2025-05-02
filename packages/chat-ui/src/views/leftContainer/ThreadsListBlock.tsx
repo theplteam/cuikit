@@ -9,10 +9,12 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import DelayRenderer from '../../ui/DelayRenderer';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { Thread } from '../../models';
+import { useObserverValue } from '../hooks/useObserverValue';
 
 const ThreadsListBlock: React.FC = () => {
-  const { loading, threads, apiRef, onChangeCurrentThread, model } = useChatContext();
+  const { loading, apiRef, onChangeCurrentThread, model } = useChatContext();
   const { slots, slotProps } = useChatSlots();
+  const threads = useObserverValue(model.list) ?? [];
   const { groupsValues, threadsInGroup } = useThreadsGroupedList(threads);
 
   // @ts-ignore

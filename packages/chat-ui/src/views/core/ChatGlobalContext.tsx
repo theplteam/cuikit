@@ -3,14 +3,12 @@ import { ChatPropsTypes } from './useChatProps';
 import { Thread, ThreadModel, Message } from '../../models';
 import { PrivateApiRefType } from './useApiRef';
 import { Threads } from '../../models/Threads';
-import { useObserverValue } from '../hooks/useObserverValue';
 import { FnType } from '../../models/types';
 import { useAdapterContext } from '../adapter/AdapterContext';
 import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
 
 export type ChatGlobalContextType<DM extends Message = any, DD extends Thread<DM> = any> = {
-  threads: ThreadModel<DM, DD>[];
   apiRef: React.RefObject<PrivateApiRefType>;
   model: Threads<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
@@ -36,8 +34,6 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
   // therefore it needs to be recreated, since changes may occur during loading
   ), [props.loading]);
 
-  const threads = useObserverValue(model.list) ?? [];
-
   useApiRefInitialization(
     apiManager,
     model,
@@ -48,10 +44,9 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
     ...props,
     apiRef: apiManager.apiRef,
     model,
-    threads,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
     handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
-  }), [model, props, props.loading, threads]);
+  }), [model, props, props.loading]);
 
   return (
     <Context.Provider value={value}>

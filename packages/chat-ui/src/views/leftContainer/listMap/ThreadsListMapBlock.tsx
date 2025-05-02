@@ -8,10 +8,12 @@ import { useThreadsList } from './useThreadsList';
 import ThreadListMapBlockGroupItem from './ThreadListMapBlockGroupItem';
 import ThreadListItemMenu from '../ThreadListItemMenu';
 import ThreadListMapBlockAllStyled from './ThreadListMapBlockAllStyled';
+import { useObserverValue } from '../../hooks/useObserverValue';
 
 const ThreadsListMapBlock: React.FC = () => {
-  const { loading, threads, apiRef, onChangeCurrentThread, model } = useChatContext();
+  const { loading, apiRef, onChangeCurrentThread, model } = useChatContext();
   const { slots, slotProps } = useChatSlots();
+  const threads = useObserverValue(model.list) ?? [];
   const groupsMap = useThreadsList(threads, model) ?? {};
 
   const setThread = (thread: Thread) => {
