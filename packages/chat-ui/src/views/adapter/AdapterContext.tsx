@@ -10,7 +10,7 @@ const AdapterContext = React.createContext<AdapterType>({
   transformThread: (thread: any) => thread,
 });
 
-const useAdapterContext = (): Partial<AdapterType> => {
+const useAdapterContext = (): AdapterType => {
   return React.useMemo(() => ({
     transformThread: AdapterModel.transformThread,
     transformMessage: AdapterModel.transformMessage,

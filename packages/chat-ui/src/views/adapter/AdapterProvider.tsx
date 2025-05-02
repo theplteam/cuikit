@@ -32,7 +32,12 @@ export const AdapterProvider = ({ children, transformThread, transformMessage, r
     AdapterModel.reverseMessageTransforming = value.reverseMessageTransforming;
   }, [value]);
 
-  return children;
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {children}
+    </>
+  );
 
   // We abandoned (perhaps temporarily) React Context because it created unnecessary renders and slowed down the chat
   /*return (
