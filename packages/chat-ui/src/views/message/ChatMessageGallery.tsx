@@ -5,10 +5,11 @@ import { IdType } from '../../types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ChatMessageGalleryItem from './ChatMessageGalleryItem';
+import { ImageContent } from '../../models';
 
 type Props = {
   id: IdType;
-  images: string[];
+  images: ImageContent[];
 };
 
 const GridBox = styled(Box)(() => ({
@@ -46,9 +47,9 @@ const ChatMessageGallery = ({ id, images }: Props) => {
   }, []);
 
   React.useEffect(() => {
-    const imgElements = images.map((src) => {
+    const imgElements = images.map((i) => {
       const image = new Image();
-      image.src = src;
+      image.src = i.url;
       return image;
     })
 

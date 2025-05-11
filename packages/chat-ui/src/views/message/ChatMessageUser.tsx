@@ -22,6 +22,7 @@ import { useElementRefState } from '../hooks/useElementRef';
 import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
+import ChatMessageFiles from './ChatMessageFiles';
 
 type Props = {
   message: MessageModel;
@@ -76,7 +77,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     const newMessage = await apiRef.current?.onEditMessage(newText, message);
     if (newMessage) {
       apiRef.current?.handleChangeBranch(newMessage);
-      onAssistantMessageTypingFinish?.({message: message.data, thread: thread.data.data});
+      onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
     }
   }
 
@@ -84,11 +85,18 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     messageMode.view(message.id);
   }
 
-  const imageComponent = message.images?.length
+  const imageComponent = message.images.length
     ? (
       <ChatMessageGallery
         images={message.images} id={message.id}
       />
+    ) : null;
+
+  console.log('u', message.files);
+
+  const fileComponent = message.files.length
+    ? (
+      <ChatMessageFiles files={message.files} />
     ) : null;
 
   const children = React.useMemo(() => (
@@ -117,6 +125,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />
+        {fileComponent}
       </Stack>
     );
   }
@@ -150,6 +159,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
             {children}
           </ChatMessageContainerStyled>
         ) : null}
+        {fileComponent}
       </Box>
       {enableBranches ? (
         <MessagePagination

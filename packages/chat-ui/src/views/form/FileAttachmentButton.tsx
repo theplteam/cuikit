@@ -1,63 +1,65 @@
 import * as React from 'react';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import FolderIcon from '@mui/icons-material/Folder';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useMobile } from '../../ui/Responsive';
 import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import { ChatViewConstants } from '../ChatViewConstants';
-import { useSnackbar } from '../hooks/useSnackbar';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useThreadContext } from '../thread/ThreadContext';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import FolderIcon from '@mui/icons-material/Folder';
+import { ChatViewConstants } from '../../views/ChatViewConstants';
+import { useSnackbar } from '../hooks/useSnackbar';
+import MessageAttachmentModel from '../../models/MessageAttachmentModel';
 
 type Props = {
-  images: string[];
-  setImages: (images: string[]) => void;
+  attachments: MessageAttachmentModel[];
+  setAttachments: (a: MessageAttachmentModel[]) => void;
   isTyping?: boolean;
 };
 
-const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
+const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableImageAttachments } = useChatContext();
+  const { onFileAttached, acceptableFileFormat } = useChatContext();
   const { thread } = useThreadContext();
+  const snackbar = useSnackbar();
 
-  const ref = React.useRef<HTMLInputElement>(null);
-  const mobileRef = React.useRef<HTMLInputElement>(null);
+  const cameraRef = React.useRef<HTMLInputElement>(null);
+  const fileRef = React.useRef<HTMLInputElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMobile = useMobile();
-  const snackbar = useSnackbar();
   const locale = useLocalizationContext();
+
+  if (!onFileAttached) return null;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
       setAnchorEl(event.currentTarget);
       return;
     }
-
-    ref.current?.click();
+    fileRef.current?.click();
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     let files = Array.from(event.target.files || []);
 
-    if (files.length + images.length > ChatViewConstants.MAX_IMAGES_IN_MESSAGE) {
-      files = files.slice(0, ChatViewConstants.MAX_IMAGES_IN_MESSAGE - images.length);
+    if (files.length + attachments.length > ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE) {
+      files = files.slice(0, ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE - attachments.length);
       snackbar.show(locale.maxImageWarning);
     };
 
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages([...images, ...newImages]);
+    const fileAttachments = files.map((f) => new MessageAttachmentModel(f))
+    setAttachments([...attachments, ...fileAttachments]);
 
-    if (ref.current?.value) ref.current.value = '';
-    if (mobileRef.current?.value) mobileRef.current.value = '';
+    if (fileRef.current?.value) fileRef.current.value = '';
+    if (cameraRef.current?.value) cameraRef.current.value = '';
     if (isMobile) setAnchorEl(null);
   };
 
-  const disabled = images.length >= ChatViewConstants.MAX_IMAGES_IN_MESSAGE || isTyping || !thread;
-  if (!enableImageAttachments) return null;
+  const disabled = attachments.length >= ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE || isTyping || !thread;
+
   return (
     <Stack
       alignItems="flex-end"
@@ -66,7 +68,7 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
       position="relative"
     >
       <coreSlots.iconButton disabled={disabled} onClick={handleClick}>
-        <AddAPhotoIcon />
+        <AttachFileIcon />
       </coreSlots.iconButton>
       <MdMenu
         anchorEl={anchorEl}
@@ -83,37 +85,37 @@ const PinPictureButton: React.FC<Props> = ({ images, setImages, isTyping }) => {
       >
         <coreSlots.menuItem
           startIcon={PhotoCameraIcon}
-          onClick={() => mobileRef.current?.click()}
+          onClick={() => cameraRef.current?.click()}
         >
           {locale.attachmentImageShot}
         </coreSlots.menuItem>
         <coreSlots.menuItem
           startIcon={FolderIcon}
-          onClick={() => ref.current?.click()}
+          onClick={() => fileRef.current?.click()}
         >
           {locale.attachmentImageGallery}
         </coreSlots.menuItem>
       </MdMenu>
       <input
-        ref={mobileRef}
-        capture
+        ref={cameraRef}
+        capture="environment"
         type="file"
-        accept="image/png,image/jpeg"
+        accept="image/*,video/*"
         disabled={isTyping}
         style={{ display: 'none' }}
-        onChange={handleImageUpload}
+        onChange={handleFileUpload}
       />
       <input
-        ref={ref}
+        ref={fileRef}
         multiple
         type="file"
-        accept="image/png,image/jpeg"
+        accept={acceptableFileFormat || "*"}
         disabled={isTyping}
         style={{ display: 'none' }}
-        onChange={handleImageUpload}
+        onChange={handleFileUpload}
       />
     </Stack>
   );
 };
 
-export default PinPictureButton;
+export default FileAttachmentButton;
