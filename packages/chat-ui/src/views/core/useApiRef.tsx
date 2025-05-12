@@ -20,6 +20,10 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   getCurrentThread: () => DD | undefined;
   /**
+   * Get thread by id
+   */
+  getThreadById: (id: IdType) => DD | undefined;
+  /**
    * Get messages from current branch
    * @see https://docs.playliner.com/introduction/branching/
    */
@@ -83,6 +87,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
     getCurrentThread: () => undefined,
+    getThreadById: () => undefined,
     getAllMessages: () => [],
     getBranchMessages: () => [],
     getAllThreads: () => [],
