@@ -9,17 +9,18 @@ const ChatMessages: React.FC = () => {
   const { apiRef, thread } = useThreadContext();
 
   const messages = useObserverValue(apiRef.current?.getListener('branch'));
+  const gap = 3;
 
   return (
     <Stack
-      gap={3}
+      gap={gap}
       flex={1}
       alignItems="flex-start"
       maxWidth="100%"
       width="100%"
       id={ChatViewConstants.MESSAGE_BOX_ID}
     >
-      {!!thread && <MessagesList thread={thread} messages={messages ?? []} />}
+      {!!thread && <MessagesList thread={thread} messages={messages ?? []} gap={gap} />}
     </Stack>
   );
 };

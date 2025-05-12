@@ -4,6 +4,7 @@ import { ThreadModel } from '../../models/ThreadModel';
 import { ApiManager } from '../core/useApiManager';
 import { getThreadListeners } from '../utils/getThreadListeners';
 import { useThreadSendMessage } from './useThreadSendMessage';
+import { useConversationBlockHeightCallback } from './useConversationBlockHeightCallback';
 
 type OnMessageSendType = ReturnType<typeof useThreadSendMessage>['onSendNewsMessage'];
 type OnEditMessageType = ReturnType<typeof useThreadSendMessage>['onEditMessage'];
@@ -13,8 +14,11 @@ export const useThreadApiInitialization = (
   apiManager: ApiManager,
   onMessageSend: OnMessageSendType,
   onEditMessage: OnEditMessageType,
+  getConversationBlockHeightMin?: (calculatedHeight: number) => number,
 ) => {
   const handleChangeStreamStatus = useMessageProgressStatus(thread);
+
+  const getConversationBlockHeight = useConversationBlockHeightCallback(getConversationBlockHeightMin);
 
   React.useMemo(() => {
     apiManager.setMethod('setProgressStatus', handleChangeStreamStatus);
@@ -43,4 +47,8 @@ export const useThreadApiInitialization = (
     apiManager.setMethod('getProgressStatus', () => thread.streamStatus.value ?? '');
 
   }, [thread]);
+
+  React.useMemo(() => {
+    apiManager.setPrivateMethod('getConversationBlockHeight', getConversationBlockHeight);
+  }, [getConversationBlockHeight]);
 }

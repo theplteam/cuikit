@@ -73,6 +73,7 @@ export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = 
   getListener: <K extends keyof ThreadListenersMap<DM>>(key: K) => ThreadListenersMap<DM>[K] | undefined;
   updateScrollButtonState: () => void;
   onEditMessage: (newText: string, messageEdit: MessageModel) => Promise<MessageModel | undefined>;
+  getConversationBlockHeight: () => number;
 } & ApiRefType<DM, DD>;
 
 export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
@@ -96,6 +97,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     setMenuDriverOpen: NOOP,
     setDeleteThreadItem: NOOP,
     getListener: () => undefined,
+    getConversationBlockHeight: () => 0,
   });
 
   React.useMemo(() => {
