@@ -12,8 +12,8 @@ const AdapterContext = React.createContext<AdapterType>({
 
 const useAdapterContext = (): AdapterType => {
   return React.useMemo(() => ({
-    transformThread: AdapterModel.transformThread,
     transformMessage: AdapterModel.transformMessage,
+    transformThread: AdapterModel.transformThread ?? AdapterModel.baseThreadTransformer,
     reverseMessageTransforming: AdapterModel.reverseMessageTransforming,
   }), [AdapterModel.version]);
 };
