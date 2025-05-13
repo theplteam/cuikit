@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import Box from '@mui/material/Box';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from 'icons';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
 import { styled } from '@mui/material/styles';

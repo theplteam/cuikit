@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   useAssistantAnswerMock,
   Thread, Chat, useChatApiRef, chatClassNames, useChatContext,
+  CloseIcon, AddIcon, MenuIcon
 } from "@plteam/chat-ui";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -11,13 +12,10 @@ import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import Portal from '@mui/material/Portal';
 import useMediaQuery from "@mui/material/useMediaQuery";
-import CloseIcon from '@mui/icons-material/Close';
 
 const drawerWidth = 240;
 

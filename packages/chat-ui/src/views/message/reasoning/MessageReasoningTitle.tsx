@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { ArrowForwardIosIcon } from 'icons';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 import { MessageModel } from '../../../models';

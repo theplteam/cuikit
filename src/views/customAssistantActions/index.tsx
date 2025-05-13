@@ -1,6 +1,5 @@
 import * as React from 'react';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
-import BlindIcon from '@mui/icons-material/Blind';
+import { AcUnitIcon, BlindIcon } from '@plteam/chat-ui';
 import IconButton from '@mui/material/IconButton';
 
 const toConstructor = (element: React.ReactElement) => {

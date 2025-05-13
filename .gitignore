@@ -26,3 +26,4 @@ package-lock.json
 /src/test/dialogues.json
 /docs
 /src/views/Sandbox.tsx
+/src/views/sandbox

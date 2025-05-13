@@ -1,6 +1,5 @@
 import * as React from 'react';
 import throttle from 'lodash.throttle';
-import { useMessageFollowing } from './useMessageFollowing';
 import { ChatScrollerType } from './ChatScrollerType';
 import { NOOP } from '../../utils/NOOP';
 import { ThreadModel } from '../../models/ThreadModel';
@@ -73,7 +72,7 @@ export const useChatScrollFunctions = (
     }
   }, [onScrollCallback, thread?.id]);
 
-  // Отслеживать изменения размеров диалога, чтобы скрывать/показывать кнопку "Вниз"
+  // Track dialog size changes to hide/show the "Down" button
   React.useEffect(() => {
     let container = getScrollContainer() as HTMLElement | Window | null;
     if (!container || isWindowCheck(container)) container = document.body;
@@ -83,11 +82,15 @@ export const useChatScrollFunctions = (
     return () => observer.disconnect();
   }, [getScrollContainer]);
 
-  useMessageFollowing(
+  /**
+   * Following the message has always been jerky and is now irrelevant,
+   * since modern LLMs quickly provide an answer, the user won't have time to read it
+   */
+  /*useMessageFollowing(
     showButton,
     getPosition,
     scrollTo,
-  );
+  );*/
 
   return {
     scrollButtonEnabled: showButton,

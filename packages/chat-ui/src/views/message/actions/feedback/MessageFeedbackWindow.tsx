@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import InputBase from '@mui/material/InputBase';
 import { useChatCoreSlots } from '../../../core/ChatSlotsContext';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from 'icons';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Chip from '@mui/material/Chip';

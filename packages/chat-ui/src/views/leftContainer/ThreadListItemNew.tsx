@@ -4,7 +4,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { chatClassNames } from '../core/chatClassNames';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { MoreVertIcon } from 'icons';
 import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 
 type Props = {
@@ -19,14 +19,14 @@ const classSelected = 'boxSelected';
 const classShadowRight = 'shadowRight';
 
 const ThreadListItemNew: React.FC<Props> = ({ thread, selected, setThread, listModel, slots }) => {
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
       thread,
     };
     event.preventDefault();
     event.stopPropagation();
-  };
+  }, [listModel]);
 
   const { apiRef } = useChatContext();
 

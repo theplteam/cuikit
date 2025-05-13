@@ -1,6 +1,6 @@
 {
   "name": "@plteam/chat-ui",
-  "version": "2.0.27",
+  "version": "2.0.32",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,6 @@
     "@babel/runtime": "^7.26.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.11.0",
     "@mui/system": "^5.15.14 || ^6.0.0",
     "@mui/utils": "^5.15.14",
     "clsx": "^2.1.0",

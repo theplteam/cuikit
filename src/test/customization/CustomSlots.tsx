@@ -4,9 +4,9 @@ import {
   ChatPage,
   useAssistantAnswerMock,
   Thread,
+  SendIcon,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
-import SendIcon from '@mui/icons-material/Send';
 
 const App: React.FC = () => {
   const [threads] = React.useState<Thread[]>(threadsJson);

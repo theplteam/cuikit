@@ -15,11 +15,16 @@ const Watermark: React.FC = () => {
       width="100%"
       textAlign="center"
       zIndex={99999}
+      height={0}
       sx={{
         pointerEvents: 'none',
       }}
     >
-      <Typography variant='h5' letterSpacing={5} sx={{ color: 'rgba(130, 130, 130, 0.62)' }}>
+      <Typography
+        variant='h5'
+        letterSpacing={5}
+        sx={{ color: 'rgba(130, 130, 130, 0.62)', transform: 'translateY(-50%)' }}
+      >
         {`Chat UI ${licenseError}`}
       </Typography>
     </Stack >

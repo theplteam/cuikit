@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteIcon } from 'icons';
 import MdMenu from '../../ui/menu/MdMenu';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useLocalizationContext } from '../core/LocalizationContext';

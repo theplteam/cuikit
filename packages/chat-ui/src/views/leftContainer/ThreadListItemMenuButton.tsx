@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { MoreVertIcon } from 'icons';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { IdType } from '../../types';
 

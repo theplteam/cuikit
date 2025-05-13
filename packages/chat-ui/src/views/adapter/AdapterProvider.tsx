@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AdapterType } from './AdapterType';
-import { AdapterContext } from './AdapterContext';
+import { AdapterModel } from '../../models/AdapterModel';
 
 export type AdapterProviderProps = React.PropsWithChildren<Partial<AdapterType>>;
 
@@ -26,9 +26,23 @@ export const AdapterProvider = ({ children, transformThread, transformMessage, r
     [transformThread, transformMessage, baseThreadTransformer, reverseMessageTransforming]
   );
 
+  React.useMemo(() => {
+    AdapterModel.transformThread = value.transformThread;
+    AdapterModel.transformMessage = value.transformMessage;
+    AdapterModel.reverseMessageTransforming = value.reverseMessageTransforming;
+  }, [value]);
+
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {children}
+    </>
+  );
+
+  // We abandoned (perhaps temporarily) React Context because it created unnecessary renders and slowed down the chat
+  /*return (
     <AdapterContext.Provider value={value}>
       {children}
     </AdapterContext.Provider>
-  );
+  );*/
 };

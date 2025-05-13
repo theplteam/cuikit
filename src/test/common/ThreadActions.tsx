@@ -3,11 +3,11 @@ import {
   ChatPage,
   useAssistantAnswerMock,
   Thread,
+  CloseIcon
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 let counter = 0;
 

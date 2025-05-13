@@ -1,13 +1,12 @@
 import * as React from "react";
 import {
   ChatPage,
-  Thread, useChatApiRef, MessageSentParams, useAssistantAnswerMock, ChatApiRef,
+  Thread, useChatApiRef, MessageSentParams, useAssistantAnswerMock, ChatApiRef, CloseIcon
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 const SendMessageRow: React.FC<{ apiRef: React.RefObject<ChatApiRef> }> = ({ apiRef }) => {
   const [isLoading, setIsLoading] = React.useState(false);

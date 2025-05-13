@@ -7,12 +7,14 @@ import { useThreadContext } from './views/thread/ThreadContext';
 import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
 import { useChatApiRef } from './views/hooks/useChatApiRef';
 import type { ApiRefType } from './views/core/useApiRef';
+import type { ChatUsersProps } from './views/core/useChatProps';
 import { chatClassNames } from './views/core/chatClassNames';
 
 export * from './models';
 export * from './views/adapter';
 // TODO: Hard fix
 export * from './temporalExports';
+export * from './icons';
 
 type ChatApiRef = ApiRefType | null;
 
@@ -29,4 +31,5 @@ export {
   useChatApiRef,
   type ChatApiRef,
   chatClassNames,
+  ChatUsersProps as ChatProps,
 };

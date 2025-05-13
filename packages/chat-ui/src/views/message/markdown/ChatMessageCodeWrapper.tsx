@@ -4,7 +4,7 @@ import { materialDesignSysPalette } from './../../../utils/materialDesign/palett
 import Stack from '@mui/material/Stack';
 import { useChatCoreSlots } from '../../../views/core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { ContentCopyIcon } from 'icons';
 import { useLocalizationContext } from '../../../views/core/LocalizationContext';
 import { useSnackbar } from '../../../views/hooks/useSnackbar';
 import { Prism } from "react-syntax-highlighter";

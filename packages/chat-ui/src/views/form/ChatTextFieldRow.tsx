@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useChatSlots } from '../core/ChatSlotsContext';
+import { ChatViewConstants } from '../ChatViewConstants';
 
 type Props = {
   thread?: ThreadModel;
@@ -32,7 +33,7 @@ const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
   const { slots, slotProps } = useChatSlots();
 
   return (
-    <ThreadWidthBlockStyled>
+    <ThreadWidthBlockStyled id={ChatViewConstants.TEXT_FIELD_ROW_ID}>
       <slots.messageRowInner
         {...slotProps.messageRowInner}
         thread={thread}

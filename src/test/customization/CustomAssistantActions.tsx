@@ -3,10 +3,10 @@ import {
   ChatPage,
   useAssistantAnswerMock,
   Thread, Message,
+  SaveIcon,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import IconButton from '@mui/material/IconButton';
-import SaveIcon from "@mui/icons-material/Save";
 
 const saveTextAsFile = (text: string, filename: string) => {
   const blob = new Blob([text], { type: "text/plain" });
