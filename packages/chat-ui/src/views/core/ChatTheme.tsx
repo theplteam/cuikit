@@ -19,8 +19,11 @@ const theme = createTheme({
 });
 
 const ChatTheme: React.FC<Props> = ({ children }) => {
-  const emotionCache = createCache({ key: 'css', prepend: true });
-  emotionCache.compat = true;
+  const emotionCache = React.useMemo(() => {
+    const cache = createCache({ key: 'css', prepend: true });
+    cache.compat = true;
+    return cache;
+  }, []);
 
   return (
     <CacheProvider value={emotionCache}>
