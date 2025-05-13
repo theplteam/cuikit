@@ -10,11 +10,10 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
-import ChatImagePreview from './preview/ChatImagePreview';
-import ChatFilePreview from './preview/ChatFilePreview';
+import ImagesPreview from './preview/ImagesPreview';
+import FilesPreview from './preview/FilesPreview';
 import { ChatMessageContentType, Message } from '../../models';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
-import Box from '@mui/material/Box';
 import Scrollbar from '../../ui/Scrollbar';
 
 type Props = {
@@ -68,8 +67,8 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setAttachments([]);
   }
 
-  const images = attachments.filter((a) => a.isImage);
-  const files = attachments.filter((a) => !a.isImage);
+  const images = attachments.filter((a) => a.type.startsWith('image'));
+  const files = attachments.filter((a) => !a.type.startsWith('image'));
   const disabledTextField = !thread || isTyping;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length;
 
@@ -83,12 +82,12 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
 
   return (
     <StackStyled>
-      <Box display="flex" flexDirection="column" gap={1}>
-        <Scrollbar style={{ maxHeight: 64, borderRadius: 16 }}>
-          {!!images.length && <ChatImagePreview images={images} handleDelete={handleDelete} />}
-          {!!files.length && <ChatFilePreview files={files} handleDelete={handleDelete} />}
-        </Scrollbar>
-      </Box>
+      <Scrollbar style={{ maxHeight: 64, borderRadius: 16 }}>
+        <Stack flexDirection="column" gap={1}>
+          {!!images.length && <ImagesPreview images={images} handleDelete={handleDelete} />}
+          {!!files.length && <FilesPreview files={files} handleDelete={handleDelete} />}
+        </Stack>
+      </Scrollbar>
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton
           attachments={attachments}
@@ -108,7 +107,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
           onSendMessage={onSendMessage}
         />
       </Stack>
-    </StackStyled>
+    </StackStyled >
   );
 };
 

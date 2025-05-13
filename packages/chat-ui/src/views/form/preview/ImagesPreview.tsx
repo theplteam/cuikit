@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import MessageAttachmentModel from '../../../models/MessageAttachmentModel';
 import ImagePreviewItem from './ImagePreviewItem';
@@ -10,7 +10,7 @@ type Props = {
   handleDelete: (id: number, url: string) => void;
 };
 
-const ChatImagePreview: React.FC<Props> = ({ images, handleDelete }) => {
+const ImagesPreview: React.FC<Props> = ({ images, handleDelete }) => {
   const galleryId = 'gallery-preview';
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
     gallery: `#${galleryId}`,
@@ -26,12 +26,16 @@ const ChatImagePreview: React.FC<Props> = ({ images, handleDelete }) => {
     return () => {
       lightbox?.destroy();
     };
-  }, []);
+  }, [lightbox]);
 
   return (
-    <Box
-      display="flex" flexWrap="wrap" gap={1}
-      paddingRight="12px" className="pswp-gallery" id={galleryId}
+    <Stack
+      flexWrap="wrap"
+      flexDirection="row"
+      gap={1}
+      paddingRight="12px"
+      className="pswp-gallery"
+      id={galleryId}
     >
       {images.map((img, i) => (
         <ImagePreviewItem
@@ -41,8 +45,8 @@ const ChatImagePreview: React.FC<Props> = ({ images, handleDelete }) => {
           handleDelete={handleDelete}
         />
       ))}
-    </Box>
+    </Stack>
   );
 };
 
-export default ChatImagePreview;
+export default ImagesPreview;

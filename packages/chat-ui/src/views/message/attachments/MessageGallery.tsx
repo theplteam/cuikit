@@ -1,11 +1,12 @@
 import React from 'react';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import 'photoswipe/style.css';
-import { IdType } from '../../types';
+import { IdType } from '../../../types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import ChatMessageGalleryItem from './ChatMessageGalleryItem';
-import { ImageContent } from '../../models';
+import MessageGalleryItem from './MessageGalleryItem';
+import { ImageContent } from '../../../models';
+import { base64FileDecode } from '../../../utils/base64File';
+import 'photoswipe/style.css';
 
 type Props = {
   id: IdType;
@@ -27,7 +28,7 @@ const GridBox = styled(Box)(() => ({
   },
 }));
 
-const ChatMessageGallery = ({ id, images }: Props) => {
+const MessageGallery = ({ id, images }: Props) => {
   const [items, setItems] = React.useState<HTMLImageElement[]>([]);
   const galleryId = `gallery-${id}`;
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
@@ -44,16 +45,20 @@ const ChatMessageGallery = ({ id, images }: Props) => {
     return () => {
       lightbox?.destroy();
     };
-  }, []);
+  }, [lightbox]);
 
   React.useEffect(() => {
     const imgElements = images.map((i) => {
       const image = new Image();
-      image.src = i.url;
+      if (i?.url) image.src = i.url
+      if (i?.base64) {
+        const blob = base64FileDecode(i.base64);
+        if (blob) image.src = URL.createObjectURL(blob);
+      }
       return image;
     })
 
-    setItems(imgElements);
+    setTimeout(() => setItems(imgElements), 100);
   }, [images]);
 
   const columns = React.useMemo(() => items.length === 4 ? 2 : 3, [items.length]);
@@ -73,7 +78,7 @@ const ChatMessageGallery = ({ id, images }: Props) => {
       className="pswp-gallery"
     >
       {items.map((item, index) => (
-        <ChatMessageGalleryItem
+        <MessageGalleryItem
           key={index}
           item={item}
           galleryId={galleryId}
@@ -87,4 +92,4 @@ const ChatMessageGallery = ({ id, images }: Props) => {
   );
 }
 
-export default ChatMessageGallery;
+export default MessageGallery;

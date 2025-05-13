@@ -6,6 +6,7 @@ import {
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import { randomInt } from "../../../packages/chat-ui/src/utils/numberUtils/randomInt";
+import { FileAttachmentParams } from "../../../packages/chat-ui/src/models/FileAttachmentParams";
 
 const FileAttachmentExample: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
@@ -43,8 +44,28 @@ const FileAttachmentExample: React.FC = () => {
               },
               {
                 type: 'file',
-                base64: 'NDIyIC0gc25hY2tlYml0ZQ0KNzQgLSBjczIwDQoNCjYzYWRjNzgzOTY4ODVhZTA2ZWJiZTljYTMwZmY4NjQ4VHowNE1qa3dPQ3hGUFRFM016YzNPVE0wT0Rjd01EQXNVejF3Y21WdGFYVnRMRXhOUFhOMVluTmpjbWx3ZEdsdmJpeExWajB5'
-              }
+                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+              },
+              {
+                type: 'file',
+                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+              },
+              {
+                type: 'file',
+                base64: 'filename=exampleLooooooooooooooooooooooooooooooong.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+              },
+              {
+                type: 'file',
+                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+              },
+              {
+                type: 'file',
+                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+              },
+              {
+                type: 'file',
+                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+              },
             ],
             role: "user",
           },
@@ -60,7 +81,7 @@ const FileAttachmentExample: React.FC = () => {
               },
               {
                 type: 'file',
-                base64: 'NDIyIC0gc25hY2tlYml0ZQ0KNzQgLSBjczIwDQoNCjYzYWRjNzgzOTY4ODVhZTA2ZWJiZTljYTMwZmY4NjQ4VHowNE1qa3dPQ3hGUFRFM016YzNPVE0wT0Rjd01EQXNVejF3Y21WdGFYVnRMRXhOUFhOMVluTmpjbWx3ZEdsdmJpeExWajB5'
+                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
               },
               {
                 type: 'image',
@@ -86,10 +107,9 @@ const FileAttachmentExample: React.FC = () => {
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
-  const onFileAttached = async ({ file, params }: { file: File | Blob, params: { setProgress: (num: number) => void, onFinish: () => void } }) => {
-    console.log('file', file);
+  const onFileAttached = async ({ params }: FileAttachmentParams) => {
     let progress = 0;
-    const { setProgress, onFinish } = params;
+    const { setProgress } = params;
 
     const uploadSimulation = new Promise<void>((resolve) => {
       const interval = setInterval(() => {
@@ -99,7 +119,6 @@ const FileAttachmentExample: React.FC = () => {
         } else {
           clearInterval(interval);
           resolve();
-          onFinish()
         };
       }, 300);
     });
@@ -110,7 +129,7 @@ const FileAttachmentExample: React.FC = () => {
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
-        enableImageAttachments
+        enableFileAttachments
         thread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}

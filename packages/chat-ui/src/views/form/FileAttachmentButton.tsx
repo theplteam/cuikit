@@ -21,7 +21,7 @@ type Props = {
 
 const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableImageAttachments, acceptableFileFormat, onFileAttached } = useChatContext();
+  const { enableFileAttachments, acceptableFileFormat, onFileAttached } = useChatContext();
   const { thread } = useThreadContext();
   const snackbar = useSnackbar();
 
@@ -32,7 +32,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   const isMobile = useMobile();
   const locale = useLocalizationContext();
 
-  if (!enableImageAttachments) return null;
+  if (!enableFileAttachments) return null;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
@@ -50,10 +50,10 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
       snackbar.show(locale.maxImageWarning);
     };
 
-    const fileAttachments = files.map((f) => new MessageAttachmentModel(f, !onFileAttached))
+    const fileAttachments = files.map((f) => new MessageAttachmentModel(f))
     setAttachments([...attachments, ...fileAttachments]);
 
-    if (onFileAttached && thread) {
+    if (thread) {
       thread.isLoadingAttachments.value = [...thread.isLoadingAttachments.value, ...fileAttachments.map((f) => f.id)];
       fileAttachments.forEach((file) => {
         const { setProgress, data, id } = file;
@@ -61,7 +61,8 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
           file.progress.value = 100;
           thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((a) => a !== id)
         };
-        onFileAttached({ file: data, params: { setProgress, onFinish } })
+        if (onFileAttached) onFileAttached({ file: data, params: { setProgress, onFinish } })?.then(() => onFinish());
+        else onFinish();
       })
     }
 

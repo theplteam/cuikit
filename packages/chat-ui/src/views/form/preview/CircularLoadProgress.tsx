@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material';
 
@@ -8,7 +8,7 @@ type Props = {
   size?: number;
 };
 
-const BoxStyled = styled(Box)(() => ({
+const StackStyled = styled(Stack)(() => ({
   position: 'absolute',
   height: '100%',
   width: '100%',
@@ -18,9 +18,9 @@ const BoxStyled = styled(Box)(() => ({
 
 const CircularLoadProgress: React.FC<Props> = ({ progress, size }) => {
   return (
-    <BoxStyled>
-      <CircularProgress variant="determinate" value={progress} size={size || 60} />
-    </BoxStyled>
+    <StackStyled justifyContent='center' alignItems='center'>
+      <CircularProgress variant="determinate" value={progress} size={size || 40} />
+    </StackStyled>
   );
 };
 

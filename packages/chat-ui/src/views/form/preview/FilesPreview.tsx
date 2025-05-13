@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import MessageAttachmentModel from '../../../models/MessageAttachmentModel';
 import FilePreviewItem from './FilePreviewItem';
 
@@ -8,11 +8,11 @@ type Props = {
   handleDelete: (id: number, url: string) => void;
 };
 
-const ChatFilePreview: React.FC<Props> = ({ files, handleDelete }) => {
+const FilesPreview: React.FC<Props> = ({ files, handleDelete }) => {
 
   return (
-    <Box
-      display="flex"
+    <Stack
+      flexDirection="row"
       flexWrap="wrap"
       gap={1}
       paddingRight="12px"
@@ -24,8 +24,8 @@ const ChatFilePreview: React.FC<Props> = ({ files, handleDelete }) => {
           handleDelete={handleDelete}
         />
       ))}
-    </Box>
+    </Stack>
   );
 };
 
-export default ChatFilePreview;
+export default FilesPreview;

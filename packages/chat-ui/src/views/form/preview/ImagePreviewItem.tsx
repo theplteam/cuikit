@@ -3,7 +3,6 @@ import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import CircularLoadProgress from './CircularLoadProgress';
@@ -63,12 +62,12 @@ const ImagePreviewItem: React.FC<Props> = ({ image, galleryId, handleDelete }) =
         sx={{
           position: 'absolute',
           padding: 0,
-          top: 0,
-          right: 0,
-          outline: `4px solid ${materialDesignSysPalette.surfaceContainerLowest}`,
-          backgroundColor: materialDesignSysPalette.surfaceContainerHighest,
+          top: 2,
+          right: 2,
+          outline: (theme) => `2px solid ${theme.palette.divider}`,
+          backgroundColor: (theme) => theme.palette.background.default,
           ":hover": {
-            backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+            backgroundColor: (theme) => theme.palette.grey[200],
           },
         }}
         onClick={onDelete}
