@@ -133,12 +133,15 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
-   * Callback fired after file attach to message. Enable user's ability to add files in messages
+   * Enable user's ability to add pictures in messages
+   */
+  enableImageAttachments?: boolean;
+  /**
+   * Callback fired after file attach to message
    */
   onFileAttached?: ChatEventListeners<{ file: File | Blob, params: { setProgress: (num: number) => void, onFinish: () => void } }>;
   /**
    * Acceptable file formats for attaching to a message
-   * @see input accept
    */
   acceptableFileFormat?: string;
 } & RequiredProps<DD>;

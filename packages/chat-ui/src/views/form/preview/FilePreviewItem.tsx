@@ -4,15 +4,14 @@ import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
-import { useChatContext } from '../../core/ChatGlobalContext';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import DescriptionIcon from '@mui/icons-material/Description';
-import LinearLoadProgress from './LinearLoadProgress';
+import CircularLoadProgress from './CircularLoadProgress';
 
 type Props = {
   file: MessageAttachmentModel;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: number, url: string) => void;
 };
 
 const BoxStyled = styled(Box)(() => ({
@@ -24,39 +23,17 @@ const BoxStyled = styled(Box)(() => ({
 }));
 
 const FilePreviewItem: React.FC<Props> = ({ file, handleDelete }) => {
-  const { onFileAttached, model } = useChatContext();
-  const [loading, setLoading] = React.useState(true);
   const coreSlots = useChatCoreSlots();
-  const { url, data, id, name } = file;
+  const { url, id, name } = file;
   const progress = useObserverValue(file.progress);
-  const currentThread = useObserverValue(model.currentThread);
 
   const onDelete = () => {
-    handleDelete(id);
-    URL.revokeObjectURL(url);
+    handleDelete(id, url);
   };
-
-  const setProgress = (n: number) => {
-    file.progress.value = n;
-  }
-
-  const onFinish = () => {
-    file.progress.value = 100;
-    if (currentThread) {
-      currentThread.isLoadingAttachments.value = currentThread.isLoadingAttachments.value.filter((v) => v !== id)
-    }
-    setLoading(false);
-  };
-
-  React.useEffect(() => {
-    if (currentThread) {
-      currentThread.isLoadingAttachments.value = [id, ...currentThread.isLoadingAttachments.value];
-    }
-    onFileAttached?.({ file: data, params: { setProgress, onFinish } });
-  }, []);
 
   return (
     <BoxStyled>
+      {(progress && progress < 100) ? <CircularLoadProgress progress={progress || 0} /> : null}
       <Box
         display="flex"
         width='100%'
@@ -89,9 +66,6 @@ const FilePreviewItem: React.FC<Props> = ({ file, handleDelete }) => {
           <CloseIcon sx={{ width: 16, height: 16 }} />
         </coreSlots.iconButton>
       </Box>
-      {!!loading && (
-        <LinearLoadProgress progress={progress || 0} />
-      )}
     </BoxStyled>
   );
 };

@@ -92,8 +92,6 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
       />
     ) : null;
 
-  console.log('u', message.files);
-
   const fileComponent = message.files.length
     ? (
       <ChatMessageFiles files={message.files} />

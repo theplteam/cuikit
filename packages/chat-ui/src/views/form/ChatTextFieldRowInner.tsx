@@ -15,6 +15,7 @@ import ChatFilePreview from './preview/ChatFilePreview';
 import { ChatMessageContentType, Message } from '../../models';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import Box from '@mui/material/Box';
+import Scrollbar from '../../ui/Scrollbar';
 
 type Props = {
   thread?: ThreadModel;
@@ -50,7 +51,8 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const onSendMessage = async () => {
     let content: Message['content'] = text;
     if (attachments.length) {
-      content = attachments.map((a) => a.dataToContent());
+      content = await Promise.all(attachments.map((a) => a.dataToContent()));
+      console.log(content);
       if (text) {
         content = [
           { type: ChatMessageContentType.TEXT, text },
@@ -61,6 +63,8 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
 
     apiRef.current?.sendUserMessage(content);
     setText('');
+
+    attachments.forEach((a) => URL.revokeObjectURL(a.url));
     setAttachments([]);
   }
 
@@ -69,8 +73,9 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const disabledTextField = !thread || isTyping;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length;
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number, url: string) => {
     setAttachments(attachments.filter((a) => a.id !== id));
+    URL.revokeObjectURL(url);
     if (thread) {
       thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((i) => i !== id);
     }
@@ -79,8 +84,10 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   return (
     <StackStyled>
       <Box display="flex" flexDirection="column" gap={1}>
-        {!!images.length && <ChatImagePreview images={images} handleDelete={handleDelete} />}
-        {!!files.length && <ChatFilePreview files={files} handleDelete={handleDelete} />}
+        <Scrollbar style={{ maxHeight: 64, borderRadius: 16 }}>
+          {!!images.length && <ChatImagePreview images={images} handleDelete={handleDelete} />}
+          {!!files.length && <ChatFilePreview files={files} handleDelete={handleDelete} />}
+        </Scrollbar>
       </Box>
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton

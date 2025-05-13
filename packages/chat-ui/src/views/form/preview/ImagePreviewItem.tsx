@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
-import { useChatContext } from '../../core/ChatGlobalContext';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import CircularLoadProgress from './CircularLoadProgress';
@@ -13,7 +12,7 @@ import 'photoswipe/style.css';
 type Props = {
   image: MessageAttachmentModel;
   galleryId: string;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: number, url: string) => void;
 };
 
 const BoxStyled = styled(Box)(() => ({
@@ -37,43 +36,18 @@ const BoxStyled = styled(Box)(() => ({
 }));
 
 const ImagePreviewItem: React.FC<Props> = ({ image, galleryId, handleDelete }) => {
-  const { onFileAttached, model } = useChatContext();
-  const [loading, setLoading] = React.useState(true);
   const coreSlots = useChatCoreSlots();
-  const { url, id, data, getImgSize } = image;
+  const { url, id, getImgSize } = image;
   const progress = useObserverValue(image.progress);
-  const currentThread = useObserverValue(model.currentThread);
   const size = getImgSize();
 
   const onDelete = () => {
-    handleDelete(id);
-    URL.revokeObjectURL(url);
+    handleDelete(id, url);
   };
-
-  const setProgress = (n: number) => {
-    image.progress.value = n;
-  }
-
-  const onFinish = () => {
-    image.progress.value = 100;
-    if (currentThread) {
-      currentThread.isLoadingAttachments.value = currentThread.isLoadingAttachments.value.filter((v) => v !== id)
-    }
-    setLoading(false);
-  };
-
-  React.useEffect(() => {
-    if (currentThread) {
-      currentThread.isLoadingAttachments.value = currentThread.isLoadingAttachments.value.filter((v) => v !== id)
-    }
-    onFileAttached?.({ file: data, params: { setProgress, onFinish } });
-  }, []);
 
   return (
     <BoxStyled>
-      {!!loading && (
-        <CircularLoadProgress progress={progress || 0} />
-      )}
+      {(progress && progress < 100) ? <CircularLoadProgress progress={progress || 0} /> : null}
       <a
         key={`${galleryId}-${id}`}
         href={url}

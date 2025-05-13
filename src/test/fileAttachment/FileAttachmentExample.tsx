@@ -7,7 +7,7 @@ import {
 import Box from "@mui/material/Box";
 import { randomInt } from "../../../packages/chat-ui/src/utils/numberUtils/randomInt";
 
-const App: React.FC = () => {
+const FileAttachmentExample: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
     [
       {
@@ -110,6 +110,7 @@ const App: React.FC = () => {
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
+        enableImageAttachments
         thread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
@@ -120,4 +121,4 @@ const App: React.FC = () => {
   );
 }
 
-export default App;
+export default FileAttachmentExample;

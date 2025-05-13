@@ -28,7 +28,8 @@ export type FileContent = {
 
 export type ImageContent = {
   type: ChatMessageContentType.IMAGE,
-  url: string,
+  url?: string,
+  base64?: string,
 }
 
 export type TextContent = {

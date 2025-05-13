@@ -1,12 +1,11 @@
 import * as React from 'react';
-// import TestApp from './test/common/BaseExample';
-import TestApp from './test/fileAttachment/FileAttachmentExample';
-// import eruda from 'eruda';
+import TestApp from './test/common/BaseExample';
+import eruda from 'eruda';
 
 const App: React.FC = () => {
-  // React.useEffect(() => {
-  //   eruda.init();
-  // }, [])
+  React.useEffect(() => {
+    eruda.init();
+  }, [])
   return (
     <TestApp />
   )

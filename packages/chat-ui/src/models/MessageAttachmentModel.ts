@@ -11,9 +11,11 @@ class MessageAttachmentModel {
 
   public url: string;
 
-  constructor(_data: File) {
+  constructor(_data: File, _isLoaded?: boolean) {
     this._data = _data;
     this.url = URL.createObjectURL(_data);
+
+    if (_isLoaded) this.progress.value = 100;
   }
 
   get data() { return this._data; }
@@ -22,10 +24,13 @@ class MessageAttachmentModel {
 
   get name() { return this._data.name; }
 
-  dataToContent = () => {
+  setProgress = (n: number) => { this.progress.value = n }
+
+  dataToContent = async () => {
+    const base64 = await this.toBase64()
     const data: Attachment = {
       type: this.isImage ? ChatMessageContentType.IMAGE : ChatMessageContentType.FILE,
-      url: URL.createObjectURL(this._data),
+      base64: base64,
     };
     return data;
   }
@@ -37,12 +42,18 @@ class MessageAttachmentModel {
     return { width: image.width, height: image.height };
   }
 
-  toBase64 = (): Promise<File> => new Promise((resolve, reject) => {
+  toBase64 = () => new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === 'string') {
+        const base64 = result.split(',')[1] || result;
+        resolve(base64);
+      }
+    };
+    reader.onerror = (e) => reject(e);
     reader.readAsDataURL(this._data);
-    reader.onload = () => resolve(reader.result as unknown as File);
-    reader.onerror = reject;
-});
+  });
 }
 
 export default MessageAttachmentModel;
