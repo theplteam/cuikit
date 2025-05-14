@@ -4,7 +4,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { chatClassNames } from '../core/chatClassNames';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { MoreVertIcon } from 'icons';
 import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 
 type Props = {

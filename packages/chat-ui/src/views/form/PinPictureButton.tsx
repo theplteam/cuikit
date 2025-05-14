@@ -1,12 +1,14 @@
 import * as React from 'react';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import FolderIcon from '@mui/icons-material/Folder';
+import {
+  AddAPhotoIcon,
+  FolderIcon,
+  PhotoCameraIcon,
+} from 'icons';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useMobile } from '../../ui/Responsive';
 import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { ChatViewConstants } from '../ChatViewConstants';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useChatContext } from '../core/ChatGlobalContext';

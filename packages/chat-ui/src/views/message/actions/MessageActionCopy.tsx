@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { ContentCopyIcon } from 'icons';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MessageCopyMenuItems from './MessageCopyMenuItems';

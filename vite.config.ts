@@ -48,6 +48,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@plteam/chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
+        icons: path.resolve(__dirname, './packages/chat-ui/src/icons'),
       }
     },
     build: buildOptions,

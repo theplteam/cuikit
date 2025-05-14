@@ -1,6 +1,5 @@
 import * as React from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { EditIcon, ContentCopyIcon } from 'icons';
 import { MessagesModeType } from '../../hooks/useMessagesMode';
 import { MessageModel } from '../../../../models/MessageModel';
 import { useSnackbar } from '../../../hooks/useSnackbar';

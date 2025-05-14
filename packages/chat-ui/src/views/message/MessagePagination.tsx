@@ -1,7 +1,7 @@
 import * as React from 'react';
 import usePagination from '@mui/material/usePagination';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { ArrowBackIosIcon } from 'icons';
+import { ArrowForwardIosIcon } from 'icons';
 import Box from '@mui/material/Box';
 import { useThreadContext } from '../thread/ThreadContext';
 import { MessageModel } from '../../models/MessageModel';

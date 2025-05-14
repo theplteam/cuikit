@@ -1,6 +1,5 @@
 import * as React from 'react';
-import CodeIcon from '@mui/icons-material/Code';
-import HtmlIcon from '@mui/icons-material/Html';
+import { CodeIcon, HtmlIcon } from 'icons';
 import { messageToHtml } from './messageToHtml';
 import { useSnackbar } from '../../hooks/useSnackbar';
 import { useChatSlots } from '../../core/ChatSlotsContext';

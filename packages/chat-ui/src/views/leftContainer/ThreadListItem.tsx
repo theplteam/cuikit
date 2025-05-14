@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { MoreVertIcon } from 'icons';
 import hexToRgba from 'hex-to-rgba';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
