@@ -18,6 +18,7 @@ const MessageReasoningFull: React.FC<Props> = ({ text }) => {
       text={text}
       rootComponent={slots.markdownReasoningRoot}
       rootComponentProps={slotProps.markdownReasoningRoot}
+      inProgress={false}
     />
   );
 }

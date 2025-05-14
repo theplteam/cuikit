@@ -9,13 +9,15 @@ import { MessageText } from '../../models/MessageText';
 type Props = {
   messageText: MessageText;
   showStatus: boolean;
+  inProgress: boolean;
   message: MessageModel;
   thread: ThreadModel;
 };
 
-const AssistantTextBlock: React.FC<Props> = ({ messageText, message, showStatus, thread }) => {
+const AssistantTextBlock: React.FC<Props> = ({ messageText, message, showStatus, inProgress, thread }) => {
   const text = useObserverValue(messageText.observableText) ?? '';
   const { slots, slotProps } = useChatSlots();
+
   return (
     <Stack gap={1}>
       {!!showStatus && (
@@ -30,6 +32,7 @@ const AssistantTextBlock: React.FC<Props> = ({ messageText, message, showStatus,
           text={text}
           rootComponent={slots.markdownMessageRoot}
           rootComponentProps={slotProps.markdownMessageRoot}
+          inProgress={inProgress}
         />
       )}
     </Stack>

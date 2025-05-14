@@ -97,6 +97,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         text={message.text}
         rootComponent={slots.markdownMessageRoot}
         rootComponentProps={slotProps.markdownMessageRoot}
+        inProgress={false}
       />
       {((isFirst || message.parentId) && !!enableBranches) ? (
         <MessageActionsUser

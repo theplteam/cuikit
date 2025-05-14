@@ -10,8 +10,7 @@ export class MessageSender<DM extends Message> {
     private userMessage: MessageModel<DM>,
     private assistantMessage: MessageModel<DM>,
     private thread: ThreadModel<DM>,
-  ) {
-  }
+  ) {}
 
   private _finished = false;
 
