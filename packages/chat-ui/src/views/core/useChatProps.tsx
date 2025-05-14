@@ -112,7 +112,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   onChangeMessageRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;
   /**
-   * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent 
+   * If callback is set, feedback window appear after rating button click. Callback fired when message feedback sent
    */
   onSendMessageFeedback?: ChatEventListeners<{ message: DM, feedback: string, tags: MessageFeedbackTagType[] }>;
   /**
@@ -147,6 +147,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * @default '*'
    */
   acceptableFileFormat?: string;
+  /**
+   * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
+   */
+  getConversationBlockHeightMin?: (calculatedHeight: number) => number;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

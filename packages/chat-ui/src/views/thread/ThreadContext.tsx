@@ -26,7 +26,7 @@ type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<
   scrollRef: React.RefObject<ChatScrollApiRef>;
   globalProps: Pick<
     ChatGlobalContextType<any, any>,
-    'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'beforeUserMessageSend' | 'getCurrentBranch'
+    'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'beforeUserMessageSend' | 'getCurrentBranch' | 'getConversationBlockHeightMin'
   >;
 }>;
 
@@ -46,7 +46,7 @@ const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, m
     scrollRef.current ?? undefined,
   );
 
-  useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage);
+  useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage, globalProps.getConversationBlockHeightMin);
 
   React.useMemo(() => {
     if (thread) {

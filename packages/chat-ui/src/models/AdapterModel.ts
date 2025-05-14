@@ -25,12 +25,23 @@ export class AdapterModel {
     AdapterModel.version++;
   }
 
-  public static get transformThread(): AdapterType['transformThread'] {
+  public static get transformThread(): AdapterType['transformThread'] | undefined {
     return AdapterModel._transformThread;
   }
 
   public static set transformThread(value: AdapterType['transformThread']) {
     AdapterModel._transformThread = value;
     AdapterModel.version++;
+  }
+
+  public static baseThreadTransformer = (thread: any) => {
+    if (!!AdapterModel.transformMessage && Array.isArray(thread.messages)) {
+      return {
+        ...thread,
+        messages: thread.messages.map(AdapterModel.transformMessage)
+      };
+    }
+
+    return thread;
   }
 }

@@ -20,6 +20,10 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   getCurrentThread: () => DD | undefined;
   /**
+   * Get thread by id
+   */
+  getThreadById: (id: IdType) => DD | undefined;
+  /**
    * Get messages from current branch
    * @see https://docs.playliner.com/introduction/branching/
    */
@@ -69,6 +73,7 @@ export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = 
   getListener: <K extends keyof ThreadListenersMap<DM>>(key: K) => ThreadListenersMap<DM>[K] | undefined;
   updateScrollButtonState: () => void;
   onEditMessage: (newText: string, messageEdit: MessageModel) => Promise<MessageModel | undefined>;
+  getConversationBlockHeight: () => number;
 } & ApiRefType<DM, DD>;
 
 export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef: React.MutableRefObject<ApiRefType | null> | undefined) => {
@@ -83,6 +88,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
     getCurrentThread: () => undefined,
+    getThreadById: () => undefined,
     getAllMessages: () => [],
     getBranchMessages: () => [],
     getAllThreads: () => [],
@@ -91,6 +97,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     setMenuDriverOpen: NOOP,
     setDeleteThreadItem: NOOP,
     getListener: () => undefined,
+    getConversationBlockHeight: () => 0,
   });
 
   React.useMemo(() => {

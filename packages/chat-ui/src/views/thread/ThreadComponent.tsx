@@ -49,7 +49,8 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     onFirstMessageSent,
     getCurrentBranch,
     model,
-    beforeUserMessageSend
+    beforeUserMessageSend,
+    getConversationBlockHeightMin
   } = useChatContext<DM, DD>();
 
   const thread = useObserverValue(model.currentThread);
@@ -73,6 +74,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
         onFirstMessageSent,
         beforeUserMessageSend,
         getCurrentBranch,
+        getConversationBlockHeightMin,
       }}
       scrollRef={scrollApiRef}
     >

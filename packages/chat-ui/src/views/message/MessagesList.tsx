@@ -1,30 +1,31 @@
 import * as React from 'react';
-import ChatMessageComponent from './ChatMessageComponent';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { arrayPluck } from '../../utils/arrayUtils/arrayPluck';
+import { useGroupedMessages } from '../thread/useGroupedMessages';
+import MessagesInGroup from './MessagesInGroup';
 
 type Props = {
   messages: MessageModel[];
   thread: ThreadModel;
+  gap: number;
 };
 
-const MessagesList: React.FC<Props> = ({ messages, thread }) => {
-  const messagesLength = messages.length;
+const MessagesList: React.FC<Props> = ({ messages, thread, gap }) => {
   const { slots } = useChatSlots();
+  const groupedMessages = useGroupedMessages(messages);
 
   return (
     <>
       <slots.firstMessage thread={thread} />
-      {messages.map((message, key) => (
-        <ChatMessageComponent
-          key={message.id ?? key}
-          enableAssistantActions
-          message={message}
+      {groupedMessages.map((groupMessages, key) => (
+        <MessagesInGroup
+          key={key}
+          messages={groupMessages}
+          gap={gap}
+          isLatestGroup={key === groupedMessages.length -1}
           thread={thread}
-          isFirst={!key}
-          isLatest={key === messagesLength -1}
         />
       ))}
     </>
