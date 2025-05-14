@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from '../icons';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';

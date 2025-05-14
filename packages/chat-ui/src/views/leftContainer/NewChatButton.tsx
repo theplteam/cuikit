@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import { AddIcon } from '../../icons';
 import Box from '@mui/material/Box';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';

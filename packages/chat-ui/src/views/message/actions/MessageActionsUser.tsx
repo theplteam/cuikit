@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import EditIcon from '@mui/icons-material/Edit';
+import { EditIcon } from '../../../icons';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { useLocalizationContext } from '../../core/LocalizationContext';
 
