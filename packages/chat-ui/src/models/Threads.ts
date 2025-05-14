@@ -23,7 +23,7 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
     onUserMessageSent: (params: MessageSentParams) => void | Promise<void>,
   ) {
     const threadConstructor = ((t: Thread)=> new ThreadModel(
-      t as DD,
+      adapter.transformThread(t) as DD,
       onUserMessageSent,
     ));
 

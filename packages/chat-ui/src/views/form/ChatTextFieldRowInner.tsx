@@ -10,11 +10,9 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
-import ImagesPreview from './preview/ImagesPreview';
-import FilesPreview from './preview/FilesPreview';
 import { ChatMessageContentType, Message } from '../../models';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
-import Scrollbar from '../../ui/Scrollbar';
+import AttachmentsPreview from './preview/AttachmentsPreview';
 
 type Props = {
   thread?: ThreadModel;
@@ -67,27 +65,12 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setAttachments([]);
   }
 
-  const images = attachments.filter((a) => a.type.startsWith('image'));
-  const files = attachments.filter((a) => !a.type.startsWith('image'));
-  const disabledTextField = !thread || isTyping;
+  const disabledTextField = !thread || isTyping || !!isLoadingAttachments?.length;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length;
-
-  const handleDelete = (id: number, url: string) => {
-    setAttachments(attachments.filter((a) => a.id !== id));
-    URL.revokeObjectURL(url);
-    if (thread) {
-      thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((i) => i !== id);
-    }
-  };
 
   return (
     <StackStyled>
-      <Scrollbar style={{ maxHeight: 64, borderRadius: 16 }}>
-        <Stack flexDirection="column" gap={1}>
-          {!!images.length && <ImagesPreview images={images} handleDelete={handleDelete} />}
-          {!!files.length && <FilesPreview files={files} handleDelete={handleDelete} />}
-        </Stack>
-      </Scrollbar>
+      <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton
           attachments={attachments}

@@ -21,8 +21,7 @@ import { useElementRefState } from '../hooks/useElementRef';
 import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
-import MessageGallery from './attachments/MessageGallery';
-import MessageFiles from './attachments/MessageFiles';
+import MessageAttachments from './attachments/MessageAttachments';
 
 type Props = {
   message: MessageModel;
@@ -85,18 +84,6 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     messageMode.view(message.id);
   }
 
-  const imageComponent = message.images.length
-    ? (
-      <MessageGallery
-        images={message.images} id={message.id}
-      />
-    ) : null;
-
-  const fileComponent = message.files.length
-    ? (
-      <MessageFiles files={message.files} />
-    ) : null;
-
   const children = React.useMemo(() => (
     <>
       <ChatMarkdownBlock
@@ -117,8 +104,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
-        {fileComponent}
-        {imageComponent}
+        <MessageAttachments message={message} />
         <MessageUserEditor
           text={message.text}
           onClickApply={onClickApplyEdit}
@@ -143,8 +129,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         flexDirection="column"
         gap={1}
       >
-        {fileComponent}
-        {imageComponent}
+        <MessageAttachments message={message} />
         {message.text ? (
           <ChatMessageContainerStyled
             ref={setElement}

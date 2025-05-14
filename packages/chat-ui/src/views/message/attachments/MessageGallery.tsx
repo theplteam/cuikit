@@ -58,7 +58,7 @@ const MessageGallery = ({ id, images }: Props) => {
       return image;
     })
 
-    setTimeout(() => setItems(imgElements), 100);
+    setItems(imgElements);
   }, [images]);
 
   const columns = React.useMemo(() => items.length === 4 ? 2 : 3, [items.length]);

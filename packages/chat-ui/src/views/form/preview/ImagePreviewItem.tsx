@@ -1,23 +1,24 @@
 import * as React from 'react';
-import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import Box from '@mui/material/Box';
-import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import CircularLoadProgress from './CircularLoadProgress';
+import PreviewDeleteButton from './PreviewDeleteButton';
 import 'photoswipe/style.css';
 
 type Props = {
   image: MessageAttachmentModel;
   galleryId: string;
-  handleDelete: (id: number, url: string) => void;
+  handleDelete?: (id: number, url: string) => void;
 };
 
-const BoxStyled = styled(Box)(() => ({
+const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
   height: 64,
   width: 64,
+  backgroundColor: theme.palette.grey[200],
+  borderRadius: 16,
   '& a': {
     height: 'inherit',
     width: 'inherit',
@@ -35,14 +36,9 @@ const BoxStyled = styled(Box)(() => ({
 }));
 
 const ImagePreviewItem: React.FC<Props> = ({ image, galleryId, handleDelete }) => {
-  const coreSlots = useChatCoreSlots();
-  const { url, id, getImgSize } = image;
+  const { url, id } = image;
   const progress = useObserverValue(image.progress);
-  const size = getImgSize();
-
-  const onDelete = () => {
-    handleDelete(id, url);
-  };
+  const poster = useObserverValue(image.poster);
 
   return (
     <BoxStyled>
@@ -50,30 +46,14 @@ const ImagePreviewItem: React.FC<Props> = ({ image, galleryId, handleDelete }) =
       <a
         key={`${galleryId}-${id}`}
         href={url}
-        data-pswp-width={size?.width}
-        data-pswp-height={size?.height}
+        data-pswp-width={poster?.width}
+        data-pswp-height={poster?.height}
         target="_blank"
         rel="noreferrer"
       >
         <img src={url} alt="" />
       </a>
-      <coreSlots.iconButton
-        size='small'
-        sx={{
-          position: 'absolute',
-          padding: 0,
-          top: 2,
-          right: 2,
-          outline: (theme) => `2px solid ${theme.palette.divider}`,
-          backgroundColor: (theme) => theme.palette.background.default,
-          ":hover": {
-            backgroundColor: (theme) => theme.palette.grey[200],
-          },
-        }}
-        onClick={onDelete}
-      >
-        <CloseIcon sx={{ width: 16, height: 16 }} />
-      </coreSlots.iconButton>
+      {handleDelete ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
     </BoxStyled>
   );
 };

@@ -1,85 +1,76 @@
 import * as React from 'react';
-import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import Box from '@mui/material/Box';
-import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
+import CircularLoadProgress from './CircularLoadProgress';
+import Stack from '@mui/material/Stack';
+import PreviewDeleteButton from './PreviewDeleteButton';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 import DescriptionIcon from '@mui/icons-material/Description';
-import CircularLoadProgress from './CircularLoadProgress';
-import Stack from '@mui/material/Stack';
 
 type Props = {
   file: MessageAttachmentModel;
-  handleDelete: (id: number, url: string) => void;
+  handleDelete?: (id: number, url: string) => void;
 };
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
   height: 64,
-  maxWidth: 200,
+  width: 180,
   borderRadius: 16,
   backgroundColor: theme.palette.grey[200],
+  '& img': {
+    height: 48,
+    width: 48,
+    borderRadius: 16,
+  },
 }));
 
 const FilePreviewItem: React.FC<Props> = ({ file, handleDelete }) => {
-  const coreSlots = useChatCoreSlots();
   const { url, id, name, type } = file;
   const progress = useObserverValue(file.progress);
+  const poster = useObserverValue(file.poster);
 
-  const onDelete = () => {
-    handleDelete(id, url);
-  };
+  const Icon = React.useMemo(() => {
+    let icon = InsertDriveFileIcon;
+    if (type.startsWith('video')) icon = VideoFileIcon;
+    if (type.startsWith('audio')) icon = AudioFileIcon;
+    if (type.startsWith('text')) icon = DescriptionIcon;
+    return icon;
+  }, []);
 
-  const getIcon = () => {
-    if (type.startsWith('video')) return <VideoFileIcon color="primary" />
-    if (type.startsWith('audio')) return <AudioFileIcon color="primary" />
-    if (type.startsWith('text')) return <DescriptionIcon color="primary" />
-    return <InsertDriveFileIcon color="primary" />
-  }
+  const ellipsis = React.useMemo(() => {
+    if (name.length <= 12) return name;
+    const split = name.split('.');
+    const end = split[split.length - 2].slice(-3);
+    const start = split[0].slice(0, 3);
+    return `${start}...${end}.${split[split.length - 1]}`;
+  }, []);
 
   return (
     <BoxStyled>
-      {(progress && progress < 100) ? <CircularLoadProgress progress={progress || 0} /> : null}
       <Stack
         width='100%'
         height='100%'
         alignItems='center'
+        justifyItems='center'
         flexDirection="row"
-        padding="0 4px"
+        gap={1}
       >
-        {getIcon()}
-        <p style={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          margin: 0,
-          maxWidth: '80%',
-        }}
-        >
-          {name}
+        <Stack sx={{ position: 'relative' }} paddingLeft={1} alignItems="center">
+          {(progress && progress < 100) ? <CircularLoadProgress progress={progress || 0} /> : null}
+          {poster
+            ? <img src={poster.src} />
+            : <Icon color="primary" fontSize="large" />}
+        </Stack>
+        <p style={{ margin: 0 }}>
+          {ellipsis}
         </p>
       </Stack>
-      <coreSlots.iconButton
-        size='small'
-        sx={{
-          position: 'absolute',
-          padding: 0,
-          top: 2,
-          right: 2,
-          outline: (theme) => `2px solid ${theme.palette.divider}`,
-          backgroundColor: (theme) => theme.palette.background.default,
-          ":hover": {
-            backgroundColor: (theme) => theme.palette.grey[200],
-          },
-        }}
-        onClick={onDelete}
-      >
-        <CloseIcon sx={{ width: 16, height: 16 }} />
-      </coreSlots.iconButton>
+      {handleDelete ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
     </BoxStyled>
   );
 };
