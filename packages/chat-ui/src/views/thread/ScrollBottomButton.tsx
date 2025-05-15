@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import { ArrowDropDown } from '../../icons';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 
 type Props = {
