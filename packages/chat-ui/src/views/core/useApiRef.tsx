@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Thread, Message, MessageModel } from '../../models';
+import { Thread, Message, MessageModel, MessageUserContent } from '../../models';
 import { NOOP } from '../../utils/NOOP';
 import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
@@ -72,7 +72,7 @@ export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = 
   branch: ObservableReactValue<Readonly<MessageModel<DM>[]>>;
   getListener: <K extends keyof ThreadListenersMap<DM>>(key: K) => ThreadListenersMap<DM>[K] | undefined;
   updateScrollButtonState: () => void;
-  onEditMessage: (newText: string, messageEdit: MessageModel) => Promise<MessageModel | undefined>;
+  onEditMessage: (newContent: MessageUserContent, messageEdit: MessageModel) => Promise<MessageModel | undefined>;
   getConversationBlockHeight: () => number;
 } & ApiRefType<DM, DD>;
 

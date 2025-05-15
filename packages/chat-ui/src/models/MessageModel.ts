@@ -21,13 +21,15 @@ export type RatingType = 'like' | 'dislike';
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
 
 export type FileContent = { 
-  type: ChatMessageContentType.FILE, 
+  type: ChatMessageContentType.FILE,
+  id: IdType,
   url?: string,
   base64?: string,
 };
 
 export type ImageContent = {
   type: ChatMessageContentType.IMAGE,
+  id: IdType,
   url?: string,
   base64?: string,
 }
@@ -87,7 +89,7 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = (content.filter(v => v.type === 'text') as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-      this.attachments = content.filter(v => v.type !== ChatMessageContentType.TEXT);
+      this.attachments = content.filter(c => c.type !== ChatMessageContentType.TEXT);
     }
 
     if (_data.reasoning) {

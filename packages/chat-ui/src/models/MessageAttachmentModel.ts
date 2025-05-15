@@ -60,6 +60,7 @@ class MessageAttachmentModel {
   dataToContent = async () => {
     const base64 = await base64FileEncode(this._data)
     const data: Attachment = {
+      id: this.id,
       type: this.type.startsWith('image') ? ChatMessageContentType.IMAGE : ChatMessageContentType.FILE,
       base64: base64,
     };

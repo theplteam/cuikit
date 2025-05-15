@@ -1,6 +1,8 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { IdType } from '../../../types';
+import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
 
 type Props = {
   item: HTMLImageElement;
@@ -9,7 +11,13 @@ type Props = {
   rows: number;
   itemsCount: number;
   index: number;
+  onDelete?: () => void;
 };
+
+export type MessageGalleryItemType = {
+  id: IdType;
+  data: HTMLImageElement;
+}
 
 const GridItem = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -32,7 +40,7 @@ const GridItem = styled(Box)(({ theme }) => ({
   },
 }));
 
-const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index }: Props) => {
+const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }: Props) => {
   const { src, width, height } = item;
 
   const getItemsInRow = (row: number) => {
@@ -95,6 +103,7 @@ const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index 
       >
         <img src={src} alt={`image-${index}`} className={className} />
       </a>
+      {onDelete ? <PreviewDeleteButton onClick={onDelete} /> : null}
     </GridItem>
   );
 }

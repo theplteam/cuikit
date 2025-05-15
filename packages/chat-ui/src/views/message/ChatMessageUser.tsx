@@ -10,7 +10,7 @@ import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useThreadContext } from '../thread/ThreadContext';
-import { MessageModel } from '../../models/MessageModel';
+import { ChatMessageContentType, MessageModel, MessageUserContent } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
@@ -22,6 +22,7 @@ import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
 import MessageAttachments from './attachments/MessageAttachments';
+import { IdType } from 'types';
 
 type Props = {
   message: MessageModel;
@@ -62,6 +63,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
   const { slots, slotProps } = useChatSlots();
+  const [deletedAttachments, setDeletedAttachments] = React.useState<IdType[]>([]);
 
   const mode = messageMode.values[message.id];
 
@@ -73,7 +75,14 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
-    const newMessage = await apiRef.current?.onEditMessage(newText, message);
+    let content: MessageUserContent = newText;
+    if (message.attachments) {
+      content = [{
+        type: ChatMessageContentType.TEXT,
+        text: newText,
+      }, ...message.attachments.filter((a) => !deletedAttachments.includes(a.id || ''))];
+    }
+    const newMessage = await apiRef.current?.onEditMessage(content, message);
     if (newMessage) {
       apiRef.current?.handleChangeBranch(newMessage);
       onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
@@ -82,6 +91,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const onClickCancelEdit = () => {
     messageMode.view(message.id);
+    setDeletedAttachments([]);
+  }
+
+  const onDeleteAttachment = (id: IdType) => {
+    setDeletedAttachments([...deletedAttachments, id]);
   }
 
   const children = React.useMemo(() => (
@@ -104,9 +118,10 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
-        <MessageAttachments message={message} />
+        <MessageAttachments message={message} onDeleteAttachment={onDeleteAttachment} />
         <MessageUserEditor
           text={message.text}
+          deletedAttachments={deletedAttachments}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />

@@ -3,14 +3,16 @@ import Stack from '@mui/material/Stack';
 import MessageUserEditorTextfield from './MessageUserEditorTextfield';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { useLocalizationContext } from '../../core/LocalizationContext';
+import { IdType } from '../../../types';
 
 type Props = {
   text: string;
+  deletedAttachments: IdType[];
   onClickApply: (text: string) => void;
   onClickCancel: () => void;
 };
 
-const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel }) => {
+const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel, deletedAttachments }) => {
   const [newText, setNewText] = React.useState(text);
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
@@ -20,6 +22,8 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
       onClickApply(newText);
     }
   }
+
+  const disabled = deletedAttachments.length > 0 ? false : (text === newText || !newText);
 
   return (
     <Stack
@@ -40,7 +44,7 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
           {locale.cancel}
         </coreSlots.button>
         <coreSlots.button
-          disabled={text === newText || !newText}
+          disabled={disabled}
           variant="contained"
           onClick={onClick}
         >

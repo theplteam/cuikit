@@ -5,12 +5,21 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 import DescriptionIcon from '@mui/icons-material/Description';
+import { IdType } from 'types';
+import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
+
+export type MessageFileListItemType = {
+  id: IdType;
+  data: File;
+}
 
 type Props = {
-  item: File;
+  item: MessageFileListItemType;
+  onDelete?: () => void;
 };
 
 const StackStyled = styled(Stack)(({ theme }) => ({
+  position: 'relative',
   backgroundColor: theme.palette.grey[100],
   height: 64,
   width: 120,
@@ -18,8 +27,8 @@ const StackStyled = styled(Stack)(({ theme }) => ({
   padding: "0 16px",
 }));
 
-const MessageFileListItem = ({ item }: Props) => {
-  const { type, name } = item;
+const MessageFileListItem = ({ item, onDelete }: Props) => {
+  const { type, name } = item.data;
 
   const { splitName, fileFormat } = React.useMemo(() => {
     const splitName = name.split('.');
@@ -46,15 +55,15 @@ const MessageFileListItem = ({ item }: Props) => {
     <StackStyled
       gap={1}
       justifyContent='center'
-      alignItems="end"
     >
       <p style={{ margin: 0 }}>
         {ellipsis}
       </p>
       <Stack flexDirection="row" alignItems='center' gap={1}>
-        {fileFormat}
         <Icon color="primary" />
+        {fileFormat}
       </Stack>
+      {onDelete ? <PreviewDeleteButton onClick={onDelete} /> : null}
     </StackStyled>
   );
 }

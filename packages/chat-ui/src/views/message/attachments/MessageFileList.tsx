@@ -1,40 +1,48 @@
 import React from 'react';
-import { FileContent } from '../../../models';
+import { Attachment } from '../../../models';
 import Stack from '@mui/material/Stack';
 import { base64FileDecode } from '../../../utils/base64File';
 import { isDefined } from '../../../utils/isDefined';
-import MessageFileListItem from './MessageFileListItem';
+import MessageFileListItem, { MessageFileListItemType } from './MessageFileListItem';
+import { IdType } from '../../../types';
 
 type Props = {
-  files: FileContent[];
+  files: Attachment[];
+  onDeleteItem?: (id: IdType) => void;
 };
 
-const MessageFileList = ({ files }: Props) => {
-  const [items, setItems] = React.useState<File[]>([]);
+const MessageFileList = ({ files, onDeleteItem }: Props) => {
+  const [items, setItems] = React.useState<MessageFileListItemType[]>([]);
+
+  const onDelete = (id: IdType) => {
+    onDeleteItem?.(id);
+    setItems(items.filter((i) => i.id !== id));
+  };
 
   React.useEffect(() => {
     const getFiles = async () => {
       const formattedFiles = await Promise.all(files.map(async (f, idx) => {
+        let file: File | null = null;
         if (f?.url) {
           try {
             const response = await fetch(f.url);
             const blob = await response.blob();
             const name = f.url.split('/').pop() || `file_${idx}`;
-            return new File([blob], name, { type: blob.type });
-          } catch {
-            return null;
+            file = new File([blob], name, { type: blob.type });
+          } catch (e) {
+            console.error(e);
           }
         }
-        if (f?.base64) {
-          return base64FileDecode(f.base64);
+        else if (f?.base64) {
+          file = base64FileDecode(f.base64);
         }
-        return null;
+        return file ? { id: f.id, data: file } : null;
       }));
       setItems(formattedFiles.filter(isDefined));
     };
 
     getFiles();
-  }, [files]);
+  }, []);
 
   return (
     <Stack
@@ -45,7 +53,13 @@ const MessageFileList = ({ files }: Props) => {
       flexDirection="row"
       justifyContent="end"
     >
-      {items.map((item, index) => <MessageFileListItem key={index} item={item} />)}
+      {items.map((item, index) => (
+        <MessageFileListItem
+          key={index}
+          item={item}
+          onDelete={onDeleteItem ? () => onDelete(item.id) : undefined}
+        />
+      ))}
     </Stack >
   );
 }
