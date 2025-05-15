@@ -23,7 +23,7 @@ const BoxStyled = styled(Box)(() => ({
   },
 }));
 
-const ChatMessageImage: React.FC<Props> = (props) => {
+const MessageMarkdownImage: React.FC<Props> = (props) => {
   const [size, setSize] = React.useState({ width: 0, height: 0 });
   const [rejected, setRejected] = React.useState(false);
 
@@ -63,4 +63,4 @@ const ChatMessageImage: React.FC<Props> = (props) => {
   );
 }
 
-export default ChatMessageImage;
+export default MessageMarkdownImage;

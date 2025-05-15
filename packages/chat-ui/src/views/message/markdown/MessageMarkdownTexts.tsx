@@ -7,7 +7,7 @@ type Props<T> = React.PropsWithChildren<{
   inProgress: boolean;
 }>;
 
-const MarkdownTexts: React.FC<Props<any>> = ({ children, inProgress, componentProps, component }) => {
+const MessageMarkdownTexts: React.FC<Props<any>> = ({ children, inProgress, componentProps, component }) => {
   const [slots] = React.useState(() => ({ component }));
   const parser = useChildrenSmooterParser();
 
@@ -23,4 +23,4 @@ const MarkdownTexts: React.FC<Props<any>> = ({ children, inProgress, componentPr
   );
 }
 
-export default React.memo(MarkdownTexts);
+export default React.memo(MessageMarkdownTexts);

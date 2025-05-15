@@ -13,10 +13,10 @@ const BlockquoteStyled = styled('blockquote')(({ theme }) => ({
   }
 }))
 
-const ChatMessageBlockquote: React.FC<Props> = (props) => {
+const MessageMarkdownBlockquote: React.FC<Props> = (props) => {
   return (
     <BlockquoteStyled {...props} />
   );
 }
 
-export default ChatMessageBlockquote;
+export default MessageMarkdownBlockquote;

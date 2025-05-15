@@ -29,7 +29,7 @@ const MenuBar = styled(Stack)(() => ({
   borderRadius: '4px 4px 0 0',
 }))
 
-const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
+const MessageMarkdownCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
   const [codeText, setCodeText] = React.useState('');
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
@@ -106,4 +106,4 @@ const ChatMessageCodeWrapper: React.FC<Props> = ({ children, ...other }) => {
   );
 }
 
-export default ChatMessageCodeWrapper;
+export default MessageMarkdownCodeWrapper;

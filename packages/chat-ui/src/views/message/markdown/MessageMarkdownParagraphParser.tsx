@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TypographyProps } from '@mui/material/Typography';
-import MarkdownTexts from './MarkdownTexts';
+import MarkdownTexts from './MessageMarkdownTexts';
 
 type Props = {
   pSlot: React.JSXElementConstructor<TypographyProps>;
@@ -8,7 +8,7 @@ type Props = {
   inProgress: boolean;
 } & React.JSX.IntrinsicElements['p'];
 
-const MarkdownParagraphParser: React.FC<Props> = ({ pSlot, pSlotProps, children, inProgress: inProgress, ...props }) => {
+const MessageMarkdownParagraphParser: React.FC<Props> = ({ pSlot, pSlotProps, children, inProgress: inProgress, ...props }) => {
   return React.Children.toArray(children).some(child => typeof child === "string") ? (
     <MarkdownTexts
       inProgress={inProgress}
@@ -30,9 +30,4 @@ const MarkdownParagraphParser: React.FC<Props> = ({ pSlot, pSlotProps, children,
   )
 }
 
-const childrenToString = (children: React.ReactNode) =>
-  React.Children.toArray(children).filter(v => typeof v === "string").join('-');
-
-export default React.memo(MarkdownParagraphParser, (prevProps, nextProps) => {
-  return prevProps.inProgress === nextProps.inProgress && childrenToString(prevProps.children) === childrenToString(nextProps.children);
-});
+export default React.memo(MessageMarkdownParagraphParser);

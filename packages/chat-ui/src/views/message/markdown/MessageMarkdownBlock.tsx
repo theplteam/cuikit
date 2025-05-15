@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { keyframes, styled } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
-import ChatMarkdown from './ChatMarkdown';
+import MessageMarkdown from './MessageMarkdown';
 import { SlotValue } from '../../core/usePropsSlots';
 import { ChatViewConstants } from '../../ChatViewConstants';
 import clsx from 'clsx';
@@ -51,16 +51,16 @@ export const ChatMarkdownBlockRoot = styled(Box)(({theme}) => ({
   },
 }));
 
-const ChatMarkdownBlock: React.FC<Props> = ({ text, id, inProgress, ...otherProps }) => {
+const MessageMarkdownBlock: React.FC<Props> = ({ text, id, inProgress, ...otherProps }) => {
   return (
     <otherProps.rootComponent
       {...otherProps.rootComponentProps}
       className={clsx(otherProps.rootComponentProps?.className, ChatViewConstants.MARKDOWN_PARENT_ROOT_CLASSNAME)}
       id={id}
     >
-      <ChatMarkdown inProgress={inProgress} text={text} />
+      <MessageMarkdown inProgress={inProgress} text={text} />
     </otherProps.rootComponent>
   );
 }
 
-export default ChatMarkdownBlock;
+export default MessageMarkdownBlock;

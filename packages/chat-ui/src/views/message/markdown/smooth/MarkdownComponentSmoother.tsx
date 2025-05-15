@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MarkdownTexts from '../MarkdownTexts';
+import MarkdownTexts from '../MessageMarkdownTexts';
 import { ChatViewConstants } from '../../../ChatViewConstants';
 import clsx from 'clsx';
 

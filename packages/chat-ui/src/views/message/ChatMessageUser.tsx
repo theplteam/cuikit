@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ChatMessageContainer from './ChatMessageContainer';
 import { styled } from '@mui/material/styles';
-import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
+import MessageMarkdownBlock from './markdown/MessageMarkdownBlock';
 import { messageActionsClasses } from './messageActionsClasses';
 import MessageActionsUser from './actions/MessageActionsUser';
 import MessageUserEditor from './editor/MessageUserEditor';
@@ -93,7 +93,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const children = React.useMemo(() => (
     <>
-      <ChatMarkdownBlock
+      <MessageMarkdownBlock
         text={message.text}
         rootComponent={slots.markdownMessageRoot}
         rootComponentProps={slotProps.markdownMessageRoot}

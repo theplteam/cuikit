@@ -9,11 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import ChatMessageTable from '../message/markdown/ChatMessageTable';
-import ChatMessageTableCell from '../message/markdown/ChatMessageTableCell';
-import { ChatMessageOl, ChatMessageUl } from '../message/markdown/ChatMessageUl';
+import MessageMarkdownTable from '../message/markdown/MessageMarkdownTable';
+import MessageMarkdownTableCell from '../message/markdown/MessageMarkdownTableCell';
+import { ChatMessageOl, MessageMarkdownUl } from '../message/markdown/MessageMarkdownUl';
 import { SlotPropsType } from './SlotPropsType';
-import ChatMessageImage from '../message/markdown/ChatMessageImage';
+import MessageMarkdownImage from '../message/markdown/MessageMarkdownImage';
 import MessagePagination from '../message/MessagePagination';
 import Stack from '@mui/material/Stack';
 import ContainerSubtitle from '../../ui/ContainerSubtitle';
@@ -22,14 +22,14 @@ import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
 import HelloMessage from '../thread/HelloMessage';
-import ChatMessageCode from '../message/markdown/ChatMessageCode';
-import ChatMessageBlockquote from '../message/markdown/ChatMessageBlockquote';
-import ChatMessageCodeWrapper from '../message/markdown/ChatMessageCodeWrapper';
+import MessageMarkdownCode from '../message/markdown/MessageMarkdownCode';
+import MessageMarkdownBlockquote from '../message/markdown/MessageMarkdownBlockquote';
+import MessageMarkdownCodeWrapper from '../message/markdown/MessageMarkdownCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import ThreadListItemMenuButton from '../leftContainer/ThreadListItemMenuButton';
-import { ChatMarkdownBlockRoot } from '../message/markdown/ChatMarkdownBlock';
+import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
 import { Divider } from '@mui/material';
 
@@ -87,15 +87,15 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
       markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
       markdownA: slots?.markdownA ?? Link,
-      markdownTable: slots?.markdownTable ?? ChatMessageTable,
+      markdownTable: slots?.markdownTable ?? MessageMarkdownTable,
       markdownThead: slots?.markdownThead ?? TableHead,
       markdownTbody: slots?.markdownTbody ?? TableBody,
-      markdownTh: slots?.markdownTh ?? ChatMessageTableCell,
-      markdownTd: slots?.markdownTd ?? ChatMessageTableCell,
+      markdownTh: slots?.markdownTh ?? MessageMarkdownTableCell,
+      markdownTd: slots?.markdownTd ?? MessageMarkdownTableCell,
       markdownTdText: slots?.markdownTdText ?? Typography,
       markdownTr: slots?.markdownTr ?? TableRow,
       markdownSpan: slots?.markdownSpan ?? Typography,
-      markdownUl: slots?.markdownUl ?? ChatMessageUl,
+      markdownUl: slots?.markdownUl ?? MessageMarkdownUl,
       markdownOl: slots?.markdownOl ?? ChatMessageOl,
       markdownH1: slots?.markdownH1 ?? Typography,
       markdownH2: slots?.markdownH2 ?? Typography,
@@ -103,11 +103,11 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       markdownH4: slots?.markdownH4 ?? Typography,
       markdownH5: slots?.markdownH5 ?? Typography,
       markdownH6: slots?.markdownH6 ?? Typography,
-      markdownImg: slots?.markdownImg ?? ChatMessageImage,
-      markdownCodeWrapper: slots?.markdownCodeWrapper ?? ChatMessageCodeWrapper,
-      markdownCode: slots?.markdownCode ?? ChatMessageCode,
+      markdownImg: slots?.markdownImg ?? MessageMarkdownImage,
+      markdownCodeWrapper: slots?.markdownCodeWrapper ?? MessageMarkdownCodeWrapper,
+      markdownCode: slots?.markdownCode ?? MessageMarkdownCode,
       markdownHr: slots?.markdownHr ?? Divider,
-      markdownBlockquote: slots?.markdownBlockquote ?? ChatMessageBlockquote,
+      markdownBlockquote: slots?.markdownBlockquote ?? MessageMarkdownBlockquote,
       markdownP: slots?.markdownP ?? Typography,
       messagePagination: slots?.messagePagination ?? MessagePagination,
       messagePaginationRoot: slots?.messagePaginationRoot ?? Stack,

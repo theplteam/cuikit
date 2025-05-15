@@ -15,7 +15,7 @@ const BoxStyled = styled(Box)(() => ({
   whiteSpace: 'nowrap',
 }));
 
-const ChatMessageTableCell: React.FC<Props> = ({ children, textComponent, textComponentProps, ...otherProps }) => {
+const MessageMarkdownTableCell: React.FC<Props> = ({ children, textComponent, textComponentProps, ...otherProps }) => {
   const comp = { textComponent: textComponent ?? Typography, textComponentProps };
   return (
     <TableCell size="small" {...otherProps}>
@@ -28,4 +28,4 @@ const ChatMessageTableCell: React.FC<Props> = ({ children, textComponent, textCo
   );
 }
 
-export default ChatMessageTableCell;
+export default MessageMarkdownTableCell;

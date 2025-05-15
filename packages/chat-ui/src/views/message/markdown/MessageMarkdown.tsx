@@ -1,21 +1,23 @@
 import * as React from 'react';
-import Markdown from 'markdown-to-jsx';
+import MarkdownToJsx from 'markdown-to-jsx';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import MarkdownParagraphParser from './MarkdownParagraphParser';
+import MarkdownParagraphParser from './MessageMarkdownParagraphParser';
 import { useSmoothManager } from './smooth/useSmoothManager';
 import MarkdownComponentSmoother from './smooth/MarkdownComponentSmoother';
 import { BoldComponent, EmComponent, ItalicComponent, LiComponent, StrongComponent } from './SimpleMarkdownComponents';
 import MarkdownLazyComponentSmoother from './smooth/MarkdownLazyComponentSmoother';
 import { SlotPropsType } from '../../core/SlotPropsType';
 import { Message, Thread } from '../../../models';
+import { ChatViewConstants } from '../../ChatViewConstants';
+import clsx from 'clsx';
 
 type Props = {
   text: string;
   inProgress: boolean;
 };
 
-const ChatMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => {
   const { slots, slotProps } = useChatSlots();
   const { processAssistantText } = useChatContext();
 
@@ -31,21 +33,23 @@ const ChatMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => 
     }
   }, [inProgressProp]);
 
-  const getHeaders = React.useCallback((header: keyof SlotPropsType<Message, Thread>) => {
+  const getLazySmoothComponent = React.useCallback((componentKey: keyof SlotPropsType<Message, Thread>) => {
     return ({
-      component: MarkdownLazyComponentSmoother,
+      component: slots[componentKey],
       props: {
-        component: slots[header],
-        componentProps: slotProps[header],
-        inProgress,
+        ...slotProps.markdownTable,
+        className: clsx(
+          slotProps?.[componentKey]?.className,
+          { [ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING]: inProgress }
+        )
       },
     });
-  }, [])
+  }, [inProgress]);
 
   useSmoothManager(text, inProgress);
 
   return (
-    <Markdown
+    <MarkdownToJsx
       options={{
           forceBlock: true,
           forceWrapper: true,
@@ -62,10 +66,11 @@ const ChatMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => 
                 inProgress,
               },
             },
-            table: {
+            /*table: {
               component: slots.markdownTable,
               props: slotProps.markdownTable,
-            },
+            },*/
+            table: getLazySmoothComponent('markdownTable'),
             thead: {
               component: slots.markdownThead,
               props: slotProps.markdownThead,
@@ -123,32 +128,18 @@ const ChatMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => 
               component: MarkdownLazyComponentSmoother,
               props: { inProgress, component: EmComponent },
             },
-            h1: getHeaders('markdownH1'),
-            h2: getHeaders('markdownH2'),
-            h3: getHeaders('markdownH3'),
-            h4: getHeaders('markdownH4'),
-            h5: getHeaders('markdownH5'),
-            h6: getHeaders('markdownH6'),
-            img: {
-              component: slots.markdownImg,
-              props: slotProps.markdownImg,
-            },
-            pre: {
-              component: slots.markdownCodeWrapper,
-              props: slotProps.markdownCodeWrapper,
-            },
-            code: {
-              component: slots.markdownCode,
-              props: slotProps.markdownCode,
-            },
-            hr: {
-              component: slots.markdownHr,
-              props: slotProps.markdownHr,
-            },
-            blockquote: {
-              component: slots.markdownBlockquote,
-              props: slotProps.markdownBlockquote,
-            },
+            h1: getLazySmoothComponent('markdownH1'),
+            h2: getLazySmoothComponent('markdownH2'),
+            h3: getLazySmoothComponent('markdownH3'),
+            h4: getLazySmoothComponent('markdownH4'),
+            h5: getLazySmoothComponent('markdownH5'),
+            h6: getLazySmoothComponent('markdownH6'),
+            img: getLazySmoothComponent('markdownImg'),
+            pre: getLazySmoothComponent('markdownCodeWrapper'),
+            code: getLazySmoothComponent('markdownCode'),
+            hr: getLazySmoothComponent('markdownHr'),
+            blockquote: getLazySmoothComponent('markdownBlockquote'),
+
             p: {
               component: MarkdownParagraphParser,
               props: {
@@ -169,8 +160,8 @@ const ChatMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => 
         }}
     >
       {text}
-    </Markdown>
+    </MarkdownToJsx>
   );
 }
 
-export default ChatMarkdown;
+export default MessageMarkdown;
