@@ -54,6 +54,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
+
   const getInternalMessage = useInternalMessageTransformer();
 
   const containerId = message.photoswipeContainerId;
@@ -100,6 +101,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
             thread={thread}
             messageText={text}
             showStatus={!!isLatest && (index === texts.length - 1)}
+            inProgress={!!isLatest && !!typing}
           />
         ))}
       </Stack>

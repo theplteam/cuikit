@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 
-const ChatMessageUl = styled('ul')(({ theme }) => ({
+const MessageMarkdownUl = styled('ul')(({ theme }) => ({
   listStyle: 'none',
   paddingLeft: '1.625em',
   '& li': {
@@ -47,4 +47,4 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
   },
 }));
 
-export { ChatMessageUl, ChatMessageOl };
+export { MessageMarkdownUl, ChatMessageOl };

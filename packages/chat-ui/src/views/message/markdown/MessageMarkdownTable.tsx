@@ -2,7 +2,7 @@ import * as React from 'react';
 import Table, { TableProps } from '@mui/material/Table';
 import Box from '@mui/material/Box';
 
-const ChatMessageTable: React.FC<TableProps> = (props) => {
+const MessageMarkdownTable: React.FC<TableProps> = (props) => {
   return (
     <Box
       sx={{
@@ -15,4 +15,4 @@ const ChatMessageTable: React.FC<TableProps> = (props) => {
   );
 };
 
-export default ChatMessageTable;
+export default MessageMarkdownTable;

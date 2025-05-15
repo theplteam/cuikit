@@ -1,6 +1,6 @@
 import { MessageModel, ChatMessageOwner, Message } from './MessageModel';
 import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid, v4 as uuidv4 } from 'uuid';
 import { ThreadMessages } from './ThreadMessages';
 import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
@@ -22,6 +22,8 @@ export enum StreamResponseState {
 export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
+
+  readonly viewerUniqueKey = uuid();
 
   readonly messages = new ThreadMessages<DM>();
 

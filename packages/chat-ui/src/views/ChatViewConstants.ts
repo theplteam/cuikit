@@ -16,5 +16,11 @@ export class ChatViewConstants {
 
   static readonly MARKDOWN_IMAGE_CLASSNAME = 'chatImageGalleryClass';
 
+  static readonly MARKDOWN_PARENT_ROOT_CLASSNAME = 'chatMarkdownParentRootClass';
+
+  static readonly TEXT_SMOOTH_CLASSNAME_PENDING = 'chatTextSmoothAnimationClassName-pending';
+  static readonly TEXT_SMOOTH_CLASSNAME_ANIMATE = 'chatTextSmoothAnimationClassName-animate';
+  static readonly TEXT_SMOOTH_ANIMATION_DURATION_MS = 600;
+
   static readonly MAX_IMAGES_IN_MESSAGE = 10;
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ChatMarkdownBlock, { ChatMarkdownBlockRoot } from '../markdown/ChatMarkdownBlock';
+import MessageMarkdownBlock, { ChatMarkdownBlockRoot } from '../markdown/MessageMarkdownBlock';
 import { styled } from '@mui/material/styles';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 
@@ -14,10 +14,11 @@ export const ChatMarkdownReasoningBlockRoot = styled(ChatMarkdownBlockRoot)(({ t
 const MessageReasoningFull: React.FC<Props> = ({ text }) => {
   const { slots, slotProps } = useChatSlots();
   return (
-    <ChatMarkdownBlock
+    <MessageMarkdownBlock
       text={text}
       rootComponent={slots.markdownReasoningRoot}
       rootComponentProps={slotProps.markdownReasoningRoot}
+      inProgress={false}
     />
   );
 }

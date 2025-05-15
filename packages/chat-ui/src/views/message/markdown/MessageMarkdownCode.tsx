@@ -11,10 +11,10 @@ const CodeStyled = styled('code')(() => ({
   borderRadius: 4,
 }))
 
-const ChatMessageCode: React.FC<Props> = (props) => {
+const MessageMarkdownCode: React.FC<Props> = (props) => {
   return (
     <CodeStyled {...props} />
   );
 }
 
-export default ChatMessageCode;
+export default MessageMarkdownCode;

@@ -35,7 +35,7 @@ const MessagesInGroup: React.FC<Props> = ({ messages, isLatestGroup, thread, gap
     >
       {messages.map((message, key) => (
         <ChatMessageComponent
-          key={message.id ?? key}
+          key={message.viewerUniqueKey}
           enableAssistantActions
           message={message}
           thread={thread}

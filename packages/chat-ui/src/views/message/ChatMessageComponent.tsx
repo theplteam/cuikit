@@ -50,4 +50,4 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, message, isLat
   );
 };
 
-export default ChatMessageComponent;
+export default React.memo(ChatMessageComponent);
