@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ChatViewConstants } from '../../../ChatViewConstants';
 import throttle from 'lodash.throttle';
+import { chatClassNames } from '../../../core/chatClassNames';
 
 type AnimatedElementsType = HTMLSpanElement | HTMLDivElement | HTMLLIElement;
 
@@ -21,11 +22,11 @@ class SmoothManager {
     this.ran = true;
 
     let delayMs = 0;
-    const allMarkdownElements = document.getElementsByClassName(ChatViewConstants.MARKDOWN_PARENT_ROOT_CLASSNAME);
+    const allMarkdownElements = document.getElementsByClassName(chatClassNames.markdownParentRoot);
 
     const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
 
-    const elements = (parent?.querySelectorAll(`.${ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING}`) as NodeListOf<AnimatedElementsType>) ?? [];
+    const elements = (parent?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
 
     if (elements.length && !this._firstDelaySet) {
       this._firstDelaySet = true;
@@ -33,11 +34,11 @@ class SmoothManager {
     }
 
     elements.forEach((el) => {
-      el.classList.remove(ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING);
+      el.classList.remove(chatClassNames.markdownSmoothedPending);
 
       el.style.animationDelay = `${delayMs}ms`;
 
-      el.classList.add(ChatViewConstants.TEXT_SMOOTH_CLASSNAME_ANIMATE);
+      el.classList.add(chatClassNames.markdownSmoothedAnimating);
       delayMs += this.delayValueMs;
     });
 
@@ -48,7 +49,7 @@ class SmoothManager {
 
       setTimeout(() => {
         elements?.forEach((el) => {
-          el.classList.remove(ChatViewConstants.TEXT_SMOOTH_CLASSNAME_ANIMATE);
+          el.classList.remove(chatClassNames.markdownSmoothedAnimating);
           el.style.animationDelay = '0s';
         });
       }, ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);

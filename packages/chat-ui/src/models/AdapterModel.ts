@@ -25,7 +25,7 @@ export class AdapterModel {
     AdapterModel.version++;
   }
 
-  public static get transformThread(): AdapterType['transformThread'] | undefined {
+  public static get transformThread(): AdapterType['transformThread'] {
     return AdapterModel._transformThread;
   }
 

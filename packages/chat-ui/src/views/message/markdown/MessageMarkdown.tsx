@@ -9,8 +9,8 @@ import { BoldComponent, EmComponent, ItalicComponent, LiComponent, StrongCompone
 import MarkdownLazyComponentSmoother from './smooth/MarkdownLazyComponentSmoother';
 import { SlotPropsType } from '../../core/SlotPropsType';
 import { Message, Thread } from '../../../models';
-import { ChatViewConstants } from '../../ChatViewConstants';
 import clsx from 'clsx';
+import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = {
   text: string;
@@ -40,7 +40,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
         ...slotProps.markdownTable,
         className: clsx(
           slotProps?.[componentKey]?.className,
-          { [ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING]: inProgress }
+          { [chatClassNames.markdownSmoothedPending]: inProgress }
         )
       },
     });

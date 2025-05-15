@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ChatViewConstants } from '../../../ChatViewConstants';
+import { chatClassNames } from '../../../core/chatClassNames';
 
 const SpanSmoothAnimation: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <span className={ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING}>
+    <span className={chatClassNames.markdownSmoothedPending}>
       {children}
     </span>
   );

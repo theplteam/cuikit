@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { ChatViewConstants } from '../../ChatViewConstants';
 import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
+import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = React.JSX.IntrinsicElements['img'];
 
@@ -51,7 +51,7 @@ const MessageMarkdownImage: React.FC<Props> = (props) => {
         data-pswp-width={size.width}
         data-pswp-height={size.height}
         target="_blank"
-        className={ChatViewConstants.MARKDOWN_IMAGE_CLASSNAME}
+        className={chatClassNames.markdownImage}
         style={{
           lineHeight: 0,
           display: 'block',

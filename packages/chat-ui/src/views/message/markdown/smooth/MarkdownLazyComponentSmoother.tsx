@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import { ChatViewConstants } from '../../../ChatViewConstants';
 import { markdownComponentsMemoCallback } from './markdownComponentsMemoCallback';
+import { chatClassNames } from '../../../core/chatClassNames';
 
 type Props = React.PropsWithChildren<{
   component: React.ElementType;
@@ -15,7 +15,7 @@ const MarkdownLazyComponentSmoother: React.FC<Props> = ({ componentProps, inProg
       {...componentProps}
       className={clsx(
         componentProps?.className,
-        { [ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING]: inProgress }
+        { [chatClassNames.markdownSmoothedPending]: inProgress }
       )}
     >
       {children}

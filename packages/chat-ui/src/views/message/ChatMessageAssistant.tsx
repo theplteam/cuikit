@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatMessageContainer from './ChatMessageContainer';
-import { ChatViewConstants } from '../ChatViewConstants';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
@@ -16,6 +15,7 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 import Stack from '@mui/material/Stack';
 import AssistantTextBlock from './AssistantTextBlock';
+import { chatClassNames } from '../core/chatClassNames';
 
 type Props = {
   message: MessageModel;
@@ -63,7 +63,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     if (typing) return NOOP;
     const lightbox = PhotoSwipeLightbox({
       gallery: `#${message.photoswipeContainerId}`,
-      children: `a.${ChatViewConstants.MARKDOWN_IMAGE_CLASSNAME}`,
+      children: `a.${chatClassNames.markdownImage}`,
       pswpModule: () => import('photoswipe'),
       zoom: false,
       showHideAnimationType: 'fade',

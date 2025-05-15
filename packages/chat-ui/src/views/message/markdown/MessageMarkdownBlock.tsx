@@ -5,6 +5,7 @@ import MessageMarkdown from './MessageMarkdown';
 import { SlotValue } from '../../core/usePropsSlots';
 import { ChatViewConstants } from '../../ChatViewConstants';
 import clsx from 'clsx';
+import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = {
   text: string;
@@ -41,10 +42,10 @@ export const ChatMarkdownBlockRoot = styled(Box)(({theme}) => ({
   '& table': {
     borderCollapse: 'collapse',
   },
-  [`.${ChatViewConstants.TEXT_SMOOTH_CLASSNAME_PENDING}`]: {
+  [`.${chatClassNames.markdownSmoothedPending}`]: {
     opacity: 0,
   },
-  [`.${ChatViewConstants.TEXT_SMOOTH_CLASSNAME_ANIMATE}`]: {
+  [`.${chatClassNames.markdownSmoothedAnimating}`]: {
     opacity: 0,
     // here `delay` has no meaning, since it is overwritten in style for each element
     animation: `${fadeIn} ${ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
@@ -55,7 +56,7 @@ const MessageMarkdownBlock: React.FC<Props> = ({ text, id, inProgress, ...otherP
   return (
     <otherProps.rootComponent
       {...otherProps.rootComponentProps}
-      className={clsx(otherProps.rootComponentProps?.className, ChatViewConstants.MARKDOWN_PARENT_ROOT_CLASSNAME)}
+      className={clsx(otherProps.rootComponentProps?.className, chatClassNames.markdownParentRoot)}
       id={id}
     >
       <MessageMarkdown inProgress={inProgress} text={text} />
