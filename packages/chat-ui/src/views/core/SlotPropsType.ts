@@ -79,7 +79,7 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Render some information under the assistant's message.
    */
-  messageAssistantFooter: { message: InternalMessageType };
+  messageAssistantFooter: { message: InternalMessageType, className?: string };
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */

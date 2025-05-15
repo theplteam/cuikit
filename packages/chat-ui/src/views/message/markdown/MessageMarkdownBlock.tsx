@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { keyframes, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
 import MessageMarkdown from './MessageMarkdown';
 import { SlotValue } from '../../core/usePropsSlots';
-import { ChatViewConstants } from '../../ChatViewConstants';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 
@@ -14,15 +13,6 @@ type Props = {
   rootComponentProps: BoxProps | undefined;
   inProgress: boolean;
 };
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
 
 export const ChatMarkdownBlockRoot = styled(Box)(({theme}) => ({
   ...theme.typography.body2,
@@ -41,14 +31,6 @@ export const ChatMarkdownBlockRoot = styled(Box)(({theme}) => ({
   },
   '& table': {
     borderCollapse: 'collapse',
-  },
-  [`.${chatClassNames.markdownSmoothedPending}`]: {
-    opacity: 0,
-  },
-  [`.${chatClassNames.markdownSmoothedAnimating}`]: {
-    opacity: 0,
-    // here `delay` has no meaning, since it is overwritten in style for each element
-    animation: `${fadeIn} ${ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
   },
 }));
 

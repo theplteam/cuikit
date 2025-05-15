@@ -22,7 +22,7 @@ class SmoothManager {
     this.ran = true;
 
     let delayMs = 0;
-    const allMarkdownElements = document.getElementsByClassName(chatClassNames.markdownParentRoot);
+    const allMarkdownElements = document.getElementsByClassName(chatClassNames.messageAssistantRoot);
 
     const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
 
