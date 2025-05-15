@@ -49,7 +49,6 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     let content: Message['content'] = text;
     if (attachments.length) {
       content = await Promise.all(attachments.map((a) => a.dataToContent()));
-      console.log(content);
       if (text) {
         content = [
           { type: ChatMessageContentType.TEXT, text },
