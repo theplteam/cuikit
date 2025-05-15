@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useChildrenSmooterParser } from './smooth/useChildrenSmooterParser';
+import { useChildrenSmootherParser } from './smooth/useChildrenSmootherParser';
 
 type Props<T> = React.PropsWithChildren<{
   componentProps: T;
@@ -9,7 +9,7 @@ type Props<T> = React.PropsWithChildren<{
 
 const MessageMarkdownTexts: React.FC<Props<any>> = ({ children, inProgress, componentProps, component }) => {
   const [slots] = React.useState(() => ({ component }));
-  const parser = useChildrenSmooterParser();
+  const parser = useChildrenSmootherParser();
 
   const parsedContent = React.useMemo(
     () => inProgress ? parser(children) : children,

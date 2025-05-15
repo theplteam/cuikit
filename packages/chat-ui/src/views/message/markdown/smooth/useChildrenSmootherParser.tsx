@@ -2,10 +2,13 @@ import * as React from 'react';
 import SpanSmoothAnimation from './SpanSmoothAnimation';
 
 const stringToSmoothComponent = (childString: string) => {
-  return childString.split(' ').filter(v => !!v).map((v, i) => (
-    <SpanSmoothAnimation key={`${v}-${i}-span`}>
-      {`${v} `}
-    </SpanSmoothAnimation>
+  return childString.split(' ').map((v, i) => !v
+    // if `v` is empty, it means we removed a space and it needs to be restored
+    ? ` `
+    : (
+      <SpanSmoothAnimation key={`${v}-${i}-span`}>
+        {`${v} `}
+      </SpanSmoothAnimation>
   ));
 }
 
@@ -25,7 +28,7 @@ const forEachChildren = (children: React.ReactNode[]) => {
   return resultValue;
 }
 
-export const useChildrenSmooterParser = () => {
+export const useChildrenSmootherParser = () => {
   return React.useCallback((children: React.ReactNode) => {
     const childrenArray: React.ReactNode[] = [];
 

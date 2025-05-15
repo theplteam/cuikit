@@ -169,7 +169,7 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Render images (<img>)
    */
-  markdownImg: React.JSX.IntrinsicElements['img'];
+  markdownImg: React.JSX.IntrinsicElements['img'] & { rootClassName?: string };
   /**
    * Render pre (<pre>)
    */

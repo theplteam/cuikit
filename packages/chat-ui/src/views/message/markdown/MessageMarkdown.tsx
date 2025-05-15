@@ -37,7 +37,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
     return ({
       component: slots[componentKey],
       props: {
-        ...slotProps.markdownTable,
+        ...slotProps[componentKey],
         className: clsx(
           slotProps?.[componentKey]?.className,
           { [chatClassNames.markdownSmoothedPending]: inProgress }
@@ -66,10 +66,6 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
                 inProgress,
               },
             },
-            /*table: {
-              component: slots.markdownTable,
-              props: slotProps.markdownTable,
-            },*/
             table: getLazySmoothComponent('markdownTable'),
             thead: {
               component: slots.markdownThead,
@@ -134,12 +130,20 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
             h4: getLazySmoothComponent('markdownH4'),
             h5: getLazySmoothComponent('markdownH5'),
             h6: getLazySmoothComponent('markdownH6'),
-            img: getLazySmoothComponent('markdownImg'),
             pre: getLazySmoothComponent('markdownCodeWrapper'),
             code: getLazySmoothComponent('markdownCode'),
             hr: getLazySmoothComponent('markdownHr'),
             blockquote: getLazySmoothComponent('markdownBlockquote'),
-
+            img: {
+              component: slots.markdownImg,
+              props: {
+                ...slotProps.markdownImg,
+                rootClassName: clsx(
+                  slotProps.markdownImg?.rootClassName,
+                  { [chatClassNames.markdownSmoothedPending]: inProgress }
+                )
+              },
+            },
             p: {
               component: MarkdownParagraphParser,
               props: {

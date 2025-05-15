@@ -4,7 +4,9 @@ import Box from '@mui/material/Box';
 import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 import { chatClassNames } from '../../core/chatClassNames';
 
-type Props = React.JSX.IntrinsicElements['img'];
+type Props = React.JSX.IntrinsicElements['img'] & {
+  rootClassName?: string;
+};
 
 const BoxStyled = styled(Box)(() => ({
   marginTop: 8,
@@ -23,7 +25,7 @@ const BoxStyled = styled(Box)(() => ({
   },
 }));
 
-const MessageMarkdownImage: React.FC<Props> = (props) => {
+const MessageMarkdownImage: React.FC<Props> = ({ rootClassName, ...props }) => {
   const [size, setSize] = React.useState({ width: 0, height: 0 });
   const [rejected, setRejected] = React.useState(false);
 
@@ -45,7 +47,9 @@ const MessageMarkdownImage: React.FC<Props> = (props) => {
 
   if (rejected) return null;
   return (
-    <BoxStyled>
+    <BoxStyled
+      className={rootClassName}
+    >
       <a
         href={props.src}
         data-pswp-width={size.width}
