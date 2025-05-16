@@ -55,15 +55,13 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
           forceWrapper: true,
           overrides: {
             a: {
-              component: MarkdownLazyComponentSmoother,
+              component: slots.markdownA,
               props: {
-                component: slots.markdownA,
-                componentProps: {
-                  color: 'secondary',
-                  underline: 'none',
-                  ...slotProps.markdownA
-                },
-                inProgress,
+                ...slotProps.markdownA,
+                className: clsx(
+                  slotProps.markdownA?.className,
+                  { [chatClassNames.markdownSmoothedPending]: inProgress }
+                )
               },
             },
             table: getLazySmoothComponent('markdownTable'),
