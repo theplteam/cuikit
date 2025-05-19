@@ -6,7 +6,7 @@ import {
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import { randomInt } from "../../../packages/chat-ui/src/utils/numberUtils/randomInt";
-import { FileAttachmentParams } from "../../../packages/chat-ui/src/models/FileAttachmentParams";
+import { FileAttachedParams } from "../../../packages/chat-ui/src/models/FileAttachedParams";
 
 const FileAttachmentExample: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
@@ -129,7 +129,7 @@ const FileAttachmentExample: React.FC = () => {
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
-  const onFileAttached = async ({ params }: FileAttachmentParams) => {
+  const onFileAttached = async ({ params }: FileAttachedParams) => {
     let progress = 0;
     const { setProgress } = params;
 

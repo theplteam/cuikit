@@ -38,7 +38,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 }));
 
 const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
-  const { url, id, name, type } = item;
+  const { url, id, name, type, isGallery } = item;
   const progress = useObserverValue(item.progress);
   const poster = useObserverValue(item.poster);
 
@@ -47,7 +47,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   return (
     <BoxStyled>
       {(progress && progress < 100) ? <CircularLoadProgress progress={progress || 0} /> : null}
-      {poster
+      {isGallery
         ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
         : <FileItem name={name} type={type} />}
       <PreviewDeleteButton onClick={() => handleDelete(id, url)} />

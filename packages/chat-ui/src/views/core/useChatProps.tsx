@@ -14,7 +14,7 @@ import { ChatEventListeners } from './ChatEventListeners';
 import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
-import { FileAttachmentParams } from '../../models/FileAttachmentParams';
+import { FileAttachedParams } from '../../models/FileAttachedParams';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -140,13 +140,15 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Callback fired after file attach to message
    */
-  onFileAttached?: (params: FileAttachmentParams) => void | Promise<void>;
+  onFileAttached?: (params: FileAttachedParams) => void | Promise<void>;
   /**
    * Acceptable file formats for attaching to a message.
    * Check [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Reference/Attributes/accept) for more information.
+   * @example Array ['image', 'text'] | ['.png', '.txt'] | ['image/*', 'text/*'] 
+   * @example String 'image/*, text/*' | '.png, .txt'
    * @default '*'
    */
-  acceptableFileFormat?: string;
+  acceptableFileFormat?: string | string[];
   /**
    * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
    */

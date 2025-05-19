@@ -1,7 +1,7 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
 import useFilePreviewIcon from './useFilePreviewIcon';
-import 'photoswipe/style.css';
+import Typography from '@mui/material/Typography';
 
 type Props = {
   name: string;
@@ -29,9 +29,9 @@ const FileItem: React.FC<Props> = ({ name, type }) => {
       paddingX={1}
     >
       <Icon color="primary" fontSize="large" />
-      <p>
+      <Typography>
         {ellipsis}
-      </p>
+      </Typography>
     </Stack>
   );
 };

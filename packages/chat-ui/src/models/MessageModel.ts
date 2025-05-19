@@ -21,33 +21,17 @@ export type RatingType = 'like' | 'dislike';
 
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
 
-export type FileContent = { 
-  type: ChatMessageContentType.FILE,
-  id: IdType,
-  url?: string,
-  base64?: string,
-};
-
-export type ImageContent = {
-  type: ChatMessageContentType.IMAGE,
-  id: IdType,
-  url?: string,
-  base64?: string,
-}
-
-export type VideoContent = {
-  type: ChatMessageContentType.VIDEO,
-  id: IdType,
-  url?: string,
-  base64?: string,
-}
-
 export type TextContent = {
   type: ChatMessageContentType.TEXT,
   text: string,
 }
 
-export type Attachment = ImageContent | FileContent | VideoContent;
+export type Attachment = {
+  type: ChatMessageContentType.VIDEO | ChatMessageContentType.IMAGE | ChatMessageContentType.FILE,
+  id: IdType,
+  url?: string,
+  base64?: string,
+};
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 

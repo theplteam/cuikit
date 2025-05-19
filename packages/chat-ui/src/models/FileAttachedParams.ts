@@ -1,4 +1,4 @@
-export type FileAttachmentParams = {
+export type FileAttachedParams = {
   file: File;
   params: {
     setProgress: (n: number) => void;

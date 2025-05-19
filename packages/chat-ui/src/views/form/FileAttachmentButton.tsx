@@ -77,6 +77,13 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   };
 
   const disabled = attachments.length >= ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE || isTyping || !thread;
+  const inputAccept = React.useMemo(() => {
+    if (!acceptableFileFormat) return '*';
+    if (Array.isArray(acceptableFileFormat)) {
+      return acceptableFileFormat.map((f) => ((f.includes('/') || f.includes('.')) ? f : `${f}/*`)).join(',');
+    }
+    return acceptableFileFormat;
+  }, [acceptableFileFormat]);
 
   if (!enableFileAttachments) return null;
 
@@ -129,7 +136,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
         ref={fileRef}
         multiple
         type="file"
-        accept={acceptableFileFormat || "*"}
+        accept={inputAccept}
         disabled={isTyping}
         style={{ display: 'none' }}
         onChange={handleFileUpload}

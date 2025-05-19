@@ -27,6 +27,10 @@ class MessageAttachmentModel {
 
   get name() { return this._data.name; }
 
+  get isGallery() {
+    return this.type.startsWith('image') || this.type.startsWith('video');
+  }
+
   private _createPoster = async () => {
     const img = document.createElement('img');
     if (this.type.startsWith('image')) {
