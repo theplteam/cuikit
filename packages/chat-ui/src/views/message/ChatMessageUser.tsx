@@ -23,6 +23,7 @@ import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
 import MessageAttachments from './attachments/MessageAttachments';
 import { IdType } from 'types';
+import useMessageAttachments from './attachments/useMessageAttachments';
 
 type Props = {
   message: MessageModel;
@@ -63,7 +64,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
   const { slots, slotProps } = useChatSlots();
-  const [deletedAttachments, setDeletedAttachments] = React.useState<IdType[]>([]);
+  const { attachments, deletedIds, setDeletedIds } = useMessageAttachments(message.attachments);
 
   const mode = messageMode.values[message.id];
 
@@ -80,7 +81,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
       content = [{
         type: ChatMessageContentType.TEXT,
         text: newText,
-      }, ...message.attachments.filter((a) => !deletedAttachments.includes(a.id || ''))];
+      }, ...message.attachments.filter((a) => !deletedIds.includes(a.id))];
     }
     const newMessage = await apiRef.current?.onEditMessage(content, message);
     if (newMessage) {
@@ -91,11 +92,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const onClickCancelEdit = () => {
     messageMode.view(message.id);
-    setDeletedAttachments([]);
+    setDeletedIds([]);
   }
 
   const onDeleteAttachment = (id: IdType) => {
-    setDeletedAttachments([...deletedAttachments, id]);
+    setDeletedIds([...deletedIds, id]);
   }
 
   const children = React.useMemo(() => (
@@ -118,10 +119,10 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
-        <MessageAttachments message={message} onDeleteAttachment={onDeleteAttachment} />
+        <MessageAttachments messageId={message.id} attachments={attachments} onDeleteAttachment={onDeleteAttachment} />
         <MessageUserEditor
           text={message.text}
-          deletedAttachments={deletedAttachments}
+          isAttachmentsChanged={deletedIds.length > 0}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />
@@ -144,7 +145,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         flexDirection="column"
         gap={1}
       >
-        <MessageAttachments message={message} />
+        <MessageAttachments messageId={message.id} attachments={attachments} />
         {message.text ? (
           <ChatMessageContainerStyled
             ref={setElement}

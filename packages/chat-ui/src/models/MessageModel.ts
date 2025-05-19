@@ -14,6 +14,7 @@ export enum ChatMessageContentType {
   FILE = 'file',
   TEXT = 'text',
   IMAGE = 'image',
+  VIDEO = 'video',
 }
 
 export type RatingType = 'like' | 'dislike';
@@ -34,12 +35,19 @@ export type ImageContent = {
   base64?: string,
 }
 
+export type VideoContent = {
+  type: ChatMessageContentType.VIDEO,
+  id: IdType,
+  url?: string,
+  base64?: string,
+}
+
 export type TextContent = {
   type: ChatMessageContentType.TEXT,
   text: string,
 }
 
-export type Attachment = ImageContent | FileContent;
+export type Attachment = ImageContent | FileContent | VideoContent;
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 
@@ -86,7 +94,7 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = [new MessageText(_data.content)];
     } else {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
-      this.texts.value = (content.filter(v => v.type === 'text') as TextContent[]).map(
+      this.texts.value = content.filter(v => v.type === ChatMessageContentType.TEXT).map(
         (text) => new MessageText(text.text)
       );
       this.attachments = content.filter(c => c.type !== ChatMessageContentType.TEXT);
@@ -147,19 +155,11 @@ export class MessageModel<DM extends Message = Message> {
     return this.role === ChatMessageOwner.ASSISTANT;
   }
 
-  get images() {
-    return this.attachments.filter((a) => a.type === ChatMessageContentType.IMAGE);
-  }
-
-  get files() {
-    return this.attachments.filter((a) => a.type === ChatMessageContentType.FILE);
-  }
-
   get content() {
     let data: Message['content'] = this.text;
 
     if (this.attachments?.length) {
-      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...this.attachments];
+      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...this.attachments ];
     }
 
     return data;

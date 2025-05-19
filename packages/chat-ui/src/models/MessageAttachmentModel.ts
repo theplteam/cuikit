@@ -2,6 +2,7 @@ import { ObservableReactValue } from "../utils/observers";
 import { randomInt } from "../utils/numberUtils/randomInt";
 import { Attachment, ChatMessageContentType } from "./MessageModel";
 import { base64FileEncode } from "../utils/base64File";
+import getVideoPoster from "../utils/getVideoPoster";
 
 class MessageAttachmentModel {
   id = randomInt(100, 100000);
@@ -32,24 +33,7 @@ class MessageAttachmentModel {
       img.src = this.url;
     }
     if (this.type.startsWith('video')) {
-      const video = document.createElement('video');
-      video.src = this.url;
-      video.crossOrigin = 'anonymous';
-      video.muted = true;
-      video.playsInline = true;
-      video.preload = 'metadata';
-      // Если разрешение больше FullHD грузит минуту, на компьютерах слабее будет дольше
-      await new Promise((resolve) => {
-        video.onloadedmetadata = () => {
-          video.currentTime = 0.1; // ускоряет загрузку
-        };
-        video.onseeked = resolve;
-      });
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
-      img.src = canvas.toDataURL('image/png');
+      img.src = await getVideoPoster(this.url);
     }
 
     if (img.src) this.poster.value = img;
@@ -59,10 +43,15 @@ class MessageAttachmentModel {
 
   dataToContent = async () => {
     const base64 = await base64FileEncode(this._data)
+    const type = this.type.startsWith('image')
+      ? ChatMessageContentType.IMAGE
+      : this.type.startsWith('video')
+        ? ChatMessageContentType.VIDEO
+        : ChatMessageContentType.FILE;
     const data: Attachment = {
       id: this.id,
-      type: this.type.startsWith('image') ? ChatMessageContentType.IMAGE : ChatMessageContentType.FILE,
-      base64: base64,
+      type,
+      base64,
     };
     return data;
   }

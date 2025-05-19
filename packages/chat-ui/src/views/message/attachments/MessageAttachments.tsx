@@ -3,24 +3,27 @@ import Stack from '@mui/material/Stack';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import MessageGallery from './MessageGallery';
 import MessageFiles from './MessageFileList';
-import { MessageModel } from '../../../models';
 import { IdType } from '../../../types';
+import { LoadedAttachment } from './useMessageAttachments';
 
 type Props = {
-  message: MessageModel;
+  messageId: IdType;
+  attachments: LoadedAttachment[];
   onDeleteAttachment?: (id: IdType) => void;
 };
 
-const MessageAttachments = ({ message, onDeleteAttachment }: Props) => {
+const MessageAttachments = ({ messageId, attachments, onDeleteAttachment }: Props) => {
   const { enableFileAttachments } = useChatContext();
-  const { id, files, images } = React.useMemo(() => message, []);
+
+  const galleryItems = attachments.filter((a) => a.type === 'gallery');
+  const fileItems = attachments.filter((a) => a.type === 'file');
 
   if (!enableFileAttachments) return null;
 
   return (
     <Stack gap={1}>
-      {message.files.length ? <MessageFiles files={files} onDeleteItem={onDeleteAttachment} /> : null}
-      {message.images.length ? <MessageGallery id={id} images={images} onDeleteItem={onDeleteAttachment} /> : null}
+      {fileItems.length ? <MessageFiles items={fileItems} onDeleteItem={onDeleteAttachment} /> : null}
+      {galleryItems.length ? <MessageGallery id={messageId} items={galleryItems} onDeleteItem={onDeleteAttachment} /> : null}
     </Stack>
   );
 };

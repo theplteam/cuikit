@@ -32,8 +32,6 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   const isMobile = useMobile();
   const locale = useLocalizationContext();
 
-  if (!enableFileAttachments) return null;
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
       setAnchorEl(event.currentTarget);
@@ -79,6 +77,8 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   };
 
   const disabled = attachments.length >= ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE || isTyping || !thread;
+
+  if (!enableFileAttachments) return null;
 
   return (
     <Stack

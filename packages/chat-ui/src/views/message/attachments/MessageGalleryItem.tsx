@@ -1,23 +1,20 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { IdType } from '../../../types';
 import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
+import GalleryItem from '../../../views/form/preview/GalleryItem';
+import { IdType } from '../../../types';
+import { LoadedAttachment } from './useMessageAttachments';
 
 type Props = {
-  item: HTMLImageElement;
+  item: LoadedAttachment;
   galleryId: string;
   columns: number;
   rows: number;
   itemsCount: number;
   index: number;
-  onDelete?: () => void;
+  onDelete?: (id: IdType) => void;
 };
-
-export type MessageGalleryItemType = {
-  id: IdType;
-  data: HTMLImageElement;
-}
 
 const GridItem = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -41,7 +38,8 @@ const GridItem = styled(Box)(({ theme }) => ({
 }));
 
 const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }: Props) => {
-  const { src, width, height } = item;
+  const { poster, file, url } = item;
+  const isVideo = file?.type.startsWith('video');
 
   const getItemsInRow = (row: number) => {
     const startIndex = row * columns;
@@ -55,7 +53,7 @@ const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index,
     return 64;
   }, [itemsCount]);
 
-  const getClassName = () => {
+  const className = React.useMemo(() => {
     if (itemsCount === 1) return '';
 
     const row = Math.floor(index / columns);
@@ -80,30 +78,21 @@ const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index,
     `;
 
     return className;
-  };
+  }, [itemsCount]);
 
-  const className = getClassName();
+  if (!poster) return null;
 
   return (
     <GridItem
       key={index}
       sx={{
-        width: `${size}px`,
-        height: `${size}px`,
+        width: size,
+        height: size,
       }}
       className={className}
     >
-      <a
-        key={`${galleryId}-${index}`}
-        href={src}
-        data-pswp-width={width}
-        data-pswp-height={height}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={src} alt={`image-${index}`} className={className} />
-      </a>
-      {onDelete ? <PreviewDeleteButton onClick={onDelete} /> : null}
+      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
+      {onDelete ? <PreviewDeleteButton onClick={() => onDelete(item.id)} /> : null}
     </GridItem>
   );
 }

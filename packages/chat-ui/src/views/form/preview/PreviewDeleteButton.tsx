@@ -15,7 +15,7 @@ const PreviewDeleteButton = ({ onClick }: Props) => {
         position: 'absolute',
         padding: 0,
         top: 2,
-        right: 4,
+        right: 2,
       }}
       onClick={onClick}
     >

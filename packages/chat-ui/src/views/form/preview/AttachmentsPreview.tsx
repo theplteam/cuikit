@@ -4,9 +4,9 @@ import { useChatContext } from '../../core/ChatGlobalContext';
 import MessageAttachmentModel from 'models/MessageAttachmentModel';
 import Scrollbar from '../../../ui/Scrollbar';
 import { ThreadModel } from 'models';
-import ImagePreviewItem from './ImagePreviewItem';
-import FilePreviewItem from './FilePreviewItem';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
+import PreviewItem from './PreviewItem';
 import 'photoswipe/style.css';
 
 type Props = {
@@ -28,14 +28,15 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
   }), []);
 
   React.useEffect(() => {
+    new PhotoSwipeVideoPlugin(lightbox, {
+      videoAttributes: { controls: true, playsinline: true, muted: true, preload: 'auto' },
+    });
     lightbox.init();
 
     return () => {
       lightbox?.destroy();
     };
   }, [lightbox]);
-
-  if (!enableFileAttachments) return null;
 
   const handleDelete = (id: number, url: string) => {
     setAttachments(attachments.filter((a) => a.id !== id));
@@ -44,6 +45,8 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
       thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((i) => i !== id);
     }
   };
+
+  if (!enableFileAttachments) return null;
 
   return (
     <Scrollbar style={{ maxHeight: 136, borderRadius: 16 }}>
@@ -55,19 +58,14 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
         className="pswp-gallery"
         id={galleryId}
       >
-        {attachments.map((a, i) => {
-          if (a.type.startsWith('image')) {
-            return (
-              <ImagePreviewItem
-                key={i}
-                image={a}
-                handleDelete={handleDelete}
-                galleryId={galleryId}
-              />
-            );
-          }
-          return <FilePreviewItem key={i} file={a} handleDelete={handleDelete} />;
-        })}
+        {attachments.map((a, i) => (
+          <PreviewItem
+            key={i}
+            item={a}
+            handleDelete={handleDelete}
+            galleryId={galleryId}
+          />
+        ))}
       </Stack>
     </Scrollbar>
   );
