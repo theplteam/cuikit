@@ -1,11 +1,11 @@
 import * as React from 'react';
-import ChatMessageContainer from './ChatMessageContainer';
+import MessageContainer from './MessageContainer';
 import { styled } from '@mui/material/styles';
-import ChatMarkdownBlock from './markdown/ChatMarkdownBlock';
+import MessageMarkdownBlock from './markdown/MessageMarkdownBlock';
 import { messageActionsClasses } from './messageActionsClasses';
 import MessageActionsUser from './actions/MessageActionsUser';
 import MessageUserEditor from './editor/MessageUserEditor';
-import MessagePagination, { MessagePaginationHeight } from './MessagePagination';
+import MessagePagination from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -13,7 +13,6 @@ import { useThreadContext } from '../thread/ThreadContext';
 import { ChatMessageContentType, MessageModel, MessageUserContent } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
@@ -24,6 +23,8 @@ import clsx from 'clsx';
 import MessageAttachments from './attachments/MessageAttachments';
 import { IdType } from 'types';
 import useMessageAttachments from './attachments/useMessageAttachments';
+import { chatClassNames } from '../core/chatClassNames';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
   message: MessageModel;
@@ -38,7 +39,7 @@ const {
   hoverMessageClassName,
 } = messageActionsClasses;
 
-const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => ({
+const ChatMessageContainerStyled = styled(MessageContainer)(({ theme }) => ({
   width: '80%',
   background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
@@ -56,7 +57,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(({ theme }) => (
   }
 }));
 
-const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
+const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
@@ -101,10 +102,11 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
 
   const children = React.useMemo(() => (
     <>
-      <ChatMarkdownBlock
+      <MessageMarkdownBlock
         text={message.text}
         rootComponent={slots.markdownMessageRoot}
         rootComponentProps={slotProps.markdownMessageRoot}
+        inProgress={false}
       />
       {((isFirst || message.parentId) && !!enableBranches) ? (
         <MessageActionsUser
@@ -134,9 +136,9 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     <Stack
       width="100%"
       alignItems="flex-end"
-      sx={{ mb: 3 }}
-      style={{ marginBottom: '-25px' }}
       gap={0.5}
+      position="relative"
+      className={chatClassNames.messageUserRoot}
     >
       <Box
         width="100%"
@@ -153,6 +155,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
             mx={1.5}
             className={clsx(
               { [hoverMessageClassName]: isHover || isTablet },
+              chatClassNames.messageUser,
             )}
             elevation={elevation}
           >
@@ -160,17 +163,15 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
           </ChatMessageContainerStyled>
         ) : null}
       </Box>
-      {enableBranches ? (
+      {!!enableBranches && (
         <MessagePagination
           disabled={isTyping}
           message={message}
           classes={messageActionsClasses}
         />
-      ) : (
-        <Box height={MessagePaginationHeight} />
       )}
     </Stack>
   );
 };
 
-export default ChatMessageUser;
+export default MessageUser;

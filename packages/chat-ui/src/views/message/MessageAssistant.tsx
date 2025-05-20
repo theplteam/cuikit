@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import ChatMessageContainer from './ChatMessageContainer';
-import { ChatViewConstants } from '../ChatViewConstants';
+import { keyframes, styled } from '@mui/material/styles';
+import MessageContainer from './MessageContainer';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
@@ -16,6 +15,8 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 import Stack from '@mui/material/Stack';
 import AssistantTextBlock from './AssistantTextBlock';
+import { chatClassNames } from '../core/chatClassNames';
+import { ChatViewConstants } from '../ChatViewConstants';
 
 type Props = {
   message: MessageModel;
@@ -30,9 +31,26 @@ const {
   actionsClassName,
 } = messageActionsClasses;
 
-const ChatMessageContainerStyled = styled(ChatMessageContainer)(() => ({
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const MessageContainerStyled = styled(MessageContainer)(() => ({
   width: '100%',
   flexDirection: 'column',
+  [`.${chatClassNames.markdownSmoothedPending}`]: {
+    opacity: 0,
+  },
+  [`.${chatClassNames.markdownSmoothedAnimating}`]: {
+    opacity: 0,
+    // here `delay` has no meaning, since it is overwritten in style for each element
+    animation: `${fadeIn} ${ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
+  },
   /*[`&:not(.${latestMessageClassName})`]: {
     [`& .${actionsClassName}`]: {
       opacity: 0,
@@ -46,7 +64,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(() => ({
   }*/
 }));
 
-const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -54,6 +72,14 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
+  const [isTypedOnce, setIsTypedOnce] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typing && !isTypedOnce) {
+      setIsTypedOnce(true);
+    };
+  }, [typing]);
+
   const getInternalMessage = useInternalMessageTransformer();
 
   const containerId = message.photoswipeContainerId;
@@ -62,7 +88,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
     if (typing) return NOOP;
     const lightbox = PhotoSwipeLightbox({
       gallery: `#${message.photoswipeContainerId}`,
-      children: `a.${ChatViewConstants.MARKDOWN_IMAGE_CLASSNAME}`,
+      children: `a.${chatClassNames.markdownImage}`,
       pswpModule: () => import('photoswipe'),
       zoom: false,
       showHideAnimationType: 'fade',
@@ -76,11 +102,12 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   }, [typing, containerId]);
 
   return (
-    <ChatMessageContainerStyled
+    <MessageContainerStyled
       // ref={setElement}
       gap={1}
       className={clsx(
         { [latestMessageClassName]: isLatest },
+        chatClassNames.messageAssistantRoot,
         // { [hoverMessageClassName]: isHover },
       )}
       elevation={elevation}
@@ -100,6 +127,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
             thread={thread}
             messageText={text}
             showStatus={!!isLatest && (index === texts.length - 1)}
+            inProgress={!!isLatest && !!typing}
           />
         ))}
       </Stack>
@@ -108,11 +136,21 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           message={message}
           thread={thread}
           className={actionsClassName}
+          isTypedOnce={isTypedOnce}
         />
       ) : null}
-      {!!enableAssistantActions && <slots.messageAssistantFooter {...slotProps.messageAssistantFooter} message={getInternalMessage(message)} />}
-    </ChatMessageContainerStyled>
+      {(!typing && !!enableAssistantActions) && (
+        <slots.messageAssistantFooter
+          {...slotProps.messageAssistantFooter}
+          message={getInternalMessage(message)}
+          className={clsx(
+            { [chatClassNames.markdownSmoothedPending]: isTypedOnce },
+            slotProps.messageAssistantFooter?.className,
+          )}
+        />
+      )}
+    </MessageContainerStyled>
   );
 };
 
-export default ChatMessageAssistant;
+export default MessageAssistant;

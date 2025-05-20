@@ -1,108 +1,56 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import hexToRgba from 'hex-to-rgba';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { iconButtonClasses } from '@mui/material/IconButton';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import { useChatSlots } from '../../views/core/ChatSlotsContext';
-import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { ThreadListCache } from '../../models/ThreadListCache';
+import { chatClassNames } from '../core/chatClassNames';
+import { MoreVertIcon } from '../../icons';
+import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 
 type Props = {
   thread: ThreadModel;
-  currentThread: ThreadModel | undefined;
+  selected: boolean;
   setThread: (thread: ThreadModel['data']['data']) => void;
   listModel: ThreadListCache;
+  slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
 };
 
 const classSelected = 'boxSelected';
 const classShadowRight = 'shadowRight';
 
-const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${hexToRgba(hex, 0)} 100%)`;
-
-const BoxStyled = styled(Box)(({ theme }) => {
-  return {
-    height: 56,
-    width: '100%',
-    boxSizing: 'border-box',
-    padding: theme.spacing(1, 6.5, 1, 1.5),
-    position: 'relative',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    [`& .${iconButtonClasses.root}`]: {
-      [theme.breakpoints.up('md')]: {
-        opacity: 0,
-        transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
-      },
-    },
-    '&:hover': {
-      background: materialDesignSysPalette.surfaceContainerHigh,
-      [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerHigh),
-      },
-      [`& .${iconButtonClasses.root}`]: {
-        opacity: 1,
-      },
-    },
-    [`&.${classSelected}`]: {
-      background: 'rgb(225,233,240)',
-      [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient('#e1e9f0'),
-      }
-    },
-  }
-});
-
-const BoxShadowStyled = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  right: 0,
-  top: 0,
-  height: '100%',
-  width: 65,
-  pointerEvents: 'none',
-  backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
-  [theme.breakpoints.down('sm')]: {
-    backgroundImage: getGradient('#fff'),
-  },
-}));
-
-const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread, listModel }) => {
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel, slots }) => {
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
       thread,
     };
     event.preventDefault();
     event.stopPropagation();
-  };
+  }, [listModel]);
 
   const { apiRef } = useChatContext();
-
-  const { coreSlots, slots } = useChatSlots();
 
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.data.observableTitle);
 
   if (isEmpty) return null;
 
-  const selected = currentThread?.id === thread.id;
-
   const handleClickListItem = () => {
     apiRef.current?.setMenuDriverOpen(false);
     setThread(thread.data.data);
   }
 
+  const classes = [chatClassNames.threadListItem];
+  if (selected) {
+    classes.push(classSelected);
+  }
+
   return (
-    <BoxStyled
-      className={selected ? classSelected : undefined}
+    <div
+      className={classes.join(' ')}
       onClick={handleClickListItem}
     >
-      <coreSlots.listItemText
+      <slots.listItemText
         primary={title ?? 'TITLE'}
         sx={{
           textOverflow: 'ellipsis',
@@ -110,7 +58,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread, lis
           overflow: 'hidden',
         }}
       />
-      <BoxShadowStyled className={classShadowRight} />
+      <div className={`${chatClassNames.threadListItem} ${classShadowRight}`} />
       <slots.threadListItemMenuButton
         size="small"
         sx={{
@@ -124,11 +72,10 @@ const ThreadListItem: React.FC<Props> = ({ thread, currentThread, setThread, lis
       >
         <MoreVertIcon />
       </slots.threadListItemMenuButton>
-    </BoxStyled>
+    </div>
   );
 };
 
 export default React.memo(ThreadListItem, (prevProps, nextProps) => {
-  return (prevProps.thread.id === prevProps.currentThread?.id) === (nextProps.thread.id === nextProps.currentThread?.id)
-    && prevProps.thread.id === nextProps.thread.id;
+  return prevProps.selected === nextProps.selected && prevProps.thread.id === nextProps.thread.id;
 });

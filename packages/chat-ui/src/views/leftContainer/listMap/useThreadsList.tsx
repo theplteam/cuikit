@@ -13,7 +13,7 @@ export const useThreadsList = (threads: ThreadModel[], model: Threads<any, any>)
   React.useEffect(() => {
     model.listGroups.audit(locale, threads);
 
-  }, [locale, arrayPluck(threads, 'id').join(',')]);
+  }, [locale, model, arrayPluck(threads, 'id').join(',')]);
 
   return React.useMemo(() => Object.values(list).sort((a, b) => b.data.timestamp - a.data.timestamp), [list]);
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThreadModel } from '../../models';
-import ThreadListItemNew from './ThreadListItemNew';
+import ThreadListItem from './ThreadListItem';
 import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { Threads } from '../../models/Threads';
@@ -16,7 +16,7 @@ const ThreadListItemObserver: React.FC<Props> = ({ thread, setThread, model, slo
   const currentThread = useObserverValue(model.currentThread);
 
   return (
-    <ThreadListItemNew
+    <ThreadListItem
       selected={thread.id === currentThread?.id}
       setThread={setThread}
       thread={thread}

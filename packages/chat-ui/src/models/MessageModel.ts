@@ -4,6 +4,7 @@ import { MessageReasoningModel } from './MessageReasoningModel';
 import { randomInt } from '../utils/numberUtils/randomInt';
 import { MessageText } from './MessageText';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
+import { v4 as uuid } from 'uuid';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -57,6 +58,8 @@ export type Message = {
 })
 
 export class MessageModel<DM extends Message = Message> {
+
+  readonly viewerUniqueKey = uuid();
   /**
    * Text of message that supports "observation", should you need to update the component immediately upon variable modification, perfect for React.useSyncExternalStore.
    */
@@ -114,7 +117,7 @@ export class MessageModel<DM extends Message = Message> {
   set parentId(val: IdType|undefined) {
     this._data.parentId = val;
   }
-  
+
   get rating() {
     return this._data.rating;
   }

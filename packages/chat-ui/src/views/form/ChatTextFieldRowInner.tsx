@@ -41,6 +41,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
 
   const isTyping = useObserverValue(thread?.isTyping);
   const isLoadingAttachments = useObserverValue(thread?.isLoadingAttachments);
+  const isLoadingFullData = useObserverValue(thread?.isLoadingFullData);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
   const [attachments, setAttachments] = React.useState<MessageAttachmentModel[]>([]);
@@ -64,8 +65,8 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setAttachments([]);
   }
 
-  const disabledTextField = !thread || isTyping || !!isLoadingAttachments?.length;
-  const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length;
+  const disabledTextField = !thread || isTyping || !!isLoadingAttachments?.length || isLoadingFullData;
+  const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
   return (
     <StackStyled>
@@ -84,7 +85,6 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
           onSendMessage={onSendMessage}
         />
         <SendMessageButton
-          isTyping={isTyping}
           disabled={disabledButton}
           onSendMessage={onSendMessage}
         />

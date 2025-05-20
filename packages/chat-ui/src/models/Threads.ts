@@ -19,7 +19,6 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
   constructor(
     adapter: AdapterType,
     threads: Thread[],
-    thread: Thread | undefined,
     onUserMessageSent: (params: MessageSentParams) => void | Promise<void>,
   ) {
     const threadConstructor = ((t: Thread)=> new ThreadModel(
@@ -28,9 +27,6 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
     ));
 
     this.list.value = threads.map(threadConstructor);
-    if (thread?.id) {
-      this.currentThread.value = this.get(thread.id);
-    }
   }
 
   get = (id: DD['id']) => {

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { ChatViewConstants } from '../../ChatViewConstants';
 import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
+import { chatClassNames } from '../../core/chatClassNames';
 
-type Props = React.JSX.IntrinsicElements['img'];
+type Props = React.JSX.IntrinsicElements['img'] & {
+  rootClassName?: string;
+};
 
 const BoxStyled = styled(Box)(() => ({
   marginTop: 8,
@@ -23,7 +25,7 @@ const BoxStyled = styled(Box)(() => ({
   },
 }));
 
-const ChatMessageImage: React.FC<Props> = (props) => {
+const MessageMarkdownImage: React.FC<Props> = ({ rootClassName, ...props }) => {
   const [size, setSize] = React.useState({ width: 0, height: 0 });
   const [rejected, setRejected] = React.useState(false);
 
@@ -45,13 +47,15 @@ const ChatMessageImage: React.FC<Props> = (props) => {
 
   if (rejected) return null;
   return (
-    <BoxStyled>
+    <BoxStyled
+      className={rootClassName}
+    >
       <a
         href={props.src}
         data-pswp-width={size.width}
         data-pswp-height={size.height}
         target="_blank"
-        className={ChatViewConstants.MARKDOWN_IMAGE_CLASSNAME}
+        className={chatClassNames.markdownImage}
         style={{
           lineHeight: 0,
           display: 'block',
@@ -63,4 +67,4 @@ const ChatMessageImage: React.FC<Props> = (props) => {
   );
 }
 
-export default ChatMessageImage;
+export default MessageMarkdownImage;

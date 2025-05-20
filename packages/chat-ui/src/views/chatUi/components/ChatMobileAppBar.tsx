@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import MenuIcon from '@mui/icons-material/Menu';
+import { MenuIcon } from '../../../icons';
 import { useChatContext } from './../../core/ChatGlobalContext';
 import { useChatSlots } from './../../core/ChatSlotsContext';
 import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';

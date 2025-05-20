@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChatMessageOwner, MessageModel } from '../../models';
+import { ChatMessageOwner, MessageModel } from '../../../models';
 
 export const useGroupedMessages = (messages: MessageModel[]) => {
   return React.useMemo(() => {

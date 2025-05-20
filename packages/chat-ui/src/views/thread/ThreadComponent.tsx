@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import ChatMessages from '../message/ChatMessages';
+import ChatMessages from '../message/MessagesComponent';
 import ChatTextFieldRow from '../form/ChatTextFieldRow';
 import Box from '@mui/material/Box';
 import { ChatViewConstants } from '../ChatViewConstants';
@@ -21,6 +21,7 @@ type Props = {
   loading?: boolean;
   enableBranches: boolean | undefined;
   apiManager: ApiManager;
+  initialThread: Thread<Message> | undefined;
 };
 
 const MessagesRowStyled = styled(Stack)(({ theme }) => ({
@@ -40,7 +41,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   background: theme.palette.background.paper,
 }));
 
-const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, loading, apiManager, enableBranches }: Props) => {
+const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, loading, apiManager, enableBranches, initialThread }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const {
@@ -58,7 +59,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
   const { slots, slotProps } = useChatSlots();
 
   React.useEffect(() => {
-    if (!thread && !loading) {
+    if (!initialThread && !loading) {
       apiManager.apiRef.current?.openNewThread(handleCreateNewThread());
     }
   }, [loading]);

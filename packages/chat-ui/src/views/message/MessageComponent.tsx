@@ -1,10 +1,10 @@
 import * as React from 'react';
-import ChatMessageUser from './ChatMessageUser';
-import ChatMessageAssistant from './ChatMessageAssistant';
+import MessageUser from './MessageUser';
+import MessageAssistant from './MessageAssistant';
 import { ChatViewConstants } from '../ChatViewConstants';
-import Box from '@mui/material/Box';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
+import MessageComponentBox from './MessageComponentBox';
 
 type Props = {
   message: MessageModel;
@@ -16,21 +16,18 @@ type Props = {
   elevation?: boolean;
 };
 
-const ChatMessageComponent: React.FC<Props> = ({style, elevation, message, isLatest, isFirst, enableAssistantActions, thread}) => {
+const MessageComponent: React.FC<Props> = ({style, elevation, message, isLatest, isFirst, enableAssistantActions, thread}) => {
   return (
-    <Box
-      justifyContent={message.isUser ? 'flex-end' : 'flex-start'}
+    <MessageComponentBox
+      isUser={message.isUser}
       {...{
         [ChatViewConstants.MESSAGE_DATA_SCROLL_ANCHOR]: isLatest,
       }}
-      display="flex"
-      width="100%"
-      boxSizing="border-box"
       style={style}
     >
       {message.isUser
         ? (
-          <ChatMessageUser
+          <MessageUser
             message={message}
             thread={thread}
             isFirst={isFirst}
@@ -38,7 +35,7 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, message, isLat
           />
         )
         : (
-          <ChatMessageAssistant
+          <MessageAssistant
             isLatest={isLatest}
             message={message}
             enableAssistantActions={enableAssistantActions}
@@ -46,8 +43,8 @@ const ChatMessageComponent: React.FC<Props> = ({style, elevation, message, isLat
             elevation={elevation}
           />
         )}
-    </Box>
+    </MessageComponentBox>
   );
 };
 
-export default ChatMessageComponent;
+export default React.memo(MessageComponent);

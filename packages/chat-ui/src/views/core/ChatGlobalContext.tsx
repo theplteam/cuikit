@@ -28,7 +28,6 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
   const model = React.useMemo(() => new Threads(
     threadAdapter,
     props.threads,
-    props.thread,
     props.onUserMessageSent,
     // Model is not needed while data for the chat is loading
     // therefore it needs to be recreated, since changes may occur during loading
@@ -39,6 +38,12 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
     model,
     props,
   );
+
+  React.useEffect(() => {
+    if (!props.loading && props.initialThread) {
+      apiManager.apiRef.current?.onChangeThread(props.initialThread.id);
+    }
+  }, [props.loading]);
 
   const value: ChatGlobalContextType = React.useMemo(() => ({
     ...props,

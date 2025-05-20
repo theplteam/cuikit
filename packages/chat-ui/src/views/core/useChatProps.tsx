@@ -15,6 +15,7 @@ import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
+import { IdType } from '../../types';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -39,7 +40,12 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * This thread will open immediately after chat initialization, if it's in the thread list.
    * If it isn’t in the thread list or if the parameter is not provided, an empty thread will open.
    */
-  thread?: DD;
+  initialThread?: DD;
+
+  /**
+   * Load thread with message history if only id and title are passed in threads
+   */
+  getFullThread?: (threadId: IdType) => DD | Promise<DD>;
 
   /**
    * Advanced function for forming a sequence of messages to implement custom functionality of branches
@@ -189,11 +195,11 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
 }> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
-  const { lang, slotProps, slots, apiRef, coreSlots, scrollerRef, thread, threads, ...chatProps } = userProps;
+  const { lang, slotProps, slots, apiRef, coreSlots, scrollerRef, initialThread, threads, ...chatProps } = userProps;
 
   return React.useMemo(() => ({
     ...chatProps,
-    thread,
+    initialThread,
     threads,
     loading: userProps.loading ?? false,
   }), [chatProps, userProps.loading]);

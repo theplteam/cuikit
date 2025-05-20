@@ -1,4 +1,3 @@
-import ChatMessageComponent from './views/message/ChatMessageComponent';
-import { useChatSlots } from './views/core/ChatSlotsContext';
+import ChatMessageComponent from './views/message/MessageComponent';
 
-export { ChatMessageComponent, useChatSlots };
+export { ChatMessageComponent };
