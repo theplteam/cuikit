@@ -25,7 +25,6 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
       adapter.transformThread(t) as DD,
       onUserMessageSent,
     ));
-    console.log('new model');
 
     this.list.value = threads.map(threadConstructor);
   }

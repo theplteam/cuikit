@@ -25,15 +25,13 @@ type ProviderProps<DM extends Message = any, DD extends Thread<DM> = any> = Reac
 const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderProps) => {
   const threadAdapter = useAdapterContext();
 
-  const model = React.useMemo(() => {
-    return new Threads(
-      threadAdapter,
-      props.threads,
-      props.onUserMessageSent,
-      // Model is not needed while data for the chat is loading
-      // therefore it needs to be recreated, since changes may occur during loading
-    );
-  }, [props.loading]);
+  const model = React.useMemo(() => new Threads(
+    threadAdapter,
+    props.threads,
+    props.onUserMessageSent,
+    // Model is not needed while data for the chat is loading
+    // therefore it needs to be recreated, since changes may occur during loading
+  ), [props.loading]);
 
   useApiRefInitialization(
     apiManager,
@@ -42,8 +40,8 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
   );
 
   React.useEffect(() => {
-    if (!props.loading) {
-      apiManager.apiRef.current?.onChangeThread(props.thread.id);
+    if (!props.loading && props.initialThread) {
+      apiManager.apiRef.current?.onChangeThread(props.initialThread.id);
     }
   }, [props.loading]);
 

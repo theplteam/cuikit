@@ -13,7 +13,7 @@ export const useApiRefInitialization = (
   React.useEffect(() => {
     const getAllThreads = () => model.list.value.map(v => v.data.data);
 
-    const onChangeThread = async (threadId: IdType, debug?: string) => {
+    const onChangeThread = async (threadId: IdType) => {
       const threadModel = model.get(threadId);
       model.currentThread.value = threadModel;
 

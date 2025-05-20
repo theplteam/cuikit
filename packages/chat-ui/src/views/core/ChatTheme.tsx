@@ -34,4 +34,4 @@ const ChatTheme: React.FC<Props> = ({ children }) => {
   );
 }
 
-export default React.memo(ChatTheme, () => true);
+export default React.memo(ChatTheme);

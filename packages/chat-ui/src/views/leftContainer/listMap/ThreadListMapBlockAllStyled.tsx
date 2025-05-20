@@ -35,7 +35,7 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
       width: 65,
       pointerEvents: 'none',
       backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         backgroundImage: getGradient('#fff'),
       },
     },
