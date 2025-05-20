@@ -47,6 +47,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
               <ThreadsList />
             </slots.threadsList>
             <ThreadComponent
+              initialThread={props.initialThread}
               enableBranches={props.enableBranches}
               apiManager={apiManager}
               contentRef={usersProps.scrollerRef}

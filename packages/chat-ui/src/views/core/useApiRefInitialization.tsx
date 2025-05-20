@@ -18,7 +18,7 @@ export const useApiRefInitialization = (
       model.currentThread.value = threadModel;
 
       if (!!threadModel && !!threadModel.isLoadingFullData.value && !!props.getFullThread) {
-        let fullThread = props.getFullThread(threadModel.data.data);
+        let fullThread = props.getFullThread(threadModel.data.data.id);
 
         if (fullThread instanceof Promise) {
           fullThread = await fullThread;
