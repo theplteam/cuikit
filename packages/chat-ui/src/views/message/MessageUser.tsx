@@ -22,6 +22,7 @@ import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
 import { chatClassNames } from '../core/chatClassNames';
+import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
   message: MessageModel;
@@ -38,7 +39,7 @@ const {
 
 const ChatMessageContainerStyled = styled(MessageContainer)(({ theme }) => ({
   width: '80%',
-  background: theme.palette.grey[200],
+  background: materialDesignSysPalette.surfaceContainerLow,
   position: 'relative',
   [`& .${actionsClassName}`]: {
     opacity: 0,
