@@ -38,6 +38,7 @@ export const ruRU: Localization = {
   textFieldPlaceholder: 'Сообщение',
   attachmentImageShot: 'Камера',
   attachmentImageGallery: 'Файлы',
+  messageAttachmentsLoading: 'Загрузка прикрепленных файлов...',
   messageLikeTooltip: 'Понравилось',
   messageDislikeTooltip: 'Не понравилось',
   messageFeedbackTitle: 'Почему вы поставили эту оценку?',

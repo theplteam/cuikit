@@ -31,7 +31,7 @@ export type Attachment = {
   type: ChatMessageContentType.VIDEO | ChatMessageContentType.IMAGE | ChatMessageContentType.FILE,
   id: IdType,
   url?: string,
-  base64?: string,
+  file?: File,
 };
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;

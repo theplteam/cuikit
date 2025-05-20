@@ -46,10 +46,10 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
   const [attachments, setAttachments] = React.useState<MessageAttachmentModel[]>([]);
 
-  const onSendMessage = async () => {
+  const onSendMessage = () => {
     let content: Message['content'] = text;
     if (attachments.length) {
-      content = await Promise.all(attachments.map((a) => a.dataToContent()));
+      content = attachments.map((a) => a.dataToContent());
       if (text) {
         content = [
           { type: ChatMessageContentType.TEXT, text },

@@ -12,7 +12,6 @@ type Props = {
 const MessageFileList = ({ items, onDeleteItem }: Props) => {
   return (
     <Stack
-      mx={1.5}
       gap={1}
       overflow="hidden"
       flexWrap="wrap"

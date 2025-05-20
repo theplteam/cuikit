@@ -1,7 +1,6 @@
 import { ObservableReactValue } from "../utils/observers";
 import { randomInt } from "../utils/numberUtils/randomInt";
 import { Attachment, ChatMessageContentType } from "./MessageModel";
-import { base64FileEncode } from "../utils/base64File";
 import getVideoPoster from "../utils/getVideoPoster";
 
 class MessageAttachmentModel {
@@ -45,8 +44,7 @@ class MessageAttachmentModel {
 
   setProgress = (n: number) => { this.progress.value = n }
 
-  dataToContent = async () => {
-    const base64 = await base64FileEncode(this._data)
+  dataToContent = () => {
     const type = this.type.startsWith('image')
       ? ChatMessageContentType.IMAGE
       : this.type.startsWith('video')
@@ -55,7 +53,7 @@ class MessageAttachmentModel {
     const data: Attachment = {
       id: this.id,
       type,
-      base64,
+      file: this._data,
     };
     return data;
   }

@@ -65,7 +65,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
   const { slots, slotProps } = useChatSlots();
-  const { attachments, deletedIds, setDeletedIds } = useMessageAttachments(message.attachments);
+  const { attachments, deletedIds, loading, setDeletedIds } = useMessageAttachments(message.attachments);
 
   const mode = messageMode.values[message.id];
 
@@ -121,7 +121,12 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
-        <MessageAttachments messageId={message.id} attachments={attachments} onDeleteAttachment={onDeleteAttachment} />
+        <MessageAttachments
+          loading={loading}
+          messageId={message.id}
+          attachments={attachments}
+          onDeleteAttachment={onDeleteAttachment}
+        />
         <MessageUserEditor
           text={message.text}
           isAttachmentsChanged={deletedIds.length > 0}
@@ -147,7 +152,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         flexDirection="column"
         gap={1}
       >
-        <MessageAttachments messageId={message.id} attachments={attachments} />
+        <MessageAttachments loading={loading} messageId={message.id} attachments={attachments} />
         {message.text ? (
           <ChatMessageContainerStyled
             ref={setElement}

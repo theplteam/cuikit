@@ -15,7 +15,6 @@ const StackStyled = styled(Stack)(({ theme }) => ({
   position: 'relative',
   backgroundColor: theme.palette.grey[100],
   height: 64,
-  width: 180,
   borderRadius: 16,
 }));
 

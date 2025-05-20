@@ -7,6 +7,7 @@ import {
 import Box from "@mui/material/Box";
 import { randomInt } from "../../../packages/chat-ui/src/utils/numberUtils/randomInt";
 import { FileAttachedParams } from "../../../packages/chat-ui/src/models/FileAttachedParams";
+import { base64FileDecode } from "./base64File";
 
 const FileAttachmentExample: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
@@ -52,32 +53,32 @@ const FileAttachmentExample: React.FC = () => {
               {
                 id: '1',
                 type: 'file',
-                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
               {
                 id: '2',
                 type: 'file',
-                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
               {
                 id: '3',
                 type: 'file',
-                base64: 'filename=exampleLooooooooooooooooooooooooooooooong.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=exampleLooooooooooooooooooooooooooooooong.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
               {
                 id: '4',
                 type: 'file',
-                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
               {
                 id: '5',
                 type: 'file',
-                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
               {
                 id: '6',
                 type: 'file',
-                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
             ],
             role: "user",
@@ -99,7 +100,7 @@ const FileAttachmentExample: React.FC = () => {
               {
                 id: '1',
                 type: 'file',
-                base64: 'filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ==',
+                file: base64FileDecode('filename=example.txt;data:text/plain;base64,ZXhhbXBsZQ=='),
               },
               {
                 id: '2',
@@ -153,7 +154,7 @@ const FileAttachmentExample: React.FC = () => {
       <ChatPage
         enableFileAttachments
         enableBranches
-        thread={threads[0]}
+        initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}

@@ -57,6 +57,7 @@ export type Localization = {
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;
+  messageAttachmentsLoading: string;
 
   reasonedFor: string;
 };

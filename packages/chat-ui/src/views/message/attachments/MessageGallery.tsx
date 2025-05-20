@@ -57,7 +57,6 @@ const MessageGallery = ({ id, items, onDeleteItem }: Props) => {
     <GridBox
       id={galleryId}
       display="grid"
-      mx={1.5}
       gap={1}
       sx={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
@@ -78,7 +77,7 @@ const MessageGallery = ({ id, items, onDeleteItem }: Props) => {
           onDelete={onDeleteItem}
         />
       ))}
-    </GridBox >
+    </GridBox>
   );
 }
 

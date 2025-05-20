@@ -18,7 +18,6 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
   height: 64,
   minWidth: 64,
-  maxWidth: 180,
   borderRadius: 16,
   backgroundColor: theme.palette.grey[200],
   '& a': {

@@ -39,6 +39,7 @@ export const CHAT_LOCALE: Localization = {
   textFieldPlaceholder: 'Message chat',
   attachmentImageShot: 'Camera',
   attachmentImageGallery: 'Files',
+  messageAttachmentsLoading: 'Loading attachments...',
   messageLikeTooltip: 'Like message',
   messageDislikeTooltip: 'Dislike message',
   messageFeedbackTitle: 'Why did you choose this rating?',

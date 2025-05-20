@@ -1,6 +1,5 @@
 import React from 'react';
 import { Attachment, ChatMessageContentType } from '../../../models';
-import { base64FileDecode } from '../../../utils/base64File';
 import loadUrlFile from '../../../utils/loadUrlFile';
 import { IdType } from 'types';
 import getVideoPoster from '../../../utils/getVideoPoster';
@@ -34,10 +33,7 @@ const loadAttachment = async (item: Attachment) => {
   if (item.type === ChatMessageContentType.IMAGE) {
     let src = '';
     if (item.url) src = item.url;
-    else if (item.base64) {
-      const file = base64FileDecode(item.base64);
-      src = URL.createObjectURL(file);
-    }
+    else if (item.file) src = URL.createObjectURL(item.file);
     const image = document.createElement('img');
     image.src = src;
 
@@ -49,14 +45,9 @@ const loadAttachment = async (item: Attachment) => {
 }
 
 const loadFile = async (item: Attachment) => {
-  let file: File | null = null;
-  if (item?.url) {
-    const res = await loadUrlFile(item.url);
-    if (res) file = res;
-  }
-  else if (item?.base64) {
-    file = base64FileDecode(item.base64);
-  }
+  const file = item.url
+    ? await loadUrlFile(item.url)
+    : item?.file;
   return file;
 };
 
@@ -69,6 +60,7 @@ const loadVideoPoster = async (url: string) => {
 const useMessageAttachments = (items: Attachment[]) => {
   const [attachments, setAttachments] = React.useState<LoadedAttachment[]>([]);
   const [deletedIds, setDeletedIds] = React.useState<IdType[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   const load = async () => {
     const buffer: LoadedAttachment[] = [];
@@ -77,6 +69,7 @@ const useMessageAttachments = (items: Attachment[]) => {
       buffer.push(item);
     }
     setAttachments(buffer);
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -85,6 +78,7 @@ const useMessageAttachments = (items: Attachment[]) => {
 
   return {
     attachments: attachments.filter((a) => !deletedIds.includes(a.id)),
+    loading,
     deletedIds,
     setDeletedIds,
   }
