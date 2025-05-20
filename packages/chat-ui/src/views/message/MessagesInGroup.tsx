@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessageModel, ThreadModel } from '../../models';
 import { arrayPluckAndJoin } from '../../utils/arrayUtils/arrayPluckAndJoin';
-import ChatMessageComponent from './ChatMessageComponent';
+import ChatMessageComponent from './MessageComponent';
 import Stack from '@mui/material/Stack';
 import { useChatContext } from '../core/ChatGlobalContext';
 

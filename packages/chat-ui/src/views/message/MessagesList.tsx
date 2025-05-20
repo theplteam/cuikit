@@ -5,6 +5,8 @@ import { ThreadModel } from '../../models/ThreadModel';
 import { useGroupedMessages } from './hooks/useGroupedMessages';
 import MessagesInGroup from './MessagesInGroup';
 import { arrayPluckAndJoin } from '../../utils/arrayUtils/arrayPluckAndJoin';
+import { useObserverValue } from '../hooks/useObserverValue';
+import MessageComponentSkeleton from './MessageComponentSkeleton';
 
 type Props = {
   messages: MessageModel[];
@@ -15,6 +17,7 @@ type Props = {
 const MessagesList: React.FC<Props> = ({ messages, thread, gap }) => {
   const { slots } = useChatSlots();
   const groupedMessages = useGroupedMessages(messages);
+  const isFullDataLoading = useObserverValue(thread.isLoadingFullData);
 
   return (
     <>
@@ -28,6 +31,9 @@ const MessagesList: React.FC<Props> = ({ messages, thread, gap }) => {
           thread={thread}
         />
       ))}
+      {!!isFullDataLoading && (
+        <MessageComponentSkeleton gap={gap} />
+      )}
     </>
   );
 }

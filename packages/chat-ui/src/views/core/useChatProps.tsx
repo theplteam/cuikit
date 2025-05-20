@@ -14,6 +14,7 @@ import { ChatEventListeners } from './ChatEventListeners';
 import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
+import { IdType } from '../../types';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -39,6 +40,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * If it isn’t in the thread list or if the parameter is not provided, an empty thread will open.
    */
   thread?: DD;
+
+  /**
+   * Load thread with message history if only id and title are passed in threads
+   */
+  getFullThread?: (threadId: IdType) => DD | Promise<DD>;
 
   /**
    * Advanced function for forming a sequence of messages to implement custom functionality of branches

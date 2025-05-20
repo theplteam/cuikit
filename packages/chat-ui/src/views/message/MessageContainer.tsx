@@ -21,8 +21,8 @@ const ChatMessageContainerStyled = styled(
   boxShadow: elevation ? '0px 2px 16px rgba(0, 0, 0, 0.12), 0px 7px 10px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.2);' : 'none',
 }));
 
-const ChatMessageContainer = React.forwardRef((props: BoxProps & Props, ref) => {
+const MessageContainer = React.forwardRef((props: BoxProps & Props, ref) => {
   return <ChatMessageContainerStyled {...props} ref={ref} />
 });
 
-export default ChatMessageContainer;
+export default MessageContainer;

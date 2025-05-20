@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { keyframes, styled } from '@mui/material/styles';
-import ChatMessageContainer from './ChatMessageContainer';
+import MessageContainer from './MessageContainer';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
 import { messageActionsClasses } from './messageActionsClasses';
@@ -40,7 +40,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const ChatMessageContainerStyled = styled(ChatMessageContainer)(() => ({
+const MessageContainerStyled = styled(MessageContainer)(() => ({
   width: '100%',
   flexDirection: 'column',
   [`.${chatClassNames.markdownSmoothedPending}`]: {
@@ -64,7 +64,7 @@ const ChatMessageContainerStyled = styled(ChatMessageContainer)(() => ({
   }*/
 }));
 
-const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -102,7 +102,7 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
   }, [typing, containerId]);
 
   return (
-    <ChatMessageContainerStyled
+    <MessageContainerStyled
       // ref={setElement}
       gap={1}
       className={clsx(
@@ -149,8 +149,8 @@ const ChatMessageAssistant: React.FC<Props> = ({ message, enableAssistantActions
           )}
         />
       )}
-    </ChatMessageContainerStyled>
+    </MessageContainerStyled>
   );
 };
 
-export default ChatMessageAssistant;
+export default MessageAssistant;

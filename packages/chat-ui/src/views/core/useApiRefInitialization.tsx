@@ -13,8 +13,25 @@ export const useApiRefInitialization = (
   React.useEffect(() => {
     const getAllThreads = () => model.list.value.map(v => v.data.data);
 
-    const onChangeThread = (threadId: IdType) => {
-      model.currentThread.value = model.get(threadId);
+    const onChangeThread = async (threadId: IdType, debug?: string) => {
+      const threadModel = model.get(threadId);
+      model.currentThread.value = threadModel;
+
+      if (!!threadModel && !!threadModel.isLoadingFullData.value && !!props.getFullThread) {
+        let fullThread = props.getFullThread(threadModel.data.data);
+
+        if (fullThread instanceof Promise) {
+          fullThread = await fullThread;
+        }
+
+        if (fullThread) {
+          threadModel.setFullData(fullThread);
+        }
+      }
+
+      if (threadModel?.isLoadingFullData.value) {
+        threadModel.isLoadingFullData.value = false;
+      }
     };
 
     const openNewThread = (thread: Thread) => {

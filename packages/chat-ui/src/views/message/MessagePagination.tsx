@@ -1,7 +1,6 @@
 import * as React from 'react';
 import usePagination from '@mui/material/usePagination';
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '../../icons';
-import Box from '@mui/material/Box';
 import { useThreadContext } from '../thread/ThreadContext';
 import { MessageModel } from '../../models/MessageModel';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -16,7 +15,7 @@ export type MessagePaginationProps = {
   disabled?: boolean;
 };
 
-export const MessagePaginationHeight = 30
+const messagePaginationHeight = 30
 
 const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes, disabled }) => {
   const { apiRef } = useThreadContext();
@@ -39,15 +38,19 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
     onChange: (_event, page) => apiRef.current?.handleChangeBranch(branches[page - 1]),
   });
 
-  if (branches.length <= 1) return <Box height={MessagePaginationHeight} />;
+  if (branches.length <= 1) return null;
 
   return (
     <slots.messagePaginationRoot
       direction="row"
-      pr={0.5}
+      sx={{
+        position: 'absolute',
+        right: 4,
+        bottom: -messagePaginationHeight - 4
+      }}
       gap={0.5}
       alignItems="center"
-      height={MessagePaginationHeight}
+      height={messagePaginationHeight}
       className={classes.paginationClassName}
       {...slotProps?.messagePaginationRoot}
     >

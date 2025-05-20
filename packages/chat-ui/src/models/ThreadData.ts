@@ -6,8 +6,7 @@ export type Thread<DM extends Message = any> = {
   id: IdType;
   title: string;
   date?: string;
-  authorId?: number;
-  messages: DM[];
+  messages?: DM[];
 } & { isNew?: boolean };
 
 export class ThreadData<DM extends Message, Data extends Thread<DM>> {
@@ -37,17 +36,7 @@ export class ThreadData<DM extends Message, Data extends Thread<DM>> {
     return this.data.date;
   }
 
-  get authorId() {
-    return this.data.authorId;
-  }
-
   get isNew() {
     return this.data.isNew;
   }
-
-  // сделать копию объекта. Внимание! Не все данные актуальные
-  copyData = () => ({
-    ...this.data,
-    title: this.title,
-  });
 }

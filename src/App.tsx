@@ -1,14 +1,11 @@
 import * as React from 'react';
-// import TestApp from './test/common/BaseExample';
-import TestApp from './views/Sandbox';
-import eruda from 'eruda';
+import Sandbox from './views/Sandbox';
+// If eruda is needed - install it in Sandbox.tsx
+// import eruda from 'eruda';
 
 const App: React.FC = () => {
-  React.useEffect(() => {
-    eruda.init();
-  }, [])
   return (
-    <TestApp />
+    <Sandbox />
   )
 }
 

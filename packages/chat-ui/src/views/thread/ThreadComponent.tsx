@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import ChatMessages from '../message/ChatMessages';
+import ChatMessages from '../message/MessagesComponent';
 import ChatTextFieldRow from '../form/ChatTextFieldRow';
 import Box from '@mui/material/Box';
 import { ChatViewConstants } from '../ChatViewConstants';

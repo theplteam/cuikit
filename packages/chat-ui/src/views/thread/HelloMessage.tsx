@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChatMessageOwner, ThreadModel, MessageModel } from '../../models';
 import { randomId } from '../../utils/numberUtils/randomInt';
-import ChatMessageComponent from '../message/ChatMessageComponent';
+import ChatMessageComponent from '../message/MessageComponent';
 import { ForceStream } from '../../models/stream/ForceStream';
 
 type Props = {

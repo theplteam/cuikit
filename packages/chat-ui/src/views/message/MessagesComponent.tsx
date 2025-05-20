@@ -5,11 +5,11 @@ import MessagesList from './MessagesList';
 import { useThreadContext } from '../thread/ThreadContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 
-const ChatMessages: React.FC = () => {
+const MessagesComponent: React.FC = () => {
   const { apiRef, thread } = useThreadContext();
 
   const messages = useObserverValue(apiRef.current?.getListener('branch'));
-  const gap = 3;
+  const gap = 4;
 
   return (
     <Stack
@@ -25,4 +25,4 @@ const ChatMessages: React.FC = () => {
   );
 };
 
-export default React.memo(ChatMessages);
+export default React.memo(MessagesComponent);

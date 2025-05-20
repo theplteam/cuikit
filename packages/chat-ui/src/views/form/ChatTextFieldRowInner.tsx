@@ -39,6 +39,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const { defaultTextFieldValue, apiRef } = useChatContext();
 
   const isTyping = useObserverValue(thread?.isTyping);
+  const isLoadingFullData = useObserverValue(thread?.isLoadingFullData);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
   const [images, setImages] = React.useState<string[]>([]);
@@ -62,7 +63,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setImages([]);
   }
 
-  const disabled = !thread || isTyping;
+  const disabled = !thread || isTyping || isLoadingFullData;
 
   return (
     <StackStyled>
@@ -84,6 +85,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
           isTyping={isTyping}
           text={text}
           images={images}
+          isLoadingFullData={isLoadingFullData}
           onSendMessage={onSendMessage}
         />
       </Stack>
