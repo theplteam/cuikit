@@ -12,7 +12,7 @@ type Props = {
 };
 
 const SendMessageButton: React.FC<Props> = ({ text, images, onSendMessage, isTyping, isLoadingFullData }) => {
-  const disabled = !!isLoadingFullData || (!text && !images.length);
+  const disabled = !!isLoadingFullData || (!text && !images.length && !isTyping);
   const { slots, slotProps } = useChatSlots();
   const { handleStopMessageStreaming } = useChatContext();
 

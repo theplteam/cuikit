@@ -11,6 +11,7 @@ export const useConversationBlockHeightCallback = (getConversationBlockHeightMin
 
     const caculatedHeight = Math.max(0, (box?.clientHeight ?? 0) - (textField?.offsetHeight ?? 0) - paddingsSum);
 
-    return getConversationBlockHeightMin?.(caculatedHeight) ?? caculatedHeight;
+    const usersHeight = getConversationBlockHeightMin?.(caculatedHeight);
+    return usersHeight ?? caculatedHeight;
   };
 }
