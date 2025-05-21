@@ -182,7 +182,7 @@ const App: React.FC = () => {
         component="main"
       >
         <Chat
-          thread={threads[0]}
+          initialThread={threads[0]}
           threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
           apiRef={apiRef}

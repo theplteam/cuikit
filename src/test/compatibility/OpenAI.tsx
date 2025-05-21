@@ -101,7 +101,7 @@ const App: React.FC = () => {
     <Box height="100dvh" width="100dvw">
       <ChatGptAdapter>
         <ChatPage
-          thread={dd[0]}
+          initialThread={dd[0]}
           threads={dd}
           handleStopMessageStreaming={handleStopMessageStreaming}
           helloMessage={helloMessage}

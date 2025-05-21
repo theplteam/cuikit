@@ -73,7 +73,7 @@ const App: React.FC = () => {
     <Box height="100dvh" width="100dvw">
       <ChatPage
         enableReasoning
-        thread={threads[0]}
+        initialThread={threads[0]}
         threads={threads}
         apiRef={apiRef}
         slots={{
