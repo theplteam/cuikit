@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import MessageAttachmentModel from 'models/MessageAttachmentModel';
+import MessageAttachmentModel from '../../../models/MessageAttachmentModel';
 import Scrollbar from '../../../ui/Scrollbar';
-import { ThreadModel } from 'models';
+import { ThreadModel } from '../../../models/ThreadModel';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
 import PreviewItem from './PreviewItem';
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachments }) => {
-  const { enableFileAttachments } = useChatContext();
+  const { enableFileAttachments, onFileDetached } = useChatContext();
 
   const galleryId = 'gallery-preview';
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
@@ -40,6 +40,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
 
   const handleDelete = (id: number, url: string) => {
     setAttachments(attachments.filter((a) => a.id !== id));
+    onFileDetached?.(id);
     URL.revokeObjectURL(url);
     if (thread) {
       thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((i) => i !== id);

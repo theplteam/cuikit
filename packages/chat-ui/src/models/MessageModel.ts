@@ -81,10 +81,10 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = [new MessageText(_data.content)];
     } else {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
-      this.texts.value = content.filter(v => v.type === ChatMessageContentType.TEXT).map(
+      this.texts.value = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-      this.attachments = content.filter(c => c.type !== ChatMessageContentType.TEXT);
+      this.attachments = content.filter(c => c.type !== ChatMessageContentType.TEXT) as Attachment[];
     }
 
     if (_data.reasoning) {

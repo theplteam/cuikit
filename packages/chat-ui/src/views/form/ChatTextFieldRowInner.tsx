@@ -11,7 +11,7 @@ import { motion } from '../../utils/materialDesign/motion';
 import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { ChatMessageContentType, Message } from '../../models';
-import MessageAttachmentModel from 'models/MessageAttachmentModel';
+import MessageAttachmentModel from '../../models/MessageAttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 
 type Props = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import MessageAttachmentModel from 'models/MessageAttachmentModel';
+import MessageAttachmentModel from '../../../models/MessageAttachmentModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import CircularLoadProgress from './CircularLoadProgress';
 import PreviewDeleteButton from './PreviewDeleteButton';

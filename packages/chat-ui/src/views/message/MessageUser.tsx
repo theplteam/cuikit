@@ -21,7 +21,7 @@ import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
 import MessageAttachments from './attachments/MessageAttachments';
-import { IdType } from 'types';
+import { IdType } from '../../types';
 import useMessageAttachments from './attachments/useMessageAttachments';
 import { chatClassNames } from '../core/chatClassNames';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';

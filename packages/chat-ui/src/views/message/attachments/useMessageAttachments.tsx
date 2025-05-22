@@ -1,7 +1,7 @@
 import React from 'react';
 import { Attachment, ChatMessageContentType } from '../../../models';
 import loadUrlFile from '../../../utils/loadUrlFile';
-import { IdType } from 'types';
+import { IdType } from '../../../types';
 import getVideoPoster from '../../../utils/getVideoPoster';
 
 export type LoadedAttachment = {

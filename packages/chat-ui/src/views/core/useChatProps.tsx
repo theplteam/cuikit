@@ -148,6 +148,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   onFileAttached?: (params: FileAttachedParams) => void | Promise<void>;
   /**
+   * Callback fired after file detached from message
+   */
+  onFileDetached?: (fileId: IdType) => void | Promise<void>;
+  /**
    * Acceptable file formats for attaching to a message.
    * Check [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Reference/Attributes/accept) for more information.
    * @example Array ['image', 'text'] | ['.png', '.txt'] | ['image/*', 'text/*'] 
