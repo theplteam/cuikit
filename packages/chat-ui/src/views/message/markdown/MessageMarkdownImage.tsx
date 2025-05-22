@@ -17,11 +17,10 @@ const BoxStyled = styled(Box)(() => ({
     width: 'inherit',
   },
   '& img': {
-    maxHeight: 'min(500px, 80dvh)',
     objectFit: 'contain',
     objectPosition: 'center',
-    aspectRatio: 'auto',
     width: 'inherit',
+    aspectRatio: '1 / 0.5',
   },
 }));
 

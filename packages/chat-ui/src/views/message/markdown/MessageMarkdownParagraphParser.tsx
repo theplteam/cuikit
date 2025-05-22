@@ -9,7 +9,7 @@ type Props = {
 } & React.JSX.IntrinsicElements['p'];
 
 const MessageMarkdownParagraphParser: React.FC<Props> = ({ pSlot, pSlotProps, children, inProgress: inProgress, ...props }) => {
-  return React.Children.toArray(children).some(child => typeof child === "string") ? (
+  return React.Children.toArray(children).some(child => typeof child === "string" && child !== "\n") ? (
     <MarkdownTexts
       inProgress={inProgress}
       component={pSlot}

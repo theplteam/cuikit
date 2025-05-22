@@ -5,7 +5,7 @@ import { useChatContext } from '../../core/ChatGlobalContext';
 import MarkdownParagraphParser from './MessageMarkdownParagraphParser';
 import { useSmoothManager } from './smooth/useSmoothManager';
 import MarkdownComponentSmoother from './smooth/MarkdownComponentSmoother';
-import { BoldComponent, EmComponent, ItalicComponent, LiComponent, StrongComponent } from './SimpleMarkdownComponents';
+import { BoldComponent, ItalicComponent, LiComponent, StrongComponent } from './SimpleMarkdownComponents';
 import MarkdownLazyComponentSmoother from './smooth/MarkdownLazyComponentSmoother';
 import { SlotPropsType } from '../../core/SlotPropsType';
 import { Message, Thread } from '../../../models';
@@ -45,6 +45,15 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
       },
     });
   }, [inProgress]);
+
+  const paragraphSettings = React.useMemo(() => ({
+      component: MarkdownParagraphParser,
+      props: {
+        pSlot: slots.markdownP,
+        pSlotProps: slotProps.markdownP,
+        inProgress: inProgress
+      }
+    }), [inProgress, slots, slotProps]);
 
   useSmoothManager(text, inProgress);
 
@@ -118,10 +127,6 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
               component: MarkdownLazyComponentSmoother,
               props: { inProgress, component: StrongComponent },
             },
-            em: {
-              component: MarkdownLazyComponentSmoother,
-              props: { inProgress, component: EmComponent },
-            },
             h1: getLazySmoothComponent('markdownH1'),
             h2: getLazySmoothComponent('markdownH2'),
             h3: getLazySmoothComponent('markdownH3'),
@@ -142,22 +147,19 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
                 )
               },
             },
-            p: {
+            em: {
               component: MarkdownParagraphParser,
               props: {
                 pSlot: slots.markdownP,
-                pSlotProps: slotProps.markdownP,
+                pSlotProps: {
+                  ...slotProps.markdownP,
+                  fontStyle: 'italic',
+                },
                 inProgress: inProgress
               }
             },
-            span: {
-              component: MarkdownParagraphParser,
-              props: {
-                pSlot: slots.markdownP,
-                pSlotProps: slotProps.markdownP,
-                inProgress: inProgress
-              }
-            },
+            p: paragraphSettings,
+            span: paragraphSettings,
           },
         }}
     >
