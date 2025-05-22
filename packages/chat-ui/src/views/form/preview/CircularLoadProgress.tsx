@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material';
 
 type Props = {
-  progress: number;
+  progress?: number;
   size?: number;
 };
 
@@ -19,7 +19,11 @@ const StackStyled = styled(Stack)(() => ({
 const CircularLoadProgress: React.FC<Props> = ({ progress, size }) => {
   return (
     <StackStyled justifyContent='center' alignItems='center'>
-      <CircularProgress variant="determinate" value={progress} size={size || 40} />
+      <CircularProgress
+        variant={progress ? "determinate" : "indeterminate"}
+        value={progress}
+        size={size || 40}
+      />
     </StackStyled>
   );
 };

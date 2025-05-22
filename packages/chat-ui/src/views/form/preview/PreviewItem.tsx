@@ -45,7 +45,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
 
   return (
     <BoxStyled>
-      {(progress && progress < 100) ? <CircularLoadProgress progress={progress || 0} /> : null}
+      {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
       {isGallery
         ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
         : <FileItem name={name} type={type} />}

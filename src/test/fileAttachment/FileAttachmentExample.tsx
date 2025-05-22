@@ -130,9 +130,9 @@ const FileAttachmentExample: React.FC = () => {
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
-  const onFileAttached = async ({ params }: FileAttachedParams) => {
+  const onFileAttached = async ({ actions }: FileAttachedParams) => {
     let progress = 0;
-    const { setProgress } = params;
+    const { setProgress } = actions;
 
     const uploadSimulation = new Promise<void>((resolve) => {
       const interval = setInterval(() => {

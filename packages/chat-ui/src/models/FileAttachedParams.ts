@@ -3,7 +3,7 @@ import { IdType } from "../types";
 export type FileAttachedParams = {
   id: IdType;
   file: File;
-  params: {
+  actions: {
     setProgress: (n: number) => void;
     onFinish: () => void;
   },
