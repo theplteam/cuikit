@@ -29,7 +29,7 @@ const FileItem: React.FC<Props> = ({ name, type }) => {
       paddingX={1}
     >
       <Icon color="primary" fontSize="large" />
-      <Typography>
+      <Typography variant='body2'>
         {ellipsis}
       </Typography>
     </Stack>

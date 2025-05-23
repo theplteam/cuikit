@@ -5,6 +5,7 @@ import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton
 import { IdType } from '../../../types';
 import FileItem from '../../../views/form/preview/FileItem';
 import { LoadedAttachment } from './useMessageAttachments';
+import { useElementRef } from '../../../views/hooks/useElementRef';
 
 type Props = {
   item: LoadedAttachment;
@@ -20,11 +21,12 @@ const StackStyled = styled(Stack)(({ theme }) => ({
 
 const MessageFileListItem = ({ item, onDelete }: Props) => {
   const { id, file } = item;
+  const ref = useElementRef();
 
   if (!file) return null;
 
   return (
-    <StackStyled>
+    <StackStyled ref={ref}>
       <FileItem name={file.name} type={file.type} />
       {onDelete ? <PreviewDeleteButton onClick={() => onDelete(id)} /> : null}
     </StackStyled>

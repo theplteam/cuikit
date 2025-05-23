@@ -10,12 +10,14 @@ const PreviewDeleteButton = ({ onClick }: Props) => {
   const coreSlots = useChatCoreSlots();
   return (
     <coreSlots.iconButton
+      disableRipple
       size='small'
       sx={{
         position: 'absolute',
         padding: 0,
-        top: 2,
-        right: 2,
+        top: 4,
+        right: 4,
+        backgroundColor: (theme) => theme.palette.common.white,
       }}
       onClick={onClick}
     >

@@ -69,7 +69,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
   return (
-    <StackStyled>
+    <StackStyled gap={attachments.length ? 1 : 0}>
       <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton
@@ -89,7 +89,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
           onSendMessage={onSendMessage}
         />
       </Stack>
-    </StackStyled >
+    </StackStyled>
   );
 };
 
