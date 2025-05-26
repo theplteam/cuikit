@@ -13,6 +13,7 @@ export const useChatScrollFunctions = (
   getScrollContainer: () => HTMLDivElement | undefined | Window,
 ) => {
   const [showButton, setShowButton] = React.useState(false);
+  const [lastScrolledThread, setLastScrolledThread] = React.useState<ThreadModel | undefined>();
   const isTablet = useTablet();
 
   const handleBottomScroll = React.useCallback(() => {
@@ -47,7 +48,8 @@ export const useChatScrollFunctions = (
 
   // scroll the dialog to the end of the list or to the previous location when opening
   React.useEffect(() => {
-    if (thread) {
+    if (thread && lastScrolledThread?.id !== thread.id) {
+      setLastScrolledThread(thread);
       if (thread.scrollY < 0) {
         // feature removed because the auto-scroll when opening a thread was annoying
         // TODO: in the first frame the height is incomplete, then updates

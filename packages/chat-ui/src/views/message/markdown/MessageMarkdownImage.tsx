@@ -8,7 +8,7 @@ type Props = React.JSX.IntrinsicElements['img'] & {
   rootClassName?: string;
 };
 
-const BoxStyled = styled(Box)(() => ({
+const BoxStyled = styled(Box)(({ theme }) => ({
   marginTop: 8,
   width: '100%',
   backgroundColor: materialDesignSysPalette.surfaceBright,
@@ -20,8 +20,10 @@ const BoxStyled = styled(Box)(() => ({
     maxHeight: 'min(500px, 80dvh)',
     objectFit: 'contain',
     objectPosition: 'center',
-    aspectRatio: 'auto',
     width: 'inherit',
+    [theme.breakpoints.down('md')]: {
+      maxHeight: 'min(350px, 60dvh)',
+    }
   },
 }));
 

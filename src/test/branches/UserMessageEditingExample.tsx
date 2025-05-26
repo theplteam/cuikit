@@ -83,7 +83,7 @@ const UserMessageEditingExample: React.FC = () => {
     <Box height="100dvh" width="100dvw">
       <ChatPage
         enableBranches
-        thread={threads[0]}
+        initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
         onUserMessageSent={onUserMessageSent}

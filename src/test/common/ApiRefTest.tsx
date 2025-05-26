@@ -217,7 +217,7 @@ const App: React.FC = () => {
           apiRef={apiRef}
           handleStopMessageStreaming={handleStopMessageStreaming}
           scrollerRef={scrollRef}
-          thread={threads[0]}
+          initialThread={threads[0]}
           threads={threads}
           onUserMessageSent={onUserMessageSent}
         />

@@ -62,7 +62,7 @@ const App: React.FC = () => {
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
-        thread={threads[0]}
+        initialThread={threads[0]}
         threads={threads}
         apiRef={apiRef}
         slots={{

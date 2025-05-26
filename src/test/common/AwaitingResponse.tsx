@@ -43,7 +43,7 @@ const App: React.FC = () => {
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
-        defaultTextFieldValue="Test" thread={threads[0]} threads={threads}
+        defaultTextFieldValue="Test" initialThread={threads[0]} threads={threads}
         onUserMessageSent={onUserMessageSent}
       />
     </Box>
