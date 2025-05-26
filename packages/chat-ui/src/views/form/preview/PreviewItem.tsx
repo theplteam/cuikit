@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import MessageAttachmentModel from '../../../models/MessageAttachmentModel';
+import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import CircularLoadProgress from './CircularLoadProgress';
 import PreviewDeleteButton from './PreviewDeleteButton';
@@ -10,11 +10,12 @@ import GalleryItem from './GalleryItem';
 import { useElementRef } from '../../../views/hooks/useElementRef';
 import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
+import { IdType } from '../../../types';
 
 type Props = {
-  item: MessageAttachmentModel;
+  item: AttachmentModel;
   galleryId: string;
-  handleDelete: (id: number, url: string) => void;
+  handleDelete: (id: IdType, url: string) => void;
 };
 
 const BoxStyled = styled(Box)(({ theme }) => ({

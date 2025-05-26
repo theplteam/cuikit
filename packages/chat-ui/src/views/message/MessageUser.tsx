@@ -22,7 +22,6 @@ import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
 import MessageAttachments from './attachments/MessageAttachments';
 import { IdType } from '../../types';
-import useMessageAttachments from './attachments/useMessageAttachments';
 import { chatClassNames } from '../core/chatClassNames';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
@@ -61,11 +60,11 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
+  const deletedIds = useObserverValue(message.attachments.deletedIds);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
   const { slots, slotProps } = useChatSlots();
-  const { attachments, deletedIds, loading, setDeletedIds } = useMessageAttachments(message.attachments);
 
   const mode = messageMode.values[message.id];
 
@@ -79,10 +78,11 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
     messageMode.view(message.id);
     let content: MessageUserContent = newText;
     if (message.attachments) {
+      const attachmentContent = message.attachments.editorItems.map((a) => a.contentData);
       content = [{
         type: ChatMessageContentType.TEXT,
         text: newText,
-      }, ...message.attachments.filter((a) => !deletedIds.includes(a.id))];
+      }, ...attachmentContent];
     }
     const newMessage = await apiRef.current?.onEditMessage(content, message);
     if (newMessage) {
@@ -93,11 +93,11 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
 
   const onClickCancelEdit = () => {
     messageMode.view(message.id);
-    setDeletedIds([]);
+    message.attachments.deletedIds.value = [];
   }
 
   const onDeleteAttachment = (id: IdType) => {
-    setDeletedIds([...deletedIds, id]);
+    message.attachments.deletedIds.value = [...deletedIds || [], id];
   }
 
   const children = React.useMemo(() => (
@@ -122,14 +122,12 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
         <MessageAttachments
-          loading={loading}
-          messageId={message.id}
-          attachments={attachments}
+          message={message}
           onDeleteAttachment={onDeleteAttachment}
         />
         <MessageUserEditor
           text={message.text}
-          isAttachmentsChanged={deletedIds.length > 0}
+          isAttachmentsChanged={!deletedIds?.length}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />
@@ -152,7 +150,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         flexDirection="column"
         gap={1}
       >
-        <MessageAttachments loading={loading} messageId={message.id} attachments={attachments} />
+        <MessageAttachments message={message} />
         {message.text ? (
           <ChatMessageContainerStyled
             ref={setElement}

@@ -2,23 +2,32 @@ import { ObservableReactValue } from "../utils/observers";
 import { randomInt } from "../utils/numberUtils/randomInt";
 import { Attachment, ChatMessageContentType } from "./MessageModel";
 import getVideoPoster from "../utils/getVideoPoster";
+import { IdType } from "../types";
 
-class MessageAttachmentModel {
-  id = randomInt(100, 100000);
-
+class AttachmentModel {
   readonly progress = new ObservableReactValue<number>(0);
 
   readonly poster = new ObservableReactValue<HTMLImageElement | undefined>(undefined);
 
   private _data: File;
 
+  private _id: IdType =  randomInt(100, 100000);
+
   public url: string;
 
-  constructor(_data: File) {
+  constructor(_data: File, _id?: IdType) {
+    if (_id) {
+      this.progress.value = 100;
+      this._id = _id;
+    }
+  
     this._data = _data;
     this.url = URL.createObjectURL(_data);
+ 
     this._createPoster();
   }
+
+  get id() { return this._id; }
 
   get data() { return this._data; }
 
@@ -44,7 +53,7 @@ class MessageAttachmentModel {
 
   setProgress = (n: number) => { this.progress.value = n }
 
-  dataToContent = () => {
+  get contentData() { 
     const type = this.type.startsWith('image')
       ? ChatMessageContentType.IMAGE
       : this.type.startsWith('video')
@@ -59,4 +68,4 @@ class MessageAttachmentModel {
   }
 }
 
-export default MessageAttachmentModel;
+export default AttachmentModel;

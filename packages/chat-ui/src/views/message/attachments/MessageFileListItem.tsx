@@ -4,11 +4,11 @@ import { styled } from '@mui/material/styles';
 import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
 import { IdType } from '../../../types';
 import FileItem from '../../../views/form/preview/FileItem';
-import { LoadedAttachment } from './useMessageAttachments';
 import { useElementRef } from '../../../views/hooks/useElementRef';
+import AttachmentModel from '../../../models/AttachmentModel';
 
 type Props = {
-  item: LoadedAttachment;
+  item: AttachmentModel;
   onDelete?: (id: IdType) => void;
 };
 
@@ -20,14 +20,12 @@ const StackStyled = styled(Stack)(({ theme }) => ({
 }));
 
 const MessageFileListItem = ({ item, onDelete }: Props) => {
-  const { id, file } = item;
+  const { id, name, type } = item;
   const ref = useElementRef();
-
-  if (!file) return null;
 
   return (
     <StackStyled ref={ref}>
-      <FileItem name={file.name} type={file.type} />
+      <FileItem name={name} type={type} />
       {onDelete ? <PreviewDeleteButton onClick={() => onDelete(id)} /> : null}
     </StackStyled>
   );

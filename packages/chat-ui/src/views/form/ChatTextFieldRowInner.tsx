@@ -11,8 +11,9 @@ import { motion } from '../../utils/materialDesign/motion';
 import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { ChatMessageContentType, Message } from '../../models';
-import MessageAttachmentModel from '../../models/MessageAttachmentModel';
+import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
+import attachmentsStore from '../../models/AttachmentsStore';
 
 type Props = {
   thread?: ThreadModel;
@@ -44,28 +45,29 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const isLoadingFullData = useObserverValue(thread?.isLoadingFullData);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
-  const [attachments, setAttachments] = React.useState<MessageAttachmentModel[]>([]);
+  const [attachments, setAttachments] = React.useState<AttachmentModel[]>([]);
 
   const onSendMessage = () => {
+    if (isLoadingAttachments?.length) return;
     let content: Message['content'] = text;
     if (attachments.length) {
-      content = attachments.map((a) => a.dataToContent());
+      attachmentsStore.items.push(...attachments);
+      content = attachments.map((a) => a.contentData);
       if (text) {
         content = [
           { type: ChatMessageContentType.TEXT, text },
           ...content,
         ];
       }
-    }
+    };
 
     apiRef.current?.sendUserMessage(content);
     setText('');
 
-    attachments.forEach((a) => URL.revokeObjectURL(a.url));
     setAttachments([]);
   }
 
-  const disabledTextField = !thread || isTyping || !!isLoadingAttachments?.length || isLoadingFullData;
+  const disabledTextField = !thread || isTyping || isLoadingFullData;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
   return (

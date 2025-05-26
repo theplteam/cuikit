@@ -5,6 +5,7 @@ import { randomInt } from '../utils/numberUtils/randomInt';
 import { MessageText } from './MessageText';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { v4 as uuid } from 'uuid';
+import MessageAttachmentsModel from './MessageAttachmentsModel';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -67,7 +68,7 @@ export class MessageModel<DM extends Message = Message> {
 
   readonly reasoningManager = new MessageReasoningModel();
 
-  attachments: Attachment[] = [];
+  readonly attachments = new MessageAttachmentsModel();
 
   /**
    * An observable flag indicating the start/finish of message typing.
@@ -84,7 +85,7 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-      this.attachments = content.filter(c => c.type !== ChatMessageContentType.TEXT) as Attachment[];
+      this.attachments.init(content.filter(c => c.type !== ChatMessageContentType.TEXT) as Attachment[]);
     }
 
     if (_data.reasoning) {
@@ -145,8 +146,9 @@ export class MessageModel<DM extends Message = Message> {
   get content() {
     let data: Message['content'] = this.text;
 
-    if (this.attachments?.length) {
-      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...this.attachments ];
+    if (this.attachments.itemsAll.length) {
+      const attachmentContent = this.attachments.itemsAll.map((a) => a.contentData);
+      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...attachmentContent ];
     }
 
     return data;

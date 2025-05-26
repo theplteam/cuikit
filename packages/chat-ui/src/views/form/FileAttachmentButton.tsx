@@ -11,11 +11,11 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import FolderIcon from '@mui/icons-material/Folder';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
 import { useSnackbar } from '../hooks/useSnackbar';
-import MessageAttachmentModel from '../../models/MessageAttachmentModel';
+import AttachmentModel from '../../models/AttachmentModel';
 
 type Props = {
-  attachments: MessageAttachmentModel[];
-  setAttachments: (a: MessageAttachmentModel[]) => void;
+  attachments: AttachmentModel[];
+  setAttachments: (a: AttachmentModel[]) => void;
   isTyping?: boolean;
 };
 
@@ -45,10 +45,10 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     if (files.length + attachments.length > ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE) {
       files = files.slice(0, ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE - attachments.length);
-      snackbar.show(locale.maxImageWarning);
+      snackbar.show(locale.maxAttachmentWarning);
     };
 
-    const fileAttachments = files.map((f) => new MessageAttachmentModel(f))
+    const fileAttachments = files.map((f) => new AttachmentModel(f))
     setAttachments([...attachments, ...fileAttachments]);
 
     if (thread) {

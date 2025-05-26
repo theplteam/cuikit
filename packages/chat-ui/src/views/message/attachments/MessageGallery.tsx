@@ -4,13 +4,13 @@ import { IdType } from '../../../types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MessageGalleryItem from './MessageGalleryItem';
-import { LoadedAttachment } from './useMessageAttachments';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
+import AttachmentModel from '../../../models/AttachmentModel';
 import 'photoswipe/style.css';
 
 type Props = {
   id: IdType;
-  items: LoadedAttachment[];
+  items: AttachmentModel[];
   onDeleteItem?: (id: IdType) => void;
 };
 

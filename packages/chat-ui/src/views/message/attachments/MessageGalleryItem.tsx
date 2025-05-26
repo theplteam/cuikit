@@ -4,10 +4,11 @@ import { styled } from '@mui/material/styles';
 import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
 import GalleryItem from '../../../views/form/preview/GalleryItem';
 import { IdType } from '../../../types';
-import { LoadedAttachment } from './useMessageAttachments';
+import AttachmentModel from 'models/AttachmentModel';
+import { useObserverValue } from '../../../views/hooks/useObserverValue';
 
 type Props = {
-  item: LoadedAttachment;
+  item: AttachmentModel;
   galleryId: string;
   columns: number;
   rows: number;
@@ -38,8 +39,9 @@ const GridItem = styled(Box)(({ theme }) => ({
 }));
 
 const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }: Props) => {
-  const { poster, file, url } = item;
-  const isVideo = file?.type.startsWith('video');
+  const { type, url } = item;
+  const poster = useObserverValue(item.poster);
+  const isVideo = type.startsWith('video');
 
   const getItemsInRow = (row: number) => {
     const startIndex = row * columns;

@@ -53,11 +53,10 @@ export type Localization = {
   messageFeedbackText: string;
 
   // other
-  maxImageWarning: string;
+  maxAttachmentWarning: string;
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;
-  messageAttachmentsLoading: string;
 
   reasonedFor: string;
 };

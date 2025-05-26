@@ -6,6 +6,7 @@ import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { MessageSentParams } from './MessageSentParams';
+import { IdType } from '../types';
 
 export type NewMessageResponse = {
   user: Message,
@@ -31,7 +32,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly isTyping = new ObservableReactValue(false);
 
-  readonly isLoadingAttachments = new ObservableReactValue<number[]>([]);
+  readonly isLoadingAttachments = new ObservableReactValue<IdType[]>([]);
 
   readonly isEmpty = new ObservableReactValue(false);
 

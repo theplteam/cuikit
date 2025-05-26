@@ -1,18 +1,19 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import MessageAttachmentModel from '../../../models/MessageAttachmentModel';
+import AttachmentModel from '../../../models/AttachmentModel';
 import Scrollbar from '../../../ui/Scrollbar';
 import { ThreadModel } from '../../../models/ThreadModel';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
 import PreviewItem from './PreviewItem';
 import 'photoswipe/style.css';
+import { IdType } from '../../../types';
 
 type Props = {
   thread?: ThreadModel;
-  attachments: MessageAttachmentModel[];
-  setAttachments: (a: MessageAttachmentModel[]) => void;
+  attachments: AttachmentModel[];
+  setAttachments: (a: AttachmentModel[]) => void;
 };
 
 const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachments }) => {
@@ -38,7 +39,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
     };
   }, [lightbox]);
 
-  const handleDelete = (id: number, url: string) => {
+  const handleDelete = (id: IdType, url: string) => {
     setAttachments(attachments.filter((a) => a.id !== id));
     onFileDetached?.(id);
     URL.revokeObjectURL(url);

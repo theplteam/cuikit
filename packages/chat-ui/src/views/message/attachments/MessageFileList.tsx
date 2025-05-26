@@ -2,10 +2,10 @@ import React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageFileListItem from './MessageFileListItem';
 import { IdType } from '../../../types';
-import { LoadedAttachment } from './useMessageAttachments';
+import AttachmentModel from '../../../models/AttachmentModel';
 
 type Props = {
-  items: LoadedAttachment[];
+  items: AttachmentModel[];
   onDeleteItem?: (id: IdType) => void;
 };
 
