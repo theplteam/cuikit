@@ -16,7 +16,7 @@ export class ChatViewConstants {
 
   static readonly MARKDOWN_IMAGE_CLASSNAME = 'chatImageGalleryClass';
 
-  static readonly TEXT_SMOOTH_ANIMATION_DURATION_MS = 600;
+  static readonly MAX_ATTACHMENTS_IN_MESSAGE = 10;
 
-  static readonly MAX_IMAGES_IN_MESSAGE = 10;
+  static readonly TEXT_SMOOTH_ANIMATION_DURATION_MS = 600;
 }

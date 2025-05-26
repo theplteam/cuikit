@@ -14,6 +14,7 @@ import { ChatEventListeners } from './ChatEventListeners';
 import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
+import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { IdType } from '../../types';
 
 type RequiredProps<DD extends Thread<any>> = {
@@ -139,9 +140,25 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
-   * Enable user's ability to add pictures in messages
+   * Enable user's ability to add files in messages
    */
-  enableImageAttachments?: boolean;
+  enableFileAttachments?: boolean;
+  /**
+   * Callback fired after file attach to message
+   */
+  onFileAttached?: (params: FileAttachedParams) => void | Promise<void>;
+  /**
+   * Callback fired after file detached from message
+   */
+  onFileDetached?: (fileId: IdType) => void | Promise<void>;
+  /**
+   * Acceptable file formats for attaching to a message.
+   * Check [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Reference/Attributes/accept) for more information.
+   * @example Array ['image', 'text'] | ['.png', '.txt'] | ['image/*', 'text/*'] 
+   * @example String 'image/*, text/*' | '.png, .txt'
+   * @default '*'
+   */
+  acceptableFileFormat?: string | string[];
   /**
    * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
    */

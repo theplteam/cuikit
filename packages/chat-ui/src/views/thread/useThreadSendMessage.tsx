@@ -5,7 +5,8 @@ import {
   MessageUserContent,
   MessageModel,
   ChatMessageOwner,
-  InternalMessageType
+  InternalMessageType,
+  ChatMessageContentType,
 } from '../../models';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { ChatUsersProps } from '../core/useChatProps';
@@ -46,7 +47,6 @@ export const useThreadSendMessage = (
   const { transformMessage } = useAdapterContext();
 
   const onCreatePair = async (
-    text: string,
     content: MessageUserContent,
     reason: BeforeUserMessageSendFnParams['reason'],
     parentMessage?: MessageModel
@@ -58,9 +58,17 @@ export const useThreadSendMessage = (
     if (beforeUserMessageSend) {
       // console.log('beforeUserMessageSend', branchMessages);
       const history = branchMessages.map(v => getInternalMessage(v));
+      let text = '';
+      if (typeof content === 'string') {
+        text = content;
+      } else if (Array.isArray(content)) {
+        text = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[])?.[0]?.text ?? '';
+      }
 
       const pairs = await beforeUserMessageSend({
-        text, content, history,
+        text,
+        content,
+        history,
         parentMessage: parentMessage ? getInternalMessage(parentMessage) : undefined,
         reason,
       });
@@ -106,15 +114,14 @@ export const useThreadSendMessage = (
 
   };
 
-  const onEditMessage = async (newText: string, messageEdit: MessageModel) => {
+  const onEditMessage = async (content: MessageUserContent, messageEdit: MessageModel) => {
     if (!thread) return;
 
     const parentMessage = thread.messagesArray.find(v => v.id === messageEdit.parentId);
 
-    const content: MessageUserContent = [{ type: 'text', text: newText }];
     thread.streamStatus.value = StreamResponseState.START;
 
-    const { userMessage, assistantMessage } = await onCreatePair(newText, content, 'editMessage', parentMessage);
+    const { userMessage, assistantMessage } = await onCreatePair(content, 'editMessage', parentMessage);
 
     thread.messages.push(userMessage, assistantMessage);
 
@@ -132,7 +139,7 @@ export const useThreadSendMessage = (
       throw new Error('thread is undefined');
     }
     if (typeof content === 'string') {
-      content = [{ type: 'text', text: content }];
+      content = [{ type: ChatMessageContentType.TEXT, text: content }];
     }
 
     thread.isTyping.value = true;
@@ -146,34 +153,24 @@ export const useThreadSendMessage = (
 
     return new Promise<{ message: InternalMessageType }>((resolve, reject) => {
       const streamParams = messageSender.getUserParams(resolve, getInternalMessage);
-        const res = thread.streamMessage(messageSender.getUserParams(resolve, getInternalMessage));
+      const res = thread.streamMessage(messageSender.getUserParams(resolve, getInternalMessage));
 
-        if (res instanceof Promise) {
-          res
-            .then(streamParams.onFinish)
-            .catch((reason) => {
-              messageSender.changeTypingStatus(false);
-              thread.isTyping.value = false;
-              reject(reason);
-            });
-        }
+      if (res instanceof Promise) {
+        res
+          .then(streamParams.onFinish)
+          .catch((reason) => {
+            messageSender.changeTypingStatus(false);
+            thread.isTyping.value = false;
+            reject(reason);
+          });
+      }
     });
   };
 
   const onSendNewsMessage = (content: MessageUserContent) => {
-    let text = '';
-    let images: string[] = [];
-
-    if (typeof content === 'string') {
-      text = content;
-    } else if (Array.isArray(content)) {
-      text = (content.filter(v => v.type === 'text') as TextContent[])?.[0]?.text ?? '';
-      images = content.map(v => v.type === 'image_url' ? v.image_url.url : undefined).filter(v => !!v) as string[];
-    }
-
     return new Promise<boolean>(async (resolve) => {
 
-      if ((images?.length || text) && thread) {
+      if (content.length && thread) {
         thread.streamStatus.value = StreamResponseState.START;
 
         try {
@@ -189,7 +186,7 @@ export const useThreadSendMessage = (
             thread.isEmpty.value = false;
           }
 
-          const pair = await onCreatePair(text, content, 'newMessage');
+          const pair = await onCreatePair(content, 'newMessage');
 
           thread.messages.push(pair.userMessage, pair.assistantMessage);
 

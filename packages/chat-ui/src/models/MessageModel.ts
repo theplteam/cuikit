@@ -5,30 +5,39 @@ import { randomInt } from '../utils/numberUtils/randomInt';
 import { MessageText } from './MessageText';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { v4 as uuid } from 'uuid';
+import MessageAttachmentsModel from './MessageAttachmentsModel';
 
 export enum ChatMessageOwner {
   USER = 'user',
   ASSISTANT = 'assistant',
 }
 
+export enum ChatMessageContentType {
+  FILE = 'file',
+  TEXT = 'text',
+  IMAGE = 'image',
+  VIDEO = 'video',
+}
+
 export type RatingType = 'like' | 'dislike';
 
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
 
-export type ImageContent = {
-  type: 'image_url',
-  image_url: { url: string }
-}
-
 export type TextContent = {
-  type: 'text',
+  type: ChatMessageContentType.TEXT,
   text: string,
 }
 
+export type Attachment = {
+  type: ChatMessageContentType.VIDEO | ChatMessageContentType.IMAGE | ChatMessageContentType.FILE,
+  id: IdType,
+  url?: string,
+  file?: File,
+};
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 
-export type MessageUserContent = string | (ImageContent | TextContent)[];
+export type MessageUserContent = string | (Attachment | TextContent)[];
 export type MessageAssistantContent = string | (TextContent)[];
 
 export type Message = {
@@ -59,7 +68,7 @@ export class MessageModel<DM extends Message = Message> {
 
   readonly reasoningManager = new MessageReasoningModel();
 
-  images?: string[];
+  readonly attachments = new MessageAttachmentsModel();
 
   /**
    * An observable flag indicating the start/finish of message typing.
@@ -73,11 +82,10 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = [new MessageText(_data.content)];
     } else {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
-      this.texts.value = (content.filter(v => v.type === 'text') as TextContent[]).map(
+      this.texts.value = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-
-      this.images = (content.filter(v => v.type === 'image_url') as ImageContent[])?.map((img) => img.image_url.url || '');
+      this.attachments.init(content.filter(c => c.type !== ChatMessageContentType.TEXT) as Attachment[]);
     }
 
     if (_data.reasoning) {
@@ -138,9 +146,9 @@ export class MessageModel<DM extends Message = Message> {
   get content() {
     let data: Message['content'] = this.text;
 
-    if (this.images?.length) {
-      const imgContent: ImageContent[] = this.images.map((img) => ({ type: 'image_url', image_url: { url: img } }));
-      data = [...imgContent, { type: 'text', text: this.text }] ;
+    if (this.attachments.itemsAll.length) {
+      const attachmentContent = this.attachments.itemsAll.map((a) => a.contentData);
+      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...attachmentContent ];
     }
 
     return data;

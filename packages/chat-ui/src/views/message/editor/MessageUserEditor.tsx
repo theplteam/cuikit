@@ -6,11 +6,12 @@ import { useLocalizationContext } from '../../core/LocalizationContext';
 
 type Props = {
   text: string;
+  isAttachmentsChanged: boolean;
   onClickApply: (text: string) => void;
   onClickCancel: () => void;
 };
 
-const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel }) => {
+const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel, isAttachmentsChanged }) => {
   const [newText, setNewText] = React.useState(text);
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
@@ -20,6 +21,8 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
       onClickApply(newText);
     }
   }
+
+  const disabled = isAttachmentsChanged ? false : (text === newText || !newText);
 
   return (
     <Stack
@@ -40,7 +43,7 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel 
           {locale.cancel}
         </coreSlots.button>
         <coreSlots.button
-          disabled={text === newText || !newText}
+          disabled={disabled}
           variant="contained"
           onClick={onClick}
         >

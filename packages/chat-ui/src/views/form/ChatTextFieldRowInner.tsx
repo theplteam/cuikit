@@ -8,10 +8,12 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadModel } from '../../models/ThreadModel';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
-import PinPictureButton from './PinPictureButton';
+import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
-import ChatImagePreview from './ChatImagePreview';
-import { Message } from '../../models';
+import { ChatMessageContentType, Message } from '../../models';
+import AttachmentModel from '../../models/AttachmentModel';
+import AttachmentsPreview from './preview/AttachmentsPreview';
+import attachmentsStore from '../../models/AttachmentsStore';
 
 type Props = {
   thread?: ThreadModel;
@@ -39,53 +41,53 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const { defaultTextFieldValue, apiRef } = useChatContext();
 
   const isTyping = useObserverValue(thread?.isTyping);
+  const isLoadingAttachments = useObserverValue(thread?.isLoadingAttachments);
   const isLoadingFullData = useObserverValue(thread?.isLoadingFullData);
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
-  const [images, setImages] = React.useState<string[]>([]);
+  const [attachments, setAttachments] = React.useState<AttachmentModel[]>([]);
 
-  const onSendMessage = async () => {
+  const onSendMessage = () => {
+    if (isLoadingAttachments?.length) return;
     let content: Message['content'] = text;
-    if (images.length) {
-      content = images.map(v => ({ type: 'image_url', image_url: { url: v } }));
-
+    if (attachments.length) {
+      attachmentsStore.items.push(...attachments);
+      content = attachments.map((a) => a.contentData);
       if (text) {
         content = [
-          { type: 'text', text },
+          { type: ChatMessageContentType.TEXT, text },
           ...content,
         ];
       }
-    }
+    };
 
     apiRef.current?.sendUserMessage(content);
-
     setText('');
-    setImages([]);
+
+    setAttachments([]);
   }
 
-  const disabled = !thread || isTyping || isLoadingFullData;
+  const disabledTextField = !thread || isTyping || isLoadingFullData;
+  const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
   return (
-    <StackStyled>
-      {!!images.length && <ChatImagePreview images={images} setImages={setImages} />}
+    <StackStyled gap={attachments.length ? 1 : 0}>
+      <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
       <Stack direction="row" alignItems="flex-end" gap={1}>
-        <PinPictureButton
-          images={images}
-          setImages={setImages}
+        <FileAttachmentButton
+          attachments={attachments}
+          setAttachments={setAttachments}
           isTyping={isTyping}
         />
         <ChatTextField
           text={text}
           setText={setText}
-          disabled={disabled}
+          disabled={disabledTextField}
           classes={inputClasses}
           onSendMessage={onSendMessage}
         />
         <SendMessageButton
-          isTyping={isTyping}
-          text={text}
-          images={images}
-          isLoadingFullData={isLoadingFullData}
+          disabled={disabledButton}
           onSendMessage={onSendMessage}
         />
       </Stack>

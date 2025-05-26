@@ -10,17 +10,18 @@ import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useThreadContext } from '../thread/ThreadContext';
-import { MessageModel } from '../../models/MessageModel';
+import { ChatMessageContentType, MessageModel, MessageUserContent } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatContext } from '../core/ChatGlobalContext';
-import ChatMessageGallery from './ChatMessageGallery';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
 import { useElementRefState } from '../hooks/useElementRef';
 import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
+import MessageAttachments from './attachments/MessageAttachments';
+import { IdType } from '../../types';
 import { chatClassNames } from '../core/chatClassNames';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
@@ -59,6 +60,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
+  const deletedIds = useObserverValue(message.attachments.deletedIds);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
@@ -74,23 +76,29 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
 
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
-    const newMessage = await apiRef.current?.onEditMessage(newText, message);
+    let content: MessageUserContent = newText;
+    if (message.attachments) {
+      const attachmentContent = message.attachments.editorItems.map((a) => a.contentData);
+      content = [{
+        type: ChatMessageContentType.TEXT,
+        text: newText,
+      }, ...attachmentContent];
+    }
+    const newMessage = await apiRef.current?.onEditMessage(content, message);
     if (newMessage) {
       apiRef.current?.handleChangeBranch(newMessage);
-      onAssistantMessageTypingFinish?.({message: message.data, thread: thread.data.data});
+      onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
     }
   }
 
   const onClickCancelEdit = () => {
     messageMode.view(message.id);
+    message.attachments.deletedIds.value = [];
   }
 
-  const imageComponent = message.images?.length
-    ? (
-      <ChatMessageGallery
-        images={message.images} id={message.id}
-      />
-    ) : null;
+  const onDeleteAttachment = (id: IdType) => {
+    message.attachments.deletedIds.value = [...deletedIds || [], id];
+  }
 
   const children = React.useMemo(() => (
     <>
@@ -113,9 +121,13 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
-        {imageComponent}
+        <MessageAttachments
+          message={message}
+          onDeleteAttachment={onDeleteAttachment}
+        />
         <MessageUserEditor
           text={message.text}
+          isAttachmentsChanged={!deletedIds?.length}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />
@@ -138,7 +150,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         flexDirection="column"
         gap={1}
       >
-        {imageComponent}
+        <MessageAttachments message={message} />
         {message.text ? (
           <ChatMessageContainerStyled
             ref={setElement}

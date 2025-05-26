@@ -1,14 +1,17 @@
 import React from 'react';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import 'photoswipe/style.css';
-import { IdType } from '../../types';
+import { IdType } from '../../../types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import ChatMessageGalleryItem from './ChatMessageGalleryItem';
+import MessageGalleryItem from './MessageGalleryItem';
+import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
+import AttachmentModel from '../../../models/AttachmentModel';
+import 'photoswipe/style.css';
 
 type Props = {
   id: IdType;
-  images: string[];
+  items: AttachmentModel[];
+  onDeleteItem?: (id: IdType) => void;
 };
 
 const GridBox = styled(Box)(() => ({
@@ -26,8 +29,7 @@ const GridBox = styled(Box)(() => ({
   },
 }));
 
-const ChatMessageGallery = ({ id, images }: Props) => {
-  const [items, setItems] = React.useState<HTMLImageElement[]>([]);
+const MessageGallery = ({ id, items, onDeleteItem }: Props) => {
   const galleryId = `gallery-${id}`;
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
     gallery: `#${galleryId}`,
@@ -38,22 +40,15 @@ const ChatMessageGallery = ({ id, images }: Props) => {
   }), [id]);
 
   React.useEffect(() => {
+    new PhotoSwipeVideoPlugin(lightbox, {
+      videoAttributes: { controls: true, playsinline: true, muted: true, preload: 'auto' },
+    });
     lightbox.init();
 
     return () => {
       lightbox?.destroy();
     };
-  }, []);
-
-  React.useEffect(() => {
-    const imgElements = images.map((src) => {
-      const image = new Image();
-      image.src = src;
-      return image;
-    })
-
-    setItems(imgElements);
-  }, [images]);
+  }, [lightbox]);
 
   const columns = React.useMemo(() => items.length === 4 ? 2 : 3, [items.length]);
   const rows = React.useMemo(() => Math.ceil(items.length / columns), [columns, items.length]);
@@ -62,7 +57,6 @@ const ChatMessageGallery = ({ id, images }: Props) => {
     <GridBox
       id={galleryId}
       display="grid"
-      mx={1.5}
       gap={1}
       sx={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
@@ -72,7 +66,7 @@ const ChatMessageGallery = ({ id, images }: Props) => {
       className="pswp-gallery"
     >
       {items.map((item, index) => (
-        <ChatMessageGalleryItem
+        <MessageGalleryItem
           key={index}
           item={item}
           galleryId={galleryId}
@@ -80,10 +74,11 @@ const ChatMessageGallery = ({ id, images }: Props) => {
           rows={rows}
           itemsCount={items.length}
           index={index}
+          onDelete={onDeleteItem}
         />
       ))}
-    </GridBox >
+    </GridBox>
   );
 }
 
-export default ChatMessageGallery;
+export default MessageGallery;

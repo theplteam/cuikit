@@ -1,20 +1,25 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
+import GalleryItem from '../../../views/form/preview/GalleryItem';
+import { IdType } from '../../../types';
+import AttachmentModel from 'models/AttachmentModel';
+import { useObserverValue } from '../../../views/hooks/useObserverValue';
 
 type Props = {
-  item: HTMLImageElement;
+  item: AttachmentModel;
   galleryId: string;
   columns: number;
   rows: number;
   itemsCount: number;
   index: number;
+  onDelete?: (id: IdType) => void;
 };
 
-const GridItem = styled(Box)(() => ({
+const GridItem = styled(Box)(({ theme }) => ({
   width: '100%',
-  backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+  backgroundColor: theme.palette.common.white,
   position: 'relative',
   borderRadius: '8px',
   '& a': {
@@ -33,8 +38,10 @@ const GridItem = styled(Box)(() => ({
   },
 }));
 
-const ChatMessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index }: Props) => {
-  const { src, width, height } = item;
+const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }: Props) => {
+  const { type, url } = item;
+  const poster = useObserverValue(item.poster);
+  const isVideo = type.startsWith('video');
 
   const getItemsInRow = (row: number) => {
     const startIndex = row * columns;
@@ -48,7 +55,7 @@ const ChatMessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, in
     return 64;
   }, [itemsCount]);
 
-  const getClassName = () => {
+  const className = React.useMemo(() => {
     if (itemsCount === 1) return '';
 
     const row = Math.floor(index / columns);
@@ -73,31 +80,23 @@ const ChatMessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, in
     `;
 
     return className;
-  };
+  }, [itemsCount]);
 
-  const className = getClassName();
+  if (!poster) return null;
 
   return (
     <GridItem
       key={index}
       sx={{
-        width: `${size}px`,
-        height: `${size}px`,
+        width: size,
+        height: size,
       }}
       className={className}
     >
-      <a
-        key={`${galleryId}-${index}`}
-        href={src}
-        data-pswp-width={width}
-        data-pswp-height={height}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={src} alt={`image-${index}`} className={className} />
-      </a>
+      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
+      {onDelete ? <PreviewDeleteButton onClick={() => onDelete(item.id)} /> : null}
     </GridItem>
   );
 }
 
-export default ChatMessageGalleryItem;
+export default MessageGalleryItem;
