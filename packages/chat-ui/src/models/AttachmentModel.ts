@@ -43,8 +43,9 @@ class AttachmentModel {
     if (this.type.startsWith('video')) {
       img.src = await getVideoPoster(this.url);
     }
-
-    if (img.src) this.poster.value = img;
+    img.onload = () => {
+      this.poster.value = img;
+    }
   }
 
   setProgress = (n: number) => { this.progress.value = n }
