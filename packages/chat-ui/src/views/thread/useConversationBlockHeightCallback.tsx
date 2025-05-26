@@ -5,11 +5,11 @@ export const useConversationBlockHeightCallback = (getConversationBlockHeightMin
 
     const box = document.getElementById(ChatViewConstants.DIALOGUE_ROOT_ID);
 
-    const textField = document.getElementById(ChatViewConstants.TEXT_FIELD_ROW_ID);
-
+    // TODO: Need to somehow remove these hardcoded numbers
+    const textFieldHeightBase = 64;
     const paddingsSum = 40;
 
-    const caculatedHeight = Math.max(0, (box?.clientHeight ?? 0) - (textField?.offsetHeight ?? 0) - paddingsSum);
+    const caculatedHeight = Math.max(0, (box?.clientHeight ?? 0) - textFieldHeightBase - paddingsSum);
 
     const usersHeight = getConversationBlockHeightMin?.(caculatedHeight);
     return usersHeight ?? caculatedHeight;
