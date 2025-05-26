@@ -1,8 +1,8 @@
 import { ObservableReactValue } from "../utils/observers";
-import { randomInt } from "../utils/numberUtils/randomInt";
 import { Attachment, ChatMessageContentType } from "./MessageModel";
 import getVideoPoster from "../utils/getVideoPoster";
 import { IdType } from "../types";
+import md5 from "md5";
 
 class AttachmentModel {
   readonly progress = new ObservableReactValue<number>(0);
@@ -11,18 +11,14 @@ class AttachmentModel {
 
   private _data: File;
 
-  private _id: IdType =  randomInt(100, 100000);
+  private _id: IdType;
 
   public url: string;
 
   constructor(_data: File, _id?: IdType) {
-    if (_id) {
-      this.progress.value = 100;
-      this._id = _id;
-    }
-  
     this._data = _data;
     this.url = URL.createObjectURL(_data);
+    this._id = _id || md5(this.url);
  
     this._createPoster();
   }
