@@ -25,7 +25,7 @@ const MessageFileList = ({ items, onDeleteItem }: Props) => {
           onDelete={onDeleteItem}
         />
       ))}
-    </Stack >
+    </Stack>
   );
 }
 

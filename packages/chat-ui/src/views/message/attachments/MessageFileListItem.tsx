@@ -15,7 +15,8 @@ type Props = {
 const StackStyled = styled(Stack)(({ theme }) => ({
   position: 'relative',
   backgroundColor: theme.palette.grey[100],
-  height: 64,
+  height: 80,
+  width: 200,
   borderRadius: 16,
 }));
 

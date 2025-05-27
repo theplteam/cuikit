@@ -2,6 +2,7 @@ import React from 'react';
 import Stack from '@mui/material/Stack';
 import useFilePreviewIcon from './useFilePreviewIcon';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 type Props = {
   name: string;
@@ -11,28 +12,39 @@ type Props = {
 const FileItem: React.FC<Props> = ({ name, type }) => {
   const Icon = useFilePreviewIcon(type);
 
-  const ellipsis = React.useMemo(() => {
-    if (name.length <= 12) return name;
+  const { fileName, fileFormat } = React.useMemo(() => {
     const split = name.split('.');
-    const end = split[split.length - 2].slice(-4);
-    const start = split[0].slice(0, 4);
-    return `${start}...${end}.${split[split.length - 1]}`;
+    const fileFormat = split.pop()?.toUpperCase();
+    const fileName = split.join('.');
+    return { fileName, fileFormat };
   }, [name]);
 
   return (
-    <Stack
-      width='100%'
-      height='100%'
-      alignItems='center'
-      justifyItems='center'
-      flexDirection="row"
-      paddingX={1}
-    >
-      <Icon color="primary" fontSize="large" />
-      <Typography variant='body2'>
-        {ellipsis}
-      </Typography>
-    </Stack>
+    <Box width='100%' height='100%'>
+      <Stack
+        alignItems='start'
+        justifyItems='center'
+        paddingTop={2}
+        paddingLeft={2}
+        gap={0.5}
+      >
+        <Typography
+          noWrap
+          width={140}
+          textOverflow='ellipsis'
+          fontSize='0.875rem'
+          fontWeight={500}
+        >
+          {fileName}
+        </Typography>
+        <Stack alignItems='center' gap={0.5} flexDirection="row">
+          <Icon color="primary" fontSize="small" />
+          <Typography fontSize='0.75rem'>
+            {fileFormat}
+          </Typography>
+        </Stack>
+      </Stack>
+    </Box>
   );
 };
 

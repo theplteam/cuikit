@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CloseIcon from '@mui/icons-material/Close';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
@@ -10,18 +10,19 @@ const PreviewDeleteButton = ({ onClick }: Props) => {
   const coreSlots = useChatCoreSlots();
   return (
     <coreSlots.iconButton
-      disableRipple
       size='small'
       sx={{
         position: 'absolute',
-        padding: 0,
-        top: 4,
-        right: 4,
+        top: 8,
+        right: 8,
         backgroundColor: (theme) => theme.palette.common.white,
+        ':hover': {
+          backgroundColor: (theme) => theme.palette.grey[200],
+        }
       }}
       onClick={onClick}
     >
-      <CloseIcon sx={{ width: 18, height: 18 }} />
+      <CloseRoundedIcon fontSize='small' />
     </coreSlots.iconButton>
   )
 }
