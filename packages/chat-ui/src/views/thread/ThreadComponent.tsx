@@ -11,7 +11,6 @@ import { ThreadProvider } from './ThreadContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { NOOP } from '../../utils/NOOP';
 import { Thread, Message } from '../../models';
-import Watermark from '../Watermark';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -91,7 +90,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
           )}
         </MessagesRowStyled>
         {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
-        <Watermark />
+        {/*<Watermark/>*/}
         <Stack position="sticky" bottom={0} zIndex={1}>
           <TextRowBlock>
             <ChatScroller
