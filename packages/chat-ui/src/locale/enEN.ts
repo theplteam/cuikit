@@ -36,6 +36,7 @@ export const CHAT_LOCALE: Localization = {
   threadDeletedSuccess: 'Thread successfully deleted',
   threadActionDelete: 'Delete',
   maxAttachmentWarning: 'Maximum number of attachments exceeded',
+  maxFileSizeWarning: 'File size exceeds the allowed limit',
   textFieldPlaceholder: 'Message chat',
   attachmentImageShot: 'Camera',
   attachmentImageGallery: 'Files',

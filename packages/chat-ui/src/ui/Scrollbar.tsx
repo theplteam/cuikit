@@ -9,11 +9,8 @@ type Props = React.PropsWithChildren<{
 
 const SimpleBarStyled = styled(SimpleBar)(() => ({
   [`& .${simpleBarClasses.track}`]: {
-    width: 12,
-    borderLeft: '1px solid #dedede',
     background: '#f9f9f9',
     [`& .${simpleBarClasses.scrollbarVisibleBefore}`]: {
-      width: 6,
       opacity: 0.25,
       transition: 'opacity 0.3s',
       left: 2,

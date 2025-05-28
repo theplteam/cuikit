@@ -9,6 +9,7 @@ import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video
 import PreviewItem from './PreviewItem';
 import 'photoswipe/style.css';
 import { IdType } from '../../../types';
+import { useMobile } from '../../../ui/Responsive';
 
 type Props = {
   thread?: ThreadModel;
@@ -18,7 +19,7 @@ type Props = {
 
 const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachments }) => {
   const { enableFileAttachments, onFileDetached } = useChatContext();
-
+  const isMobile = useMobile();
   const galleryId = 'gallery-preview';
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
     gallery: `#${galleryId}`,
@@ -53,12 +54,13 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
   return (
     <Scrollbar style={{ maxHeight: 170, borderRadius: 16 }}>
       <Stack
-        flexWrap="wrap"
+        flexWrap={isMobile ? "nowrap" : "wrap"}
         flexDirection="row"
         gap={1}
-        paddingRight="12px"
         className="pswp-gallery"
         id={galleryId}
+        paddingRight={(attachments.length && isMobile) ? 0 : 1.5}
+        paddingBottom={(attachments.length && isMobile) ? 1.5 : 0}
       >
         {attachments.map((a, i) => (
           <PreviewItem

@@ -19,11 +19,10 @@ type Props = {
   handleDelete: (id: IdType, url: string) => void;
 };
 
-const BoxStyled = styled(Box)(({ theme }) => ({
+const BoxStyled = styled(Box)(() => ({
   position: 'relative',
   height: 80,
   borderRadius: 16,
-  backgroundColor: theme.palette.grey[200],
   '& a': {
     height: 80,
     width: 80,
@@ -43,6 +42,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const { url, id, name, type, isGallery } = item;
   const progress = useObserverValue(item.progress);
+  const error = useObserverValue(item.error);
   const poster = useObserverValue(item.poster);
 
   const ref = useElementRef();
@@ -50,14 +50,21 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const isHover = useHover(ref.current);
 
   const isVideo = type.startsWith('video');
-
+  const showInGallery = isGallery && !error;
   return (
     <PreviewTooltip title={name}>
-      <BoxStyled ref={ref} width={isGallery ? 80 : 200}>
+      <BoxStyled
+        ref={ref}
+        width={showInGallery ? 80 : 200}
+        sx={{
+          backgroundColor: (theme) => error ? theme.palette.error.dark : theme.palette.grey[200],
+          color: (theme) => error ? theme.palette.common.white : 'inherit',
+        }}
+      >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
-        {isGallery
+        {showInGallery
           ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
-          : <FileItem name={name} type={type} />}
+          : <FileItem name={name} type={type} error={error} />}
         {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
       </BoxStyled>
     </PreviewTooltip>

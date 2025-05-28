@@ -18,7 +18,11 @@ const MessageAttachments = ({ message, onDeleteAttachment }: Props) => {
   if (!enableFileAttachments) return null;
 
   return (
-    <Stack gap={1} mx={1.5} alignItems='end'>
+    <Stack
+      width="100%"
+      mx={1.5}
+      alignItems='end'
+    >
       {fileItems.length ? <MessageFiles items={fileItems} onDeleteItem={onDeleteAttachment} /> : null}
       {galleryItems.length ? <MessageGallery id={message.id} items={galleryItems} onDeleteItem={onDeleteAttachment} /> : null}
     </Stack>

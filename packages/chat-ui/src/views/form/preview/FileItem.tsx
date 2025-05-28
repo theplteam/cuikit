@@ -7,10 +7,11 @@ import Box from '@mui/material/Box';
 type Props = {
   name: string;
   type: string;
+  error?: string;
 };
 
-const FileItem: React.FC<Props> = ({ name, type }) => {
-  const Icon = useFilePreviewIcon(type);
+const FileItem: React.FC<Props> = ({ name, type, error }) => {
+  const Icon = useFilePreviewIcon(error ? 'error' : type);
 
   const { fileName, fileFormat } = React.useMemo(() => {
     const split = name.split('.');
@@ -38,9 +39,14 @@ const FileItem: React.FC<Props> = ({ name, type }) => {
           {fileName}
         </Typography>
         <Stack alignItems='center' gap={0.5} flexDirection="row">
-          <Icon color="primary" fontSize="small" />
-          <Typography fontSize='0.75rem'>
-            {fileFormat}
+          <Icon color={error ? "inherit" : "primary"} fontSize="small" />
+          <Typography
+            noWrap
+            textOverflow='ellipsis'
+            width={120}
+            fontSize='0.75rem'
+          >
+            {error || fileFormat}
           </Typography>
         </Stack>
       </Stack>

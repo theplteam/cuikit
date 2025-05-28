@@ -13,9 +13,6 @@ type Props = {
   setText: (value: string) => void;
   onSendMessage: () => void;
   disabled?: boolean;
-  classes: {
-    multiline: string;
-  };
 };
 
 const inputClasses = {
@@ -35,7 +32,7 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   },*/
 }));
 
-const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, classes }) => {
+const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled }) => {
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
   const locale = useLocalizationContext();
@@ -55,7 +52,6 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
     setHeight(parseInt(inputRef.current?.style.height ?? '0'));
   })
 
-  const isMultiline = height > 25;
   const isFullHeight = height > 165;
 
   return (
@@ -73,7 +69,6 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
         value={text}
         className={clsx(
           {
-            [classes.multiline]: isMultiline,
             [inputClasses.fullHeight]: isFullHeight,
           }
         )}
