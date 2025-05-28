@@ -51,7 +51,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
   if (!enableFileAttachments) return null;
 
   return (
-    <Scrollbar style={{ maxHeight: 136, borderRadius: 16 }}>
+    <Scrollbar style={{ maxHeight: 170, borderRadius: 16 }}>
       <Stack
         flexWrap="wrap"
         flexDirection="row"

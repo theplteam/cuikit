@@ -11,6 +11,7 @@ import { useElementRef } from '../../../views/hooks/useElementRef';
 import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
 import { IdType } from '../../../types';
+import PreviewTooltip from './PreviewTooltip';
 
 type Props = {
   item: AttachmentModel;
@@ -20,13 +21,12 @@ type Props = {
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
-  height: 64,
-  minWidth: 64,
+  height: 80,
   borderRadius: 16,
   backgroundColor: theme.palette.grey[200],
   '& a': {
-    height: 64,
-    width: 64,
+    height: 80,
+    width: 80,
     lineHeight: 0,
     display: 'block',
   },
@@ -52,13 +52,15 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const isVideo = type.startsWith('video');
 
   return (
-    <BoxStyled ref={ref}>
-      {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
-      {isGallery
-        ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
-        : <FileItem name={name} type={type} />}
-      {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
-    </BoxStyled>
+    <PreviewTooltip title={name}>
+      <BoxStyled ref={ref} width={isGallery ? 80 : 200}>
+        {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
+        {isGallery
+          ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
+          : <FileItem name={name} type={type} />}
+        {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
+      </BoxStyled>
+    </PreviewTooltip>
   );
 };
 
