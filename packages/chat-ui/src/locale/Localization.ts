@@ -54,6 +54,7 @@ export type Localization = {
 
   // other
   maxAttachmentWarning: string;
+  maxFileSizeWarning: string;
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;

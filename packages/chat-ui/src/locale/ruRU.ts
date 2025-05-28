@@ -35,6 +35,7 @@ export const ruRU: Localization = {
   threadDeletedSuccess: 'Диалог успешно удален',
   threadActionDelete: 'Удалить',
   maxAttachmentWarning: 'Превышено максимальное количество прикрепленных файлов',
+  maxFileSizeWarning: 'Размер файла превышает допустимый',
   textFieldPlaceholder: 'Сообщение',
   attachmentImageShot: 'Камера',
   attachmentImageGallery: 'Файлы',

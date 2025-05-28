@@ -21,7 +21,7 @@ type Props = {
 
 const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableFileAttachments, acceptableFileFormat, onFileAttached } = useChatContext();
+  const { enableFileAttachments, acceptableFileFormat, maxFileSize, maxFileCount, onFileAttached } = useChatContext();
   const { thread } = useThreadContext();
   const snackbar = useSnackbar();
 
@@ -40,11 +40,20 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     fileRef.current?.click();
   };
 
+  const maxCount = maxFileCount || ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE;
+  const maxSize = maxFileSize || ChatViewConstants.MAX_ATTACHMENT_SIZE;
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     let files = Array.from(event.target.files || []);
 
-    if (files.length + attachments.length > ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE) {
-      files = files.slice(0, ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE - attachments.length);
+    const oversizeFiles = files.filter(f => f.size > maxSize);
+    if (oversizeFiles.length > 0) {
+      snackbar.show(locale.maxFileSizeWarning);
+      files = files.filter(f => f.size <= maxSize);
+    }
+
+    if ((files.length + attachments.length) > maxCount) {
+      files = files.slice(0, maxCount - attachments.length);
       snackbar.show(locale.maxAttachmentWarning);
     };
 
@@ -54,13 +63,13 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     if (thread) {
       thread.isLoadingAttachments.value = [...thread.isLoadingAttachments.value, ...fileAttachments.map((f) => f.id)];
       fileAttachments.forEach((file) => {
-        const { setProgress, data, id } = file;
+        const { setProgress, setError, data, id } = file;
         const onFinish = () => {
           file.progress.value = 100;
           thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((a) => a !== id)
         };
         if (onFileAttached) {
-          const promise = onFileAttached({ id: file.id, file: data, actions: { setProgress, onFinish } });
+          const promise = onFileAttached({ id: file.id, file: data, actions: { setProgress, setError, onFinish } });
           if (promise) promise.then(() => onFinish());
           else {
             onFinish();

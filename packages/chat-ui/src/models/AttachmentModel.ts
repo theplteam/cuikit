@@ -7,6 +7,8 @@ import md5 from "md5";
 class AttachmentModel {
   readonly progress = new ObservableReactValue<number>(0);
 
+  readonly error = new ObservableReactValue<string | undefined>(undefined);
+
   readonly poster = new ObservableReactValue<HTMLImageElement | undefined>(undefined);
 
   private _data: File;
@@ -44,10 +46,14 @@ class AttachmentModel {
       img.src = await getVideoPoster(this.url);
     }
 
-    if (img.src) this.poster.value = img;
+    img.onload = () => {
+      this.poster.value = img;
+    };
   }
 
   setProgress = (n: number) => { this.progress.value = n }
+
+  setError= (e: string) => { this.error.value = e }
 
   get contentData() { 
     const type = this.type.startsWith('image')

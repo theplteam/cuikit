@@ -160,6 +160,16 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   acceptableFileFormat?: string | string[];
   /**
+   * Maximum size of a single file in bytes.
+   * @default 20 * 1024 * 1024 // 20 MB
+   */
+  maxFileSize?: number;
+  /**
+   * Maximum number of files in a single message.
+   * @default 10
+   */
+  maxFileCount?: number;
+  /**
    * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
    */
   getConversationBlockHeightMin?: (calculatedHeight: number) => number;

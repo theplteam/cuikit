@@ -19,19 +19,12 @@ type Props = {
   thread?: ThreadModel;
 };
 
-const inputClasses = {
-  multiline: 'PL-chat-input-multiline',
-} as const;
-
 const StackStyled = styled(Stack)(({ theme }) => ({
   outline: `1px solid ${materialDesignSysPalette.outlineVariant}`,
-  borderRadius: 32,
+  borderRadius: 24,
   padding: theme.spacing(1),
   transition: theme.transitions.create(
     ['border-radius', 'outline'], { duration: motion.duration.short2 }),
-  [`&:has(.${inputClasses.multiline})`]: {
-    borderRadius: 24,
-  },
   [`&:has(.${inputBaseClasses.focused})`]: {
     outline: `2px solid ${materialDesignSysPalette.primary}`,
   },
@@ -71,7 +64,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
   return (
-    <StackStyled gap={attachments.length ? 1 : 0}>
+    <StackStyled className='' gap={attachments.length ? 1 : 0}>
       <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton
@@ -83,7 +76,6 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
           text={text}
           setText={setText}
           disabled={disabledTextField}
-          classes={inputClasses}
           onSendMessage={onSendMessage}
         />
         <SendMessageButton
