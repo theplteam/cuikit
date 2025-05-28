@@ -7,7 +7,7 @@ import CircularLoadProgress from './CircularLoadProgress';
 import PreviewDeleteButton from './PreviewDeleteButton';
 import FileItem from './FileItem';
 import GalleryItem from './GalleryItem';
-import { useElementRef } from '../../../views/hooks/useElementRef';
+import { useElementRefState } from '../../../views/hooks/useElementRef';
 import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
 import { IdType } from '../../../types';
@@ -45,16 +45,17 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const error = useObserverValue(item.error);
   const poster = useObserverValue(item.poster);
 
-  const ref = useElementRef();
+  const { element, setElement } = useElementRefState();
+  const isHover = useHover(element);
   const isMobile = useMobile();
-  const isHover = useHover(ref.current);
 
   const isVideo = type.startsWith('video');
   const showInGallery = isGallery && !error;
+
   return (
     <PreviewTooltip title={name}>
       <BoxStyled
-        ref={ref}
+        ref={setElement}
         width={showInGallery ? 80 : 200}
         sx={{
           backgroundColor: (theme) => error ? theme.palette.error.dark : theme.palette.grey[200],
