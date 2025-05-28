@@ -3,7 +3,7 @@ import threads from "./chatgpt-thread-test.json";
 import {
   ChatGptAdapter,
   ChatPage,
-  MessageSentParams,
+  MessageSentParams, TextContent,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import OpenAI from 'openai';
@@ -25,6 +25,12 @@ class ChatGptModel {
   }
 
   streamMessage = async (params: MessageSentParams) => {
+    let text: string;
+    if (typeof params.content === 'string') {
+      text = params.content;
+    } else {
+      text = (params.content.filter(v => v.type === 'text')[0] as TextContent).text;
+    }
     const messages: OpenAI.ChatCompletionCreateParamsStreaming['messages'] = params.history;
     const stream = await this._instance.chat.completions.create({
       model: 'gpt-4o',
@@ -32,7 +38,7 @@ class ChatGptModel {
         ...messages,
         {
           role: 'user',
-          content: params.content,
+          content: text,
         },
       ],
       stream: true,
