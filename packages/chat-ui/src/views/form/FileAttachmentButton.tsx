@@ -12,6 +12,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
 import { useSnackbar } from '../hooks/useSnackbar';
 import AttachmentModel from '../../models/AttachmentModel';
+import { langReplace } from '../../locale/langReplace';
 
 type Props = {
   attachments: AttachmentModel[];
@@ -48,8 +49,26 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     const oversizeFiles = files.filter(f => f.size > maxSize);
     if (oversizeFiles.length > 0) {
-      snackbar.show(locale.maxFileSizeWarning);
+      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: maxSize / 1024 / 1024 }));
       files = files.filter(f => f.size <= maxSize);
+    }
+
+    const allowedTypes = inputAccept.split(',').map(type => type.trim()).filter(type => type);
+    const invalidFiles = files.filter(f => {
+      if (allowedTypes.includes('*')) return false;
+      return !allowedTypes.some(allowedType => {
+        if (allowedType.endsWith('/*')) {
+          const baseType = allowedType.slice(0, -2);
+          return f.type.startsWith(baseType);
+        } else {
+          return f.type === allowedType;
+        }
+      });
+    });
+
+    if (invalidFiles.length > 0) {
+      snackbar.show(locale.invalidFileTypeWarning);
+      files = files.filter(f => !invalidFiles.includes(f));
     }
 
     if ((files.length + attachments.length) > maxCount) {

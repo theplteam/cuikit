@@ -154,8 +154,8 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Acceptable file formats for attaching to a message.
    * Check [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Reference/Attributes/accept) for more information.
-   * @example Array ['image', 'text'] | ['.png', '.txt'] | ['image/*', 'text/*'] 
-   * @example String 'image/*, text/*' | '.png, .txt'
+   * @example Array ['image', 'video'] | ['.png', '.mp4'] | ['image/*', 'video/*'] 
+   * @example String 'image/*, video/*' | '.png, .mp4'
    * @default '*'
    */
   acceptableFileFormat?: string | string[];

@@ -2,12 +2,11 @@ import * as React from 'react';
 import MenuItem, { type MenuItemProps } from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import SvgIcon from '@mui/material/SvgIcon';
 import CircularProgress from '@mui/material/CircularProgress';
 
 export type MdMenuItemProps = {
   children: string[] | string;
-  startIcon?: typeof SvgIcon;
+  startIcon?: React.ElementType;
   loading?: boolean;
 } & Omit<MenuItemProps, 'children'>;
 

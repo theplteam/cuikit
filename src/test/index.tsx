@@ -20,6 +20,10 @@ const ReasoningWithHeadings = React.lazy(() => import('./reasoning/ReasoningWith
 const ReasoningStream = React.lazy(() => import('./reasoning/ReasoningStream'));
 const ReasoningHistory = React.lazy(() => import('./reasoning/ReasoningHistory'));
 const ReasoningUserSetup = React.lazy(() => import('./reasoning/ReasoningUserSetup'));
+const FileAttachmentBase = React.lazy(() => import('./fileAttachment/FileAttachmentBase'));
+const FileAttachmentError = React.lazy(() => import('./fileAttachment/FileAttachmentError'));
+const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAttachmentProgress'));
+const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -53,6 +57,10 @@ const App: React.FC = () => {
       case 'reasoning-stream': variant = ReasoningStream; break;
       case 'reasoning-history': variant = ReasoningHistory; break;
       case 'reasoning-user-setup': variant = ReasoningUserSetup; break;
+      case 'message-attachment': variant = FileAttachmentBase; break;
+      case 'message-attachment-error': variant = FileAttachmentError; break;
+      case 'message-attachment-progress': variant = FileAttachmentProgress; break;
+      case 'message-attachment-restrictions': variant = FileAttachmentRestrictions; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
