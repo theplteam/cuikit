@@ -1,4 +1,5 @@
 import React from 'react';
+import Skeleton from '@mui/material/Skeleton';
 import 'photoswipe/style.css';
 
 type Props = {
@@ -8,18 +9,29 @@ type Props = {
 };
 
 const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl }) => {
+  if (!poster) {
+    return (
+      <Skeleton
+        variant='rounded'
+        sx={{ borderRadius: '16px' }}
+        width="100%"
+        height="100%"
+      />
+    )
+  }
+
   return (
     <a
       key={id}
-      href={videoUrl ? videoUrl : poster?.src}
-      data-pswp-width={poster?.width}
-      data-pswp-height={poster?.height}
+      href={videoUrl ? videoUrl : poster.src}
+      data-pswp-width={poster.width}
+      data-pswp-height={poster.height}
       data-pswp-type={videoUrl ? "video" : undefined}
       data-pswp-video-src={videoUrl ? videoUrl : undefined}
       target="_blank"
       rel="noreferrer"
     >
-      <img src={poster?.src} alt="" />
+      <img src={poster.src} alt="" />
     </a>
   );
 }
