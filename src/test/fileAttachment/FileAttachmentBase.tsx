@@ -5,7 +5,6 @@ import {
   Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
-import { exampleFile, exampleImg3, exampleImg2 } from "./exampleFiles";
 
 const text = `
 Both images feature anthropomorphic cats.
@@ -32,12 +31,12 @@ const FileAttachmentBase: React.FC = () => {
               {
                 id: '1',
                 type: 'image',
-                file: exampleImg2,
+                url: 'https://examples.cuikit.com/files/exampleImage1.jpg',
               },
               {
                 id: '2',
                 type: 'image',
-                file: exampleImg3,
+                url: 'https://examples.cuikit.com/files/exampleImage2.jpg',
               },
             ],
             role: "user",
@@ -59,7 +58,7 @@ const FileAttachmentBase: React.FC = () => {
               {
                 id: '1',
                 type: 'file',
-                file: exampleFile,
+                url: 'https://examples.cuikit.com/files/exampleText.txt',
               },
             ],
             role: "user",

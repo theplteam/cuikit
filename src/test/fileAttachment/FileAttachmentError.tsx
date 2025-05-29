@@ -17,10 +17,10 @@ const FileAttachmentError: React.FC = () => {
           {
             id: '1',
             content: 'Hello! May I send files in this chat?',
+            role: 'user',
           },
           {
             id: '2',
-            parentId: '1',
             content: "Hello, you can try, but you will get an error now.",
             role: "assistant",
           },
@@ -33,10 +33,18 @@ const FileAttachmentError: React.FC = () => {
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
-  const onFileAttached = ({ actions }: FileAttachedParams) => {
+  const fileUploadMock = async () => {
+    await new Promise((_resolve, reject) => setTimeout(reject, 500));
+  };
+
+  const onFileAttached = async ({ actions }: FileAttachedParams) => {
     const { setError } = actions;
 
-    setError('Something went wrong');
+    try {
+      await fileUploadMock();
+    } catch {
+      setError('Server error');
+    }
   };
 
   return (
