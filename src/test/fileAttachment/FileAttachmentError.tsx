@@ -12,11 +12,11 @@ const FileAttachmentError: React.FC = () => {
     [
       {
         id: "1",
-        title: "Base syntax",
+        title: "Attachment Error",
         messages: [
           {
             id: '1',
-            content: 'Hello! May I send files in this chat ?',
+            content: 'Hello! May I send files in this chat?',
           },
           {
             id: '2',
