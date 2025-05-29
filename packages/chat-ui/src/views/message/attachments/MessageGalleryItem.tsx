@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
 import GalleryItem from '../../../views/form/preview/GalleryItem';
 import { IdType } from '../../../types';
-import AttachmentModel from 'models/AttachmentModel';
+import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 
 type Props = {
@@ -93,7 +93,7 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
       }}
       className={className}
     >
-      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
+      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster as HTMLImageElement} videoUrl={isVideo ? url : undefined} />
       {onDelete ? <PreviewDeleteButton onClick={() => onDelete(item.id)} /> : null}
     </GridItem>
   );
