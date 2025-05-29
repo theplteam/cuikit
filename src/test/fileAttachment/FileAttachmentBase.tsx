@@ -87,7 +87,6 @@ const FileAttachmentBase: React.FC = () => {
         initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        acceptableFileFormat={['image']}
         onUserMessageSent={onUserMessageSent}
       />
     </Box>
