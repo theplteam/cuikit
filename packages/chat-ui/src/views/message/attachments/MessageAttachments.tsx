@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import MessageGallery from './MessageGallery';
-import MessageFiles from './MessageFileList';
+import MessageFileList from './MessageFileList';
 import { IdType } from '../../../types';
 import { MessageModel } from '../../../models/MessageModel';
 
@@ -11,7 +11,7 @@ type Props = {
   onDeleteAttachment?: (id: IdType) => void;
 };
 
-const MessageAttachments = ({ message, onDeleteAttachment }: Props) => {
+const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) => {
   const { enableFileAttachments } = useChatContext();
   const { galleryItems, fileItems } = message.attachments;
 
@@ -23,7 +23,7 @@ const MessageAttachments = ({ message, onDeleteAttachment }: Props) => {
       mx={1.5}
       alignItems='end'
     >
-      {fileItems.length ? <MessageFiles items={fileItems} onDeleteItem={onDeleteAttachment} /> : null}
+      {fileItems.length ? <MessageFileList items={fileItems} onDeleteItem={onDeleteAttachment} /> : null}
       {galleryItems.length ? <MessageGallery id={message.id} items={galleryItems} onDeleteItem={onDeleteAttachment} /> : null}
     </Stack>
   );

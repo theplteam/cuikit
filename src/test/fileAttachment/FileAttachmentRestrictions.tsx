@@ -5,103 +5,27 @@ import {
   Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
-import { exampleFile, exampleImg } from "./exampleFiles";
 
 const FileAttachmentRestrictions: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
     [
       {
         id: "1",
-        title: "Base syntax",
+        title: "Attachment Restriction",
         messages: [
           {
             id: '1',
-            content: [
-              {
-                type: 'text',
-                text: "Img",
-              },
-              {
-                id: '1',
-                type: 'image',
-                file: exampleImg,
-              },
-              {
-                id: '2',
-                type: 'image',
-                file: exampleImg,
-              },
-            ],
+            content: 'What are the restrictions on sending files to this chat?',
             role: "user",
           },
           {
             id: '2',
-            parentId: '1',
-            content: "Ans",
-            role: "assistant",
-          },
-          {
-            id: '3',
-            parentId: '2',
-            content: [
-              {
-                type: 'text',
-                text: "File",
-              },
-              {
-                id: '1',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '2',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '3',
-                type: 'file',
-                file: exampleFile,
-              },
-            ],
-            role: "user",
-          },
-          {
-            id: '4',
-            parentId: '3',
-            content: "Ans",
-            role: "assistant",
-          },
-          {
-            id: '5',
-            parentId: '4',
-            content: [
-              {
-                type: 'text',
-                text: "File + Img",
-              },
-              {
-                id: '1',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '2',
-                type: 'image',
-                file: exampleImg,
-              },
-              {
-                id: '3',
-                type: 'image',
-                file: exampleImg,
-              },
-            ],
-            role: "user",
-          },
-          {
-            id: '6',
-            parentId: '5',
-            content: "Ans",
+            content: `The following restrictions apply in this chat:
+- Maximum number of files in one message: 3
+
+- The size of a single file cannot exceed 10 MB
+
+- Allowed file types: \`.png\`, \`.jpg\``,
             role: "assistant",
           },
         ],
@@ -117,7 +41,6 @@ const FileAttachmentRestrictions: React.FC = () => {
     <Box height="100dvh" width="100dvw">
       <ChatPage
         enableFileAttachments
-        enableBranches
         initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}

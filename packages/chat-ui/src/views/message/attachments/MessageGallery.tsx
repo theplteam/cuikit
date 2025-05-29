@@ -29,7 +29,7 @@ const GridBox = styled(Box)(() => ({
   },
 }));
 
-const MessageGallery = ({ id, items, onDeleteItem }: Props) => {
+const MessageGallery: React.FC<Props> = ({ id, items, onDeleteItem }) => {
   const galleryId = `gallery-${id}`;
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
     gallery: `#${galleryId}`,

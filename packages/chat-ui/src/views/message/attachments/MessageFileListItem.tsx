@@ -18,7 +18,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   borderRadius: 16,
 }));
 
-const MessageFileListItem = ({ item, onDelete }: Props) => {
+const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
   const { id, name, type } = item;
   const ref = useElementRef();
 

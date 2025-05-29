@@ -10,7 +10,7 @@ type Props = {
   onDeleteItem?: (id: IdType) => void;
 };
 
-const MessageFileList = ({ items, onDeleteItem }: Props) => {
+const MessageFileList: React.FC<Props> = ({ items, onDeleteItem }) => {
   return (
     <Scrollbar style={{ maxWidth: '80%' }}>
       <Stack

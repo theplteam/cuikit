@@ -44,7 +44,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     if (isLoadingAttachments?.length) return;
     let content: Message['content'] = text;
     if (attachments.length) {
-      attachmentsStore.items.push(...attachments);
+      attachmentsStore.items.push(...attachments.filter((a) => !a.error.value));
       content = attachments.map((a) => a.contentData);
       if (text) {
         content = [
