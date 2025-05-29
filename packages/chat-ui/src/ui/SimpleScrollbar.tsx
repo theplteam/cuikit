@@ -1,12 +1,12 @@
 import * as React from 'react';
-import SimpleBar, { Props as SimpleBarProps } from 'simplebar-react';
+import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import { styled } from '@mui/material/styles';
 
 type Props = React.PropsWithChildren<{
   style?: React.CSSProperties;
   maxContent?: boolean;
-}> & Omit<SimpleBarProps, 'style'>;
+}>;
 
 type SimpleBarClassesType = Readonly<{
   contentWrapper: string;
