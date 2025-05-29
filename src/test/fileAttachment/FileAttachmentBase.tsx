@@ -5,31 +5,38 @@ import {
   Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
-import { exampleFile, exampleImg } from "./exampleFiles";
+
+const text = `
+Both images feature anthropomorphic cats.
+
+The first image shows a fluffy white cat with light blue eyes sitting amidst a bed of roses and other flowers, some in shades of purple and pink. To the right of the cat, there's a glass of what appears to be champagne or a similar sparkling beverage, and behind it, a bottle. The background is a vibrant pink and purple, with what looks like floating bubbles or orbs. The cat has a somewhat serious or inquisitive expression.
+
+The second image depicts a fluffy gray cat dressed in a dark green jacket and a brown bow tie, holding a violin as if playing it. The cat has yellow eyes. It is seated at a wooden table next to a lit candle in a glass pitcher, a silver chalice-like object, and an open book. There's also a slice of lime on the table. The background is dark and moody, with a hint of smoke or mist rising from behind the candle.
+`;
 
 const FileAttachmentBase: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
     [
       {
         id: "1",
-        title: "Base syntax",
+        title: "Attachment",
         messages: [
           {
             id: '1',
             content: [
               {
                 type: 'text',
-                text: "Img",
+                text: "Describe what you see in the images",
               },
               {
                 id: '1',
                 type: 'image',
-                file: exampleImg,
+                url: 'https://examples.cuikit.com/files/exampleImage1.jpg',
               },
               {
                 id: '2',
                 type: 'image',
-                file: exampleImg,
+                url: 'https://examples.cuikit.com/files/exampleImage2.jpg',
               },
             ],
             role: "user",
@@ -37,7 +44,7 @@ const FileAttachmentBase: React.FC = () => {
           {
             id: '2',
             parentId: '1',
-            content: "Ans",
+            content: text,
             role: "assistant",
           },
           {
@@ -46,37 +53,12 @@ const FileAttachmentBase: React.FC = () => {
             content: [
               {
                 type: 'text',
-                text: "File",
+                text: "What does this file contain?",
               },
               {
                 id: '1',
                 type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '2',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '3',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '4',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '5',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '6',
-                type: 'file',
-                file: exampleFile,
+                url: 'https://examples.cuikit.com/files/exampleText.txt',
               },
             ],
             role: "user",
@@ -84,39 +66,7 @@ const FileAttachmentBase: React.FC = () => {
           {
             id: '4',
             parentId: '3',
-            content: "Ans",
-            role: "assistant",
-          },
-          {
-            id: '5',
-            parentId: '4',
-            content: [
-              {
-                type: 'text',
-                text: "File + Img",
-              },
-              {
-                id: '1',
-                type: 'file',
-                file: exampleFile,
-              },
-              {
-                id: '2',
-                type: 'image',
-                file: exampleImg,
-              },
-              {
-                id: '3',
-                type: 'image',
-                file: exampleImg,
-              },
-            ],
-            role: "user",
-          },
-          {
-            id: '6',
-            parentId: '5',
-            content: "Ans",
+            content: `The file contains the text "Hello world".`,
             role: "assistant",
           },
         ],
@@ -136,7 +86,6 @@ const FileAttachmentBase: React.FC = () => {
         initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        acceptableFileFormat={['image']}
         onUserMessageSent={onUserMessageSent}
       />
     </Box>

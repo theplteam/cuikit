@@ -49,7 +49,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     const oversizeFiles = files.filter(f => f.size > maxSize);
     if (oversizeFiles.length > 0) {
-      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: maxSize / 1024 / 1024 }));
+      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }));
       files = files.filter(f => f.size <= maxSize);
     }
 

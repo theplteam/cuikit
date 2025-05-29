@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
 
-const PreviewTooltip = (props: TooltipProps) => {
+const PreviewTooltip: React.FC<TooltipProps> = (props) => {
   return (
     <Tooltip
       {...props}

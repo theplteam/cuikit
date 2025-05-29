@@ -38,7 +38,7 @@ const GridItem = styled(Box)(({ theme }) => ({
   },
 }));
 
-const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }: Props) => {
+const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }) => {
   const { type, url } = item;
   const poster = useObserverValue(item.poster);
   const isVideo = type.startsWith('video');

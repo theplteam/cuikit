@@ -6,7 +6,7 @@ type Props = {
   onClick: () => void;
 }
 
-const PreviewDeleteButton = ({ onClick }: Props) => {
+const PreviewDeleteButton: React.FC<Props> = ({ onClick }) => {
   const coreSlots = useChatCoreSlots();
   return (
     <coreSlots.iconButton

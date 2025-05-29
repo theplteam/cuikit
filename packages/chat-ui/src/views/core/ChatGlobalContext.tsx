@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChatPropsTypes } from './useChatProps';
-import { Thread, ThreadModel, Message } from '../../models';
+import { Thread, ThreadModel, Message, FileAttachedParams } from '../../models';
 import { PrivateApiRefType } from './useApiRef';
 import { Threads } from '../../models/Threads';
 import { FnType } from '../../models/types';
@@ -13,6 +13,7 @@ export type ChatGlobalContextType<DM extends Message = any, DD extends Thread<DM
   model: Threads<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
   handleCreateNewThread: FnType<DD>;
+  onFileAttached?: (params: FileAttachedParams) => Promise<void> | void;
 } & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'thread' | 'threads' | 'handleCreateNewThread'>;
 
 const Context = React.createContext<ChatGlobalContextType<any, any> | undefined>(undefined);
