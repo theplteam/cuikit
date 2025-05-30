@@ -11,8 +11,6 @@ class AttachmentModel {
 
   readonly poster = new ObservableReactValue<HTMLImageElement | undefined>(undefined);
 
-  readonly isEmpty = new ObservableReactValue<boolean>(true);
-
   private _data: File;
 
   private _id: IdType;
