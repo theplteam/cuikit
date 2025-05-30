@@ -6,6 +6,7 @@ import GalleryItem from '../../../views/form/preview/GalleryItem';
 import { IdType } from '../../../types';
 import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
+import useGalleryItemSize from './useGalleryItemSize';
 
 type Props = {
   item: AttachmentModel;
@@ -49,12 +50,7 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
     return endIndex - startIndex;
   };
 
-  const size = React.useMemo(() => {
-    if (itemsCount === 1) return 256;
-    if (itemsCount >= 2 && itemsCount <= 6) return 128;
-    return 64;
-  }, [itemsCount]);
-
+  const size = useGalleryItemSize(itemsCount);
   const className = React.useMemo(() => {
     if (itemsCount === 1) return '';
 

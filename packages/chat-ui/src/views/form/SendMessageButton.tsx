@@ -20,6 +20,7 @@ const SendMessageButton: React.FC<Props> = ({ onSendMessage, isTyping, disabled 
       onSendMessage();
     }
   };
+
   return (
     <Box
       display="flex"
