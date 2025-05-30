@@ -44,7 +44,12 @@ const MessageMarkdownCodeWrapper: React.FC<Props> = ({ children, ...other }) => 
     setCodeText(childrenProps?.[0]?.children || '')
   }, [children]);
 
-  const codeLang = childrenProps?.[0]?.className?.replace('lang-', '') || '';
+  const codeLang = React.useMemo(() => {
+    return (childrenProps?.[0]?.className as string ?? '')
+      .split(' ')
+      .filter(c => c.startsWith('lang-'))[0] || ''
+      .replace('lang-', '');
+  }, [childrenProps]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeText)
