@@ -7,12 +7,10 @@ import MessageGalleryItem from './MessageGalleryItem';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
 import AttachmentModel from '../../../models/AttachmentModel';
 import 'photoswipe/style.css';
-import MessageAttachmentSkeleton from './MessageAttachmentSkeleton';
 
 type Props = {
   id: IdType;
   items: AttachmentModel[];
-  expectedItems?: number;
   onDeleteItem?: (id: IdType) => void;
 };
 
@@ -31,7 +29,7 @@ const GridBox = styled(Box)(() => ({
   },
 }));
 
-const MessageGallery: React.FC<Props> = ({ id, items, expectedItems = 0, onDeleteItem }) => {
+const MessageGallery: React.FC<Props> = ({ id, items, onDeleteItem }) => {
   const galleryId = `gallery-${id}`;
   const lightbox: PhotoSwipeLightbox = React.useMemo(() => new PhotoSwipeLightbox({
     gallery: `#${galleryId}`,
@@ -67,7 +65,6 @@ const MessageGallery: React.FC<Props> = ({ id, items, expectedItems = 0, onDelet
       overflow="hidden"
       className="pswp-gallery"
     >
-      {expectedItems > 0 ? <MessageAttachmentSkeleton itemsCount={expectedItems} variant='gallery' /> : null}
       {items.map((item, index) => (
         <MessageGalleryItem
           key={index}

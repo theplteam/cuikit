@@ -3,6 +3,8 @@ import { Attachment, ChatMessageContentType } from "./MessageModel";
 import getVideoPoster from "../utils/getVideoPoster";
 import { IdType } from "../types";
 import md5 from "md5";
+import loadUrlFile from "../utils/loadUrlFile";
+import { randomInt } from "../utils/numberUtils/randomInt";
 
 class AttachmentModel {
   readonly progress = new ObservableReactValue<number>(0);
@@ -11,18 +13,19 @@ class AttachmentModel {
 
   readonly poster = new ObservableReactValue<HTMLImageElement | undefined>(undefined);
 
-  private _data: File;
+  readonly isEmpty = new ObservableReactValue<boolean>(true);
 
-  private _id: IdType;
+  private _data: File = new File([''], 'empty');
 
-  public url: string;
+  private _id: IdType = randomInt(1, 1000);
 
-  constructor(_data: File, _id?: IdType) {
-    this._data = _data;
-    this.url = URL.createObjectURL(_data);
-    this._id = _id || md5(this.url);
- 
-    this._createPoster();
+  public url: string = '';
+
+  public isGallery = false;
+
+  constructor(_fileOrUrl: File | string, _isGallery: boolean, _id?: IdType) {
+    this.isGallery = _isGallery;
+    this._createSelf(_fileOrUrl, _id);
   }
 
   get id() { return this._id; }
@@ -32,10 +35,6 @@ class AttachmentModel {
   get type() { return this._data.type; }
 
   get name() { return this._data.name; }
-
-  get isGallery() {
-    return this.type.startsWith('image') || this.type.startsWith('video');
-  }
 
   private _createPoster = async () => {
     const img = document.createElement('img');
@@ -68,6 +67,23 @@ class AttachmentModel {
     };
     return data;
   }
+
+  private _createSelf = async (fileOrUrl: File | string, id?: IdType) => {
+    if (fileOrUrl instanceof File) {
+      this._data = fileOrUrl;
+      this.url = URL.createObjectURL(this._data);
+    } else {
+      const file = await loadUrlFile(fileOrUrl)
+      if (file) {
+        this._data = file;
+        this.url = fileOrUrl;
+      }
+    }
+
+    this._id = id || md5(this.url);
+    this.isEmpty.value = false;
+    this._createPoster();
+  };
 }
 
 export default AttachmentModel;

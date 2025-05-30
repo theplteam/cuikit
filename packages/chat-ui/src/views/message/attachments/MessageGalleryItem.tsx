@@ -87,7 +87,7 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
       }}
       className={className}
     >
-      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster as HTMLImageElement} videoUrl={isVideo ? url : undefined} />
+      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
       {onDelete ? <PreviewDeleteButton onClick={() => onDelete(item.id)} /> : null}
     </GridItem>
   );

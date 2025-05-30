@@ -16,8 +16,6 @@ const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) =>
   const { enableFileAttachments } = useChatContext();
   const itemsAll = useObserverValue(message.attachments.itemsAll);
   const deletedIds = useObserverValue(message.attachments.deletedIds);
-  const loadingGalleryCount = useObserverValue(message.attachments.loadingGalleryCount);
-  const loadingFileCount = useObserverValue(message.attachments.loadingFileCount);
 
   const galleryItems = itemsAll?.filter((i) => i.isGallery && !deletedIds?.includes(i.id)) || [];
 
@@ -31,17 +29,15 @@ const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) =>
       mx={1.5}
       alignItems='end'
     >
-      {(fileItems.length || loadingFileCount) ? (
+      {fileItems.length ? (
         <MessageFileList
           items={fileItems}
-          expectedItems={loadingFileCount}
           onDeleteItem={onDeleteAttachment}
         />) : null}
-      {(galleryItems.length || loadingGalleryCount) ? (
+      {galleryItems.length ? (
         <MessageGallery
           id={message.id}
           items={galleryItems}
-          expectedItems={loadingGalleryCount}
           onDeleteItem={onDeleteAttachment}
         />) : null}
     </Stack>

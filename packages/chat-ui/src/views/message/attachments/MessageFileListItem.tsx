@@ -5,6 +5,8 @@ import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton
 import { IdType } from '../../../types';
 import FileItem from '../../../views/form/preview/FileItem';
 import AttachmentModel from '../../../models/AttachmentModel';
+import { useObserverValue } from '../../../views/hooks/useObserverValue';
+import Skeleton from '@mui/material/Skeleton';
 
 type Props = {
   item: AttachmentModel;
@@ -18,6 +20,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 }));
 
 const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
+  const isEmpty = useObserverValue(item.isEmpty);
   const { id, name, type } = item;
 
   return (
@@ -26,8 +29,14 @@ const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
       width={200}
       height={80}
     >
-      <FileItem name={name} type={type} />
-      {onDelete ? <PreviewDeleteButton onClick={() => onDelete(id)} /> : null}
+      {isEmpty
+        ? <Skeleton width="100%" height="100%" variant='rounded' />
+        : (
+          <>
+            <FileItem name={name} type={type} />
+            {onDelete ? <PreviewDeleteButton onClick={() => onDelete(id)} /> : null}
+          </>
+        )}
     </BoxStyled>
   );
 }
