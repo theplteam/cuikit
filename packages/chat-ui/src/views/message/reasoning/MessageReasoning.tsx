@@ -99,7 +99,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
               flex={1}
             >
               <SimpleScrollbar style={{ maxHeight: 300 }}>
-                <MessageReasoningFull text={reasoning} />
+                <MessageReasoningFull text={reasoning} isProgress={inProgress} />
               </SimpleScrollbar>
             </Box>
           </Collapse>
@@ -109,7 +109,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
             <Collapse in={isExpanding} timeout={transitionDuration} collapsedSize={fullCollapseSize}>
               <Fade in={isExpanding} timeout={transitionDuration}>
                 <Box display={isFull ? undefined : 'none'} ml={2}>
-                  <MessageReasoningFull text={reasoning} />
+                  <MessageReasoningFull text={reasoning} isProgress={inProgress} />
                 </Box>
               </Fade>
             </Collapse>

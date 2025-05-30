@@ -93,6 +93,24 @@ export class ThreadListCache {
       threadsAffiliation[groupKey].push(item);
     });
 
+    // Check the group for deleted threads in it
+    const gValues = Object.values(this.groupValues.value);
+    for (const gValue of gValues) {
+      const newThreads = [...gValue.threads.value];
+      let changed = false;
+      for (const thread of newThreads) {
+        const index = threads.findIndex(v => v.id === thread.id);
+        if (index === -1) {
+          changed = true;
+          newThreads.splice(index, 1);
+        }
+      }
+
+      if (changed) {
+        gValue.threads.value = newThreads;
+      }
+    }
+
     let changed = false;
     for (const key in results) {
       let groupModel = currentMap[key];

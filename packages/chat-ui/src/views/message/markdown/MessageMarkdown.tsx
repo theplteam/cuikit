@@ -11,6 +11,7 @@ import { SlotPropsType } from '../../core/SlotPropsType';
 import { Message, Thread } from '../../../models';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
+import { useInProgressStateCache } from './useInProgressStateCache';
 
 type Props = {
   text: string;
@@ -21,17 +22,11 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
   const { slots, slotProps } = useChatSlots();
   const { processAssistantText } = useChatContext();
 
-  const [inProgress, setInProgress] = React.useState(false);
+  const inProgress = useInProgressStateCache(inProgressProp);
 
   if (processAssistantText) {
     text = processAssistantText(text);
   }
-
-  React.useEffect(() => {
-    if (!inProgress && inProgressProp) {
-      setInProgress(true);
-    }
-  }, [inProgressProp]);
 
   const getLazySmoothComponent = React.useCallback((componentKey: keyof SlotPropsType<Message, Thread>) => {
     return ({

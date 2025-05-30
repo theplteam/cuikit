@@ -5,20 +5,21 @@ import { useChatSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
   text: string;
+  isProgress: boolean;
 };
 
 export const ChatMarkdownReasoningBlockRoot = styled(ChatMarkdownBlockRoot)(({ theme }) => ({
   color: theme.palette.grey[700],
 }));
 
-const MessageReasoningFull: React.FC<Props> = ({ text }) => {
+const MessageReasoningFull: React.FC<Props> = ({ text, isProgress }) => {
   const { slots, slotProps } = useChatSlots();
   return (
     <MessageMarkdownBlock
       text={text}
       rootComponent={slots.markdownReasoningRoot}
       rootComponentProps={slotProps.markdownReasoningRoot}
-      inProgress={false}
+      inProgress={isProgress}
     />
   );
 }

@@ -12,6 +12,7 @@
     "build:docs": "node buildDocs.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
     "@emotion/styled": "^11.14.0",
     "@google/genai": "^0.13.0",
     "@mui/icons-material": "^5.15.14",

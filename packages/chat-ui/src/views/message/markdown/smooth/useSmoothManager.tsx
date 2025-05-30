@@ -34,11 +34,17 @@ class SmoothManager {
     }
 
     elements.forEach((el) => {
+      const hasAnimatedChildren = (el.childNodes.values() as ArrayIterator<HTMLDivElement>)
+        .some((v) => v.classList?.contains(chatClassNames.markdownSmoothedAnimating) || v.classList?.contains(chatClassNames.markdownSmoothedPending));
+
       el.classList.remove(chatClassNames.markdownSmoothedPending);
+
+      if (hasAnimatedChildren) return;
 
       el.style.animationDelay = `${delayMs}ms`;
 
       el.classList.add(chatClassNames.markdownSmoothedAnimating);
+      // el.classList.add(`test-class-${key}`);
       delayMs += this.delayValueMs;
     });
 

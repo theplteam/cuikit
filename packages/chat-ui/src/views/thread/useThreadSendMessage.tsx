@@ -188,8 +188,6 @@ export const useThreadSendMessage = (
 
           const pair = await onCreatePair(content, 'newMessage');
 
-          thread.messages.push(pair.userMessage, pair.assistantMessage);
-
           onSendMessage(content, pair.userMessage, pair.assistantMessage)
             .then(({ message }) => {
               resolve(true);
@@ -197,6 +195,8 @@ export const useThreadSendMessage = (
               thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
             })
             .catch(() => resolve(false));
+
+          thread.messages.push(pair.userMessage, pair.assistantMessage);
 
           scroller?.handleBottomScroll?.();
         } catch (e) {

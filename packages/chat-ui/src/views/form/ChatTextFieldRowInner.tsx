@@ -80,6 +80,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
         />
         <SendMessageButton
           disabled={disabledButton}
+          isTyping={isTyping}
           onSendMessage={onSendMessage}
         />
       </Stack>
