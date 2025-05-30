@@ -82,8 +82,6 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
     return className;
   }, [itemsCount]);
 
-  if (!poster) return null;
-
   return (
     <GridItem
       key={index}
