@@ -1,5 +1,5 @@
 import AttachmentModel from "./AttachmentModel";
-import { Attachment } from "./MessageModel";
+import { Attachment, ChatMessageContentType } from "./MessageModel";
 import loadUrlFile from "../utils/loadUrlFile";
 import { ObservableReactValue } from "../utils/observers/ObservableReactValue";
 import { IdType } from "../types";
@@ -8,30 +8,39 @@ import attachmentsStore from "./AttachmentsStore";
 class MessageAttachmentsModel {
   readonly deletedIds = new ObservableReactValue<IdType[]>([]);
 
-  public itemsAll: AttachmentModel[] = [];
+  readonly itemsAll = new ObservableReactValue<AttachmentModel[]>([]);
 
-  init = async (attachments: Attachment[]) => {  
+  readonly loadingGalleryCount = new ObservableReactValue<number>(0);
+
+  readonly loadingFileCount = new ObservableReactValue<number>(0);
+
+  init = async (attachments: Attachment[]) => {
+    const buffer: AttachmentModel[] = [];
+    attachments.forEach((a) => {
+      if (a.type === ChatMessageContentType.FILE) {
+        this.loadingFileCount.value += 1;
+      } else {
+        this.loadingGalleryCount.value += 1;
+      }
+    });
+
     for (const attachment of attachments) {
       const cacheItem = attachmentsStore.items.find((i) => i.id === attachment.id);
       if (cacheItem) {
-        this.itemsAll.push(cacheItem);
+        buffer.push(cacheItem);
         attachmentsStore.items = attachmentsStore.items.filter((a) => a.id !== attachment.id);
         continue;
       }
-  
-      const file = attachment.file || await this._loadFile(attachment.url || '');
+
+      const file = attachment.file ? attachment.file : await this._loadFile(attachment.url || '');
       if (file) {
         const model = new AttachmentModel(file, attachment.id);
-        this.itemsAll.push(model);
+        buffer.push(model);
       }
     }
+    this.loadingFileCount.value = this.loadingGalleryCount.value = 0;
+    this.itemsAll.value = buffer;
   }
-
-  get editorItems() { return this.itemsAll.filter((i) => !this.deletedIds.value.includes(i.id)); }
-
-  get galleryItems() { return this.editorItems.filter((i) => i.isGallery); }
-
-  get fileItems() { return this.editorItems.filter((i) => !i.isGallery); }
 
   private _loadFile = async (url: string) => {
     const file = await loadUrlFile(url)

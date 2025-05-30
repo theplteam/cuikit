@@ -17,7 +17,7 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel,
   const locale = useLocalizationContext();
 
   const onClick = () => {
-    if (text !== newText && !!newText) {
+    if (isAttachmentsChanged || (text !== newText && !!newText)) {
       onClickApply(newText);
     }
   }

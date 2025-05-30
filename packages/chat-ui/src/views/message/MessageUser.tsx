@@ -61,6 +61,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
   const deletedIds = useObserverValue(message.attachments.deletedIds);
+  const itemsAll = useObserverValue(message.attachments.itemsAll);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
@@ -78,7 +79,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
     messageMode.view(message.id);
     let content: MessageUserContent = newText;
     if (message.attachments) {
-      const attachmentContent = message.attachments.editorItems.map((a) => a.contentData);
+      const attachmentContent = itemsAll?.filter((i) => !deletedIds?.includes(i.id)).map((a) => a.contentData) || [];
       content = [{
         type: ChatMessageContentType.TEXT,
         text: newText,
@@ -86,6 +87,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
     }
     const newMessage = await apiRef.current?.onEditMessage(content, message);
     if (newMessage) {
+      message.attachments.deletedIds.value = [];
       apiRef.current?.handleChangeBranch(newMessage);
       onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
     }
@@ -127,7 +129,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         />
         <MessageUserEditor
           text={message.text}
-          isAttachmentsChanged={!deletedIds?.length}
+          isAttachmentsChanged={!!deletedIds?.length}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />

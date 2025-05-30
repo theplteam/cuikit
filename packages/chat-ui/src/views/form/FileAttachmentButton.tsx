@@ -76,7 +76,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
       snackbar.show(locale.maxAttachmentWarning);
     };
 
-    const fileAttachments = files.map((f) => new AttachmentModel(f))
+    const fileAttachments = files.map((f) => new AttachmentModel(f));
     setAttachments([...attachments, ...fileAttachments]);
 
     if (thread) {

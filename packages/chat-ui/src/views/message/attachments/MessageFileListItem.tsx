@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import PreviewDeleteButton from '../../../views/form/preview/PreviewDeleteButton';
 import { IdType } from '../../../types';
 import FileItem from '../../../views/form/preview/FileItem';
-import { useElementRef } from '../../../views/hooks/useElementRef';
 import AttachmentModel from '../../../models/AttachmentModel';
 
 type Props = {
@@ -20,11 +19,9 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 
 const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
   const { id, name, type } = item;
-  const ref = useElementRef();
 
   return (
     <BoxStyled
-      ref={ref}
       minWidth={200}
       width={200}
       height={80}
