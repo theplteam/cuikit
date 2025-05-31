@@ -22,7 +22,7 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel,
     }
   }
 
-  const disabled = isAttachmentsChanged ? false : (text === newText || !newText);
+  const disabled = (newText && isAttachmentsChanged) ? false : (text === newText || !newText);
 
   return (
     <Stack

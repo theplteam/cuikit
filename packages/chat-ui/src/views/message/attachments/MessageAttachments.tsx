@@ -25,7 +25,7 @@ const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) =>
 
   return (
     <Stack
-      width="100%"
+      width="80%"
       mx={1.5}
       alignItems='end'
     >

@@ -12,7 +12,7 @@ type Props = {
 
 const MessageFileList: React.FC<Props> = ({ items, onDeleteItem }) => {
   return (
-    <Scrollbar style={{ maxWidth: '80%' }}>
+    <Scrollbar style={{ maxWidth: '100%' }}>
       <Stack
         gap={1}
         flexDirection='row'

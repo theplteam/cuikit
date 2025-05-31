@@ -30,8 +30,14 @@ const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
       height={80}
     >
       {isEmpty
-        ? <Skeleton width="100%" height="100%" variant='rounded' />
-        : (
+        ? (
+          <Skeleton
+            width="100%"
+            height="100%"
+            variant='rounded'
+            sx={{ borderRadius: '16px' }}
+          />
+        ) : (
           <>
             <FileItem name={name} type={type} />
             {onDelete ? <PreviewDeleteButton onClick={() => onDelete(id)} /> : null}
