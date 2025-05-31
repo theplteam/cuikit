@@ -50,7 +50,7 @@ const MessageGallery: React.FC<Props> = ({ id, items, onDeleteItem }) => {
     };
   }, [lightbox]);
 
-  const columns = React.useMemo(() => items.length === 4 ? 2 : 3, [items.length]);
+  const columns = React.useMemo(() => items.length < 4 ? items.length : items.length === 4 ? 2 : 3, [items.length]);
   const rows = React.useMemo(() => Math.ceil(items.length / columns), [columns, items.length]);
 
   return (

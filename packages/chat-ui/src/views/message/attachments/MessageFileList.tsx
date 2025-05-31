@@ -17,7 +17,6 @@ const MessageFileList: React.FC<Props> = ({ items, onDeleteItem }) => {
         gap={1}
         flexDirection='row'
         justifySelf="end"
-        paddingBottom={1.5}
       >
         {items.map((item, index) => (
           <MessageFileListItem

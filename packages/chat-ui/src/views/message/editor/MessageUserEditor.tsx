@@ -3,6 +3,7 @@ import Stack from '@mui/material/Stack';
 import MessageUserEditorTextfield from './MessageUserEditorTextfield';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { useLocalizationContext } from '../../core/LocalizationContext';
+import { useChatContext } from '../../core/ChatGlobalContext';
 
 type Props = {
   text: string;
@@ -15,20 +16,24 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel,
   const [newText, setNewText] = React.useState(text);
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
+  const { enableFileAttachments } = useChatContext();
 
   const onClick = () => {
-    if (isAttachmentsChanged || (text !== newText && !!newText)) {
+    if (!disabled) {
       onClickApply(newText);
     }
   }
 
-  const disabled = (newText && isAttachmentsChanged) ? false : (text === newText || !newText);
+  const disabled = enableFileAttachments
+    ? isAttachmentsChanged
+      ? false
+      : text === newText
+    : (text === newText || !newText);
 
   return (
     <Stack
       gap={1.5}
-      width="80%"
-      px={1.5}
+      width="100%"
     >
       <MessageUserEditorTextfield
         newText={newText}

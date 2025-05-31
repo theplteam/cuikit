@@ -25,9 +25,9 @@ const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) =>
 
   return (
     <Stack
-      width="80%"
-      mx={1.5}
+      width="100%"
       alignItems='end'
+      gap={1}
     >
       {fileItems.length ? (
         <MessageFileList
