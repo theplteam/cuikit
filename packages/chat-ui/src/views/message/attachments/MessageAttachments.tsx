@@ -5,6 +5,7 @@ import MessageGallery from './MessageGallery';
 import MessageFileList from './MessageFileList';
 import { IdType } from '../../../types';
 import { MessageModel } from '../../../models/MessageModel';
+import { useObserverValue } from '../../../views/hooks/useObserverValue';
 
 type Props = {
   message: MessageModel;
@@ -13,18 +14,32 @@ type Props = {
 
 const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) => {
   const { enableFileAttachments } = useChatContext();
-  const { galleryItems, fileItems } = message.attachments;
+  const itemsAll = useObserverValue(message.attachments.itemsAll);
+  const deletedIds = useObserverValue(message.attachments.deletedIds);
+
+  const galleryItems = itemsAll?.filter((i) => i.isGallery && !deletedIds?.includes(i.id)) || [];
+
+  const fileItems = itemsAll?.filter((i) => !i.isGallery && !deletedIds?.includes(i.id)) || [];
 
   if (!enableFileAttachments) return null;
 
   return (
     <Stack
       width="100%"
-      mx={1.5}
       alignItems='end'
+      gap={1}
     >
-      {fileItems.length ? <MessageFileList items={fileItems} onDeleteItem={onDeleteAttachment} /> : null}
-      {galleryItems.length ? <MessageGallery id={message.id} items={galleryItems} onDeleteItem={onDeleteAttachment} /> : null}
+      {galleryItems.length ? (
+        <MessageGallery
+          id={message.id}
+          items={galleryItems}
+          onDeleteItem={onDeleteAttachment}
+        />) : null}
+      {fileItems.length ? (
+        <MessageFileList
+          items={fileItems}
+          onDeleteItem={onDeleteAttachment}
+        />) : null}
     </Stack>
   );
 };

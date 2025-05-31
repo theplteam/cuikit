@@ -3,7 +3,6 @@ import Stack from '@mui/material/Stack';
 import MessageFileListItem from './MessageFileListItem';
 import { IdType } from '../../../types';
 import AttachmentModel from '../../../models/AttachmentModel';
-import Scrollbar from '../../../ui/Scrollbar';
 
 type Props = {
   items: AttachmentModel[];
@@ -12,22 +11,20 @@ type Props = {
 
 const MessageFileList: React.FC<Props> = ({ items, onDeleteItem }) => {
   return (
-    <Scrollbar style={{ maxWidth: '80%' }}>
-      <Stack
-        gap={1}
-        flexDirection='row'
-        justifySelf="end"
-        paddingBottom={1.5}
-      >
-        {items.map((item, index) => (
-          <MessageFileListItem
-            key={index}
-            item={item}
-            onDelete={onDeleteItem}
-          />
-        ))}
-      </Stack>
-    </Scrollbar>
+    <Stack
+      gap={1}
+      flexDirection='column'
+      justifySelf="end"
+      flexWrap="nowrap"
+    >
+      {items.map((item, index) => (
+        <MessageFileListItem
+          key={index}
+          item={item}
+          onDelete={onDeleteItem}
+        />
+      ))}
+    </Stack>
   );
 }
 

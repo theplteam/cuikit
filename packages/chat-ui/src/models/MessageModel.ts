@@ -146,8 +146,8 @@ export class MessageModel<DM extends Message = Message> {
   get content() {
     let data: Message['content'] = this.text;
 
-    if (this.attachments.itemsAll.length) {
-      const attachmentContent = this.attachments.itemsAll.map((a) => a.contentData);
+    if (this.attachments.itemsAll.value.length) {
+      const attachmentContent = this.attachments.itemsAll.value.map((a) => a.contentData);
       data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...attachmentContent ];
     }
 

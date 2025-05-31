@@ -14,7 +14,7 @@ type Props = {
 
 const RootStyled = styled(Stack)(() => ({
   position: 'absolute',
-  top: 0,
+  bottom: 4,
   left: 0,
   transform: 'translateX(-100%)',
 }));

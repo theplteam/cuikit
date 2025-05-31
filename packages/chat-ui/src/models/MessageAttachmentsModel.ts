@@ -1,6 +1,5 @@
 import AttachmentModel from "./AttachmentModel";
-import { Attachment } from "./MessageModel";
-import loadUrlFile from "../utils/loadUrlFile";
+import { Attachment, ChatMessageContentType } from "./MessageModel";
 import { ObservableReactValue } from "../utils/observers/ObservableReactValue";
 import { IdType } from "../types";
 import attachmentsStore from "./AttachmentsStore";
@@ -8,35 +7,25 @@ import attachmentsStore from "./AttachmentsStore";
 class MessageAttachmentsModel {
   readonly deletedIds = new ObservableReactValue<IdType[]>([]);
 
-  public itemsAll: AttachmentModel[] = [];
+  readonly itemsAll = new ObservableReactValue<AttachmentModel[]>([]);
 
-  init = async (attachments: Attachment[]) => {  
+  init = (attachments: Attachment[]) => {
+    const buffer: AttachmentModel[] = [];
+
     for (const attachment of attachments) {
       const cacheItem = attachmentsStore.items.find((i) => i.id === attachment.id);
       if (cacheItem) {
-        this.itemsAll.push(cacheItem);
+        buffer.push(cacheItem);
         attachmentsStore.items = attachmentsStore.items.filter((a) => a.id !== attachment.id);
         continue;
       }
-  
-      const file = attachment.file || await this._loadFile(attachment.url || '');
-      if (file) {
-        const model = new AttachmentModel(file, attachment.id);
-        this.itemsAll.push(model);
-      }
+      const isGallery = attachment.type !== ChatMessageContentType.FILE;
+      const model = new AttachmentModel(attachment.file || attachment.url || '', isGallery, attachment.id);
+      buffer.push(model);
     }
+
+    this.itemsAll.value = buffer;
   }
-
-  get editorItems() { return this.itemsAll.filter((i) => !this.deletedIds.value.includes(i.id)); }
-
-  get galleryItems() { return this.editorItems.filter((i) => i.isGallery); }
-
-  get fileItems() { return this.editorItems.filter((i) => !i.isGallery); }
-
-  private _loadFile = async (url: string) => {
-    const file = await loadUrlFile(url)
-    return file;
-  };
 }
 
 export default MessageAttachmentsModel;

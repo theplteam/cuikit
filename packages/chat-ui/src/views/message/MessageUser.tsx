@@ -8,7 +8,6 @@ import MessageUserEditor from './editor/MessageUserEditor';
 import MessagePagination from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import { useThreadContext } from '../thread/ThreadContext';
 import { ChatMessageContentType, MessageModel, MessageUserContent } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
@@ -23,7 +22,7 @@ import clsx from 'clsx';
 import MessageAttachments from './attachments/MessageAttachments';
 import { IdType } from '../../types';
 import { chatClassNames } from '../core/chatClassNames';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
+import attachmentsStore from '../../models/AttachmentsStore';
 
 type Props = {
   message: MessageModel;
@@ -38,10 +37,7 @@ const {
   hoverMessageClassName,
 } = messageActionsClasses;
 
-const ChatMessageContainerStyled = styled(MessageContainer)(({ theme }) => ({
-  width: '80%',
-  background: materialDesignSysPalette.surfaceContainerLow,
-  position: 'relative',
+const StackStyled = styled(Stack)(({ theme }) => ({
   [`& .${actionsClassName}`]: {
     opacity: 0,
     transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
@@ -60,11 +56,12 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
-  const deletedIds = useObserverValue(message.attachments.deletedIds);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
   const { slots, slotProps } = useChatSlots();
+
+  const { itemsAll, deletedIds } = message.attachments;
 
   const mode = messageMode.values[message.id];
 
@@ -77,15 +74,17 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
     let content: MessageUserContent = newText;
-    if (message.attachments) {
-      const attachmentContent = message.attachments.editorItems.map((a) => a.contentData);
+    if (itemsAll.value.length) {
+      const attachments = itemsAll.value?.filter((i) => !deletedIds.value.includes(i.id)) || [];
+      attachmentsStore.items = attachments;
       content = [{
         type: ChatMessageContentType.TEXT,
         text: newText,
-      }, ...attachmentContent];
+      }, ...attachments.map((a) => a.contentData)];
     }
     const newMessage = await apiRef.current?.onEditMessage(content, message);
     if (newMessage) {
+      message.attachments.deletedIds.value = [];
       apiRef.current?.handleChangeBranch(newMessage);
       onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
     }
@@ -97,17 +96,61 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   }
 
   const onDeleteAttachment = (id: IdType) => {
-    message.attachments.deletedIds.value = [...deletedIds || [], id];
+    message.attachments.deletedIds.value = [...deletedIds.value, id];
   }
 
-  const children = React.useMemo(() => (
-    <>
-      <MessageMarkdownBlock
-        text={message.text}
-        rootComponent={slots.markdownMessageRoot}
-        rootComponentProps={slotProps.markdownMessageRoot}
-        inProgress={false}
-      />
+  if (mode === MessageStateEnum.EDIT) {
+    return (
+      <Stack
+        width="80%"
+        gap={1}
+        mx={1.5}
+        alignItems="flex-end"
+      >
+        <MessageAttachments
+          message={message}
+          onDeleteAttachment={onDeleteAttachment}
+        />
+        <MessageUserEditor
+          message={message}
+          onClickApply={onClickApplyEdit}
+          onClickCancel={onClickCancelEdit}
+        />
+      </Stack >
+    );
+  }
+
+  return (
+    <StackStyled
+      ref={setElement}
+      gap={1}
+      alignItems='flex-end'
+      position='relative'
+      mx={1.5}
+      className={
+        clsx(
+          { [hoverMessageClassName]: isHover || isTablet },
+          chatClassNames.messageUserRoot,
+        )
+      }
+      width={message.text ? '80%' : 'auto'}
+      maxWidth="80%"
+    >
+      <MessageAttachments message={message} />
+      {message.text ? (
+        <MessageContainer
+          className={chatClassNames.messageUser}
+          elevation={elevation}
+          sx={{ width: '100%', backgroundColor: (theme) => theme.palette.grey[200] }}
+        >
+          <MessageMarkdownBlock
+            text={message.text}
+            rootComponent={slots.markdownMessageRoot}
+            rootComponentProps={slotProps.markdownMessageRoot}
+            inProgress={false}
+          />
+        </MessageContainer>
+      ) : null}
       {((isFirst || message.parentId) && !!enableBranches) ? (
         <MessageActionsUser
           className={actionsClassName}
@@ -115,65 +158,14 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
           onClickEdit={onClickEdit}
         />
       ) : null}
-    </>
-  ), [message, thread, message.text, isFirst, isTyping, slots.markdownMessageRoot]);
-
-  if (mode === MessageStateEnum.EDIT) {
-    return (
-      <Stack width="100%" gap={1} alignItems="flex-end">
-        <MessageAttachments
-          message={message}
-          onDeleteAttachment={onDeleteAttachment}
-        />
-        <MessageUserEditor
-          text={message.text}
-          isAttachmentsChanged={!deletedIds?.length}
-          onClickApply={onClickApplyEdit}
-          onClickCancel={onClickCancelEdit}
-        />
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack
-      width="100%"
-      alignItems="flex-end"
-      gap={0.5}
-      position="relative"
-      className={chatClassNames.messageUserRoot}
-    >
-      <Box
-        width="100%"
-        display="flex"
-        alignItems="flex-end"
-        flexDirection="column"
-        gap={1}
-      >
-        <MessageAttachments message={message} />
-        {message.text ? (
-          <ChatMessageContainerStyled
-            ref={setElement}
-            gap={1}
-            mx={1.5}
-            className={clsx(
-              { [hoverMessageClassName]: isHover || isTablet },
-              chatClassNames.messageUser,
-            )}
-            elevation={elevation}
-          >
-            {children}
-          </ChatMessageContainerStyled>
-        ) : null}
-      </Box>
-      {!!enableBranches && (
+      {enableBranches ? (
         <MessagePagination
           disabled={isTyping}
           message={message}
           classes={messageActionsClasses}
         />
-      )}
-    </Stack>
+      ) : null}
+    </StackStyled >
   );
 };
 
