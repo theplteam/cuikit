@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment/moment';
 import { randomId } from '../../utils/numberUtils/randomInt';
 import { MessageSender } from '../../models/MessageSender';
+import { ApiManager } from '../core/useApiManager';
 
 type BeforeUserMessageSendFnParams = {
   text: string;
@@ -39,9 +40,10 @@ export const useThreadSendMessage = (
   onFirstMessageSent: ChatUsersProps<any, any>['onFirstMessageSent'],
   beforeUserMessageSend: BeforeUserMessageSendFnType | undefined,
   onAssistantMessageTypingFinish: ChatUsersProps<any, any>['onAssistantMessageTypingFinish'],
-  scroller?: {
+  scroller: {
     handleBottomScroll?: () => void;
-  }
+  } | undefined,
+  apiManager: ApiManager,
 ) => {
   const getInternalMessage = useInternalMessageTransformer();
   const { transformMessage } = useAdapterContext();
@@ -123,9 +125,13 @@ export const useThreadSendMessage = (
 
     const { userMessage, assistantMessage } = await onCreatePair(content, 'editMessage', parentMessage);
 
-    thread.messages.push(userMessage, assistantMessage);
+    // TODO: There is a bug here, when we change the branch, the user's message is automatically added to it,
+    //  so a new user message is passed in the history
+    apiManager.apiRef.current?.handleChangeBranch(userMessage);
 
     onSendMessage(content, userMessage, assistantMessage);
+
+    thread.messages.push(userMessage, assistantMessage);
 
     return userMessage;
   };

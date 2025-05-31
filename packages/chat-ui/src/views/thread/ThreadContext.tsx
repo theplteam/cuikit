@@ -44,6 +44,7 @@ const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, m
     globalProps.beforeUserMessageSend,
     globalProps.onAssistantMessageTypingFinish,
     scrollRef.current ?? undefined,
+    apiManager,
   );
 
   useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage, globalProps.getConversationBlockHeightMin);
