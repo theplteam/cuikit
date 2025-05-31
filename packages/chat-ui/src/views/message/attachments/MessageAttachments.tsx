@@ -29,15 +29,15 @@ const MessageAttachments: React.FC<Props> = ({ message, onDeleteAttachment }) =>
       alignItems='end'
       gap={1}
     >
-      {fileItems.length ? (
-        <MessageFileList
-          items={fileItems}
-          onDeleteItem={onDeleteAttachment}
-        />) : null}
       {galleryItems.length ? (
         <MessageGallery
           id={message.id}
           items={galleryItems}
+          onDeleteItem={onDeleteAttachment}
+        />) : null}
+      {fileItems.length ? (
+        <MessageFileList
+          items={fileItems}
           onDeleteItem={onDeleteAttachment}
         />) : null}
     </Stack>
