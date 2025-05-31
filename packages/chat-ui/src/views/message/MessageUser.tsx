@@ -99,29 +99,6 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
     message.attachments.deletedIds.value = [...deletedIds || [], id];
   }
 
-  const textMessage = React.useMemo(() => message.text ? (
-    <MessageContainer
-      className={chatClassNames.messageUser}
-      elevation={elevation}
-      sx={{ width: '100%', backgroundColor: (theme) => theme.palette.grey[200] }}
-    >
-      <MessageMarkdownBlock
-        text={message.text}
-        rootComponent={slots.markdownMessageRoot}
-        rootComponentProps={slotProps.markdownMessageRoot}
-        inProgress={false}
-      />
-    </MessageContainer>
-  ) : null, [message.text, slots.markdownMessageRoot]);
-
-  const branchAction = React.useMemo(() => ((isFirst || message.parentId) && !!enableBranches) ? (
-    <MessageActionsUser
-      className={actionsClassName}
-      disabled={isTyping}
-      onClickEdit={onClickEdit}
-    />
-  ) : null, [message, isFirst, isTyping]);
-
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack
@@ -161,8 +138,27 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
       maxWidth="80%"
     >
       <MessageAttachments message={message} />
-      {textMessage}
-      {branchAction}
+      {message.text ? (
+        <MessageContainer
+          className={chatClassNames.messageUser}
+          elevation={elevation}
+          sx={{ width: '100%', backgroundColor: (theme) => theme.palette.grey[200] }}
+        >
+          <MessageMarkdownBlock
+            text={message.text}
+            rootComponent={slots.markdownMessageRoot}
+            rootComponentProps={slotProps.markdownMessageRoot}
+            inProgress={false}
+          />
+        </MessageContainer>
+      ) : null}
+      {((isFirst || message.parentId) && !!enableBranches) ? (
+        <MessageActionsUser
+          className={actionsClassName}
+          disabled={isTyping}
+          onClickEdit={onClickEdit}
+        />
+      ) : null}
       {enableBranches ? (
         <MessagePagination
           disabled={isTyping}

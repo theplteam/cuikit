@@ -20,7 +20,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 }));
 
 const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
-  const isEmpty = useObserverValue(item.isEmpty);
+  const isLoading = useObserverValue(item.isLoading);
   const { id, name, type } = item;
 
   return (
@@ -29,7 +29,7 @@ const MessageFileListItem: React.FC<Props> = ({ item, onDelete }) => {
       width={200}
       height={80}
     >
-      {isEmpty
+      {isLoading
         ? (
           <Skeleton
             width="100%"

@@ -13,7 +13,7 @@ class AttachmentModel {
 
   readonly poster = new ObservableReactValue<HTMLImageElement | undefined>(undefined);
 
-  readonly isEmpty = new ObservableReactValue<boolean>(true);
+  readonly isLoading = new ObservableReactValue<boolean>(true);
 
   private _data: File = new File([''], 'empty');
 
@@ -81,7 +81,7 @@ class AttachmentModel {
     }
 
     this._id = id || md5(this.url);
-    this.isEmpty.value = false;
+    this.isLoading.value = false;
     this._createPoster();
   };
 }
