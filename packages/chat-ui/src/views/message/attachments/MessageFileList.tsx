@@ -16,13 +16,14 @@ const MessageFileList: React.FC<Props> = ({ items, onDeleteItem }) => {
   const hasScroll = element ? element.scrollWidth > element.clientWidth : false;
 
   return (
-    <Scrollbar style={{ maxWidth: '100%' }}>
+    <Scrollbar style={{ maxWidth: '100%', maxHeight: 100, minHeight: 80 }}>
       <Stack
         ref={setElement}
         gap={1}
         flexDirection='row'
         justifySelf="end"
         paddingBottom={hasScroll ? 1.5 : 0}
+        flexWrap="nowrap"
       >
         {items.map((item, index) => (
           <MessageFileListItem
