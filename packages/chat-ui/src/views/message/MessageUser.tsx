@@ -56,11 +56,12 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
-  const deletedIds = useObserverValue(message.attachments.deletedIds);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
   const { slots, slotProps } = useChatSlots();
+
+  const { itemsAll, deletedIds } = message.attachments;
 
   const mode = messageMode.values[message.id];
 
@@ -73,8 +74,8 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
     let content: MessageUserContent = newText;
-    if (message.attachments.itemsAll.value.length) {
-      const attachments = message.attachments.itemsAll.value?.filter((i) => !deletedIds?.includes(i.id)) || [];
+    if (itemsAll.value.length) {
+      const attachments = itemsAll.value?.filter((i) => !deletedIds.value.includes(i.id)) || [];
       attachmentsStore.items = attachments;
       content = [{
         type: ChatMessageContentType.TEXT,
@@ -95,7 +96,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   }
 
   const onDeleteAttachment = (id: IdType) => {
-    message.attachments.deletedIds.value = [...deletedIds || [], id];
+    message.attachments.deletedIds.value = [...deletedIds.value, id];
   }
 
   if (mode === MessageStateEnum.EDIT) {
@@ -111,8 +112,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
           onDeleteAttachment={onDeleteAttachment}
         />
         <MessageUserEditor
-          text={message.text}
-          isAttachmentsChanged={!!deletedIds?.length}
+          message={message}
           onClickApply={onClickApplyEdit}
           onClickCancel={onClickCancelEdit}
         />

@@ -4,19 +4,21 @@ import MessageUserEditorTextfield from './MessageUserEditorTextfield';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 import { useLocalizationContext } from '../../core/LocalizationContext';
 import { useChatContext } from '../../core/ChatGlobalContext';
+import { useObserverValue } from '../../hooks/useObserverValue';
+import { MessageModel } from '../../../models/MessageModel';
 
 type Props = {
-  text: string;
-  isAttachmentsChanged: boolean;
+  message: MessageModel;
   onClickApply: (text: string) => void;
   onClickCancel: () => void;
 };
 
-const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel, isAttachmentsChanged }) => {
-  const [newText, setNewText] = React.useState(text);
+const MessageUserEditor: React.FC<Props> = ({ onClickApply, onClickCancel, message }) => {
+  const [newText, setNewText] = React.useState(message.text);
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
   const { enableFileAttachments } = useChatContext();
+  const deletedIds = useObserverValue(message.attachments.deletedIds);
 
   const onClick = () => {
     if (!disabled) {
@@ -25,10 +27,10 @@ const MessageUserEditor: React.FC<Props> = ({ text, onClickApply, onClickCancel,
   }
 
   const disabled = enableFileAttachments
-    ? isAttachmentsChanged
-      ? false
-      : text === newText
-    : (text === newText || !newText);
+    ? deletedIds?.length
+      ? message.attachments.itemsAll.value.length === deletedIds.length && !newText
+      : message.text === newText
+    : (message.text === newText || !newText);
 
   return (
     <Stack
