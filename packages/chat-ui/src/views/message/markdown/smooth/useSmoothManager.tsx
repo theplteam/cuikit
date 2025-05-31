@@ -59,16 +59,16 @@ class SmoothManager {
 
     delayMs -= this.delayValueMs;
 
-    const animationTime = Math.ceil(delayMs + ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);
-
     if (delayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
 
-      await new Promise((resolve) => setTimeout(resolve, animationTime));
+      setTimeout(() => {
+        elements?.forEach((el) => {
+          el.classList.remove(chatClassNames.markdownSmoothedAnimating);
+          el.style.animationDelay = '0s';
+        });
+      }, ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS)
 
-      elements?.forEach((el) => {
-        el.classList.remove(chatClassNames.markdownSmoothedAnimating);
-        el.style.animationDelay = '0s';
-      });
     }
 
     this.ran = false;

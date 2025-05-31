@@ -106,7 +106,7 @@ const App: React.FC = () => {
 
   const fileUploadMock = async (callback: (num: number) => void) => {
     for (let i = 0; i < 100; i += Math.floor(Math.random() * (10 - 1 + 1)) + 1) {
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 2));
       callback(i);
     }
   };
@@ -134,8 +134,7 @@ const App: React.FC = () => {
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
         maxFileSize={5 * 1024 * 1024}
-        maxFileCount={3}
-        acceptableFileFormat={'video/*, image/*, text/plain'}
+        maxFileCount={15}
         onUserMessageSent={onUserMessageSent}
         onFileAttached={onFileAttached}
         onFileDetached={onFileDetached}
