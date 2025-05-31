@@ -36,7 +36,8 @@ class SmoothManager {
     }
 
     elements.forEach((el) => {
-      const hasAnimatedChildren = (el.childNodes.values() as ArrayIterator<HTMLDivElement>)
+      // TODO: Sort out the typing
+      const hasAnimatedChildren = (el.childNodes.values() as unknown as HTMLDivElement[])
         .some((v) => ['li', 'ol', 'ul'].every(v => v !== el.tagName.toLowerCase())
           && (v.classList?.contains(chatClassNames.markdownSmoothedAnimating) || v.classList?.contains(chatClassNames.markdownSmoothedPending))
         );
