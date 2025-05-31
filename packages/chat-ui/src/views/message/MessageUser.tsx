@@ -57,7 +57,6 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
   const deletedIds = useObserverValue(message.attachments.deletedIds);
-  const itemsAll = useObserverValue(message.attachments.itemsAll);
 
   const { messageMode, apiRef } = useThreadContext();
   const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
@@ -74,8 +73,8 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const onClickApplyEdit = async (newText: string) => {
     messageMode.view(message.id);
     let content: MessageUserContent = newText;
-    if (message.attachments) {
-      const attachments = itemsAll?.filter((i) => !deletedIds?.includes(i.id)) || [];
+    if (message.attachments.itemsAll.value.length) {
+      const attachments = message.attachments.itemsAll.value?.filter((i) => !deletedIds?.includes(i.id)) || [];
       attachmentsStore.items = attachments;
       content = [{
         type: ChatMessageContentType.TEXT,
