@@ -7,7 +7,7 @@ import { Threads } from '../../models/Threads';
 
 type Props = {
   thread: ThreadModel;
-  setThread: (thread: ThreadModel['data']['data']) => void;
+  setThread: (thread: ThreadModel) => void;
   model: Threads<any, any>;
   slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
 };
