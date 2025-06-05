@@ -1,7 +1,6 @@
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import { chatClassNames } from '../../core/chatClassNames';
-import hexToRgba from 'hex-to-rgba';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { motion } from '../../../utils/materialDesign/motion';
 import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
@@ -9,7 +8,7 @@ import { materialDesignSysPalette } from '../../../utils/materialDesign/palette'
 const classSelected = 'boxSelected';
 const classShadowRight = 'shadowRight';
 
-const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${hexToRgba(hex, 0)} 100%)`;
+const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${alpha(hex, 0)} 100%)`;
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
   [`& .${chatClassNames.threadListItem}`]: {
