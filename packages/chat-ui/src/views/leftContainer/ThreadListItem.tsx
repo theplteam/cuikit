@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ThreadModel } from '../../models/ThreadModel';
+import { Thread, ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { ThreadListCache } from '../../models/ThreadListCache';
@@ -10,7 +10,7 @@ import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 type Props = {
   thread: ThreadModel;
   selected: boolean;
-  setThread: (thread: ThreadModel) => void;
+  setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
   slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
 };
@@ -37,7 +37,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
 
   const handleClickListItem = () => {
     apiRef.current?.setMenuDriverOpen(false);
-    setThread(thread);
+    setThread(thread.toPlainThread());
   }
 
   const classes = [chatClassNames.threadListItem];
