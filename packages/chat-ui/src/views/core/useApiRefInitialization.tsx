@@ -11,14 +11,14 @@ export const useApiRefInitialization = (
   props: ChatPropsTypes<any, any>,
 ) => {
   React.useEffect(() => {
-    const getAllThreads = () => model.list.value.map(v => v.data.data);
+    const getAllThreads = () => model.list.value.map(v => v.data);
 
     const onChangeThread = async (threadId: IdType) => {
       const threadModel = model.get(threadId);
       model.currentThread.value = threadModel;
 
       if (!!threadModel && !!threadModel.isLoadingFullData.value && !!props.getFullThread) {
-        let fullThread = props.getFullThread(threadModel.data.data.id);
+        let fullThread = props.getFullThread(threadModel.id);
 
         if (fullThread instanceof Promise) {
           fullThread = await fullThread;
@@ -58,7 +58,7 @@ export const useApiRefInitialization = (
     };
 
     const getCurrentThread = () => {
-      return model.currentThread.value?.data.data;
+      return model.currentThread.value?.data;
     };
 
     apiManager.setMethod('onChangeThread', onChangeThread);
