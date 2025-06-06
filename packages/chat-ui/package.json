@@ -1,15 +1,31 @@
 {
   "name": "@plteam/chat-ui",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "debug": "tsc --sourcemap"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "PL Team",
+  "description": "CUI Kit is a free and open-source library for creating AI assistant chat interfaces, built with React, Material UI, and TypeScript",
+  "keywords": [
+    "react",
+    "react-component",
+    "chat",
+    "cui",
+    "ai",
+    "mui",
+    "material-ui",
+    "material design"
+  ],
+  "repository": {
+    "directory": "/packages/chat-ui",
+    "type": "git",
+    "url": "git+https://github.com/theplteam/cuikit.git"
+  },
+  "homepage": "https://cuikit.com",
+  "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.26.0",
     "@emotion/react": "^11.14.0",
@@ -46,6 +62,5 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
-  ],
-  "description": ""
+  ]
 }
