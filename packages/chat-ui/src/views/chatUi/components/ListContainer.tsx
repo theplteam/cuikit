@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 const containerId = 'chat-ui-list-container';
 
 const ListContainer = () => (
-  <Box width="100%" id={containerId} sx={{ background: (theme) => theme.palette.grey[200] }} />
+  <Box width="100%" id={containerId} sx={{ backgroundColor: (theme) => theme.palette.grey[200] }} />
 );
 
 const ListContainerPortal = ({ children }: React.PropsWithChildren) => (
