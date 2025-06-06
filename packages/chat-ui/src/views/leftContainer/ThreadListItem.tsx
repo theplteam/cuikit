@@ -37,7 +37,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
 
   const handleClickListItem = () => {
     apiRef.current?.setMenuDriverOpen(false);
-    setThread(thread.toPlainThread());
+    setThread(thread.data);
   }
 
   const classes = [chatClassNames.threadListItem];

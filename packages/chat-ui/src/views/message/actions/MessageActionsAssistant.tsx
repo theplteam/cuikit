@@ -33,7 +33,7 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className, 
       {actionsAssistant?.map((component, k) => (
         <component.element
           key={k}
-          thread={thread.toPlainThread()}
+          thread={thread.data}
           message={message.data as Extract<Message, { role: ChatMessageOwner.ASSISTANT }>}
         />
       ))}

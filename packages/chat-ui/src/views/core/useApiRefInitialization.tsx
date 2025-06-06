@@ -11,7 +11,7 @@ export const useApiRefInitialization = (
   props: ChatPropsTypes<any, any>,
 ) => {
   React.useEffect(() => {
-    const getAllThreads = () => model.list.value.map(v => v.toPlainThread());
+    const getAllThreads = () => model.list.value.map(v => v.data);
 
     const onChangeThread = async (threadId: IdType) => {
       const threadModel = model.get(threadId);
@@ -58,7 +58,7 @@ export const useApiRefInitialization = (
     };
 
     const getCurrentThread = () => {
-      return model.currentThread.value?.toPlainThread();
+      return model.currentThread.value?.data;
     };
 
     apiManager.setMethod('onChangeThread', onChangeThread);

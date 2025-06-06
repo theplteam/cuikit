@@ -182,7 +182,7 @@ export const useThreadSendMessage = (
         try {
           if (thread.isEmpty.value) {
             if (onFirstMessageSent) {
-              await onFirstMessageSent?.({ thread: thread.toPlainThread() });
+              await onFirstMessageSent?.({ thread: thread.data });
             }
 
             if (!model.get(thread.id)) {
@@ -197,7 +197,7 @@ export const useThreadSendMessage = (
           onSendMessage(content, pair.userMessage, pair.assistantMessage)
             .then(({ message }) => {
               resolve(true);
-              onAssistantMessageTypingFinish?.({ message, thread: thread.toPlainThread() });
+              onAssistantMessageTypingFinish?.({ message, thread: thread.data });
               thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
             })
             .catch(() => resolve(false));
