@@ -23,7 +23,7 @@ const ThreadsList: React.FC = () => {
   }
 
   return (
-    <Stack gap={2} height="100%">
+    <Stack gap={2} height="100%" width="100%">
       <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
@@ -32,7 +32,7 @@ const ThreadsList: React.FC = () => {
       </Box>
       <Box ref={ref} flex={1}>
         {!!height && (
-          <Scrollbar style={{ minHeight: height -1, maxHeight: height -1 }}>
+          <Scrollbar style={{ minHeight: height - 1, maxHeight: height - 1 }}>
             <ThreadsListMapBlock />
           </Scrollbar>
         )}

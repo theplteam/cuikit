@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid2';
+import Stack from '@mui/material/Stack';
 import Chat from './../Chat';
 import { useElementRef } from './../hooks/useElementRef';
 import { ChatUsersProps } from './../core/useChatProps';
@@ -21,39 +21,19 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
   const isTablet = useTablet();
 
   const listContainerComponent = React.useMemo(() => (
-    <Grid
-      container
-      width="100%"
-      sx={{
-        display: isMobile ? 'none' : 'flex',
-        maxWidth: isMobile ? 0 : isTablet ? 220 : 360,
-        height: isMobile ? 0 : '100%',
-      }}
-    >
-      <ListContainer />
-    </Grid>
+    <ListContainer isMobile={isMobile} isTablet={isTablet} />
   ), [isMobile, isTablet]);
 
   return (
-    <Grid
-      container
-      flexDirection={isMobile ? 'column' : 'row'}
+    <Stack
+      flexDirection={{ xs: 'column', sm: 'row' }}
       height="inherit"
       width="inherit"
       position="relative"
     >
-      <Grid
-        width="100%"
-        sx={{
-          maxWidth: isMobile ? '100%' : 0,
-          height: isMobile ? 'auto' : 0,
-          display: isMobile ? 'block' : 'none',
-        }}
-      >
-        <MobileAppBarContainer />
-      </Grid>
+      <MobileAppBarContainer isMobile={isMobile} />
       {listPlacement === 'left' && listContainerComponent}
-      <Grid
+      <Stack
         ref={ref}
         flex={1}
         height="100%"
@@ -73,9 +53,9 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
             <ChatMobileAppBar />
           </MobileAppBarContainerPortal>
         </Chat>
-      </Grid>
+      </Stack>
       {listPlacement === 'right' && listContainerComponent}
-    </Grid >
+    </Stack>
   )
 }
 
