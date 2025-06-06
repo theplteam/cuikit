@@ -131,13 +131,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   }
 
   get data(): Thread<DM> {
-    return {
-      id: this.id,
-      title: this.title,
-      date: new Date(this.time * 1000).toISOString(),
-      messages: this.messagesArray.map(m => m.data),
-      isNew: this.isNew,
-    };
+    return this._data;
   }
 
   setFullData = (threadData: Thread & { messages: DM[] }) => {
