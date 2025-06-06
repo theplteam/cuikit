@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ThreadModel } from '../../models';
+import { Thread, ThreadModel } from '../../models';
 import ThreadListItem from './ThreadListItem';
 import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -7,7 +7,7 @@ import { Threads } from '../../models/Threads';
 
 type Props = {
   thread: ThreadModel;
-  setThread: (thread: ThreadModel['data']['data']) => void;
+  setThread: (thread: Thread) => void;
   model: Threads<any, any>;
   slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
 };
