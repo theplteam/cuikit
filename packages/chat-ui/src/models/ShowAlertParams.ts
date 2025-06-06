@@ -1,0 +1,1 @@
+export type ShowAlertParams = { text: string, type: 'info' | 'error' };

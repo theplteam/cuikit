@@ -24,6 +24,7 @@ const FileAttachmentBase = React.lazy(() => import('./fileAttachment/FileAttachm
 const FileAttachmentError = React.lazy(() => import('./fileAttachment/FileAttachmentError'));
 const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAttachmentProgress'));
 const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
+const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -61,6 +62,7 @@ const App: React.FC = () => {
       case 'message-attachment-error': variant = FileAttachmentError; break;
       case 'message-attachment-progress': variant = FileAttachmentProgress; break;
       case 'message-attachment-restrictions': variant = FileAttachmentRestrictions; break;
+      case 'snackbar': variant = ExternalSnackbar; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
