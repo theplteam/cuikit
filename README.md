@@ -8,7 +8,11 @@
 
 Easily integrate ChatGPT, Claude, Gemini, or any other AI model. A flexible, fast, and stylish interface built with React and Material UI, ready for full customization
 
-## Instalation
+## Documentation
+
+For comprehensive details on how to use, configure, and contribute to this project, please refer to our [official documentation](https://docs.cuikit.com/).
+
+## Installation
 
 Using your favorite package manager, install @plteam/chat-ui
 
@@ -30,7 +34,3 @@ Please note that react and react-dom are peer dependencies too:
   "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
 }
 ```
-
-## Documentation
-
-For comprehensive details on how to use, configure, and contribute to this project, please refer to our [official documentation](https://docs.cuikit.com/).
