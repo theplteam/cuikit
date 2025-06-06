@@ -102,7 +102,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
     return this._data.id;
   }
 
-  set id(value: IdType) {
+  setId = (value: IdType) => {
     this._data.id = value;
   }
 
