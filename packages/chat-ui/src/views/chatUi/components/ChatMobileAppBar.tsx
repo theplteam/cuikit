@@ -3,7 +3,6 @@ import Stack from '@mui/material/Stack';
 import { MenuIcon } from '../../../icons';
 import { useChatContext } from './../../core/ChatGlobalContext';
 import { useChatSlots } from './../../core/ChatSlotsContext';
-import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
 import { Box } from '@mui/material';
 
 const ChatMobileAppBar: React.FC = () => {
@@ -18,7 +17,6 @@ const ChatMobileAppBar: React.FC = () => {
     <Stack
       justifyContent="center"
       height={64}
-      sx={{ backgroundColor: materialDesignSysPalette.surfaceContainerLow }}
       paddingX={1}
     >
       <Box>

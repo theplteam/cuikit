@@ -1,10 +1,9 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Chat from './../Chat';
 import { useElementRef } from './../hooks/useElementRef';
 import { ChatUsersProps } from './../core/useChatProps';
 import { useMobile, useTablet } from './../../ui/Responsive';
-import HiddenContent from './../HiddenContent';
 import { ListContainer, ListContainerPortal } from './components/ListContainer';
 import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components/MobileAppBarContainer';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
@@ -21,30 +20,38 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
   const isMobile = useMobile();
   const isTablet = useTablet();
 
-  const listContainerComponent = React.useMemo(() => isMobile
-    ? null
-    : (
-      <Grid
-        item container width="100%"
-        maxWidth={isTablet ? 220 : 360}
-      >
-        <ListContainer />
-      </Grid>
-    ), [isMobile, isTablet]);
+  const listContainerComponent = React.useMemo(() => (
+    <Grid
+      container
+      width="100%"
+      sx={{
+        display: isMobile ? 'none' : 'flex',
+        maxWidth: isMobile ? 0 : isTablet ? 220 : 360,
+        height: isMobile ? 0 : '100%',
+      }}
+    >
+      <ListContainer />
+    </Grid>
+  ), [isMobile, isTablet]);
 
   return (
     <Grid
       container
-      flexDirection={{ xs: 'column', sm: 'row' }}
+      flexDirection={isMobile ? 'column' : 'row'}
       height="inherit"
       width="inherit"
       position="relative"
     >
-      {isMobile ? (
-        <Grid>
-          <MobileAppBarContainer />
-        </Grid>
-      ) : null}
+      <Grid
+        width="100%"
+        sx={{
+          maxWidth: isMobile ? '100%' : 0,
+          height: isMobile ? 'auto' : 0,
+          display: isMobile ? 'block' : 'none',
+        }}
+      >
+        <MobileAppBarContainer />
+      </Grid>
       {listPlacement === 'left' && listContainerComponent}
       <Grid
         ref={ref}
@@ -57,20 +64,18 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
         <Chat
           scrollerRef={ref}
           slots={{
-            listContainer: isMobile ? HiddenContent : ListContainerPortal,
+            listContainer: ListContainerPortal,
             ...slots,
           }}
           {...other}
         >
-          {isMobile ? (
-            <MobileAppBarContainerPortal>
-              <ChatMobileAppBar />
-            </MobileAppBarContainerPortal>
-          ) : null}
+          <MobileAppBarContainerPortal>
+            <ChatMobileAppBar />
+          </MobileAppBarContainerPortal>
         </Chat>
       </Grid>
       {listPlacement === 'right' && listContainerComponent}
-    </Grid>
+    </Grid >
   )
 }
 

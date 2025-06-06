@@ -5,12 +5,17 @@ import { Breakpoint } from '@mui/system/createTheme/createBreakpoints';
 
 export const useTablet = (options?: UseMediaQueryOptions) => {
   const theme = useTheme();
-  return useMediaQuery(theme.breakpoints.down('md'), options);
+  return useMediaQuery(theme.breakpoints.between('sm', "md"), options);
 };
 
 export const useMobile = (options?: UseMediaQueryOptions) => {
   const theme = useTheme();
   return useMediaQuery(theme.breakpoints.down('sm'), options);
+};
+
+export const useDesktop = (options?: UseMediaQueryOptions) => {
+  const theme = useTheme();
+  return useMediaQuery(theme.breakpoints.up('md'), options);
 };
 
 type UseBreakpoint = {
@@ -51,9 +56,9 @@ export const HiddenTablet: React.FC<{ children: React.ReactNode }> = ({ children
 }
 
 export const HiddenDesktop: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const isTablet = useTablet();
-  return isTablet
+  const isDesktop = useDesktop();
+  return isDesktop
+    ? null
     // eslint-disable-next-line
-    ? <>{children}</>
-    : null;
+    : <>{children}</>;
 }

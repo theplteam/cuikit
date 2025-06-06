@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 const containerId = 'chat-ui-mobile-app-bar-container';
 
 const MobileAppBarContainer: React.FC = () => (
-  <Box id={containerId} />
+  <Box width="100%" id={containerId} sx={{ backgroundColor: (theme) => theme.palette.grey[200] }} />
 );
 
 const MobileAppBarContainerPortal = ({ children }: React.PropsWithChildren) => (
