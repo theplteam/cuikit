@@ -4,17 +4,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useSnackbar } from '../hooks/useSnackbar';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useLocalizationContext } from '../core/LocalizationContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { model, onThreadDeleted, apiRef } = useChatContext();
+  const { model, onThreadDeleted, apiRef, snackbar } = useChatContext();
   const deleteItem = useObserverValue(model.actions.deleteItem);
   const coreSlots = useChatCoreSlots();
-  const snackbar = useSnackbar();
   const locale = useLocalizationContext();
 
   const handleClose = () => {
@@ -25,7 +23,7 @@ const ThreadDeleteConfirm: React.FC = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
       onThreadDeleted?.({ thread: deleteItem });
-      snackbar.show(locale.threadDeletedSuccess);
+      snackbar.show({ text: locale.threadDeletedSuccess, type: 'info' });
     }
     handleClose();
   }

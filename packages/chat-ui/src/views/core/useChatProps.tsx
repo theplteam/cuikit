@@ -15,6 +15,7 @@ import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
+import { ShowAlertParams } from '../../models/ShowAlertParams';
 import { IdType } from '../../types';
 
 type RequiredProps<DD extends Thread<any>> = {
@@ -173,6 +174,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
    */
   getConversationBlockHeightMin?: (calculatedHeight: number) => number;
+  /**
+   * If this function is present, the default snackbar will not be shown; instead, this function will be called.
+   */
+  onShowAlert?: ChatEventListeners<ShowAlertParams>;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

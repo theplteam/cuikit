@@ -10,7 +10,6 @@ import { useThreadContext } from '../thread/ThreadContext';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import FolderIcon from '@mui/icons-material/Folder';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
-import { useSnackbar } from '../hooks/useSnackbar';
 import AttachmentModel from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
 
@@ -22,9 +21,8 @@ type Props = {
 
 const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableFileAttachments, acceptableFileFormat, maxFileSize, maxFileCount, onFileAttached } = useChatContext();
+  const { enableFileAttachments, acceptableFileFormat, maxFileSize, maxFileCount, onFileAttached, snackbar } = useChatContext();
   const { thread } = useThreadContext();
-  const snackbar = useSnackbar();
 
   const cameraRef = React.useRef<HTMLInputElement>(null);
   const fileRef = React.useRef<HTMLInputElement>(null);
@@ -49,7 +47,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     const oversizeFiles = files.filter(f => f.size > maxSize);
     if (oversizeFiles.length > 0) {
-      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }));
+      snackbar.show({ text: langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }), type: 'error' });
       files = files.filter(f => f.size <= maxSize);
     }
 
@@ -67,13 +65,13 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     });
 
     if (invalidFiles.length > 0) {
-      snackbar.show(locale.invalidFileTypeWarning);
+      snackbar.show({ text: locale.invalidFileTypeWarning, type: 'error' });
       files = files.filter(f => !invalidFiles.includes(f));
     }
 
     if ((files.length + attachments.length) > maxCount) {
       files = files.slice(0, maxCount - attachments.length);
-      snackbar.show(locale.maxAttachmentWarning);
+      snackbar.show({ text: locale.maxAttachmentWarning, type: 'error' });
     };
 
     const fileAttachments = files.map((f) => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { EditIcon, ContentCopyIcon } from '../../../../icons';
 import { MessagesModeType } from '../../hooks/useMessagesMode';
 import { MessageModel } from '../../../../models/MessageModel';
-import { useSnackbar } from '../../../hooks/useSnackbar';
+import { useChatContext } from '../../../core/ChatGlobalContext';
 import { useChatSlots } from '../../../core/ChatSlotsContext';
 import { useLocalizationContext } from '../../../core/LocalizationContext';
 
@@ -14,11 +14,11 @@ type Props = {
 
 const MessageMobileUserActions: React.FC<Props> = ({ message, modeManager, onClose }) => {
   const { coreSlots } = useChatSlots();
-  const snackbar = useSnackbar();
+  const { snackbar } = useChatContext();
   const locale = useLocalizationContext();
   const handleCopy = () => {
     navigator.clipboard.writeText(message.text)
-      .then(() => snackbar.show(locale.messageCopiedToClipboard));
+      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));
     onClose();
   }
 

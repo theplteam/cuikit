@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { CodeIcon, HtmlIcon } from '../../../icons';
 import { messageToHtml } from './messageToHtml';
-import { useSnackbar } from '../../hooks/useSnackbar';
 import { useChatSlots } from '../../core/ChatSlotsContext';
+import { useChatContext } from '../../core/ChatGlobalContext';
 import { useLocalizationContext } from '../../core/LocalizationContext';
 
 type Props = {
@@ -12,19 +12,20 @@ type Props = {
 };
 
 const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => {
+  const { snackbar } = useChatContext();
   const { coreSlots } = useChatSlots();
-  const snackbar = useSnackbar();
+
   const locale = useLocalizationContext();
   const handleCopyMarkdown = () => {
     navigator.clipboard.writeText(text)
-      .then(() => snackbar.show(locale.messageCopiedToClipboard));
+      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));
     handleClose();
   }
 
   const handleCopyHTML = () => {
     const html = messageToHtml(text);
     navigator.clipboard.writeText(html)
-      .then(() => snackbar.show(locale.messageCopiedToClipboard));
+      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));
     handleClose();
   }
 
