@@ -18,7 +18,7 @@ const MessageMobileUserActions: React.FC<Props> = ({ message, modeManager, onClo
   const locale = useLocalizationContext();
   const handleCopy = () => {
     navigator.clipboard.writeText(message.text)
-      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));
+      .then(() => snackbar.show(locale.messageCopiedToClipboard, 'info'));
     onClose();
   }
 

@@ -23,7 +23,7 @@ const ThreadDeleteConfirm: React.FC = () => {
     if (deleteItem) {
       model.delete(deleteItem.id);
       onThreadDeleted?.({ thread: deleteItem });
-      snackbar.show({ text: locale.threadDeletedSuccess, type: 'info' });
+      snackbar.show(locale.threadDeletedSuccess, 'info');
     }
     handleClose();
   }

@@ -9,6 +9,7 @@ import { useChatApiRef } from './views/hooks/useChatApiRef';
 import type { ApiRefType } from './views/core/useApiRef';
 import type { ChatUsersProps } from './views/core/useChatProps';
 import { chatClassNames } from './views/core/chatClassNames';
+import { onShowAlertType } from './types/onShowAlertType';
 
 export * from './models';
 export * from './views/adapter';
@@ -30,5 +31,6 @@ export {
   useChatApiRef,
   type ChatApiRef,
   chatClassNames,
+  type onShowAlertType,
   ChatUsersProps as ChatProps,
 };

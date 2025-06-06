@@ -15,7 +15,7 @@ import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
-import { ShowAlertParams } from '../../models/ShowAlertParams';
+import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 
 type RequiredProps<DD extends Thread<any>> = {
@@ -177,7 +177,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * If this function is present, the default snackbar will not be shown; instead, this function will be called.
    */
-  onShowAlert?: ChatEventListeners<ShowAlertParams>;
+  onShowAlert?: onShowAlertType;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

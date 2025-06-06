@@ -1,4 +1,4 @@
-import { ShowAlertParams } from "./ShowAlertParams";
+import { onShowAlertType } from "../types/onShowAlertType";
 import { ObservableReactValue } from "../utils/observers";
 
 class SnackbarModel {
@@ -6,8 +6,8 @@ class SnackbarModel {
 
   title = '';
 
-  show = (params: ShowAlertParams) => {
-    this.title = params.text;
+  show: onShowAlertType = (text: string) => {
+    this.title = text;
     this.open.value = true;
   }
 
@@ -15,7 +15,7 @@ class SnackbarModel {
     this.open.value = false;
   }
 
-  constructor(callback?: (params: ShowAlertParams) => void) {
+  constructor(callback?: onShowAlertType) {
     if (callback) {
       this.show = callback;
     }

@@ -53,7 +53,7 @@ const MessageMarkdownCodeWrapper: React.FC<Props> = ({ children, ...other }) => 
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeText)
-      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));;
+      .then(() => snackbar.show(locale.messageCopiedToClipboard, 'info'));
   }
 
   return (

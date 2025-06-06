@@ -18,14 +18,14 @@ const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => 
   const locale = useLocalizationContext();
   const handleCopyMarkdown = () => {
     navigator.clipboard.writeText(text)
-      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));
+      .then(() => snackbar.show(locale.messageCopiedToClipboard, 'info'));
     handleClose();
   }
 
   const handleCopyHTML = () => {
     const html = messageToHtml(text);
     navigator.clipboard.writeText(html)
-      .then(() => snackbar.show({ text: locale.messageCopiedToClipboard, type: 'info' }));
+      .then(() => snackbar.show(locale.messageCopiedToClipboard, 'info'));
     handleClose();
   }
 

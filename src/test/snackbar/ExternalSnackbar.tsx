@@ -3,7 +3,7 @@ import {
   ChatPage,
   useAssistantAnswerMock,
   Thread,
-  ShowAlertParams,
+  onShowAlertType,
   FileAttachedParams,
 } from "@plteam/chat-ui";
 import { SnackbarProvider, useSnackbar } from 'notistack';
@@ -37,17 +37,16 @@ const App: React.FC = () => {
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
-  const onShowAlert = (params: ShowAlertParams) => {
-    const { text, type } = params;
+  const onShowAlert: onShowAlertType = (text, type) => {
     enqueueSnackbar(text, { variant: type });
   }
 
   const onFileAttached = ({ file }: FileAttachedParams) => {
-    onShowAlert({ text: `File ${file.name} uploaded`, type: 'info' });
+    onShowAlert(`File ${file.name} uploaded`, 'info');
   };
 
   const onFileDetached = () => {
-    onShowAlert({ text: 'File deleted', type: 'info' });
+    onShowAlert('File deleted', 'info');
   };
 
   return (
