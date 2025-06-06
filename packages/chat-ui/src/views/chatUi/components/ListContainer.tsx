@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
-import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
 
 const containerId = 'chat-ui-list-container';
 
 const ListContainer = () => (
-  <Box width="100%" id={containerId} sx={{ background: materialDesignSysPalette.surfaceContainerLow }} />
+  <Box width="100%" id={containerId} sx={{ background: (theme) => theme.palette.grey[200] }} />
 );
 
 const ListContainerPortal = ({ children }: React.PropsWithChildren) => (
