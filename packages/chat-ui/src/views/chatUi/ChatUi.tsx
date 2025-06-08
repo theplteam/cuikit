@@ -8,6 +8,7 @@ import { ListContainer, ListContainerPortal } from './components/ListContainer';
 import { MobileAppBarContainer, MobileAppBarContainerPortal } from './components/MobileAppBarContainer';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 import { Thread, Message } from './../../models';
+import HiddenContent from '../../views/HiddenContent';
 
 export type ChatUiProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   listPlacement?: 'left' | 'right';
@@ -20,18 +21,32 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
   const isMobile = useMobile();
   const isTablet = useTablet();
 
-  const listContainerComponent = React.useMemo(() => (
-    <ListContainer isMobile={isMobile} isTablet={isTablet} />
-  ), [isMobile, isTablet]);
+  const listContainerComponent = React.useMemo(() => !isMobile ? (
+    <ListContainer
+      width="100%"
+      height="100%"
+      sx={{
+        maxWidth: isTablet ? 220 : 360,
+        backgroundColor: (theme) => theme.palette.grey[200],
+      }}
+    />
+  ) : null, [isMobile, isTablet]);
 
   return (
     <Stack
+      key={isMobile ? 'mobile' : 'desktop'}
       flexDirection={{ xs: 'column', sm: 'row' }}
       height="inherit"
       width="inherit"
       position="relative"
     >
-      <MobileAppBarContainer isMobile={isMobile} />
+      {isMobile ? (
+        <MobileAppBarContainer
+          width="100%"
+          sx={{
+            backgroundColor: (theme) => theme.palette.grey[200],
+          }}
+        />) : null}
       {listPlacement === 'left' && listContainerComponent}
       <Stack
         ref={ref}
@@ -44,14 +59,16 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
         <Chat
           scrollerRef={ref}
           slots={{
-            listContainer: ListContainerPortal,
+            listContainer: isMobile ? HiddenContent : ListContainerPortal,
             ...slots,
           }}
           {...other}
         >
-          <MobileAppBarContainerPortal>
-            <ChatMobileAppBar />
-          </MobileAppBarContainerPortal>
+          {isMobile ? (
+            <MobileAppBarContainerPortal>
+              <ChatMobileAppBar />
+            </MobileAppBarContainerPortal>
+          ) : null}
         </Chat>
       </Stack>
       {listPlacement === 'right' && listContainerComponent}
