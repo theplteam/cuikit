@@ -54,7 +54,9 @@ class AttachmentModel {
 
   setError= (e: string) => { this.error.value = e }
 
-  get contentData() { 
+  setId= (id: IdType) => { this._id = id }
+
+  get contentData() {
     const type = this.type.startsWith('image')
       ? ChatMessageContentType.IMAGE
       : this.type.startsWith('video')

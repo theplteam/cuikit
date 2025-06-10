@@ -1,4 +1,4 @@
-import { ChatMessageContentType, InternalMessageType, Message, MessageModel } from './MessageModel';
+import { Attachment, ChatMessageContentType, InternalMessageType, Message, MessageModel } from './MessageModel';
 import { StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
@@ -55,8 +55,17 @@ export class MessageSender<DM extends Message> {
     const message = this.assistantMessage;
 
     const internalUserMessage = getInternalMessage(this.userMessage);
+
+    const content = this.content;
+    let attachments: Attachment[] = [];
+
+    if (Array.isArray(content)) {
+      attachments = content.filter(v => v.type !== 'text') as Attachment[];
+    }
+
     return {
       content: this.content,
+      attachments,
       history: this.thread.messages.currentMessages.value.map(getInternalMessage),
       message: internalUserMessage,
       assistantMessage: getInternalMessage(message),

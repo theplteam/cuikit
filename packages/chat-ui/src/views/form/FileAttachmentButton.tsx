@@ -85,13 +85,13 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     if (thread) {
       thread.isLoadingAttachments.value = [...thread.isLoadingAttachments.value, ...fileAttachments.map((f) => f.id)];
       fileAttachments.forEach((file) => {
-        const { setProgress, setError, data, id } = file;
+        const { setProgress, setError, setId, data, id } = file;
         const onFinish = () => {
           file.progress.value = 100;
           thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((a) => a !== id);
         };
         if (onFileAttached) {
-          const promise = onFileAttached({ id: file.id, file: data, actions: { setProgress, setError, onFinish } });
+          const promise = onFileAttached({ id: file.id, file: data, actions: { setProgress, setError, onFinish, setId } });
           if (promise) promise.then(() => onFinish());
           else {
             onFinish();
