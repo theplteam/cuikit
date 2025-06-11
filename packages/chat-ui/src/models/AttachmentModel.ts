@@ -52,9 +52,9 @@ class AttachmentModel {
 
   setProgress = (n: number) => { this.progress.value = n }
 
-  setError= (e: string) => { this.error.value = e }
+  setError = (e: string) => { this.error.value = e }
 
-  setId= (id: IdType) => { this._id = id }
+  setId = (id: IdType) => { this._id = id }
 
   get contentData() {
     const type = this.type.startsWith('image')
@@ -62,10 +62,12 @@ class AttachmentModel {
       : this.type.startsWith('video')
         ? ChatMessageContentType.VIDEO
         : ChatMessageContentType.FILE;
+
     const data: Attachment = {
       id: this.id,
       type,
       file: this._data,
+      url: this.url,
     };
     return data;
   }
