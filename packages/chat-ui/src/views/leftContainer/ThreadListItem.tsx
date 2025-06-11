@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useChatContext } from '../core/ChatGlobalContext';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { chatClassNames } from '../core/chatClassNames';
 import { MoreVertIcon } from '../../icons';
-import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 type Props = {
   thread: ThreadModel;
   selected: boolean;
   setThread: (thread: ThreadModel['data']['data']) => void;
   listModel: ThreadListCache;
-  slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
 };
 
 const classSelected = 'boxSelected';
 const classShadowRight = 'shadowRight';
 
-const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel, slots }) => {
+const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
@@ -28,7 +26,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
     event.stopPropagation();
   }, [listModel]);
 
-  const { apiRef } = useChatContext();
+  const { apiRef, slots } = useThreadListContext();
 
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.data.observableTitle);
@@ -50,7 +48,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
       className={classes.join(' ')}
       onClick={handleClickListItem}
     >
-      <slots.listItemText
+      <slots.baseListItemText
         primary={title ?? 'TITLE'}
         sx={{
           textOverflow: 'ellipsis',

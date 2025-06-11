@@ -5,17 +5,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useSnackbar } from '../hooks/useSnackbar';
-import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
-import { useChatContext } from '../core/ChatGlobalContext';
-import { useLocalizationContext } from '../core/LocalizationContext';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { model, onThreadDeleted, apiRef } = useChatContext();
-  const deleteItem = useObserverValue(model.actions.deleteItem);
-  const coreSlots = useChatCoreSlots();
+  const { apiRef, slots, locale } = useThreadListContext();
+  const internal = apiRef.current?._internal;
+  const deleteItem = useObserverValue(internal?.model.actions.deleteItem);
   const snackbar = useSnackbar();
-  const locale = useLocalizationContext();
 
   const handleClose = () => {
     apiRef.current?.setDeleteThreadItem(undefined);
@@ -23,8 +20,8 @@ const ThreadDeleteConfirm: React.FC = () => {
 
   const handleDelete = () => {
     if (deleteItem) {
-      model.delete(deleteItem.id);
-      onThreadDeleted?.({ thread: deleteItem });
+      internal?.model.delete(deleteItem.id);
+      internal?.onThreadDeleted?.({ thread: deleteItem });
       snackbar.show(locale.threadDeletedSuccess);
     }
     handleClose();
@@ -45,17 +42,17 @@ const ThreadDeleteConfirm: React.FC = () => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <coreSlots.button
+        <slots.baseButton
           onClick={handleClose}
         >
           {locale.no}
-        </coreSlots.button>
-        <coreSlots.button
+        </slots.baseButton>
+        <slots.baseButton
           color="primary"
           onClick={handleDelete}
         >
           {locale.yes}
-        </coreSlots.button>
+        </slots.baseButton>
       </DialogActions>
     </Dialog>
   );

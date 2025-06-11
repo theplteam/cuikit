@@ -2,25 +2,23 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
-import { useChatContext } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import Scrollbar from '../../ui/Scrollbar';
-import { useChatSlots } from '../core/ChatSlotsContext';
-import { useLocalizationContext } from '../core/LocalizationContext';
 import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 const ThreadsList: React.FC = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
-  const { handleCreateNewThread, apiRef } = useChatContext();
-  const { slotProps, slots } = useChatSlots();
-  const locale = useLocalizationContext();
+  const { slots, slotProps, apiRef, locale } = useThreadListContext();
 
   const openNewThread = () => {
-    const thread = handleCreateNewThread?.();
+    const thread = apiRef.current?._internal?.handleCreateNewThread?.();
+    console.log('apiRef.current?._internal', apiRef.current?._internal);
+    console.log('render', thread);
     if (thread) {
       apiRef.current?.openNewThread(thread);
     }
-  }
+  };
 
   return (
     <Stack gap={2} height="100%" width="100%">

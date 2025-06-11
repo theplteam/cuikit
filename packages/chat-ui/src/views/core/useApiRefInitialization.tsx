@@ -61,6 +61,14 @@ export const useApiRefInitialization = (
       return model.currentThread.value?.data.data;
     };
 
+    const internal = {
+      model,
+      handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
+      onChangeCurrentThread: props.onChangeCurrentThread,
+      threadActions: props.threadActions,
+    };
+
+    apiManager.setMethod('_internal', internal)
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);

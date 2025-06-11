@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { AddIcon } from '../../icons';
 import Box from '@mui/material/Box';
-import { useChatContext } from '../core/ChatGlobalContext';
-import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useLocalizationContext } from '../core/LocalizationContext';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 type Props = {
   openNewThread: () => void;
 };
 
 const useDisabled = () => {
-  const { model } = useChatContext();
-  const thread = useObserverValue(model.currentThread);
+  const { apiRef } = useThreadListContext();
+  const model = apiRef.current?._internal.model;
+  const thread = useObserverValue(model?.currentThread);
 
   const isEmpty = useObserverValue(thread?.isEmpty) as boolean;
   return isEmpty;
@@ -20,22 +19,22 @@ const useDisabled = () => {
 
 export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
-  const coreSlots = useChatCoreSlots();
+  const { slots } = useThreadListContext();
+
   return (
-    <coreSlots.iconButton
+    <slots.baseIconButton
       disabled={disabled}
       size="small"
       onClick={openNewThread}
     >
       <AddIcon />
-    </coreSlots.iconButton>
+    </slots.baseIconButton>
   );
 };
 
 const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
-  const coreSlots = useChatCoreSlots();
-  const locale = useLocalizationContext();
+  const { slots, locale } = useThreadListContext();
 
   return (
     <Box
@@ -44,7 +43,7 @@ const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
       width="100%"
       boxSizing="border-box"
     >
-      <coreSlots.button
+      <slots.baseButton
         fullWidth
         disabled={disabled}
         startIcon={<AddIcon />}
@@ -52,7 +51,7 @@ const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
         onClick={openNewThread}
       >
         {locale.newChat}
-      </coreSlots.button>
+      </slots.baseButton>
     </Box>
   );
 };
