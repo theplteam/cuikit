@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { CloseRoundedIcon } from '../../../icons';
 import { useChatCoreSlots } from '../../core/ChatSlotsContext';
 
 type Props = {
