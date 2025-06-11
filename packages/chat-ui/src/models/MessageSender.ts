@@ -97,8 +97,8 @@ export class MessageSender<DM extends Message> {
         unlockAutoManagement: message.reasoningManager.unlockAutoManagment,
       },
       actions: {
-        updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
-        updateThreadTitle: (newTitle) => this.thread.data.observableTitle.value = newTitle,
+        updateThreadId: (newId: IdType) => this.thread.id = newId,
+        updateThreadTitle: (newTitle) => this.thread.observableTitle.value = newTitle,
         updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
         updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
         updateCurrentTextIndex: this.updateCurrentTextIndex,

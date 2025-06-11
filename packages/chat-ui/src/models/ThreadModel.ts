@@ -2,7 +2,6 @@ import { MessageModel, ChatMessageOwner, Message } from './MessageModel';
 import moment from 'moment';
 import { v4 as uuid, v4 as uuidv4 } from 'uuid';
 import { ThreadMessages } from './ThreadMessages';
-import { Thread, ThreadData } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { MessageSentParams } from './MessageSentParams';
@@ -20,6 +19,13 @@ export enum StreamResponseState {
   FINISH_MESSAGE = 'finishMessage',
 }
 
+export type Thread<DM extends Message = any> = {
+  id: IdType;
+  title: string;
+  date?: string;
+  messages?: DM[];
+} & { isNew?: boolean };
+
 export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {
   /*@observable.shallow
   private readonly _messages: ChatMessage[] = [];*/
@@ -28,7 +34,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly messages = new ThreadMessages<DM>();
 
-  readonly data: ThreadData<DM, DD>;
+  readonly observableTitle = new ObservableReactValue('');
 
   readonly isTyping = new ObservableReactValue(false);
 
@@ -54,11 +60,14 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly timestamp: ObservableReactValue<number>;
 
+  private _data: DD;
+
   constructor(
-    _data: DD,
+    data: DD,
     public readonly streamMessage: (params: MessageSentParams) => void | Promise<void>,
   ) {
-    this.data = new ThreadData(_data);
+    this._data = data;
+    this.observableTitle.value = data.title;
     this.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
 
     /*if (!_data.messages.find(v => !!v.parentId)) {
@@ -78,19 +87,23 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
       _data.messages = newMessages
     }*/
 
-    this.messages.allMessages.value = _data.messages?.map(v => new MessageModel(v)) ?? [];
+    this.messages.allMessages.value = data.messages?.map(v => new MessageModel(v)) ?? [];
 
-    this.isEmpty.value = !!_data.isNew;
+    this.isEmpty.value = !!data.isNew;
 
-    if (!!_data.messages?.length || _data.isNew) {
+    if (!!data.messages?.length || data.isNew) {
       this.isLoadingFullData.value = false;
     }
 
-    this.timestamp = new ObservableReactValue(moment(_data.date).unix());
+    this.timestamp = new ObservableReactValue(moment(data.date).unix());
   }
 
   get id() {
-    return this.data.id;
+    return this._data.id;
+  }
+
+  set id(value: IdType) {
+    this._data.id = value;
   }
 
   get time() {
@@ -98,11 +111,27 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   }
 
   get title() {
-    return this.data.title;
+    return this.observableTitle.value;
+  }
+
+  set title(value: string) {
+    this.observableTitle.value = value;
+  }
+
+  get date() {
+    return this._data.date;
+  }
+
+  get isNew() {
+    return this._data.isNew;
   }
 
   get messagesArray() {
     return this.messages.allMessagesArray;
+  }
+
+  get data(): Thread<DM> {
+    return this._data;
   }
 
   setFullData = (threadData: Thread & { messages: DM[] }) => {
