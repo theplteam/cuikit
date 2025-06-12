@@ -8,29 +8,33 @@ import { Thread, Message } from './../../models';
 import ThreadsList from '../leftContainer/ThreadsList';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 import Box from '@mui/material/Box';
+import AppDrawer from '../leftContainer/AppDrawer';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 export type ChatUiProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
   listPlacement?: 'left' | 'right';
 }> & ChatUsersProps<DM, DD>;
 
 const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiProps<DM, DD>) => {
-  const { slots, listPlacement = 'left', ...other } = usersProps;
+  const { listPlacement = 'left', ...other } = usersProps;
+  const { slots, slotProps } = useThreadListContext();
 
   const ref = useElementRef();
   const isMobile = useMobile();
   const isTablet = useTablet();
 
   const listContainerComponent = React.useMemo(() => !isMobile ? (
-    <Box
+    <slots.listContainer
       width="100%"
       height="100%"
       sx={{
         maxWidth: isTablet ? 220 : 360,
         backgroundColor: (theme) => theme.palette.grey[200],
       }}
+      {...slotProps.listContainer}
     >
       <ThreadsList />
-    </Box>
+    </slots.listContainer>
   ) : null, [isMobile, isTablet]);
 
   return (
@@ -41,7 +45,15 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
       position="relative"
     >
       {listPlacement === 'left' && listContainerComponent}
-      {isMobile ? <ChatMobileAppBar /> : null}
+      {isMobile ?
+        <>
+          <ChatMobileAppBar />
+          <AppDrawer>
+            <Box display="flex" flexDirection="column" height={500}>
+              <ThreadsList />
+            </Box>
+          </AppDrawer>
+        </> : null}
       <Box
         ref={ref}
         flex={1}

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { apiRef, slots, locale } = useThreadListContext();
+  const { apiRef, slots, slotProps, locale } = useThreadListContext();
   const internal = apiRef.current?._internal;
   const deleteItem = useObserverValue(internal?.model.actions.deleteItem);
   const snackbar = useSnackbar();
@@ -44,12 +44,14 @@ const ThreadDeleteConfirm: React.FC = () => {
       <DialogActions>
         <slots.baseButton
           onClick={handleClose}
+          {...slotProps.baseButton}
         >
           {locale.no}
         </slots.baseButton>
         <slots.baseButton
           color="primary"
           onClick={handleDelete}
+          {...slotProps.baseButton}
         >
           {locale.yes}
         </slots.baseButton>

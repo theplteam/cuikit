@@ -6,7 +6,6 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { Thread } from '../../../models';
 import DelayRenderer from '../../../ui/DelayRenderer';
 import { Threads } from '../../../models/Threads';
-import { useThreadListContext } from '../../core/threadList/ThreadListContext';
 
 type Props = {
   listGroupItem: ThreadListGroupItem;
@@ -17,7 +16,6 @@ type Props = {
 
 const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread, index, model }) => {
   const threads = useObserverValue(listGroupItem.threads) ?? [];
-  const { slots, slotProps } = useThreadListContext();
 
   const list = React.useMemo(() => threads.map((thread) => (
     <ThreadListItemObserver
@@ -25,10 +23,6 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread
       setThread={setThread}
       thread={thread}
       model={model}
-      slots={{
-        listItemText: slots.baseListItemText,
-        threadListItemMenuButton: slots.threadListItemMenuButton,
-      }}
     />
   )), [threads.length]);
 
@@ -39,8 +33,6 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread
       <TimeGroupItem
         key={listGroupItem.data.id}
         group={listGroupItem.data}
-        textComponent={slots.listTimeText}
-        textComponentProps={slotProps?.listTimeText}
       />
       {list}
     </DelayRenderer>

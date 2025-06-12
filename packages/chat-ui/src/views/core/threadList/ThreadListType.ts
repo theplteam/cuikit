@@ -1,15 +1,15 @@
 import * as React from 'react';
 import type { TypographyProps } from '@mui/material/Typography';
 import type { IconButtonProps } from '@mui/material/IconButton';
-import { IdType } from '../../../types';
 import { Localization } from '../../../locale/Localization';
 import { ApiRefType } from '../useApiRef';
 import { SlotValue } from '../usePropsSlots';
 import { ButtonProps } from '@mui/material/Button';
 import { ListItemTextProps } from '@mui/material/ListItemText';
 import { MdMenuItemProps } from '../../../ui/menu/MdMenuItem';
-
-type ChildrenProps = React.PropsWithChildren;
+import { BoxProps } from '@mui/material/Box';
+import { DrawerProps } from '@mui/material/Drawer';
+import { StackProps } from '@mui/material/Stack';
 
 export type ThreadListSlotPropsType = {
   baseMenuItem: MdMenuItemProps;
@@ -18,18 +18,16 @@ export type ThreadListSlotPropsType = {
   baseIconButton: IconButtonProps;
   /**
    * Parent for the threads list
-   * Will ignored if threadsList slot provided
    */
-  listContainer: ChildrenProps;
+  listContainer: BoxProps;
   /**
    * List of threads
    */
-  threadsList: ChildrenProps;
+  threadsList: StackProps;
   /**
    * Driver component for the threads list (mobile version)
-   * Will ignored if threadsList slot provided
    */
-  listDrawer: ChildrenProps;
+  listDrawer: DrawerProps;
   /**
    * Title for the mobile threads list (same as listSubtitle)
    */
@@ -37,7 +35,7 @@ export type ThreadListSlotPropsType = {
     /**
    * Thread menu button in the threads list
    **/
-  threadListItemMenuButton: IconButtonProps & { threadId: IdType; };
+  threadListItemMenuButton: IconButtonProps;
   /**
    * Subtitle component for the list container
    */

@@ -11,7 +11,6 @@ import type { MessagePaginationProps } from '../message/MessagePagination';
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
-import { IdType } from '../../types';
 
 type ChildrenProps = React.PropsWithChildren;
 
@@ -20,36 +19,6 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Override the full thread component
    */
   thread: { id: string } & ChildrenProps;
-  /**
-   * Parent for the threads list
-   * Will ignored if threadsList slot provided
-   */
-  listContainer: any;
-  /**
-   * List of threads
-   */
-  threadsList: any;
-  /**
-   * Thread menu button in the threads list
-   **/
-  threadListItemMenuButton: IconButtonProps & { threadId: IdType; };
-  /**
-   * Subtitle component for the list container
-   */
-  listSubtitle: TypographyProps;
-  /**
-   * Typography component for rendering time text in the threads list (today, last week, last 30 days, etc.)
-   */
-  listTimeText: TypographyProps;
-  /**
-   * Driver component for the threads list (mobile version)
-   * Will ignored if threadsList slot provided
-   */
-  listDrawer: ChildrenProps;
-  /**
-   * Title for the mobile threads list (same as listSubtitle)
-   */
-  listDrawerTitle: TypographyProps;
   /**
    * Welcome message from the assistant for a new thread or the initial message from the assistant in an existing thread.
    */

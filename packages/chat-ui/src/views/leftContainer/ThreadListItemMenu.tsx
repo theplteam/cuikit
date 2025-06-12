@@ -12,7 +12,7 @@ type Props = {
 const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
   const menuConfig = model.listGroups.menuConfig;
   const config = useObserverValue(menuConfig);
-  const { slots, locale, apiRef } = useThreadListContext();
+  const { slots, slotProps, locale, apiRef } = useThreadListContext();
 
   const anchorEl = config?.anchorEl;
   const thread = config?.thread;
@@ -59,6 +59,7 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
           <slots.baseMenuItem
             startIcon={DeleteIcon}
             onClick={handleDelete}
+            {...slotProps.baseMenuItem}
           >
             {locale.threadActionDelete}
           </slots.baseMenuItem>

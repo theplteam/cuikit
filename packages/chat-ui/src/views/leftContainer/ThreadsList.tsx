@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
@@ -13,15 +12,18 @@ const ThreadsList: React.FC = () => {
 
   const openNewThread = () => {
     const thread = apiRef.current?._internal?.handleCreateNewThread?.();
-    console.log('apiRef.current?._internal', apiRef.current?._internal);
-    console.log('render', thread);
     if (thread) {
       apiRef.current?.openNewThread(thread);
     }
   };
 
   return (
-    <Stack gap={2} height="100%" width="100%">
+    <slots.threadsList
+      gap={2}
+      height="100%"
+      width="100%"
+      {...slotProps.threadsList}
+    >
       <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
@@ -35,7 +37,7 @@ const ThreadsList: React.FC = () => {
           </Scrollbar>
         )}
       </Box>
-    </Stack>
+    </slots.threadsList>
   );
 }
 

@@ -14,7 +14,6 @@ type Props = {
 };
 
 const classSelected = 'boxSelected';
-const classShadowRight = 'shadowRight';
 
 const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
@@ -26,7 +25,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
     event.stopPropagation();
   }, [listModel]);
 
-  const { apiRef, slots } = useThreadListContext();
+  const { apiRef, slots, slotProps } = useThreadListContext();
 
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.data.observableTitle);
@@ -55,8 +54,8 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
           whiteSpace: 'nowrap',
           overflow: 'hidden',
         }}
+        {...slotProps.baseListItemText}
       />
-      <div className={`${chatClassNames.threadListItem} ${classShadowRight}`} />
       <slots.threadListItemMenuButton
         size="small"
         sx={{
@@ -65,8 +64,8 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
           top: '50%',
           transform: 'translateY(-50%)',
         }}
-        threadId={thread.id}
         onClick={handleClick}
+        {...slotProps.threadListItemMenuButton}
       >
         <MoreVertIcon />
       </slots.threadListItemMenuButton>

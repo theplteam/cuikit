@@ -19,13 +19,14 @@ const useDisabled = () => {
 
 export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
-  const { slots } = useThreadListContext();
+  const { slots, slotProps } = useThreadListContext();
 
   return (
     <slots.baseIconButton
       disabled={disabled}
       size="small"
       onClick={openNewThread}
+      {...slotProps.baseIconButton}
     >
       <AddIcon />
     </slots.baseIconButton>
@@ -34,7 +35,7 @@ export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
 
 const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
-  const { slots, locale } = useThreadListContext();
+  const { slots, slotProps, locale } = useThreadListContext();
 
   return (
     <Box
@@ -49,6 +50,7 @@ const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
         startIcon={<AddIcon />}
         variant="outlined"
         onClick={openNewThread}
+        {...slotProps.baseButton}
       >
         {locale.newChat}
       </slots.baseButton>
