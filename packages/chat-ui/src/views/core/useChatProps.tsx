@@ -166,12 +166,12 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   acceptableFileFormat?: string | string[];
   /**
    * Maximum size of a single file in bytes.
-   * @default 20 * 1024 * 1024 // 20 MB
+   * @default 2 GB
    */
-  maxFileSize?: number;
+  maxFileSizeBytes?: number;
   /**
    * Maximum number of files in a single message.
-   * @default 10
+   * @default 20
    */
   maxFileCount?: number;
   /**
