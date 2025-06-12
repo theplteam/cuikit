@@ -56,4 +56,4 @@ export type ThreadListContextType = {
   slotProps: Partial<ThreadListSlotPropsType>;
 };
 
-export type ThreadListProps = { slots?: Partial<ThreadListSlotType>, locale?: 'ru' | 'en'; } & Omit<ThreadListContextType, 'slots' | 'locale'| 'apiRef'>;
+export type ThreadListProps = { slots?: Partial<ThreadListSlotType>, locale?: 'ru' | 'en'; } & Omit<ThreadListContextType, 'slots' | 'locale' | 'loading' | 'apiRef'>;

@@ -67,7 +67,6 @@ const ChatUi = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatUiPro
           {...other}
         />
       </Box>
-      {listPlacement === 'right' && listContainerComponent}
     </Stack>
   )
 }
