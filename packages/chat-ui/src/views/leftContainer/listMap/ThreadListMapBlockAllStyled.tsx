@@ -3,7 +3,6 @@ import { styled, alpha } from '@mui/material/styles';
 import { chatClassNames } from '../../core/chatClassNames';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { motion } from '../../../utils/materialDesign/motion';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 
 const classSelected = 'boxSelected';
 const classShadowRight = 'shadowRight';
@@ -26,29 +25,14 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
         transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
       },
     },
-    [`& .${classShadowRight}`]: {
-      position: 'absolute',
-      right: 0,
-      top: 0,
-      height: '100%',
-      width: 65,
-      pointerEvents: 'none',
-      backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
-      [theme.breakpoints.down('md')]: {
-        backgroundImage: getGradient('#fff'),
-      },
-    },
     '&:hover': {
-      background: materialDesignSysPalette.surfaceContainerHigh,
-      [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerHigh),
-      },
+      background: theme.palette.grey[100],
       [`& .${iconButtonClasses.root}`]: {
         opacity: 1,
       },
     },
     [`&.${classSelected}`]: {
-      background: 'rgb(225,233,240)',
+      background: theme.palette.grey[400],
       [`& .${classShadowRight}`]: {
         backgroundImage: getGradient('#e1e9f0'),
       }

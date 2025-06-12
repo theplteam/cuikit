@@ -3,26 +3,19 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import { ListGroupType } from './useThreadsGroupedList';
-import { materialTheme } from '../../utils/materialDesign/materialTheme';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import Typography, { TypographyProps } from '@mui/material/Typography';
-import { SlotFullPropItem } from '../../types/SlotFullPropItem';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 type Props = {
   group?: ListGroupType;
   loading?: boolean;
-} & SlotFullPropItem<'textComponent', TypographyProps>;
-
-const SkeletonStyled = styled(Skeleton)(() => ({
-  ...materialTheme.title.small,
-}));
+};
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1.5, 2, 1, 1.5),
   position: 'sticky',
   top: -12,
   left: 0,
-  background: materialDesignSysPalette.surfaceContainerLow,
+  background: theme.palette.grey[300],
   zIndex: 1,
   [theme.breakpoints.down('md')]: {
     background: '#fff',
@@ -30,22 +23,23 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   }
 }));
 
-const TimeGroupItem: React.FC<Props> = ({ group, loading, textComponent, textComponentProps }) => {
-  const comp = { textComponent: textComponent ?? Typography };
+const TimeGroupItem: React.FC<Props> = ({ group, loading }) => {
+  const { slots, slotProps } = useThreadListContext();
+
   return (
     <BoxStyled>
       {loading
         ? (
-          <SkeletonStyled variant="text" width={100} />
+          <Skeleton variant="text" width={100} />
         )
         : (
-          <comp.textComponent
+          <slots.listTimeText
             variant="body2"
-            {...textComponentProps}
+            {...slotProps.listTimeText}
           >
             {group?.label}
-          </comp.textComponent>
-          )}
+          </slots.listTimeText>
+        )}
     </BoxStyled>
   );
 }

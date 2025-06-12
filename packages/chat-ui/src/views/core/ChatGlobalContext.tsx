@@ -65,7 +65,7 @@ const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobal
   const context = React.useContext(Context);
 
   if (!context) {
-    throw new Error("useMessagesContext must be used within a ChatGlobalProvider");
+    throw new Error("useChatContext must be used within a ChatGlobalProvider");
   }
 
   return context;

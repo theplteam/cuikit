@@ -1,29 +1,29 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
-import { useChatContext } from '../core/ChatGlobalContext';
 import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import Scrollbar from '../../ui/Scrollbar';
-import { useChatSlots } from '../core/ChatSlotsContext';
-import { useLocalizationContext } from '../core/LocalizationContext';
 import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 const ThreadsList: React.FC = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
-  const { handleCreateNewThread, apiRef } = useChatContext();
-  const { slotProps, slots } = useChatSlots();
-  const locale = useLocalizationContext();
+  const { slots, slotProps, apiRef, locale } = useThreadListContext();
 
   const openNewThread = () => {
-    const thread = handleCreateNewThread?.();
+    const thread = apiRef.current?._internal?.handleCreateNewThread?.();
     if (thread) {
       apiRef.current?.openNewThread(thread);
     }
-  }
+  };
 
   return (
-    <Stack gap={2} height="100%">
+    <slots.threadsList
+      gap={2}
+      height="100%"
+      width="100%"
+      {...slotProps.threadsList}
+    >
       <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
@@ -32,12 +32,12 @@ const ThreadsList: React.FC = () => {
       </Box>
       <Box ref={ref} flex={1}>
         {!!height && (
-          <Scrollbar style={{ minHeight: height -1, maxHeight: height -1 }}>
+          <Scrollbar style={{ minHeight: height - 1, maxHeight: height - 1 }}>
             <ThreadsListMapBlock />
           </Scrollbar>
         )}
       </Box>
-    </Stack>
+    </slots.threadsList>
   );
 }
 

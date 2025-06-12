@@ -2,26 +2,20 @@ import * as React from 'react';
 import TimeGroupItem from '../TimeGroupItem';
 import ThreadListItemObserver from '../ThreadListItemObserver';
 import { ThreadListGroupItem } from '../../../models/ThreadListGroupItem';
-import { SlotsType } from '../../core/usePropsSlots';
-import { SlotPropsType } from '../../core/SlotPropsType';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { Message, Thread } from '../../../models';
+import { Thread } from '../../../models';
 import DelayRenderer from '../../../ui/DelayRenderer';
 import { Threads } from '../../../models/Threads';
-import { useChatSlots } from '../../core/ChatSlotsContext';
 
-type Props<DM extends Message = any, DD extends Thread = any> = {
+type Props = {
   listGroupItem: ThreadListGroupItem;
-  slot: SlotsType<DM, DD>['listTimeText'];
-  slotProps: SlotPropsType<DM, DD>['listTimeText'] | undefined;
   setThread: (thread: Thread) => void;
   index: number;
   model: Threads<any, any>
 };
 
-const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, slotProps, slot, setThread, index, model }) => {
+const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread, index, model }) => {
   const threads = useObserverValue(listGroupItem.threads) ?? [];
-  const { slots, coreSlots } = useChatSlots();
 
   const list = React.useMemo(() => threads.map((thread) => (
     <ThreadListItemObserver
@@ -29,10 +23,6 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, slotProps
       setThread={setThread}
       thread={thread}
       model={model}
-      slots={{
-        listItemText: coreSlots.listItemText,
-        threadListItemMenuButton: slots.threadListItemMenuButton,
-      }}
     />
   )), [threads.length]);
 
@@ -43,8 +33,6 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, slotProps
       <TimeGroupItem
         key={listGroupItem.data.id}
         group={listGroupItem.data}
-        textComponent={slot}
-        textComponentProps={slotProps}
       />
       {list}
     </DelayRenderer>

@@ -5,6 +5,7 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
+import { Threads } from '../../models/Threads';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -65,6 +66,16 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    * Set thread to delete, if provided delete dialog will be shown
    */
   setDeleteThreadItem: (thread?: DD) => void;
+  /**
+   * The object contains data for internal chat operation
+   */
+  _internal: {
+    model: Threads<DM, DD>,
+    handleCreateNewThread?: () => DD,
+    onChangeCurrentThread?: (v: DD) => void,
+    onThreadDeleted?: (v: DD) => void,
+    threadActions?: React.JSXElementConstructor<{ thread: DD, onClose: () => void }>[];
+  };
 };
 
 export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
@@ -98,6 +109,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     setDeleteThreadItem: NOOP,
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
+    _internal: { model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP) }
   });
 
   React.useMemo(() => {
