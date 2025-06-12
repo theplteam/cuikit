@@ -12,7 +12,7 @@ import { ChatViewConstants } from '../../views/ChatViewConstants';
 import { useSnackbar } from '../hooks/useSnackbar';
 import AttachmentModel from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
-import Box from '@mui/material/Box';
+import { Stack } from '@mui/material';
 
 type Props = {
   attachments: AttachmentModel[];
@@ -119,9 +119,8 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   if (!enableFileAttachments) return null;
 
   return (
-    <Box
-      display="flex"
-      alignItems="flex-end"
+    <Stack
+      alignItems="center"
       justifyContent="center"
       width={48}
       height={40}
@@ -129,14 +128,6 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     >
       <coreSlots.iconButton
         disabled={disabled}
-        sx={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          height: '48px',
-          width: '48px',
-        }}
         onClick={handleClick}
       >
         <AttachFileIcon />
@@ -185,7 +176,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
         style={{ display: 'none' }}
         onChange={handleFileUpload}
       />
-    </Box>
+    </Stack>
   );
 };
 
