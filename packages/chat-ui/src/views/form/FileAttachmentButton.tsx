@@ -39,6 +39,26 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     fileRef.current?.click();
   };
 
+  const checkType = (file: File, allowedTypes: string[]) => {
+    const fileType = file.type;
+    const fileExt = '.' + file.name.split('.').pop()?.toLowerCase();
+
+    return allowedTypes.some((type) => {
+      if (type === '*') return true;
+
+      if (type.startsWith('.')) {
+        return fileExt === type.toLowerCase();
+      }
+
+      if (type.endsWith('/*')) {
+        const baseType = type.split('/')[0];
+        return fileType.startsWith(baseType + '/');
+      }
+
+      return fileType === type;
+    });
+  }
+
   const maxCount = maxFileCount || ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE;
   const maxSize = maxFileSize || ChatViewConstants.MAX_ATTACHMENT_SIZE;
 
@@ -52,17 +72,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     }
 
     const allowedTypes = inputAccept.split(',').map(type => type.trim()).filter(type => type);
-    const invalidFiles = files.filter(f => {
-      if (allowedTypes.includes('*')) return false;
-      return !allowedTypes.some(allowedType => {
-        if (allowedType.endsWith('/*')) {
-          const baseType = allowedType.slice(0, -2);
-          return f.type.startsWith(baseType);
-        } else {
-          return f.type === allowedType;
-        }
-      });
-    });
+    const invalidFiles = files.filter(f => !checkType(f, allowedTypes));
 
     if (invalidFiles.length > 0) {
       snackbar.show(locale.invalidFileTypeWarning);
