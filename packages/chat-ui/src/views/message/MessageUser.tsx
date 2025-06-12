@@ -58,7 +58,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
   const isTyping = useObserverValue(thread?.isTyping);
 
   const { messageMode, apiRef } = useThreadContext();
-  const { onAssistantMessageTypingFinish, enableBranches } = useChatContext();
+  const { onAssistantMessageTypingFinish, enableBranches, disableFileAttachmentsEditing } = useChatContext();
   const { slots, slotProps } = useChatSlots();
 
   const { itemsAll, deletedIds } = message.attachments;
@@ -110,7 +110,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
       >
         <MessageAttachments
           message={message}
-          onDeleteAttachment={onDeleteAttachment}
+          onDeleteAttachment={disableFileAttachmentsEditing ? undefined : onDeleteAttachment}
         />
         <MessageUserEditor
           message={message}

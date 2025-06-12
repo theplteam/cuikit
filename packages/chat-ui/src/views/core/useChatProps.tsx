@@ -143,6 +143,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Enable user's ability to add files in messages
    */
   enableFileAttachments?: boolean;
+
+  /**
+   * Prevent the user from deleting/adding files during message editing
+   */
+  disableFileAttachmentsEditing?: boolean;
   /**
    * Callback fired after file attach to message
    */
@@ -154,7 +159,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Acceptable file formats for attaching to a message.
    * Check [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Reference/Attributes/accept) for more information.
-   * @example Array ['image', 'video'] | ['.png', '.mp4'] | ['image/*', 'video/*'] 
+   * @example Array ['image', 'video'] | ['.png', '.mp4'] | ['image/*', 'video/*']
    * @example String 'image/*, video/*' | '.png, .mp4'
    * @default '*'
    */
