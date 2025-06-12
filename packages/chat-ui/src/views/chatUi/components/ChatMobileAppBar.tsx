@@ -2,14 +2,18 @@ import * as React from 'react';
 import { MenuIcon } from '../../../icons';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import { useMobile } from '../../../ui/Responsive';
 import { useThreadListContext } from '../../core/threadList/ThreadListContext';
 
 const ChatMobileAppBar: React.FC = () => {
-  const { apiRef, slots } = useThreadListContext();
-
+  const { threadListModel } = useThreadListContext();
+  const isMobile = useMobile();
   const handleClick = () => {
-    apiRef.current?.setMenuDriverOpen(true);
-  }
+    threadListModel.menuDriverOpen.value = true;
+  };
+
+  if (!isMobile) return null;
 
   return (
     <Stack
@@ -22,9 +26,9 @@ const ChatMobileAppBar: React.FC = () => {
       }}
     >
       <Box>
-        <slots.baseIconButton onClick={handleClick}>
+        <IconButton onClick={handleClick}>
           <MenuIcon />
-        </slots.baseIconButton>
+        </IconButton>
       </Box>
     </Stack>
   );

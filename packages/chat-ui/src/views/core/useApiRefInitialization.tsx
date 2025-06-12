@@ -41,14 +41,6 @@ export const useApiRefInitialization = (
       model.currentThread.value = model.createFromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);;
     };
 
-    const setMenuDriverOpen = (value: boolean) => {
-      model.actions.menuDriverOpen.value = value;
-    };
-
-    const setDeleteThreadItem = (thread?: Thread) => {
-      model.actions.deleteItem.value = thread;
-    };
-
     const handleDeleteThread = (id: IdType) => {
       model.delete(id);
     };
@@ -65,7 +57,7 @@ export const useApiRefInitialization = (
       model,
       handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
       onChangeCurrentThread: props.onChangeCurrentThread,
-      threadActions: props.threadActions,
+      onThreadDeleted: props.onThreadDeleted,
     };
 
     apiManager.setMethod('_internal', internal)
@@ -74,8 +66,6 @@ export const useApiRefInitialization = (
     apiManager.setMethod('openNewThread', openNewThread);
     apiManager.setMethod('deleteThread', handleDeleteThread);
     apiManager.setMethod('getCurrentThread', getCurrentThread);
-    apiManager.setMethod('setDeleteThreadItem', setDeleteThreadItem);
-    apiManager.setMethod('setMenuDriverOpen', setMenuDriverOpen);
     apiManager.setMethod('getThreadById', getThreadById);
 
   }, [props, model]);

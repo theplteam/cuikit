@@ -9,13 +9,13 @@ import Typography from '@mui/material/Typography';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { apiRef, slots, slotProps, locale } = useThreadListContext();
+  const { apiRef, slots, slotProps, locale, threadListModel } = useThreadListContext();
   const internal = apiRef.current?._internal;
-  const deleteItem = useObserverValue(internal?.model.actions.deleteItem);
+  const deleteItem = useObserverValue(threadListModel.deleteItem);
   const snackbar = useSnackbar();
 
   const handleClose = () => {
-    apiRef.current?.setDeleteThreadItem(undefined);
+    threadListModel.deleteItem.value = undefined;
   }
 
   const handleDelete = () => {

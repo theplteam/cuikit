@@ -25,7 +25,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
     event.stopPropagation();
   }, [listModel]);
 
-  const { apiRef, slots, slotProps } = useThreadListContext();
+  const { slots, slotProps, threadListModel } = useThreadListContext();
 
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.data.observableTitle);
@@ -33,7 +33,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
   if (isEmpty) return null;
 
   const handleClickListItem = () => {
-    apiRef.current?.setMenuDriverOpen(false);
+    threadListModel.menuDriverOpen.value = false;
     setThread(thread.data.data);
   }
 

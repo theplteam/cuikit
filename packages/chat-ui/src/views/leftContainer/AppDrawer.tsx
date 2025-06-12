@@ -6,22 +6,19 @@ import { useThreadListContext } from '../core/threadList/ThreadListContext';
 type Props = React.PropsWithChildren;
 
 const AppDrawer: React.FC<Props> = ({ children }) => {
-  const { apiRef, locale } = useThreadListContext();
-  const model = apiRef.current?._internal.model;
-  const open = useObserverValue(model?.actions.menuDriverOpen) ?? false;
-
-  console.log('model', model);
+  const { locale, threadListModel } = useThreadListContext();
+  const open = useObserverValue(threadListModel.menuDriverOpen) ?? false;
 
   const onClose = () => {
-    if (model) {
-      model.actions.menuDriverOpen.value = false
+    if (threadListModel) {
+      threadListModel.menuDriverOpen.value = false
     }
   };
 
   return (
     <MdBottomDriver
       keepMounted
-      open={open}
+      open={!!open}
       title={locale.historyTitle}
       onClose={onClose}
     >

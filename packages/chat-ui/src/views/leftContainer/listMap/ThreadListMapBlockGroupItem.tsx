@@ -11,7 +11,7 @@ type Props = {
   listGroupItem: ThreadListGroupItem;
   setThread: (thread: Thread) => void;
   index: number;
-  model: Threads<any, any>
+  model: Threads<any, any>;
 };
 
 const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread, index, model }) => {

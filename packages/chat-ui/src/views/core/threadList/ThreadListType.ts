@@ -10,6 +10,8 @@ import { MdMenuItemProps } from '../../../ui/menu/MdMenuItem';
 import { BoxProps } from '@mui/material/Box';
 import { DrawerProps } from '@mui/material/Drawer';
 import { StackProps } from '@mui/material/Stack';
+import { Thread } from '../../../models/ThreadData';
+import ThreadListModel from './ThreadListModel';
 
 export type ThreadListSlotPropsType = {
   baseMenuItem: MdMenuItemProps;
@@ -49,11 +51,17 @@ export type ThreadListSlotPropsType = {
 export type ThreadListSlotType = { [key in keyof ThreadListSlotPropsType]: SlotValue<ThreadListSlotPropsType[key]> };
 
 export type ThreadListContextType = {
+  threadListModel: ThreadListModel;
   apiRef: React.MutableRefObject<ApiRefType | null>;
   loading: boolean;
   locale: Localization;
   slots: ThreadListSlotType;
   slotProps: Partial<ThreadListSlotPropsType>;
+  threadActions: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
 };
 
-export type ThreadListProps = { slots?: Partial<ThreadListSlotType>, locale?: 'ru' | 'en'; } & Omit<ThreadListContextType, 'slots' | 'locale' | 'loading' | 'apiRef'>;
+export type ThreadListProps = { 
+  slots?: Partial<ThreadListSlotType> 
+  slotProps?: Partial<ThreadListSlotPropsType>;
+  threadActions?: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
+};
