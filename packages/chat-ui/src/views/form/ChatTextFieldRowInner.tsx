@@ -63,9 +63,13 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const disabledTextField = !thread || isTyping || isLoadingFullData;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
+  const previewComponent = React.useMemo(() => (
+    <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
+  ), [attachments, thread]);
+
   return (
     <StackStyled gap={attachments.length ? 1 : 0}>
-      <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
+      {previewComponent}
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton
           attachments={attachments}

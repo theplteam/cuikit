@@ -17,9 +17,9 @@ const MessageFileList: React.FC<Props> = ({ items, onDeleteItem }) => {
       justifySelf="end"
       flexWrap="nowrap"
     >
-      {items.map((item, index) => (
+      {items.map((item) => (
         <MessageFileListItem
-          key={index}
+          key={item.id}
           item={item}
           onDelete={onDeleteItem}
         />

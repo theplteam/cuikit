@@ -80,7 +80,7 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
 
   return (
     <GridItem
-      key={index}
+      key={item.id}
       sx={{
         width: size,
         height: size,
