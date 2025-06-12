@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useMobile } from '../../ui/Responsive';
-import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
@@ -13,6 +12,7 @@ import { ChatViewConstants } from '../../views/ChatViewConstants';
 import { useSnackbar } from '../hooks/useSnackbar';
 import AttachmentModel from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
+import Box from '@mui/material/Box';
 
 type Props = {
   attachments: AttachmentModel[];
@@ -119,13 +119,26 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   if (!enableFileAttachments) return null;
 
   return (
-    <Stack
+    <Box
+      display="flex"
       alignItems="flex-end"
+      justifyContent="center"
       width={48}
       height={40}
       position="relative"
     >
-      <coreSlots.iconButton disabled={disabled} onClick={handleClick}>
+      <coreSlots.iconButton
+        disabled={disabled}
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          height: '48px',
+          width: '48px',
+        }}
+        onClick={handleClick}
+      >
         <AttachFileIcon />
       </coreSlots.iconButton>
       <MdMenu
@@ -172,7 +185,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
         style={{ display: 'none' }}
         onChange={handleFileUpload}
       />
-    </Stack>
+    </Box>
   );
 };
 
