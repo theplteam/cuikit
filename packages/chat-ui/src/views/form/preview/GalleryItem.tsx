@@ -1,6 +1,7 @@
 import React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import 'photoswipe/style.css';
+import PlayIcon from './PlayIcon';
 
 type Props = {
   id: string;
@@ -31,6 +32,7 @@ const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl }) => {
       target="_blank"
       rel="noreferrer"
     >
+      {videoUrl ? <PlayIcon /> : null}
       <img src={poster.src} alt="" />
     </a>
   );

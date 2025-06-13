@@ -12,6 +12,7 @@ import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
 import { IdType } from '../../../types';
 import PreviewTooltip from './PreviewTooltip';
+import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 
 type Props = {
   item: AttachmentModel;
@@ -58,8 +59,8 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
         ref={setElement}
         width={showInGallery ? 80 : 200}
         sx={{
-          backgroundColor: (theme) => error ? theme.palette.error.dark : theme.palette.grey[200],
-          color: (theme) => error ? theme.palette.common.white : 'inherit',
+          backgroundColor: (theme) => error ? materialDesignSysPalette.error : theme.palette.grey[200],
+          color: error ? materialDesignSysPalette.errorText : 'inherit',
         }}
       >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}

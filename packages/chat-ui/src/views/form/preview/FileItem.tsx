@@ -39,7 +39,7 @@ const FileItem: React.FC<Props> = ({ name, type, error }) => {
         >
           {fileName}
         </Typography>
-        <Stack alignItems='center' gap={0.5} flexDirection="row">
+        <Stack alignItems='center' gap={1} flexDirection="row">
           <Icon color={error ? "inherit" : "primary"} fontSize="small" />
           <Typography
             noWrap

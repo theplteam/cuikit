@@ -1,7 +1,8 @@
 /** @deprecated - dont use */
 export const materialDesignSysPalette = {
   background: '#F7F9FF',
-  error: '#BA1A1A',
+  errorText: '#f9dedc',
+  error: '#B00020',
   errorContainer: '#FFDAD6',
   inverseOnSurface: '#EEF1F6',
   inversePrimary: '#98CCF9',
