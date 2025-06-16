@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { ChatHistoryProps } from './ChatHistory';
 import ThreadListModel from '../../core/threadList/ThreadListModel';
+import { Thread } from 'models/ThreadData';
 
 const useSlots = (slots?: Partial<ThreadListSlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -37,6 +38,13 @@ export const useThreadListInit = (props: ChatHistoryProps) => {
   const userLocale = props?.lang === 'ru' ? ruRU : CHAT_LOCALE;
   const userSlots = useSlots(props?.slots);
   const threadListModel = new ThreadListModel();
+
+  React.useEffect(() => {
+    if (apiRef.current) {
+      apiRef.current._history.toggleMenuDriver = (v: boolean) => threadListModel.menuDriverOpen.value = v;
+      apiRef.current._history.setDeleteItem = (v: Thread | undefined) => threadListModel.deleteItem.value = v;
+    }
+  }, []);
 
   const data: ThreadListContextType = React.useMemo(() => ({
     threadListModel,

@@ -8,7 +8,6 @@ import ThreadsList from '../../leftContainer/ThreadsList';
 import { useMobile, useTablet } from '../../../ui/Responsive';
 import AppDrawer from '../../leftContainer/AppDrawer';
 import Box from '@mui/material/Box';
-import ChatMobileAppBar from './ChatMobileAppBar';
 
 export type ChatHistoryProps = {
   loading: boolean;
@@ -25,14 +24,11 @@ const ChatHistory: React.FC<ChatHistoryProps> = (props) => {
     <ThreadListProvider {...providerData}>
       {isMobile
         ? (
-          <>
-            <ChatMobileAppBar />
-            <AppDrawer>
-              <Box display="flex" flexDirection="column" height={500}>
-                <ThreadsList />
-              </Box>
-            </AppDrawer>
-          </>
+          <AppDrawer>
+            <Box display="flex" flexDirection="column" height={500}>
+              <ThreadsList />
+            </Box>
+          </AppDrawer>
         ) : (
           <providerData.slots.listContainer
             width="100%"

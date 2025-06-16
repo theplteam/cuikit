@@ -10,8 +10,9 @@ import Chat from '../Chat';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { ChatUsersProps } from '../core/useChatProps';
+import ChatMobileAppBar from './components/ChatMobileAppBar';
 
-type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { threadListProps?: ThreadListProps }
+type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { threadListProps?: ThreadListProps };
 
 const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>) => {
   const { threadListProps, apiRef, loading, lang, ...chatProps } = usersProps;
@@ -34,6 +35,7 @@ const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPag
           lang={lang}
           {...threadListProps}
         />
+        <ChatMobileAppBar apiRef={userApiRef} />
         <Box
           ref={ref}
           flex={1}

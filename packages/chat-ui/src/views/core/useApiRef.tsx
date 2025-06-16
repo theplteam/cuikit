@@ -67,6 +67,13 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
     onChangeCurrentThread?: (v: DD) => void,
     onThreadDeleted?: (v: DD) => void,
   };
+  /**
+   * The object contains data for history operation
+   */
+  _history: {
+    toggleMenuDriver?: (v: boolean) => void,
+    setDeleteItem?: (v: DD | undefined) => void,
+  };
 };
 
 export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
@@ -99,6 +106,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
     _internal: { model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP) },
+    _history: {},
   });
 
   React.useMemo(() => {

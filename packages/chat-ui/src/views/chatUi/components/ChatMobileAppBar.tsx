@@ -4,13 +4,16 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { useMobile } from '../../../ui/Responsive';
-import { useThreadListContext } from '../../core/threadList/ThreadListContext';
+import { ApiRefType } from '../../core/useApiRef';
 
-const ChatMobileAppBar: React.FC = () => {
-  const { threadListModel } = useThreadListContext();
+type Props = {
+  apiRef: React.MutableRefObject<ApiRefType | null>;
+};
+
+const ChatMobileAppBar: React.FC<Props> = ({ apiRef }) => {
   const isMobile = useMobile();
   const handleClick = () => {
-    threadListModel.menuDriverOpen.value = true;
+    apiRef.current?._history.toggleMenuDriver?.(true);
   };
 
   if (!isMobile) return null;
