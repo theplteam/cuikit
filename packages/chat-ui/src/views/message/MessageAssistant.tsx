@@ -51,6 +51,9 @@ const MessageContainerStyled = styled(MessageContainer)(() => ({
     // here `delay` has no meaning, since it is overwritten in style for each element
     animation: `${fadeIn} ${ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
   },
+  [`.${chatClassNames.markdownRtlAlign}`]: {
+    textAlign: 'right',
+  },
   /*[`&:not(.${latestMessageClassName})`]: {
     [`& .${actionsClassName}`]: {
       opacity: 0,
