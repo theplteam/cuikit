@@ -64,7 +64,7 @@ export default App;
 | קרול | 35  | סן פרנסיסקו |
 `;
 
-const RtlText: React.FC = () => {
+const MarkdownRtlText: React.FC = () => {
   const [threads] = React.useState<Thread[]>(
     [
       {
@@ -113,4 +113,4 @@ const RtlText: React.FC = () => {
   );
 }
 
-export default RtlText;
+export default MarkdownRtlText;
