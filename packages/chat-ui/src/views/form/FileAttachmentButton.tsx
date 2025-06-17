@@ -7,7 +7,6 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import { useThreadContext } from '../thread/ThreadContext';
 import { PhotoCameraIcon, FolderIcon, AttachFileIcon } from '../../icons';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
-import { useSnackbar } from '../hooks/useSnackbar';
 import AttachmentModel from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
 import { Stack } from '@mui/material';
@@ -20,9 +19,8 @@ type Props = {
 
 const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableFileAttachments, acceptableFileFormat, maxFileSizeBytes, maxFileCount, onFileAttached } = useChatContext();
+  const { enableFileAttachments, acceptableFileFormat, maxFileSizeBytes, maxFileCount, onFileAttached, snackbar } = useChatContext();
   const { thread } = useThreadContext();
-  const snackbar = useSnackbar();
 
   const cameraRef = React.useRef<HTMLInputElement>(null);
   const fileRef = React.useRef<HTMLInputElement>(null);
@@ -67,7 +65,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     const oversizeFiles = files.filter(f => f.size > maxSize);
     if (oversizeFiles.length > 0) {
-      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }));
+      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }), 'error');
       files = files.filter(f => f.size <= maxSize);
     }
 
@@ -75,13 +73,13 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     const invalidFiles = files.filter(f => !checkType(f, allowedTypes));
 
     if (invalidFiles.length > 0) {
-      snackbar.show(locale.invalidFileTypeWarning);
+      snackbar.show(locale.invalidFileTypeWarning, 'error');
       files = files.filter(f => !invalidFiles.includes(f));
     }
 
     if ((files.length + attachments.length) > maxCount) {
       files = files.slice(0, maxCount - attachments.length);
-      snackbar.show(locale.maxAttachmentWarning);
+      snackbar.show(locale.maxAttachmentWarning, 'error');
     };
 
     const fileAttachments = files.map((f) => {
