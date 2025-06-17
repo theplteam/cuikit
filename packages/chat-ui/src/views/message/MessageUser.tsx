@@ -87,7 +87,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
       message.attachments.deletedIds.value = [];
       // Branch changes in the message sending hook before editing
       // apiRef.current?.handleChangeBranch(newMessage);
-      onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
+      onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data });
     }
   }
 
