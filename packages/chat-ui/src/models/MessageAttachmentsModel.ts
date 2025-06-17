@@ -1,5 +1,4 @@
-import AttachmentModel from "./AttachmentModel";
-import { Attachment } from "./MessageModel";
+import AttachmentModel, { Attachment } from "./AttachmentModel";
 import { ObservableReactValue } from "../utils/observers/ObservableReactValue";
 import { IdType } from "../types";
 import attachmentsStore from "./AttachmentsStore";
@@ -19,7 +18,7 @@ class MessageAttachmentsModel {
         attachmentsStore.items = attachmentsStore.items.filter((a) => a.id !== attachment.id);
         continue;
       }
-      const model = new AttachmentModel(attachment.file || attachment.url || '', attachment.type, attachment.id, attachment.poster);
+      const model = new AttachmentModel(attachment);
       buffer.push(model);
     }
 

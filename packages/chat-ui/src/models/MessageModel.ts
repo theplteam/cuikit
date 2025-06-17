@@ -6,13 +6,12 @@ import { MessageText } from './MessageText';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { v4 as uuid } from 'uuid';
 import MessageAttachmentsModel from './MessageAttachmentsModel';
+import { Attachment } from './AttachmentModel';
 
 export enum ChatMessageOwner {
   USER = 'user',
   ASSISTANT = 'assistant',
 }
-
-export type AttachmentType = 'file' | 'image' | 'video';
 
 export type RatingType = 'like' | 'dislike';
 
@@ -23,13 +22,6 @@ export type TextContent = {
   text: string,
 }
 
-export type Attachment = {
-  type: AttachmentType,
-  id: IdType,
-  url: string,
-  file?: File,
-  poster?: string,
-};
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 
