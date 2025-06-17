@@ -9,7 +9,7 @@ import MessagePagination from './MessagePagination';
 import { MessageStateEnum } from './hooks/useMessagesMode';
 import Stack from '@mui/material/Stack';
 import { useThreadContext } from '../thread/ThreadContext';
-import { ChatMessageContentType, MessageModel, MessageUserContent } from '../../models/MessageModel';
+import { MessageModel, MessageUserContent } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatContext } from '../core/ChatGlobalContext';
@@ -78,7 +78,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
       const attachments = itemsAll.value?.filter((i) => !deletedIds.value.includes(i.id)) || [];
       attachmentsStore.items = attachments;
       content = [{
-        type: ChatMessageContentType.TEXT,
+        type: 'text',
         text: newText,
       }, ...attachments.map((a) => a.contentData)];
     }

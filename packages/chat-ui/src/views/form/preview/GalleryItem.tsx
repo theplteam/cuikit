@@ -1,14 +1,16 @@
 import React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import 'photoswipe/style.css';
+import PlayIcon from './PlayIcon';
 
 type Props = {
   id: string;
   poster?: HTMLImageElement;
   videoUrl?: string;
+  showPlayIcon?: boolean;
 };
 
-const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl }) => {
+const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl, showPlayIcon }) => {
   if (!poster) {
     return (
       <Skeleton
@@ -31,6 +33,7 @@ const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl }) => {
       target="_blank"
       rel="noreferrer"
     >
+      {showPlayIcon ? <PlayIcon /> : null}
       <img src={poster.src} alt="" />
     </a>
   );

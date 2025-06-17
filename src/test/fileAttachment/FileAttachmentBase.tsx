@@ -113,8 +113,8 @@ const App: React.FC = () => {
 
   const onFileAttached = async ({ file, actions }: FileAttachedParams) => {
     const { setProgress, setError } = actions;
-    setError('test error');
-    return;
+    // setError('test error');
+    // return;
     try {
       await fileUploadMock(setProgress);
       enqueueSnackbar(`File ${file.name} uploaded`);

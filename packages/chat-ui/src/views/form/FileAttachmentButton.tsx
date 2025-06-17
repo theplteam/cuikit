@@ -7,7 +7,7 @@ import { useChatContext } from '../core/ChatGlobalContext';
 import { useThreadContext } from '../thread/ThreadContext';
 import { PhotoCameraIcon, FolderIcon, AttachFileIcon } from '../../icons';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
-import AttachmentModel from '../../models/AttachmentModel';
+import AttachmentModel, { Attachment } from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
 import { Stack } from '@mui/material';
 
@@ -83,21 +83,25 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     };
 
     const fileAttachments = files.map((f) => {
-      const isGallery = f.type.startsWith('video') || f.type.startsWith('image');
-      return new AttachmentModel(f, isGallery);
+      const type = f.type.startsWith('video') ? 'video' : f.type.startsWith('image') ? 'image' : 'file';
+      const data: Omit<Attachment, 'id'> = {
+        type,
+        file: f,
+      };
+      return new AttachmentModel(data);
     });
     setAttachments([...attachments, ...fileAttachments]);
 
     if (thread) {
       thread.isLoadingAttachments.value = [...thread.isLoadingAttachments.value, ...fileAttachments.map((f) => f.id)];
-      fileAttachments.forEach((file) => {
-        const { setProgress, setError, setId, data, id } = file;
+      fileAttachments.forEach((f) => {
+        const { setProgress, setError, setId, file, id } = f;
         const onFinish = () => {
-          file.progress.value = 100;
+          f.progress.value = 100;
           thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((a) => a !== id);
         };
         if (onFileAttached) {
-          const promise = onFileAttached({ id: file.id, file: data, actions: { setProgress, setError, onFinish, setId } });
+          const promise = onFileAttached({ id: f.id, file, actions: { setProgress, setError, onFinish, setId } });
           if (promise) promise.then(() => onFinish());
           else {
             onFinish();

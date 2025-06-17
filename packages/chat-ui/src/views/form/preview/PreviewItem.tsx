@@ -12,6 +12,7 @@ import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
 import { IdType } from '../../../types';
 import PreviewTooltip from './PreviewTooltip';
+import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 
 type Props = {
   item: AttachmentModel;
@@ -49,7 +50,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const isHover = useHover(element);
   const isMobile = useMobile();
 
-  const isVideo = type.startsWith('video');
+  const isVideo = type === 'video';
   const showInGallery = isGallery && !error;
 
   return (
@@ -58,14 +59,20 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
         ref={setElement}
         width={showInGallery ? 80 : 200}
         sx={{
-          backgroundColor: (theme) => error ? theme.palette.error.dark : theme.palette.grey[200],
+          backgroundColor: (theme) => error ? materialDesignSysPalette.error : theme.palette.grey[200],
           color: (theme) => error ? theme.palette.common.white : 'inherit',
         }}
       >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
         {showInGallery
-          ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
-          : <FileItem name={name} type={type} error={error} />}
+          ? (
+            <GalleryItem
+              id={`${galleryId}-${id}`}
+              poster={poster}
+              videoUrl={isVideo ? url : undefined}
+              showPlayIcon={isVideo}
+            />
+          ) : <FileItem name={name} type={type} error={error} />}
         {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
       </BoxStyled>
     </PreviewTooltip>

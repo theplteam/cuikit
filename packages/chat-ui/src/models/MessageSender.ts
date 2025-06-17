@@ -1,8 +1,9 @@
-import { Attachment, ChatMessageContentType, InternalMessageType, Message, MessageModel } from './MessageModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
 import { StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
 import { MessageText } from './MessageText';
+import { Attachment } from './AttachmentModel';
 
 export class MessageSender<DM extends Message> {
   constructor(
@@ -79,7 +80,7 @@ export class MessageSender<DM extends Message> {
         this.thread.isTyping.value = false;
 
         message.data.content = message.texts.value.map((v) => ({
-          type: ChatMessageContentType.TEXT,
+          type: 'text',
           text: v.text,
         }));
       },
