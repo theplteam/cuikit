@@ -23,9 +23,9 @@ class AttachmentModel {
 
   public isGallery = false;
 
-  constructor(_fileOrUrl: File | string, _isGallery: boolean, _id?: IdType) {
+  constructor(_fileOrUrl: File | string, _isGallery: boolean, _id?: IdType, poster?: string) {
     this.isGallery = _isGallery;
-    this._createSelf(_fileOrUrl, _id);
+    this._createSelf(_fileOrUrl, _id, poster);
   }
 
   get id() { return this._id; }
@@ -36,13 +36,18 @@ class AttachmentModel {
 
   get name() { return this._data.name; }
 
-  private _createPoster = async () => {
+  private _createPoster = async (poster?: string) => {
     const img = document.createElement('img');
-    if (this.type.startsWith('image')) {
-      img.src = this.url;
-    }
-    if (this.type.startsWith('video')) {
-      img.src = await getVideoPoster(this.url);
+
+    if (poster) {
+      img.src = poster;
+    } else {
+      if (this.type.startsWith('image')) {
+        img.src = this.url;
+      }
+      if (this.type.startsWith('video')) {
+        img.src = await getVideoPoster(this.url);
+      }
     }
 
     img.onload = () => {
@@ -72,11 +77,12 @@ class AttachmentModel {
     return data;
   }
 
-  private _createSelf = async (fileOrUrl: File | string, id?: IdType) => {
+  private _createSelf = async (fileOrUrl: File | string, id?: IdType, poster?: string) => {
     if (fileOrUrl instanceof File) {
       this._data = fileOrUrl;
       this.url = URL.createObjectURL(this._data);
     } else {
+      console.log('fileOrUrl', fileOrUrl);
       const file = await loadUrlFile(fileOrUrl)
       if (file) {
         this._data = file;
@@ -86,7 +92,7 @@ class AttachmentModel {
 
     this._id = id || md5(this.url);
     this.isLoading.value = false;
-    this._createPoster();
+    this._createPoster(poster);
   };
 }
 

@@ -33,6 +33,7 @@ export type Attachment = {
   id: IdType,
   url: string,
   file?: File,
+  poster?: string,
 };
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;

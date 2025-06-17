@@ -20,7 +20,7 @@ class MessageAttachmentsModel {
         continue;
       }
       const isGallery = attachment.type !== ChatMessageContentType.FILE;
-      const model = new AttachmentModel(attachment.file || attachment.url || '', isGallery, attachment.id);
+      const model = new AttachmentModel(attachment.file || attachment.url || '', isGallery, attachment.id, attachment.poster);
       buffer.push(model);
     }
 

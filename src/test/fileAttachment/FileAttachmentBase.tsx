@@ -82,7 +82,8 @@ const App: React.FC = () => {
               {
                 id: '1',
                 type: 'video',
-                url: 'https://examples.cuikit.com/files/exampleVideo.mp4',
+                poster: 'https://examples.cuikit.com/files/exampleImage2.jpg',
+                // url: 'https://examples.cuikit.com/files/exampleVideo.mp4',
               },
             ],
             role: "user",
