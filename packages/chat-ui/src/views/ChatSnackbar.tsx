@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Snackbar } from '@mui/material';
-import { useSnackbar, useSnackbarState } from './hooks/useSnackbar';
+import { useObserverValue } from './hooks/useObserverValue';
+import { useChatContext } from './core/ChatGlobalContext';
 
 const ChatSnackbar: React.FC = () => {
-  const snackbar = useSnackbar();
-  const open = useSnackbarState();
+  const { snackbar } = useChatContext();
+  const open = useObserverValue(snackbar.open);
 
   return (
     <Snackbar

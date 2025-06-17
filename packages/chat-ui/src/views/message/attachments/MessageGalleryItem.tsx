@@ -42,7 +42,7 @@ const GridItem = styled(Box)(({ theme }) => ({
 const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, itemsCount, index, onDelete }) => {
   const { type, url } = item;
   const poster = useObserverValue(item.poster);
-  const isVideo = type.startsWith('video');
+  const isVideo = type === 'video';
 
   const getItemsInRow = (row: number) => {
     const startIndex = row * columns;
@@ -87,7 +87,12 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
       }}
       className={className}
     >
-      <GalleryItem id={`${galleryId}-${item.id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
+      <GalleryItem
+        id={`${galleryId}-${item.id}`}
+        poster={poster}
+        videoUrl={isVideo ? url : undefined}
+        showPlayIcon={isVideo}
+      />
       {onDelete ? <PreviewDeleteButton onClick={() => onDelete(item.id)} /> : null}
     </GridItem>
   );

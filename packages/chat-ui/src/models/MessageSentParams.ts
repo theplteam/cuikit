@@ -1,5 +1,6 @@
 import { IdType } from '../types';
-import { Attachment, InternalMessageType, Message } from './MessageModel';
+import { Attachment } from './AttachmentModel';
+import { InternalMessageType, Message } from './MessageModel';
 
 export type MessageSentParams<M extends InternalMessageType = InternalMessageType> = {
   /** User's message content */
