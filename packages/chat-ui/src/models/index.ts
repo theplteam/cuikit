@@ -5,3 +5,4 @@ export * from './FileAttachedParams';
 export { chatGptStreamParser } from './stream/parsers/chatGptStreamParser';
 export { prepareStreamString } from './stream/parsers/prepareStreamString';
 export { ForceStream } from './stream/ForceStream';
+export type { Attachment, AttachmentType } from './AttachmentModel';
