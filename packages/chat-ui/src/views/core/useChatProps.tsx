@@ -182,7 +182,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * The function outputs the first message in the thread.
    */
-  initialThreadMessage?: (threadId: IdType) => { text: string, stream: boolean };
+  initialThreadMessage?: (threadId: IdType) => { text: string, stream: boolean } | undefined;
   /**
    * If this function is present, the default snackbar will not be shown; instead, this function will be called.
    */

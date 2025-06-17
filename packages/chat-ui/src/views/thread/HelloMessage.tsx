@@ -3,7 +3,8 @@ import { ChatMessageOwner, ThreadModel, MessageModel } from '../../models';
 import { randomId } from '../../utils/numberUtils/randomInt';
 import ChatMessageComponent from '../message/MessageComponent';
 import { ForceStream } from '../../models/stream/ForceStream';
-import { useChatContext } from 'views/core/ChatGlobalContext';
+import { useChatContext } from '../core/ChatGlobalContext';
+import { useObserverValue } from '../hooks/useObserverValue';
 
 type Props = {
   thread: ThreadModel;
@@ -11,7 +12,8 @@ type Props = {
 
 const HelloMessage: React.FC<Props> = ({ thread }) => {
   const { initialThreadMessage } = useChatContext();
-  const messageConfig = initialThreadMessage?.(thread.id);
+  const isLoadingFullData = useObserverValue(thread?.isLoadingFullData);
+  const messageConfig = React.useMemo(() => initialThreadMessage?.(thread.id), [thread.id]);
 
   const [message] = React.useState(new MessageModel({
     id: 'helloMessage' + randomId(),
@@ -22,24 +24,16 @@ const HelloMessage: React.FC<Props> = ({ thread }) => {
 
   React.useEffect(() => {
     if (!messageConfig) return;
-
-    if (!messageConfig.stream || thread.messages.allMessages.value.length > 0) {
+    if (!messageConfig.stream) {
       message.texts.value[0].observableText.value = messageConfig.text;
-      return;
+    } else {
+      message.texts.value[0].observableText.value = '';
+      const stream = new ForceStream(message);
+      stream.start(messageConfig.text);
     }
+  }, [thread.id]);
 
-    message.texts.value[0].observableText.value = '';
-    const stream = new ForceStream(messageConfig.text, message);
-    stream.chunkSize = 'medium';
-    stream.speed = { min: 50, max: 200 };
-    stream.start();
-
-    return () => {
-      stream.forceStop();
-    }
-  }, []);
-
-  if (!messageConfig) return null;
+  if (!messageConfig || isLoadingFullData) return null;
 
   return (
     <ChatMessageComponent
