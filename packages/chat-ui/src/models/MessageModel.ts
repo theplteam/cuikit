@@ -12,12 +12,7 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 }
 
-export enum ChatMessageContentType {
-  FILE = 'file',
-  TEXT = 'text',
-  IMAGE = 'image',
-  VIDEO = 'video',
-}
+export type AttachmentType = 'file' | 'image' | 'video';
 
 export type RatingType = 'like' | 'dislike';
 
@@ -29,7 +24,7 @@ export type TextContent = {
 }
 
 export type Attachment = {
-  type: 'video' | 'image' | 'file',
+  type: AttachmentType,
   id: IdType,
   url: string,
   file?: File,
@@ -83,10 +78,10 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = [new MessageText(_data.content)];
     } else {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
-      this.texts.value = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[]).map(
+      this.texts.value = (content.filter(v => v.type === 'text') as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-      this.attachments.init(content.filter(c => c.type !== ChatMessageContentType.TEXT) as Attachment[]);
+      this.attachments.init(content.filter(c => c.type !== 'text') as Attachment[]);
     }
 
     if (_data.reasoning) {
@@ -149,7 +144,7 @@ export class MessageModel<DM extends Message = Message> {
 
     if (this.attachments.itemsAll.value.length) {
       const attachmentContent = this.attachments.itemsAll.value.map((a) => a.contentData);
-      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...attachmentContent ];
+      data = [ { type: 'text', text: this.text }, ...attachmentContent ];
     }
 
     return data;

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Avatar, styled } from '@mui/material';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import React from 'react';
+import { styled, Avatar } from '@mui/material';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const AvatarStyled = styled(Avatar)(() => ({
   position: 'absolute',
@@ -14,7 +14,15 @@ const AvatarStyled = styled(Avatar)(() => ({
 
 const PlayIcon = () => (
   <AvatarStyled>
-    <PlayArrowIcon color='action' sx={{ width: '80%', height: '80%' }} />
+    <SvgIcon sx={{ width: '80%', height: '80%' }}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="inherit"
+      >
+        <path fill="inherit" d="M8 5v14l11-7z" />
+      </svg>
+    </SvgIcon>
   </AvatarStyled>
 );
 

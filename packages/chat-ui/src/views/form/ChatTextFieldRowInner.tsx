@@ -10,7 +10,7 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
-import { ChatMessageContentType, Message } from '../../models';
+import { Message } from '../../models';
 import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
@@ -48,7 +48,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
       content = attachments.map((a) => a.contentData);
       if (text) {
         content = [
-          { type: ChatMessageContentType.TEXT, text },
+          { type: 'text', text },
           ...content,
         ];
       }

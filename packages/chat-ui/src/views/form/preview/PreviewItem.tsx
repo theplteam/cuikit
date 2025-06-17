@@ -50,7 +50,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const isHover = useHover(element);
   const isMobile = useMobile();
 
-  const isVideo = type.startsWith('video');
+  const isVideo = type === 'video';
   const showInGallery = isGallery && !error;
 
   return (
@@ -65,8 +65,14 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
       >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
         {showInGallery
-          ? <GalleryItem id={`${galleryId}-${id}`} poster={poster} videoUrl={isVideo ? url : undefined} />
-          : <FileItem name={name} type={type} error={error} />}
+          ? (
+            <GalleryItem
+              id={`${galleryId}-${id}`}
+              poster={poster}
+              videoUrl={isVideo ? url : undefined}
+              showPlayIcon={isVideo}
+            />
+          ) : <FileItem name={name} type={type} error={error} />}
         {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
       </BoxStyled>
     </PreviewTooltip>

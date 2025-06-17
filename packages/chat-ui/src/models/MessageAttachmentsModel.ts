@@ -1,5 +1,5 @@
 import AttachmentModel from "./AttachmentModel";
-import { Attachment, ChatMessageContentType } from "./MessageModel";
+import { Attachment } from "./MessageModel";
 import { ObservableReactValue } from "../utils/observers/ObservableReactValue";
 import { IdType } from "../types";
 import attachmentsStore from "./AttachmentsStore";
@@ -19,8 +19,7 @@ class MessageAttachmentsModel {
         attachmentsStore.items = attachmentsStore.items.filter((a) => a.id !== attachment.id);
         continue;
       }
-      const isGallery = attachment.type !== ChatMessageContentType.FILE;
-      const model = new AttachmentModel(attachment.file || attachment.url || '', isGallery, attachment.id, attachment.poster);
+      const model = new AttachmentModel(attachment.file || attachment.url || '', attachment.type, attachment.id, attachment.poster);
       buffer.push(model);
     }
 

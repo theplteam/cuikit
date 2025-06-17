@@ -6,7 +6,6 @@ import {
   MessageModel,
   ChatMessageOwner,
   InternalMessageType,
-  ChatMessageContentType,
 } from '../../models';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { ChatUsersProps } from '../core/useChatProps';
@@ -64,7 +63,7 @@ export const useThreadSendMessage = (
       if (typeof content === 'string') {
         text = content;
       } else if (Array.isArray(content)) {
-        text = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[])?.[0]?.text ?? '';
+        text = (content.filter(v => v.type === 'text') as TextContent[])?.[0]?.text ?? '';
       }
 
       const pairs = await beforeUserMessageSend({
@@ -145,7 +144,7 @@ export const useThreadSendMessage = (
       throw new Error('thread is undefined');
     }
     if (typeof content === 'string') {
-      content = [{ type: ChatMessageContentType.TEXT, text: content }];
+      content = [{ type: 'text', text: content }];
     }
 
     thread.isTyping.value = true;

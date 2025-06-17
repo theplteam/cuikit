@@ -85,8 +85,8 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     };
 
     const fileAttachments = files.map((f) => {
-      const isGallery = f.type.startsWith('video') || f.type.startsWith('image');
-      return new AttachmentModel(f, isGallery);
+      const type = f.type.startsWith('video') ? 'video' : f.type.startsWith('image') ? 'image' : 'file';
+      return new AttachmentModel(f, type);
     });
     setAttachments([...attachments, ...fileAttachments]);
 

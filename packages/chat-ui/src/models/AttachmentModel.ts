@@ -1,5 +1,5 @@
 import { ObservableReactValue } from "../utils/observers";
-import { Attachment, ChatMessageContentType } from "./MessageModel";
+import { Attachment, AttachmentType } from "./MessageModel";
 import getVideoPoster from "../utils/getVideoPoster";
 import { IdType } from "../types";
 import md5 from "md5";
@@ -21,10 +21,10 @@ class AttachmentModel {
 
   public url: string = '';
 
-  public isGallery = false;
+  public type: AttachmentType = 'file';
 
-  constructor(_fileOrUrl: File | string, _isGallery: boolean, _id?: IdType, poster?: string) {
-    this.isGallery = _isGallery;
+  constructor(_fileOrUrl: File | string, _type: AttachmentType, _id?: IdType, poster?: string) {
+    this.type = _type;
     this._createSelf(_fileOrUrl, _id, poster);
   }
 
@@ -32,9 +32,9 @@ class AttachmentModel {
 
   get data() { return this._data; }
 
-  get type() { return this._data.type; }
-
   get name() { return this._data.name; }
+  
+  get isGallery() { return this.type !== 'file'; }
 
   private _createPoster = async (poster?: string) => {
     const img = document.createElement('img');
@@ -62,15 +62,9 @@ class AttachmentModel {
   setId = (id: IdType) => { this._id = id }
 
   get contentData() {
-    const type = this.type.startsWith('image')
-      ? ChatMessageContentType.IMAGE
-      : this.type.startsWith('video')
-        ? ChatMessageContentType.VIDEO
-        : ChatMessageContentType.FILE;
-
     const data: Attachment = {
       id: this.id,
-      type,
+      type: this.type,
       file: this._data,
       url: this.url,
     };

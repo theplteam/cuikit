@@ -7,9 +7,10 @@ type Props = {
   id: string;
   poster?: HTMLImageElement;
   videoUrl?: string;
+  showPlayIcon?: boolean;
 };
 
-const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl }) => {
+const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl, showPlayIcon }) => {
   if (!poster) {
     return (
       <Skeleton
@@ -32,7 +33,7 @@ const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl }) => {
       target="_blank"
       rel="noreferrer"
     >
-      {videoUrl ? <PlayIcon /> : null}
+      {showPlayIcon ? <PlayIcon /> : null}
       <img src={poster.src} alt="" />
     </a>
   );
