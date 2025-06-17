@@ -10,7 +10,7 @@ const getVideoPoster = async (url: string) => {
   });
   await new Promise((resolve) => {
     video.onseeked = () => setTimeout(resolve, 10);
-    video.currentTime = 1;
+    video.currentTime = 2;
   });
   const canvas = document.createElement('canvas');
   canvas.width = video.videoWidth;
