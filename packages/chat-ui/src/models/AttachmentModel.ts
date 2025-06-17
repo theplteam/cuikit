@@ -26,16 +26,13 @@ class AttachmentModel {
 
   readonly isLoading = new ObservableReactValue<boolean>(true);
 
-  private _data: Partial<Attachment>;
-
   private _file = emptyFile;
 
   private _id: IdType = randomInt(1, 1000);
 
   private _url: string = '';
 
-  constructor(_attachment: Partial<Attachment>) {
-    this._data = _attachment;
+  constructor(private _data: Partial<Attachment>) {
     this._createSelf();
   }
 
