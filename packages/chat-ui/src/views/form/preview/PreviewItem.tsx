@@ -60,7 +60,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
         width={showInGallery ? 80 : 200}
         sx={{
           backgroundColor: (theme) => error ? materialDesignSysPalette.error : theme.palette.grey[200],
-          color: error ? materialDesignSysPalette.errorText : 'inherit',
+          color: (theme) => error ? theme.palette.common.white : 'inherit',
         }}
       >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
