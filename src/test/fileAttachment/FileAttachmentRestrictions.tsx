@@ -46,7 +46,7 @@ const FileAttachmentRestrictions: React.FC = () => {
         handleStopMessageStreaming={handleStopMessageStreaming}
         acceptableFileFormat={['.png', '.jpg']}
         maxFileCount={3}
-        maxFileSize={10 * 1024 * 1024}
+        maxFileSizeBytes={10 * 1024 * 1024}
         onUserMessageSent={onUserMessageSent}
       />
     </Box>

@@ -15,6 +15,7 @@ import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
+import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 
 type RequiredProps<DD extends Thread<any>> = {
@@ -139,6 +140,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Enable user's ability to add files in messages
    */
   enableFileAttachments?: boolean;
+
+  /**
+   * Prevent the user from deleting/adding files during message editing
+   */
+  disableFileAttachmentsEditing?: boolean;
   /**
    * Callback fired after file attach to message
    */
@@ -150,25 +156,29 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Acceptable file formats for attaching to a message.
    * Check [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Reference/Attributes/accept) for more information.
-   * @example Array ['image', 'video'] | ['.png', '.mp4'] | ['image/*', 'video/*'] 
+   * @example Array ['image', 'video'] | ['.png', '.mp4'] | ['image/*', 'video/*']
    * @example String 'image/*, video/*' | '.png, .mp4'
    * @default '*'
    */
   acceptableFileFormat?: string | string[];
   /**
    * Maximum size of a single file in bytes.
-   * @default 20 * 1024 * 1024 // 20 MB
+   * @default 2 GB
    */
-  maxFileSize?: number;
+  maxFileSizeBytes?: number;
   /**
    * Maximum number of files in a single message.
-   * @default 10
+   * @default 20
    */
   maxFileCount?: number;
   /**
    * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
    */
   getConversationBlockHeightMin?: (calculatedHeight: number) => number;
+  /**
+   * If this function is present, the default snackbar will not be shown; instead, this function will be called.
+   */
+  onShowAlert?: onShowAlertType;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

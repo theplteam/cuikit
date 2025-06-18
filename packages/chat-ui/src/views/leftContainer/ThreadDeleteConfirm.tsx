@@ -4,7 +4,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useSnackbar } from '../hooks/useSnackbar';
 import Typography from '@mui/material/Typography';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
@@ -12,7 +11,6 @@ const ThreadDeleteConfirm: React.FC = () => {
   const { apiRef, slots, slotProps, locale, threadListModel } = useThreadListContext();
   const internal = apiRef.current?._internal;
   const deleteItem = useObserverValue(threadListModel.deleteItem);
-  const snackbar = useSnackbar();
 
   const handleClose = () => {
     threadListModel.deleteItem.value = undefined;
@@ -22,7 +20,6 @@ const ThreadDeleteConfirm: React.FC = () => {
     if (deleteItem) {
       internal?.model.delete(deleteItem.id);
       internal?.onThreadDeleted?.({ thread: deleteItem });
-      snackbar.show(locale.threadDeletedSuccess);
     }
     handleClose();
   }

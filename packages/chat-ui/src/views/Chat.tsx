@@ -40,6 +40,6 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
       <ChatSnackbar />
     </>
   );
-}
+};
 
 export default Chat;

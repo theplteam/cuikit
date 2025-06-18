@@ -10,7 +10,7 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
-import { ChatMessageContentType, Message } from '../../models';
+import { Message } from '../../models';
 import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
@@ -48,7 +48,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
       content = attachments.map((a) => a.contentData);
       if (text) {
         content = [
-          { type: ChatMessageContentType.TEXT, text },
+          { type: 'text', text },
           ...content,
         ];
       }
@@ -63,9 +63,13 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const disabledTextField = !thread || isTyping || isLoadingFullData;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
+  const previewComponent = React.useMemo(() => (
+    <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
+  ), [attachments, thread]);
+
   return (
     <StackStyled gap={attachments.length ? 1 : 0}>
-      <AttachmentsPreview attachments={attachments} setAttachments={setAttachments} thread={thread} />
+      {previewComponent}
       <Stack direction="row" alignItems="flex-end" gap={1}>
         <FileAttachmentButton
           attachments={attachments}

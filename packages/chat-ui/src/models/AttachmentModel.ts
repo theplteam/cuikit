@@ -1,10 +1,21 @@
 import { ObservableReactValue } from "../utils/observers";
-import { Attachment, ChatMessageContentType } from "./MessageModel";
 import getVideoPoster from "../utils/getVideoPoster";
 import { IdType } from "../types";
 import md5 from "md5";
 import loadUrlFile from "../utils/loadUrlFile";
 import { randomInt } from "../utils/numberUtils/randomInt";
+
+export type AttachmentType = 'file' | 'image' | 'video';
+
+export type Attachment = {
+  type: AttachmentType,
+  id: IdType,
+  url?: string,
+  file?: File,
+  poster?: string,
+};
+
+const emptyFile = new File([''], 'empty');
 
 class AttachmentModel {
   readonly progress = new ObservableReactValue<number>(0);
@@ -15,34 +26,42 @@ class AttachmentModel {
 
   readonly isLoading = new ObservableReactValue<boolean>(true);
 
-  private _data: File = new File([''], 'empty');
+  private _file = emptyFile;
 
   private _id: IdType = randomInt(1, 1000);
 
-  public url: string = '';
+  private _url: string = '';
 
-  public isGallery = false;
-
-  constructor(_fileOrUrl: File | string, _isGallery: boolean, _id?: IdType) {
-    this.isGallery = _isGallery;
-    this._createSelf(_fileOrUrl, _id);
+  constructor(private _data: Partial<Attachment>) {
+    this._createSelf();
   }
 
   get id() { return this._id; }
 
   get data() { return this._data; }
 
-  get type() { return this._data.type; }
+  get file() { return this._file; }
 
-  get name() { return this._data.name; }
+  get url() { return this._url; }
+
+  get type() { return this._data.type || 'file'; }
+
+  get name() { return this._file.name; }
+  
+  get isGallery() { return this.type !== 'file'; }
 
   private _createPoster = async () => {
     const img = document.createElement('img');
-    if (this.type.startsWith('image')) {
-      img.src = this.url;
-    }
-    if (this.type.startsWith('video')) {
-      img.src = await getVideoPoster(this.url);
+
+    if (this._data.poster) {
+      img.src = this._data.poster;
+    } else {
+      if (this.type.startsWith('image')) {
+        img.src = this._url;
+      }
+      if (this.type.startsWith('video')) {
+        img.src = await getVideoPoster(this._url);
+      }
     }
 
     img.onload = () => {
@@ -52,35 +71,36 @@ class AttachmentModel {
 
   setProgress = (n: number) => { this.progress.value = n }
 
-  setError= (e: string) => { this.error.value = e }
+  setError = (e: string) => { this.error.value = e }
 
-  get contentData() { 
-    const type = this.type.startsWith('image')
-      ? ChatMessageContentType.IMAGE
-      : this.type.startsWith('video')
-        ? ChatMessageContentType.VIDEO
-        : ChatMessageContentType.FILE;
+  setId = (id: IdType) => { this._id = id }
+
+  get contentData() {
     const data: Attachment = {
       id: this.id,
-      type,
-      file: this._data,
+      type: this.type,
+      file: this.file,
+      url: this._url,
+      poster: this.poster.value?.src,
     };
     return data;
   }
 
-  private _createSelf = async (fileOrUrl: File | string, id?: IdType) => {
-    if (fileOrUrl instanceof File) {
-      this._data = fileOrUrl;
-      this.url = URL.createObjectURL(this._data);
-    } else {
-      const file = await loadUrlFile(fileOrUrl)
-      if (file) {
-        this._data = file;
-        this.url = fileOrUrl;
+  private _createSelf = async () => {
+    const { file, url, id } = this.data;
+
+    if (file) {
+      this._file = file;
+      this._url = URL.createObjectURL(this._file);
+    } else if(url) {
+      const loadedFile = await loadUrlFile(url)
+      if (loadedFile) {
+        this._file = loadedFile;
+        this._url = url;
       }
     }
 
-    this._id = id || md5(this.url);
+    this._id = id || md5(this._url);
     this.isLoading.value = false;
     this._createPoster();
   };

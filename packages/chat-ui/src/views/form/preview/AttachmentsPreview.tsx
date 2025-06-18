@@ -62,9 +62,9 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
         paddingRight={(attachments.length && isMobile) ? 0 : 1.5}
         paddingBottom={(attachments.length && isMobile) ? 1.5 : 0}
       >
-        {attachments.map((a, i) => (
+        {attachments.map((a) => (
           <PreviewItem
-            key={i}
+            key={a.id}
             item={a}
             handleDelete={handleDelete}
             galleryId={galleryId}

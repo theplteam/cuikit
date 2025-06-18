@@ -35,16 +35,18 @@ const FileItem: React.FC<Props> = ({ name, type, error }) => {
           textOverflow='ellipsis'
           fontSize='0.875rem'
           fontWeight={500}
+          sx={{ color: error ? "inherit" : undefined }}
         >
           {fileName}
         </Typography>
-        <Stack alignItems='center' gap={0.5} flexDirection="row">
+        <Stack alignItems='center' gap={1} flexDirection="row">
           <Icon color={error ? "inherit" : "primary"} fontSize="small" />
           <Typography
             noWrap
             textOverflow='ellipsis'
             width={120}
             fontSize='0.75rem'
+            sx={{ color: error ? "inherit" : undefined }}
           >
             {error || fileFormat}
           </Typography>

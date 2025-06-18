@@ -6,10 +6,11 @@ const getVideoPoster = async (url: string) => {
   video.playsInline = true;
   video.preload = 'metadata';
   await new Promise((resolve) => {
-    video.onloadedmetadata = () => {
-      video.currentTime = 0.1;
-    };
-    video.onseeked = resolve;
+    video.onloadedmetadata = resolve;
+  });
+  await new Promise((resolve) => {
+    video.onseeked = () => setTimeout(resolve, 10);
+    video.currentTime = 2;
   });
   const canvas = document.createElement('canvas');
   canvas.width = video.videoWidth;

@@ -29,7 +29,7 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
   const handleDelete = () => {
     handleClose();
     if (thread) {
-      threadListModel.deleteItem.value = thread.data.data;
+      threadListModel.deleteItem.value = thread.data;
     }
   };
 
@@ -51,7 +51,7 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
         ? threadActions.map((ActionComponent, index) => (
           <ActionComponent
             key={index}
-            thread={thread.data.data}
+            thread={thread.data}
             onClose={handleClose}
           />
         )) : (

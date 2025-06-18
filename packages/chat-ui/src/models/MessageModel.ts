@@ -6,17 +6,11 @@ import { MessageText } from './MessageText';
 import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { v4 as uuid } from 'uuid';
 import MessageAttachmentsModel from './MessageAttachmentsModel';
+import { Attachment } from './AttachmentModel';
 
 export enum ChatMessageOwner {
   USER = 'user',
   ASSISTANT = 'assistant',
-}
-
-export enum ChatMessageContentType {
-  FILE = 'file',
-  TEXT = 'text',
-  IMAGE = 'image',
-  VIDEO = 'video',
 }
 
 export type RatingType = 'like' | 'dislike';
@@ -24,16 +18,10 @@ export type RatingType = 'like' | 'dislike';
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
 
 export type TextContent = {
-  type: ChatMessageContentType.TEXT,
+  type: 'text',
   text: string,
 }
 
-export type Attachment = {
-  type: ChatMessageContentType.VIDEO | ChatMessageContentType.IMAGE | ChatMessageContentType.FILE,
-  id: IdType,
-  url?: string,
-  file?: File,
-};
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 
@@ -82,10 +70,10 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = [new MessageText(_data.content)];
     } else {
       const content = Array.isArray(_data.content) ? _data.content : [_data.content];
-      this.texts.value = (content.filter(v => v.type === ChatMessageContentType.TEXT) as TextContent[]).map(
+      this.texts.value = (content.filter(v => v.type === 'text') as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-      this.attachments.init(content.filter(c => c.type !== ChatMessageContentType.TEXT) as Attachment[]);
+      this.attachments.init(content.filter(c => c.type !== 'text') as Attachment[]);
     }
 
     if (_data.reasoning) {
@@ -148,7 +136,7 @@ export class MessageModel<DM extends Message = Message> {
 
     if (this.attachments.itemsAll.value.length) {
       const attachmentContent = this.attachments.itemsAll.value.map((a) => a.contentData);
-      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...attachmentContent ];
+      data = [ { type: 'text', text: this.text }, ...attachmentContent ];
     }
 
     return data;

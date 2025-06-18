@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { useMobile } from '../../ui/Responsive';
-import Stack from '@mui/material/Stack';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import MdMenu from '../../ui/menu/MdMenu';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { useThreadContext } from '../thread/ThreadContext';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import FolderIcon from '@mui/icons-material/Folder';
+import { PhotoCameraIcon, FolderIcon, AttachFileIcon } from '../../icons';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
-import { useSnackbar } from '../hooks/useSnackbar';
-import AttachmentModel from '../../models/AttachmentModel';
+import AttachmentModel, { Attachment } from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
+import { Stack } from '@mui/material';
 
 type Props = {
   attachments: AttachmentModel[];
@@ -22,9 +19,8 @@ type Props = {
 
 const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const coreSlots = useChatCoreSlots();
-  const { enableFileAttachments, acceptableFileFormat, maxFileSize, maxFileCount, onFileAttached } = useChatContext();
+  const { enableFileAttachments, acceptableFileFormat, maxFileSizeBytes, maxFileCount, onFileAttached, snackbar } = useChatContext();
   const { thread } = useThreadContext();
-  const snackbar = useSnackbar();
 
   const cameraRef = React.useRef<HTMLInputElement>(null);
   const fileRef = React.useRef<HTMLInputElement>(null);
@@ -41,57 +37,71 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
     fileRef.current?.click();
   };
 
+  const checkType = (file: File, allowedTypes: string[]) => {
+    const fileType = file.type;
+    const fileExt = '.' + file.name.split('.').pop()?.toLowerCase();
+
+    return allowedTypes.some((type) => {
+      if (type === '*') return true;
+
+      if (type.startsWith('.')) {
+        return fileExt === type.toLowerCase();
+      }
+
+      if (type.endsWith('/*')) {
+        const baseType = type.split('/')[0];
+        return fileType.startsWith(baseType + '/');
+      }
+
+      return fileType === type;
+    });
+  }
+
   const maxCount = maxFileCount || ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE;
-  const maxSize = maxFileSize || ChatViewConstants.MAX_ATTACHMENT_SIZE;
+  const maxSize = maxFileSizeBytes || ChatViewConstants.MAX_ATTACHMENT_SIZE;
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     let files = Array.from(event.target.files || []);
 
     const oversizeFiles = files.filter(f => f.size > maxSize);
     if (oversizeFiles.length > 0) {
-      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }));
+      snackbar.show(langReplace(locale.maxFileSizeWarning, { mb: Math.round(maxSize / 1024 / 1024) }), 'error');
       files = files.filter(f => f.size <= maxSize);
     }
 
     const allowedTypes = inputAccept.split(',').map(type => type.trim()).filter(type => type);
-    const invalidFiles = files.filter(f => {
-      if (allowedTypes.includes('*')) return false;
-      return !allowedTypes.some(allowedType => {
-        if (allowedType.endsWith('/*')) {
-          const baseType = allowedType.slice(0, -2);
-          return f.type.startsWith(baseType);
-        } else {
-          return f.type === allowedType;
-        }
-      });
-    });
+    const invalidFiles = files.filter(f => !checkType(f, allowedTypes));
 
     if (invalidFiles.length > 0) {
-      snackbar.show(locale.invalidFileTypeWarning);
+      snackbar.show(locale.invalidFileTypeWarning, 'error');
       files = files.filter(f => !invalidFiles.includes(f));
     }
 
     if ((files.length + attachments.length) > maxCount) {
       files = files.slice(0, maxCount - attachments.length);
-      snackbar.show(locale.maxAttachmentWarning);
+      snackbar.show(locale.maxAttachmentWarning, 'error');
     };
 
     const fileAttachments = files.map((f) => {
-      const isGallery = f.type.startsWith('video') || f.type.startsWith('image');
-      return new AttachmentModel(f, isGallery);
+      const type = f.type.startsWith('video') ? 'video' : f.type.startsWith('image') ? 'image' : 'file';
+      const data: Omit<Attachment, 'id'> = {
+        type,
+        file: f,
+      };
+      return new AttachmentModel(data);
     });
     setAttachments([...attachments, ...fileAttachments]);
 
     if (thread) {
       thread.isLoadingAttachments.value = [...thread.isLoadingAttachments.value, ...fileAttachments.map((f) => f.id)];
-      fileAttachments.forEach((file) => {
-        const { setProgress, setError, data, id } = file;
+      fileAttachments.forEach((f) => {
+        const { setProgress, setError, setId, file, id } = f;
         const onFinish = () => {
-          file.progress.value = 100;
+          f.progress.value = 100;
           thread.isLoadingAttachments.value = thread.isLoadingAttachments.value.filter((a) => a !== id);
         };
         if (onFileAttached) {
-          const promise = onFileAttached({ id: file.id, file: data, actions: { setProgress, setError, onFinish } });
+          const promise = onFileAttached({ id: f.id, file, actions: { setProgress, setError, onFinish, setId } });
           if (promise) promise.then(() => onFinish());
           else {
             onFinish();
@@ -120,12 +130,16 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
   return (
     <Stack
-      alignItems="flex-end"
+      alignItems="center"
+      justifyContent="center"
       width={48}
       height={40}
       position="relative"
     >
-      <coreSlots.iconButton disabled={disabled} onClick={handleClick}>
+      <coreSlots.iconButton
+        disabled={disabled}
+        onClick={handleClick}
+      >
         <AttachFileIcon />
       </coreSlots.iconButton>
       <MdMenu

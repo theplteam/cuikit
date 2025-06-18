@@ -17,7 +17,7 @@ const MessageUserEditor: React.FC<Props> = ({ onClickApply, onClickCancel, messa
   const [newText, setNewText] = React.useState(message.text);
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
-  const { enableFileAttachments } = useChatContext();
+  const { enableFileAttachments, disableFileAttachmentsEditing } = useChatContext();
   const deletedIds = useObserverValue(message.attachments.deletedIds);
 
   const onClick = () => {
@@ -26,7 +26,7 @@ const MessageUserEditor: React.FC<Props> = ({ onClickApply, onClickCancel, messa
     }
   }
 
-  const disabled = enableFileAttachments
+  const disabled = (enableFileAttachments && !disableFileAttachmentsEditing)
     ? deletedIds?.length
       ? message.attachments.itemsAll.value.length === deletedIds.length && !newText
       : message.text === newText

@@ -1,7 +1,6 @@
 import { Message } from './MessageModel';
-import { Thread } from './ThreadData';
 import { ObservableReactValue } from '../utils/observers';
-import { ThreadModel } from './ThreadModel';
+import { ThreadModel, Thread } from './ThreadModel';
 import { AdapterType } from '../views/adapter/AdapterType';
 import { MessageSentParams } from './MessageSentParams';
 import { ThreadListCache } from './ThreadListCache';

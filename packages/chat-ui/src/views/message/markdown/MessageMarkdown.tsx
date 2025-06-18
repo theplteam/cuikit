@@ -5,7 +5,7 @@ import { useChatContext } from '../../core/ChatGlobalContext';
 import MarkdownParagraphParser from './MessageMarkdownParagraphParser';
 import { useSmoothManager } from './smooth/useSmoothManager';
 import MarkdownComponentSmoother from './smooth/MarkdownComponentSmoother';
-import { BoldComponent, ItalicComponent, LiComponent, StrongComponent } from './SimpleMarkdownComponents';
+import { AccentComponent, BoldComponent, ItalicComponent, LiComponent, StrongComponent } from './SimpleMarkdownComponents';
 import MarkdownLazyComponentSmoother from './smooth/MarkdownLazyComponentSmoother';
 import { SlotPropsType } from '../../core/SlotPropsType';
 import { Message, Thread } from '../../../models';
@@ -143,15 +143,8 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
               },
             },
             em: {
-              component: MarkdownParagraphParser,
-              props: {
-                pSlot: slots.markdownP,
-                pSlotProps: {
-                  ...slotProps.markdownP,
-                  fontStyle: 'italic',
-                },
-                inProgress: inProgress
-              }
+              component: MarkdownLazyComponentSmoother,
+              props: { inProgress, component: AccentComponent },
             },
             p: paragraphSettings,
             span: paragraphSettings,

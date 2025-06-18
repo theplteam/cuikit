@@ -67,7 +67,7 @@ const MessageGallery: React.FC<Props> = ({ id, items, onDeleteItem }) => {
     >
       {items.map((item, index) => (
         <MessageGalleryItem
-          key={index}
+          key={item.id}
           item={item}
           galleryId={galleryId}
           columns={columns}
