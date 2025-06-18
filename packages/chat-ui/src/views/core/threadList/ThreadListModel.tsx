@@ -1,4 +1,4 @@
-import { Thread } from "../../../models/ThreadData";
+import { Thread } from "../../../models/ThreadModel";
 import { ObservableReactValue } from "../../../utils/observers/ObservableReactValue";
 
 class ThreadListModel {

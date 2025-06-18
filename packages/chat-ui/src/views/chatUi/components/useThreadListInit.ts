@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { ChatHistoryProps } from './ChatHistory';
 import ThreadListModel from '../../core/threadList/ThreadListModel';
-import { Thread } from 'models/ThreadData';
+import { Thread } from '../../../models/ThreadModel';
 
 const useSlots = (slots?: Partial<ThreadListSlotType>) => {
   const componentSlots = React.useMemo(() => ({

@@ -10,7 +10,7 @@ import { MdMenuItemProps } from '../../../ui/menu/MdMenuItem';
 import { BoxProps } from '@mui/material/Box';
 import { DrawerProps } from '@mui/material/Drawer';
 import { StackProps } from '@mui/material/Stack';
-import { Thread } from '../../../models/ThreadData';
+import { Thread } from '../../../models/ThreadModel';
 import ThreadListModel from './ThreadListModel';
 
 export type ThreadListSlotPropsType = {

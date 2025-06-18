@@ -19,26 +19,24 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
   const { slots, slotProps, coreSlots } = usePropsSlots(usersProps);
 
   return (
-    <>
-      <ChatGlobalProvider
-        props={props}
-        apiManager={apiManager}
-      >
-        <LocalizationProvider locale={usersProps.lang}>
-          <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
-            <ThreadComponent
-              initialThread={props.initialThread}
-              enableBranches={props.enableBranches}
-              apiManager={apiManager}
-              contentRef={usersProps.scrollerRef}
-              loading={usersProps.loading}
-            />
-            {usersProps.children}
-          </ChatSlotsProvider>
-        </LocalizationProvider>
-      </ChatGlobalProvider>
+    <ChatGlobalProvider
+      props={props}
+      apiManager={apiManager}
+    >
+      <LocalizationProvider locale={usersProps.lang}>
+        <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
+          <ThreadComponent
+            initialThread={props.initialThread}
+            enableBranches={props.enableBranches}
+            apiManager={apiManager}
+            contentRef={usersProps.scrollerRef}
+            loading={usersProps.loading}
+          />
+          {usersProps.children}
+        </ChatSlotsProvider>
+      </LocalizationProvider>
       <ChatSnackbar />
-    </>
+    </ChatGlobalProvider>
   );
 };
 
