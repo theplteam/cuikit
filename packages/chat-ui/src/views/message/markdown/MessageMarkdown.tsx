@@ -33,7 +33,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
       component: slots[componentKey],
       props: {
         ...slotProps[componentKey],
-        dir: 'auto',
+
         className: clsx(
           slotProps?.[componentKey]?.className,
           { [chatClassNames.markdownSmoothedPending]: inProgress }
@@ -48,7 +48,6 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
       pSlot: slots.markdownP,
       pSlotProps: slotProps.markdownP,
       inProgress: inProgress,
-      dir: 'auto',
     }
   }), [inProgress, slots, slotProps]);
 
@@ -59,12 +58,12 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
       options={{
         forceBlock: true,
         forceWrapper: true,
+        wrapper: slots.markdownWrapper,
         overrides: {
           a: {
             component: slots.markdownA,
             props: {
               ...slotProps.markdownA,
-              dir: 'auto',
               className: clsx(
                 slotProps.markdownA?.className,
                 { [chatClassNames.markdownSmoothedPending]: inProgress }
@@ -76,14 +75,12 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
             component: slots.markdownThead,
             props: {
               ...slotProps.markdownThead,
-              dir: 'auto',
             },
           },
           tbody: {
             component: slots.markdownTbody,
             props: {
               ...slotProps.markdownTbody,
-              dir: 'auto',
             },
           },
           th: {
@@ -92,7 +89,6 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
               ...slotProps.markdownTh,
               textComponent: slots.markdownTdText,
               textComponentProps: slotProps.markdownTdText,
-              dir: 'auto',
             },
           },
           td: {
@@ -101,28 +97,24 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
               ...slotProps.markdownTd,
               textComponent: slots.markdownTdText,
               textComponentProps: slotProps.markdownTdText,
-              dir: 'auto',
             },
           },
           tr: {
             component: slots.markdownTr,
             props: {
               ...slotProps.markdownTr,
-              dir: 'auto',
             },
           },
           ul: {
             component: slots.markdownUl,
             props: {
               ...slotProps.markdownUl,
-              dir: 'auto',
             },
           },
           ol: {
             component: slots.markdownOl,
             props: {
               ...slotProps.markdownOl,
-              dir: 'auto',
             },
           },
           li: {

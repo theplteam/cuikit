@@ -17,7 +17,6 @@ const MarkdownLazyComponentSmoother: React.FC<Props> = ({ componentProps, inProg
         componentProps?.className,
         { [chatClassNames.markdownSmoothedPending]: inProgress }
       )}
-      dir="auto"
     >
       {children}
     </otherProps.component>

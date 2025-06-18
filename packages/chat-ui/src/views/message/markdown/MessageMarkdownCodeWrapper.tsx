@@ -48,7 +48,7 @@ const MessageMarkdownCodeWrapper: React.FC<Props> = ({ children, ...other }) => 
     return (childrenProps?.[0]?.className as string ?? '')
       .split(' ')
       .filter(c => c.startsWith('lang-'))[0] || ''
-      .replace('lang-', '');
+        .replace('lang-', '');
   }, [childrenProps]);
 
   const handleCopy = () => {
