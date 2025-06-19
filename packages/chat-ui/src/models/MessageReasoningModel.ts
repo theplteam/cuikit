@@ -6,7 +6,8 @@ export enum ReasoningViewType {
   // The text is not divided into segments. it's a continuous stream of thought
   STREAM = 'stream',
   // The text is divided into segments (headings), similar to ChatGPT.
-  HEADLINES = 'headlines',
+  SHORT_BLOCKS = 'shortBlocks',
+  HEADERS_STREAM = 'headersStream',
 }
 
 export class MessageReasoningModel {
@@ -18,7 +19,7 @@ export class MessageReasoningModel {
 
   readonly timeSec = new ObservableReactValue<number>(0);
 
-  readonly viewType = new ObservableReactValue<ReasoningViewType>(ReasoningViewType.HEADLINES);
+  readonly viewType = new ObservableReactValue<ReasoningViewType>(ReasoningViewType.HEADERS_STREAM);
 
   lockedOptions: ManagmentValues[] = [];
 
@@ -39,7 +40,7 @@ export class MessageReasoningModel {
     this.timeSec.value = Math.round(value);
   }
 
-  setUserViewType = (value: 'stream' | 'headlines') => {
+  setUserViewType = (value: 'stream' | 'headlines' | 'headersStream') => {
     if (!this.lockedOptions.includes('viewType')) {
       this.lockedOptions.push('viewType');
     }
