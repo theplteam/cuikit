@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Thread, ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadListCache } from '../../models/ThreadListCache';
-import { chatClassNames } from '../core/chatClassNames';
 import { MoreVertIcon } from '../../icons';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
+import { threadListClassNames } from '../core/threadList/threadListClassNames';
+import clsx from 'clsx';
 
 type Props = {
   thread: ThreadModel;
@@ -12,8 +13,6 @@ type Props = {
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
 };
-
-const classSelected = 'boxSelected';
 
 const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
@@ -37,15 +36,10 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
     setThread(thread.data);
   }
 
-  const classes = [chatClassNames.threadListItem];
-  if (selected) {
-    classes.push(classSelected);
-  }
-
   return (
     <slots.threadsListItem
-      className={classes.join(' ')}
       {...slotProps.threadsListItem}
+      className={clsx(threadListClassNames.threadListItem, { [threadListClassNames.threadListItemSelected]: selected }, slotProps.threadsListItem?.className)}
       onClick={handleClickListItem}
     >
       <slots.baseListItemText
@@ -65,6 +59,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
           top: '50%',
           transform: 'translateY(-50%)',
         }}
+        threadId={thread.id}
         onClick={handleClick}
         {...slotProps.threadListItemMenuButton}
       >

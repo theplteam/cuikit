@@ -3,7 +3,7 @@ import ChatTheme from '../core/ChatTheme';
 import { Thread, Message } from '../../models';
 import { ThreadListProps } from '../core/threadList/ThreadListType';
 import { useChatApiRef } from '../hooks/useChatApiRef';
-import ChatHistory from './components/ChatHistory';
+import ChatHistory from '../leftContainer/ChatHistory';
 import { useElementRef } from './../hooks/useElementRef';
 import Chat from '../Chat';
 import Stack from '@mui/material/Stack';

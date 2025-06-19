@@ -71,7 +71,7 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    * The object contains data for history operation
    */
   history: {
-    toggleMenuDriver: (v: boolean) => void,
+    setMenuDriverOpen: (v: boolean) => void,
     setDeleteItem: (v: DD | undefined) => void,
   };
 };
@@ -107,7 +107,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getConversationBlockHeight: () => 0,
     _internal: { model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP) },
     history: {
-      toggleMenuDriver: NOOP,
+      setMenuDriverOpen: NOOP,
       setDeleteItem: NOOP,
     },
   });

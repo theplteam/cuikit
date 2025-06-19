@@ -12,6 +12,7 @@ import { DrawerProps } from '@mui/material/Drawer';
 import { StackProps } from '@mui/material/Stack';
 import { Thread } from '../../../models/ThreadModel';
 import ThreadListModel from './ThreadListModel';
+import { IdType } from '../../../types';
 
 export type ThreadListSlotPropsType = {
   baseMenuItem: MdMenuItemProps;
@@ -35,23 +36,23 @@ export type ThreadListSlotPropsType = {
    */
   threadsListItem: BoxProps;
   /**
-   * Driver component for the threads list (mobile version)
+   * Driver component (mobile version)
    */
   listDrawer: DrawerProps;
   /**
-   * Title for the mobile threads list (same as listSubtitle)
+   * Title for the listDrawer (same as listSubtitle)
    */
   listDrawerTitle: TypographyProps;
     /**
-   * Thread menu button in the threads list
+   * Thread menu button
    **/
-  threadListItemMenuButton: IconButtonProps;
+  threadListItemMenuButton: IconButtonProps & { threadId: IdType };
   /**
    * Subtitle component for the list container
    */
   listSubtitle: TypographyProps;
   /**
-   * Typography component for rendering time text in the threads list (today, last week, last 30 days, etc.)
+   * Typography component for rendering time text (today, last week, last 30 days, etc.)
    */
   listTimeText: TypographyProps;
   /**

@@ -1,17 +1,12 @@
 import Stack from '@mui/material/Stack';
-import { styled, alpha } from '@mui/material/styles';
-import { chatClassNames } from '../../core/chatClassNames';
+import { styled } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { motion } from '../../../utils/materialDesign/motion';
-
-const classSelected = 'boxSelected';
-const classShadowRight = 'shadowRight';
-
-const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${alpha(hex, 0)} 100%)`;
+import { threadListClassNames } from '../../core/threadList/threadListClassNames';
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
   position: 'relative',
-  [`& .${chatClassNames.threadListItem}`]: {
+  [`& .${threadListClassNames.threadListItem}`]: {
     height: 56,
     width: '100%',
     boxSizing: 'border-box',
@@ -27,16 +22,13 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
       },
     },
     '&:hover': {
-      background: theme.palette.grey[100],
+      backgroundColor: theme.palette.action.hover,
       [`& .${iconButtonClasses.root}`]: {
         opacity: 1,
       },
     },
-    [`&.${classSelected}`]: {
-      background: theme.palette.grey[400],
-      [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient('#e1e9f0'),
-      }
+    [`&.${threadListClassNames.threadListItemSelected}`]: {
+      backgroundColor: theme.palette.action.selected,
     },
   }
 }));

@@ -11,7 +11,7 @@ import MdMenuItem from '../../../ui/menu/MdMenuItem';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { ChatHistoryProps } from './ChatHistory';
+import { ChatHistoryProps } from '../../leftContainer/ChatHistory';
 import ThreadListModel from '../../core/threadList/ThreadListModel';
 import { Thread } from '../../../models/ThreadModel';
 import ThreadListMapBlockAllStyled from '../../leftContainer/listMap/ThreadListMapBlockAllStyled';
@@ -46,7 +46,7 @@ export const useThreadListInit = (props: ChatHistoryProps) => {
 
   React.useEffect(() => {
     if (apiRef.current) {
-      apiRef.current.history.toggleMenuDriver = (v: boolean) => threadListModel.menuDriverOpen.value = v;
+      apiRef.current.history.setMenuDriverOpen = (v: boolean) => threadListModel.menuDriverOpen.value = v;
       apiRef.current.history.setDeleteItem = (v: Thread | undefined) => threadListModel.deleteItem.value = v;
     }
   }, []);
