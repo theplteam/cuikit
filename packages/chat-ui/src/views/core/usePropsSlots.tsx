@@ -21,7 +21,7 @@ import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
-import HelloMessage from '../thread/HelloMessage';
+import InitialThreadMessage from '../thread/InitialThreadMessage';
 import MessageMarkdownCode from '../message/markdown/MessageMarkdownCode';
 import MessageMarkdownBlockquote from '../message/markdown/MessageMarkdownBlockquote';
 import MessageMarkdownCodeWrapper from '../message/markdown/MessageMarkdownCodeWrapper';
@@ -71,7 +71,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     const componentSlots: SlotsType<DM, DD> = {
       ...chatIconSlots,
       ...slots,
-      firstMessage: slots?.firstMessage ?? HelloMessage,
+      firstMessage: slots?.firstMessage ?? InitialThreadMessage,
       thread: slots?.thread ?? ThreadRootContainer,
       listContainer: slots?.threadsList ? HiddenContent : slots?.listContainer ?? HiddenContent,
       threadsList: slots?.threadsList ?? HiddenContent,
