@@ -6,7 +6,7 @@ import Scrollbar from '../../ui/Scrollbar';
 import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
-const ThreadsList: React.FC = () => {
+const History: React.FC = () => {
   const { ref, height } = useThrottledResizeObserver(1000);
   const { slots, slotProps, apiRef, locale } = useThreadListContext();
 
@@ -18,11 +18,11 @@ const ThreadsList: React.FC = () => {
   };
 
   return (
-    <slots.threadsList
+    <slots.historyWrapper
       gap={2}
       height="100%"
       width="100%"
-      {...slotProps.threadsList}
+      {...slotProps.historyWrapper}
     >
       <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
@@ -37,8 +37,8 @@ const ThreadsList: React.FC = () => {
           </Scrollbar>
         )}
       </Box>
-    </slots.threadsList>
+    </slots.historyWrapper>
   );
 }
 
-export default ThreadsList;
+export default History;

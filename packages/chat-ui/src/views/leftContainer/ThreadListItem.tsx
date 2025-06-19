@@ -43,8 +43,9 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
   }
 
   return (
-    <div
+    <slots.threadsListItem
       className={classes.join(' ')}
+      {...slotProps.threadsListItem}
       onClick={handleClickListItem}
     >
       <slots.baseListItemText
@@ -69,7 +70,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
       >
         <MoreVertIcon />
       </slots.threadListItemMenuButton>
-    </div>
+    </slots.threadsListItem>
   );
 };
 

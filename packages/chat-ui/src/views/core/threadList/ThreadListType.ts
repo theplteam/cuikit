@@ -19,13 +19,21 @@ export type ThreadListSlotPropsType = {
   baseButton: ButtonProps;
   baseIconButton: IconButtonProps;
   /**
-   * Parent for the threads list
+   * History outer container
    */
-  listContainer: BoxProps;
+  historyContainer: BoxProps;
+  /**
+   * History inner wrapper
+   */
+  historyWrapper: StackProps;
   /**
    * List of threads
    */
   threadsList: StackProps;
+  /**
+   * Thread list item wrapper
+   */
+  threadsListItem: BoxProps;
   /**
    * Driver component for the threads list (mobile version)
    */
@@ -46,6 +54,10 @@ export type ThreadListSlotPropsType = {
    * Typography component for rendering time text in the threads list (today, last week, last 30 days, etc.)
    */
   listTimeText: TypographyProps;
+  /**
+   * listTimeText wrapper
+   */
+  listTimeTextWrapper: BoxProps;
 };
 
 export type ThreadListSlotType = { [key in keyof ThreadListSlotPropsType]: SlotValue<ThreadListSlotPropsType[key]> };

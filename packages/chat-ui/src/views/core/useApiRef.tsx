@@ -70,9 +70,9 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
    * The object contains data for history operation
    */
-  _history: {
-    toggleMenuDriver?: (v: boolean) => void,
-    setDeleteItem?: (v: DD | undefined) => void,
+  history: {
+    toggleMenuDriver: (v: boolean) => void,
+    setDeleteItem: (v: DD | undefined) => void,
   };
 };
 
@@ -106,7 +106,10 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
     _internal: { model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP) },
-    _history: {},
+    history: {
+      toggleMenuDriver: NOOP,
+      setDeleteItem: NOOP,
+    },
   });
 
   React.useMemo(() => {

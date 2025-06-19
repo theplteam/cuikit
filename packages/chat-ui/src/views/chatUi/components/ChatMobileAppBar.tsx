@@ -13,7 +13,7 @@ type Props = {
 const ChatMobileAppBar: React.FC<Props> = ({ apiRef }) => {
   const isMobile = useMobile();
   const handleClick = () => {
-    apiRef.current?._history.toggleMenuDriver?.(true);
+    apiRef.current?.history.toggleMenuDriver(true);
   };
 
   if (!isMobile) return null;

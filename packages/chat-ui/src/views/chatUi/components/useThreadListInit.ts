@@ -14,6 +14,8 @@ import Stack from '@mui/material/Stack';
 import { ChatHistoryProps } from './ChatHistory';
 import ThreadListModel from '../../core/threadList/ThreadListModel';
 import { Thread } from '../../../models/ThreadModel';
+import ThreadListMapBlockAllStyled from '../../leftContainer/listMap/ThreadListMapBlockAllStyled';
+import TimeTextWrapper from '../../leftContainer/TimeTextWrapper';
 
 const useSlots = (slots?: Partial<ThreadListSlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -21,12 +23,15 @@ const useSlots = (slots?: Partial<ThreadListSlotType>) => {
     baseIconButton: slots?.baseIconButton ?? IconButton,
     baseListItemText: slots?.baseListItemText ?? ListItemText,
     baseMenuItem: slots?.baseMenuItem ?? MdMenuItem,
-    listContainer: slots?.listContainer ?? Box,
-    threadsList: slots?.threadsList ?? Stack,
+    historyContainer: slots?.historyContainer ?? Box,
+    historyWrapper: slots?.historyWrapper ?? Stack,
+    threadsList: slots?.threadsList ?? ThreadListMapBlockAllStyled,
+    threadsListItem: slots?.threadsListItem ?? Box,
     threadListItemMenuButton: slots?.threadListItemMenuButton ?? IconButton,
     listDrawer: slots?.listDrawer ?? Drawer,
     listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
     listTimeText: slots?.listTimeText ?? Typography,
+    listTimeTextWrapper: slots?.listTimeTextWrapper ?? TimeTextWrapper,
     listDrawerTitle: slots?.listDrawerTitle ?? Typography,
   }) as ThreadListSlotType, [slots]);
 
@@ -41,15 +46,15 @@ export const useThreadListInit = (props: ChatHistoryProps) => {
 
   React.useEffect(() => {
     if (apiRef.current) {
-      apiRef.current._history.toggleMenuDriver = (v: boolean) => threadListModel.menuDriverOpen.value = v;
-      apiRef.current._history.setDeleteItem = (v: Thread | undefined) => threadListModel.deleteItem.value = v;
+      apiRef.current.history.toggleMenuDriver = (v: boolean) => threadListModel.menuDriverOpen.value = v;
+      apiRef.current.history.setDeleteItem = (v: Thread | undefined) => threadListModel.deleteItem.value = v;
     }
   }, []);
 
   const data: ThreadListContextType = React.useMemo(() => ({
     threadListModel,
     apiRef,
-    loading,
+    loading: !!loading,
     threadActions: threadActions || [],
     slots: userSlots,
     locale: userLocale,

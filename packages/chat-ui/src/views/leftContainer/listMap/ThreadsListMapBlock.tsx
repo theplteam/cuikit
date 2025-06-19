@@ -5,12 +5,11 @@ import ThreadDeleteConfirm from '../ThreadDeleteConfirm';
 import { useThreadsList } from './useThreadsList';
 import ThreadListMapBlockGroupItem from './ThreadListMapBlockGroupItem';
 import ThreadListItemMenu from '../ThreadListItemMenu';
-import ThreadListMapBlockAllStyled from './ThreadListMapBlockAllStyled';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { useThreadListContext } from '../../core/threadList/ThreadListContext';
 
 const ThreadsListMapBlock: React.FC = () => {
-  const { apiRef, loading } = useThreadListContext();
+  const { apiRef, loading, slots, slotProps } = useThreadListContext();
   const internal = apiRef.current?._internal;
   const threads = useObserverValue(internal?.model.list) ?? [];
   const groupsMap = useThreadsList(threads, internal?.model) ?? {};
@@ -26,7 +25,7 @@ const ThreadsListMapBlock: React.FC = () => {
 
   return (
     <>
-      <ThreadListMapBlockAllStyled position="relative">
+      <slots.threadsList {...slotProps.threadsList}>
         {loading ? <HistorySkeleton /> : null}
         {!loading && groupsMap.map((groupModel, key) => (
           <ThreadListMapBlockGroupItem
@@ -38,7 +37,7 @@ const ThreadsListMapBlock: React.FC = () => {
           />
         ))}
         <ThreadListItemMenu model={internal.model} />
-      </ThreadListMapBlockAllStyled>
+      </slots.threadsList>
       <ThreadDeleteConfirm />
     </>
   );

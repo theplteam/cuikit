@@ -10,6 +10,7 @@ const classShadowRight = 'shadowRight';
 const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${alpha(hex, 0)} 100%)`;
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
+  position: 'relative',
   [`& .${chatClassNames.threadListItem}`]: {
     height: 56,
     width: '100%',
