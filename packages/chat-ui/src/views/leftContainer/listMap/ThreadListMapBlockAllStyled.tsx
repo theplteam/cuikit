@@ -2,11 +2,11 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { motion } from '../../../utils/materialDesign/motion';
-import { threadListClassNames } from '../../core/threadList/threadListClassNames';
+import { historyClassNames } from '../../core/threadList/historyClassNames';
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
   position: 'relative',
-  [`& .${threadListClassNames.threadListItem}`]: {
+  [`& .${historyClassNames.historyListItem}`]: {
     height: 56,
     width: '100%',
     boxSizing: 'border-box',
@@ -27,7 +27,7 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
         opacity: 1,
       },
     },
-    [`&.${threadListClassNames.threadListItemSelected}`]: {
+    [`&.${historyClassNames.historyListItemSelected}`]: {
       backgroundColor: theme.palette.action.selected,
     },
   }

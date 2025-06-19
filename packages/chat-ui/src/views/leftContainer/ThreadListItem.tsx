@@ -4,7 +4,7 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { MoreVertIcon } from '../../icons';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
-import { threadListClassNames } from '../core/threadList/threadListClassNames';
+import { historyClassNames } from '../core/threadList/historyClassNames';
 import clsx from 'clsx';
 
 type Props = {
@@ -39,7 +39,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
   return (
     <slots.threadsListItem
       {...slotProps.threadsListItem}
-      className={clsx(threadListClassNames.threadListItem, { [threadListClassNames.threadListItemSelected]: selected }, slotProps.threadsListItem?.className)}
+      className={clsx(historyClassNames.historyListItem, { [historyClassNames.historyListItemSelected]: selected }, slotProps.threadsListItem?.className)}
       onClick={handleClickListItem}
     >
       <slots.baseListItemText

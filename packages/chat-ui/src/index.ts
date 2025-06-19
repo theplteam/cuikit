@@ -10,7 +10,7 @@ import type { ApiRefType } from './views/core/useApiRef';
 import type { ChatUsersProps } from './views/core/useChatProps';
 import { chatClassNames } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
-import { threadListClassNames } from './views/core/threadList/threadListClassNames';
+import { historyClassNames } from './views/core/threadList/historyClassNames';
 
 export * from './models';
 export * from './views/adapter';
@@ -32,7 +32,7 @@ export {
   useChatApiRef,
   type ChatApiRef,
   chatClassNames,
-  threadListClassNames,
+  historyClassNames,
   type onShowAlertType,
   ChatUsersProps as ChatProps,
 };

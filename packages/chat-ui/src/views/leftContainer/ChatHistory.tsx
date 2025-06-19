@@ -8,7 +8,7 @@ import { useMobile, useTablet } from '../../ui/Responsive';
 import AppDrawer from './AppDrawer';
 import Box from '@mui/material/Box';
 import clsx from 'clsx';
-import { threadListClassNames } from '../core/threadList/threadListClassNames';
+import { historyClassNames } from '../core/threadList/historyClassNames';
 
 export type ChatHistoryProps = {
   apiRef: React.MutableRefObject<ApiRefType | null>;
@@ -34,7 +34,7 @@ const ChatHistory: React.FC<ChatHistoryProps> = (props) => {
           <providerData.slots.historyContainer
             width="100%"
             height="100%"
-            className={clsx(providerData.slotProps.historyContainer?.className, threadListClassNames.historyContainer)}
+            className={clsx(providerData.slotProps.historyContainer?.className, historyClassNames.historyContainer)}
             sx={{
               maxWidth: isTablet ? 220 : 360,
               backgroundColor: (theme) => theme.palette.grey[200],

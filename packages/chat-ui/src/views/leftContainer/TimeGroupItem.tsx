@@ -2,7 +2,7 @@ import * as React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import { ListGroupType } from './useThreadsGroupedList';
 import { useThreadListContext } from '../core/threadList/ThreadListContext';
-import { threadListClassNames } from '../core/threadList/threadListClassNames';
+import { historyClassNames } from '../core/threadList/historyClassNames';
 import clsx from 'clsx';
 
 type Props = {
@@ -16,7 +16,7 @@ const TimeGroupItem: React.FC<Props> = ({ group, loading }) => {
   return (
     <slots.listTimeTextWrapper
       {...slotProps.listTimeTextWrapper}
-      className={clsx(threadListClassNames.listTimeTextWrapper, slotProps.listTimeTextWrapper?.className)}
+      className={clsx(historyClassNames.historyListTimeTextWrapper, slotProps.listTimeTextWrapper?.className)}
     >
       {loading
         ? (
