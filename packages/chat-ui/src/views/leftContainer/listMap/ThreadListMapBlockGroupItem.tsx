@@ -4,8 +4,8 @@ import ThreadListItemObserver from '../ThreadListItemObserver';
 import { ThreadListGroupItem } from '../../../models/ThreadListGroupItem';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { Thread } from '../../../models';
-import DelayRenderer from '../../../ui/DelayRenderer';
 import { Threads } from '../../../models/Threads';
+import DelayRenderer from '../../../ui/DelayRenderer';
 
 type Props = {
   listGroupItem: ThreadListGroupItem;

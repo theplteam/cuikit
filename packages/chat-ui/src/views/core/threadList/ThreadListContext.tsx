@@ -4,7 +4,7 @@ import { ThreadListContextType } from './ThreadListType';
 const Context = React.createContext<ThreadListContextType | undefined>(undefined);
 
 export const ThreadListProvider = ({ children, ...props }: React.PropsWithChildren<ThreadListContextType>) => {
-  const [value] = React.useState(props);
+  const value = React.useMemo(() => props, [props.loading])
 
   return (
     <Context.Provider value={value}>

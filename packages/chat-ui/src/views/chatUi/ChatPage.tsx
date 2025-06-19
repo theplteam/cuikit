@@ -30,7 +30,7 @@ const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPag
       >
         <ChatHistory
           apiRef={userApiRef}
-          loading={!!loading}
+          loading={loading}
           lang={lang}
           {...threadListProps}
         />
