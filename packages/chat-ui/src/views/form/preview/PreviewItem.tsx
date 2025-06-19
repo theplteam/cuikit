@@ -53,8 +53,6 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const isVideo = type === 'video';
   const showInGallery = isGallery && !error;
 
-  console.log('poster', poster);
-
   return (
     <PreviewTooltip title={name}>
       <BoxStyled

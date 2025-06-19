@@ -6,7 +6,7 @@ const TimeTextWrapper = styled(Box)(({ theme }) => ({
   position: 'sticky',
   top: 0,
   left: 0,
-  background: theme.palette.grey[300],
+  backgroundColor: theme.palette.background.default,
   zIndex: 1,
   [theme.breakpoints.down('md')]: {
     background: '#fff',
