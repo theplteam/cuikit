@@ -10,5 +10,4 @@ export const chatClassNames = {
   markdownImage: 'chat-ui-markdown-image',
   markdownSmoothedPending: 'chat-ui-markdown-smooth-pending',
   markdownSmoothedAnimating: 'chat-ui-markdown-smooth-animating',
-  markdownRtlAlign: 'chat-ui-markdown-rtl-align',
 };

@@ -136,8 +136,8 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
 
     ...slotProps,
     markdownCodeWrapper: {
-      ...slotProps?.markdownCodeWrapper,
       dir: 'ltr',
+      ...slotProps?.markdownCodeWrapper,
     },
     firstMessage: {
       thread: slotProps?.firstMessage?.thread,
