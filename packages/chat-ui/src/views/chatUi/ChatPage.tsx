@@ -11,10 +11,10 @@ import Box from '@mui/material/Box';
 import { ChatUsersProps } from '../core/useChatProps';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 
-type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { chatHistoryProps?: HistoryProps };
+type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { chatHistoryProps?: HistoryProps, className?: string };
 
 const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>) => {
-  const { chatHistoryProps, apiRef, loading, lang, ...chatProps } = usersProps;
+  const { chatHistoryProps, apiRef, loading, lang, className, ...chatProps } = usersProps;
   const chatApiRef = useChatApiRef();
   const ref = useElementRef();
 
@@ -27,6 +27,7 @@ const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPag
         height="inherit"
         width="inherit"
         position="relative"
+        className={className}
       >
         <ChatHistory
           apiRef={userApiRef}
