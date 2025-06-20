@@ -105,7 +105,9 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     branch: new ObservableReactValue([]),
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
-    _internal: { model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP) },
+    _internal: {
+      model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP),
+    },
     history: {
       setMenuDriverOpen: NOOP,
       setDeleteItem: NOOP,

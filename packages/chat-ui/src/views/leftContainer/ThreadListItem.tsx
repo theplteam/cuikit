@@ -3,18 +3,21 @@ import { Thread, ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { MoreVertIcon } from '../../icons';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
-import { historyClassNames } from '../core/threadList/historyClassNames';
+import { historyClassNames } from '../core/history/historyClassNames';
 import clsx from 'clsx';
+import { HistorySlotType } from '../core/history/HistoryType';
+import HistoryModel from '../core/history/HistoryModel';
 
 type Props = {
   thread: ThreadModel;
   selected: boolean;
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
+  historyModel: HistoryModel;
+  slots: Pick<HistorySlotType, 'threadsListItem'> & Pick<HistorySlotType, 'baseListItemText'> & Pick<HistorySlotType, 'threadListItemMenuButton'>;
 };
 
-const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel }) => {
+const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel, historyModel, slots }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
@@ -24,22 +27,19 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
     event.stopPropagation();
   }, [listModel]);
 
-  const { slots, slotProps, threadListModel } = useThreadListContext();
-
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.observableTitle);
 
   if (isEmpty) return null;
 
   const handleClickListItem = () => {
-    threadListModel.menuDriverOpen.value = false;
+    historyModel.menuDriverOpen.value = false;
     setThread(thread.data);
   }
 
   return (
     <slots.threadsListItem
-      {...slotProps.threadsListItem}
-      className={clsx(historyClassNames.historyListItem, { [historyClassNames.historyListItemSelected]: selected }, slotProps.threadsListItem?.className)}
+      className={clsx(historyClassNames.historyListItem, { [historyClassNames.historyListItemSelected]: selected })}
       onClick={handleClickListItem}
     >
       <slots.baseListItemText
@@ -49,7 +49,6 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
           whiteSpace: 'nowrap',
           overflow: 'hidden',
         }}
-        {...slotProps.baseListItemText}
       />
       <slots.threadListItemMenuButton
         size="small"
@@ -61,7 +60,6 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
         }}
         threadId={thread.id}
         onClick={handleClick}
-        {...slotProps.threadListItemMenuButton}
       >
         <MoreVertIcon />
       </slots.threadListItemMenuButton>

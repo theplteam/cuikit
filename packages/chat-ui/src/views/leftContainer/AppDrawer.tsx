@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { useObserverValue } from '../hooks/useObserverValue';
 import MdBottomDriver from '../../ui/MdBottomDriver';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 type Props = React.PropsWithChildren;
 
 const AppDrawer: React.FC<Props> = ({ children }) => {
-  const { locale, threadListModel } = useThreadListContext();
-  const open = useObserverValue(threadListModel.menuDriverOpen) ?? false;
+  const { locale, historyModel } = useHistoryContext();
+  const open = useObserverValue(historyModel.menuDriverOpen) ?? false;
 
   const onClose = () => {
-    if (threadListModel) {
-      threadListModel.menuDriverOpen.value = false
+    if (historyModel) {
+      historyModel.menuDriverOpen.value = false
     }
   };
 

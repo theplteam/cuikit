@@ -6,10 +6,10 @@ import { useThreadsList } from './useThreadsList';
 import ThreadListMapBlockGroupItem from './ThreadListMapBlockGroupItem';
 import ThreadListItemMenu from '../ThreadListItemMenu';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { useThreadListContext } from '../../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../../core/history/HistoryContext';
 
 const ThreadsListMapBlock: React.FC = () => {
-  const { apiRef, loading, slots, slotProps } = useThreadListContext();
+  const { apiRef, loading, slots, slotProps, historyModel } = useHistoryContext();
   const internal = apiRef.current?._internal;
   const threads = useObserverValue(internal?.model.list) ?? [];
   const groupsMap = useThreadsList(threads, internal?.model) ?? {};
@@ -21,22 +21,26 @@ const ThreadsListMapBlock: React.FC = () => {
     }
   };
 
-  if (!internal?.model) return null;
-
   return (
     <>
       <slots.threadsList {...slotProps.threadsList}>
         {loading ? <HistorySkeleton /> : null}
-        {!loading && groupsMap.map((groupModel, key) => (
-          <ThreadListMapBlockGroupItem
-            key={groupModel.data.id}
-            listGroupItem={groupModel}
-            setThread={setThread}
-            index={key}
-            model={internal.model}
-          />
-        ))}
-        <ThreadListItemMenu model={internal.model} />
+        {(!loading && internal?.model) ? (
+          <>
+            {groupsMap.map((groupModel, key) => (
+              <ThreadListMapBlockGroupItem
+                key={groupModel.data.id}
+                listGroupItem={groupModel}
+                setThread={setThread}
+                index={key}
+                model={internal.model}
+                slots={slots}
+                historyModel={historyModel}
+              />
+            ))}
+            <ThreadListItemMenu model={internal.model} />
+          </>
+        ) : null}
       </slots.threadsList>
       <ThreadDeleteConfirm />
     </>

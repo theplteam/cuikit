@@ -5,15 +5,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { useObserverValue } from '../hooks/useObserverValue';
 import Typography from '@mui/material/Typography';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { apiRef, slots, slotProps, locale, threadListModel } = useThreadListContext();
+  const { apiRef, slots, slotProps, locale, historyModel } = useHistoryContext();
   const internal = apiRef.current?._internal;
-  const deleteItem = useObserverValue(threadListModel.deleteItem);
+  const deleteItem = useObserverValue(historyModel.deleteItem);
 
   const handleClose = () => {
-    threadListModel.deleteItem.value = undefined;
+    historyModel.deleteItem.value = undefined;
   }
 
   const handleDelete = () => {

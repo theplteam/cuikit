@@ -3,14 +3,14 @@ import { DeleteIcon } from '../../icons';
 import MdMenu from '../../ui/menu/MdMenu';
 import { Threads } from '../../models/Threads';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 type Props = {
   model: Threads<any, any>;
 };
 
 const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
-  const { slots, slotProps, locale, threadActions, threadListModel } = useThreadListContext();
+  const { slots, slotProps, locale, threadActions, historyModel } = useHistoryContext();
   const menuConfig = model.listGroups.menuConfig;
   const config = useObserverValue(menuConfig);
 
@@ -29,7 +29,7 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
   const handleDelete = () => {
     handleClose();
     if (thread) {
-      threadListModel.deleteItem.value = thread.data;
+      historyModel.deleteItem.value = thread.data;
     }
   };
 

@@ -2,14 +2,14 @@ import * as React from 'react';
 import { AddIcon } from '../../icons';
 import Box from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 type Props = {
   openNewThread: () => void;
 };
 
 const useDisabled = () => {
-  const { apiRef } = useThreadListContext();
+  const { apiRef } = useHistoryContext();
   const model = apiRef.current?._internal.model;
   const thread = useObserverValue(model?.currentThread);
 
@@ -19,7 +19,7 @@ const useDisabled = () => {
 
 export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
-  const { slots, slotProps } = useThreadListContext();
+  const { slots, slotProps } = useHistoryContext();
 
   return (
     <slots.baseIconButton
@@ -35,7 +35,7 @@ export const NewChatIconButton: React.FC<Props> = ({ openNewThread }) => {
 
 const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
   const disabled = useDisabled();
-  const { slots, slotProps, locale } = useThreadListContext();
+  const { slots, slotProps, locale } = useHistoryContext();
 
   return (
     <Box

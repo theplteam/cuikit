@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import { ListGroupType } from './useThreadsGroupedList';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
-import { historyClassNames } from '../core/threadList/historyClassNames';
+import { useHistoryContext } from '../core/history/HistoryContext';
+import { historyClassNames } from '../core/history/historyClassNames';
 import clsx from 'clsx';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const TimeGroupItem: React.FC<Props> = ({ group, loading }) => {
-  const { slots, slotProps } = useThreadListContext();
+  const { slots, slotProps } = useHistoryContext();
 
   return (
     <slots.listTimeTextWrapper

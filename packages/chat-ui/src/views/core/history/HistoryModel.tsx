@@ -1,10 +1,10 @@
 import { Thread } from "../../../models/ThreadModel";
 import { ObservableReactValue } from "../../../utils/observers/ObservableReactValue";
 
-class ThreadListModel {
+class HistoryModel {
   readonly menuDriverOpen = new ObservableReactValue(false);
 
   readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
 }
 
-export default ThreadListModel;
+export default HistoryModel;

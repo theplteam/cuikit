@@ -6,15 +6,19 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { Thread } from '../../../models';
 import { Threads } from '../../../models/Threads';
 import DelayRenderer from '../../../ui/DelayRenderer';
+import HistoryModel from '../../core/history/HistoryModel';
+import { HistorySlotType } from '../../core/history/HistoryType';
 
 type Props = {
   listGroupItem: ThreadListGroupItem;
   setThread: (thread: Thread) => void;
   index: number;
   model: Threads<any, any>;
+  historyModel: HistoryModel;
+  slots: Pick<HistorySlotType, 'threadsListItem'> & Pick<HistorySlotType, 'baseListItemText'> & Pick<HistorySlotType, 'threadListItemMenuButton'>;
 };
 
-const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread, index, model }) => {
+const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread, index, model, historyModel, slots }) => {
   const threads = useObserverValue(listGroupItem.threads) ?? [];
 
   const list = React.useMemo(() => threads.map((thread) => (
@@ -23,6 +27,8 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread
       setThread={setThread}
       thread={thread}
       model={model}
+      historyModel={historyModel}
+      slots={slots}
     />
   )), [threads.length]);
 

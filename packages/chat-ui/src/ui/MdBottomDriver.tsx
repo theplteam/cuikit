@@ -3,7 +3,7 @@ import { CloseIcon } from '../icons';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Scrollbar from './Scrollbar';
-import { useThreadListContext } from '../views/core/threadList/ThreadListContext';
+import { useHistoryContext } from '../views/core/history/HistoryContext';
 import { drawerClasses } from '@mui/material/Drawer';
 
 type Props = React.PropsWithChildren<{
@@ -16,7 +16,7 @@ type Props = React.PropsWithChildren<{
 
 const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar, keepMounted }) => {
   const container = React.useRef<HTMLDivElement | null>(null);
-  const { slots, slotProps } = useThreadListContext();
+  const { slots, slotProps } = useHistoryContext();
 
   const height = 500;
   return (

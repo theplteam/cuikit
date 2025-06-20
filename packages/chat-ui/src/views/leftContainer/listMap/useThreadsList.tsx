@@ -3,10 +3,10 @@ import { ThreadModel } from '../../../models';
 import { Threads } from '../../../models/Threads';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { arrayPluck } from '../../../utils/arrayUtils/arrayPluck';
-import { useThreadListContext } from '../../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../../core/history/HistoryContext';
 
 export const useThreadsList = (threads: ThreadModel[], model?: Threads<any, any>) => {
-  const { locale } = useThreadListContext();
+  const { locale } = useHistoryContext();
 
   const list = useObserverValue(model?.listGroups.groupValues) ?? {};
 

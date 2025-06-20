@@ -2,7 +2,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { motion } from '../../../utils/materialDesign/motion';
-import { historyClassNames } from '../../core/threadList/historyClassNames';
+import { historyClassNames } from '../../core/history/historyClassNames';
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
   position: 'relative',

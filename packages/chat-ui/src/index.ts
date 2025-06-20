@@ -10,7 +10,7 @@ import type { ApiRefType } from './views/core/useApiRef';
 import type { ChatUsersProps } from './views/core/useChatProps';
 import { chatClassNames } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
-import { historyClassNames } from './views/core/threadList/historyClassNames';
+import { historyClassNames } from './views/core/history/historyClassNames';
 
 export * from './models';
 export * from './views/adapter';

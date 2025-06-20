@@ -11,10 +11,10 @@ import { BoxProps } from '@mui/material/Box';
 import { DrawerProps } from '@mui/material/Drawer';
 import { StackProps } from '@mui/material/Stack';
 import { Thread } from '../../../models/ThreadModel';
-import ThreadListModel from './ThreadListModel';
 import { IdType } from '../../../types';
+import HistoryModel from './HistoryModel';
 
-export type ThreadListSlotPropsType = {
+export type HistorySlotPropsType = {
   baseMenuItem: MdMenuItemProps;
   baseListItemText: ListItemTextProps;
   baseButton: ButtonProps;
@@ -61,20 +61,21 @@ export type ThreadListSlotPropsType = {
   listTimeTextWrapper: BoxProps;
 };
 
-export type ThreadListSlotType = { [key in keyof ThreadListSlotPropsType]: SlotValue<ThreadListSlotPropsType[key]> };
+export type HistorySlotType = { [key in keyof HistorySlotPropsType]: SlotValue<HistorySlotPropsType[key]> };
 
-export type ThreadListContextType = {
-  threadListModel: ThreadListModel;
+export type HistoryContextType = {
+  historyModel: HistoryModel;
   apiRef: React.MutableRefObject<ApiRefType | null>;
   loading: boolean;
   locale: Localization;
-  slots: ThreadListSlotType;
-  slotProps: Partial<ThreadListSlotPropsType>;
+  slots: HistorySlotType;
+  slotProps: Partial<HistorySlotPropsType>;
   threadActions: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
 };
 
-export type ThreadListProps = { 
-  slots?: Partial<ThreadListSlotType> 
-  slotProps?: Partial<ThreadListSlotPropsType>;
+export type HistoryProps = {
+  className?: string;
+  slots?: Partial<HistorySlotType> ;
+  slotProps?: Partial<HistorySlotPropsType>;
   threadActions?: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
 };

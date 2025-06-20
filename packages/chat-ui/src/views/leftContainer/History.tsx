@@ -1,14 +1,12 @@
 import * as React from 'react';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
-import useThrottledResizeObserver from '../hooks/useThrottledResizeObserver';
 import Scrollbar from '../../ui/Scrollbar';
 import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
-import { useThreadListContext } from '../core/threadList/ThreadListContext';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 const History: React.FC = () => {
-  const { ref, height } = useThrottledResizeObserver(1000);
-  const { slots, slotProps, apiRef, locale } = useThreadListContext();
+  const { slots, slotProps, apiRef, locale } = useHistoryContext();
 
   const openNewThread = () => {
     const thread = apiRef.current?._internal?.handleCreateNewThread?.();
@@ -30,12 +28,10 @@ const History: React.FC = () => {
           {locale.historyTitle}
         </slots.listSubtitle>
       </Box>
-      <Box ref={ref} flex={1}>
-        {!!height && (
-          <Scrollbar style={{ minHeight: height - 1, maxHeight: height - 1 }}>
-            <ThreadsListMapBlock />
-          </Scrollbar>
-        )}
+      <Box overflow="hidden">
+        <Scrollbar style={{ maxHeight: '100%' }}>
+          <ThreadsListMapBlock />
+        </Scrollbar>
       </Box>
     </slots.historyWrapper>
   );
