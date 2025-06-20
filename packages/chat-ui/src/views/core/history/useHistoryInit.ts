@@ -16,6 +16,7 @@ import { Thread } from '../../../models/ThreadModel';
 import ThreadListMapBlockAllStyled from '../../leftContainer/listMap/ThreadListMapBlockAllStyled';
 import TimeTextWrapper from '../../leftContainer/TimeTextWrapper';
 import HistoryModel from './HistoryModel';
+import { useObserverValue } from '../../hooks/useObserverValue';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -42,10 +43,13 @@ export const useHistoryInit = (props: ChatHistoryProps) => {
   const { apiRef, loading, threadActions, } = props;
   const userLocale = props?.lang === 'ru' ? ruRU : CHAT_LOCALE;
   const userSlots = useSlots(props?.slots);
-  const historyModel = new HistoryModel();
+  const historyModel = React.useMemo(() => new HistoryModel(), []);
+  const internalInitialized = useObserverValue(historyModel.internalInitialized);
+  const historyLoading = loading || !internalInitialized;
 
   React.useEffect(() => {
     if (apiRef.current) {
+      apiRef.current.history._setInternalInitialized = (v: boolean) => historyModel.internalInitialized.value = v;
       apiRef.current.history.setMenuDriverOpen = (v: boolean) => historyModel.menuDriverOpen.value = v;
       apiRef.current.history.setDeleteItem = (v: Thread | undefined) => historyModel.deleteItem.value = v;
     }
@@ -54,12 +58,12 @@ export const useHistoryInit = (props: ChatHistoryProps) => {
   const data: HistoryContextType = React.useMemo(() => ({
     historyModel,
     apiRef,
-    loading: !!loading,
+    loading: !!historyLoading,
     threadActions: threadActions || [],
     slots: userSlots,
     locale: userLocale,
     slotProps: props?.slotProps || {},
-  }), [apiRef, loading, props]);
+  }), [apiRef, historyLoading, props]);
   
   return data;
 };

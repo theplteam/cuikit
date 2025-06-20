@@ -11,6 +11,7 @@ export const useApiRefInitialization = (
   props: ChatPropsTypes<any, any>,
 ) => {
   React.useEffect(() => {
+    if (props.loading) return;
     const getAllThreads = () => model.list.value.map(v => v.data);
 
     const onChangeThread = async (threadId: IdType) => {
@@ -60,7 +61,6 @@ export const useApiRefInitialization = (
       onThreadDeleted: props.onThreadDeleted,
     };
 
-    apiManager.setMethod('_internal', internal)
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
@@ -68,5 +68,7 @@ export const useApiRefInitialization = (
     apiManager.setMethod('getCurrentThread', getCurrentThread);
     apiManager.setMethod('getThreadById', getThreadById);
 
+    apiManager.setMethod('_internal', internal)
+    apiManager.apiRef.current?.history._setInternalInitialized(true);
   }, [props, model]);
 }
