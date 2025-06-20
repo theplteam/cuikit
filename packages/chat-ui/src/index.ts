@@ -1,6 +1,6 @@
 import Chat from './views/Chat';
 import ChatPage from './views/chatUi/ChatPage';
-import ChatUi from './views/chatUi/ChatUi';
+import ChatHistory from './views/leftContainer/ChatHistory';
 import ChatLicenseInfo from './views/utils/ChatLicenseInfo';
 import { NewChatButton, NewChatIconButton, useChatContext } from './views';
 import { useThreadContext } from './views/thread/ThreadContext';
@@ -10,6 +10,7 @@ import type { ApiRefType } from './views/core/useApiRef';
 import type { ChatUsersProps } from './views/core/useChatProps';
 import { chatClassNames } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
+import { historyClassNames } from './views/core/threadList/historyClassNames';
 
 export * from './models';
 export * from './views/adapter';
@@ -21,7 +22,7 @@ type ChatApiRef = ApiRefType | null;
 export {
   Chat,
   ChatPage,
-  ChatUi,
+  ChatHistory,
   NewChatButton,
   NewChatIconButton,
   useChatContext,
@@ -31,6 +32,7 @@ export {
   useChatApiRef,
   type ChatApiRef,
   chatClassNames,
+  historyClassNames,
   type onShowAlertType,
   ChatUsersProps as ChatProps,
 };

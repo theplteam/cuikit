@@ -5,6 +5,7 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
+import { Threads } from '../../models/Threads';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -58,13 +59,21 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
   /**
-   * Set menu driver open state
+   * The object contains data for internal chat operation
    */
-  setMenuDriverOpen: (value: boolean) => void;
+  _internal: {
+    model: Threads<DM, DD>,
+    handleCreateNewThread?: () => DD,
+    onChangeCurrentThread?: (v: DD) => void,
+    onThreadDeleted?: (v: DD) => void,
+  };
   /**
-   * Set thread to delete, if provided delete dialog will be shown
+   * The object contains data for history operation
    */
-  setDeleteThreadItem: (thread?: DD) => void;
+  history: {
+    setMenuDriverOpen: (v: boolean) => void,
+    setDeleteItem: (v: DD | undefined) => void,
+  };
 };
 
 export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
@@ -94,10 +103,13 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getAllThreads: () => [],
     allMessages: new ObservableReactValue([]),
     branch: new ObservableReactValue([]),
-    setMenuDriverOpen: NOOP,
-    setDeleteThreadItem: NOOP,
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
+    _internal: { model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP) },
+    history: {
+      setMenuDriverOpen: NOOP,
+      setDeleteItem: NOOP,
+    },
   });
 
   React.useMemo(() => {

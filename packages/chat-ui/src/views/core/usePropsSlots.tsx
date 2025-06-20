@@ -1,5 +1,4 @@
 import * as React from 'react';
-import HiddenContent from '../HiddenContent';
 import { MockComponent } from '../utils/MockComponent';
 import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
@@ -16,7 +15,6 @@ import { SlotPropsType } from './SlotPropsType';
 import MessageMarkdownImage from '../message/markdown/MessageMarkdownImage';
 import MessagePagination from '../message/MessagePagination';
 import Stack from '@mui/material/Stack';
-import ContainerSubtitle from '../../ui/ContainerSubtitle';
 import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import { Thread, Message } from '../../models';
@@ -28,7 +26,6 @@ import MessageMarkdownCodeWrapper from '../message/markdown/MessageMarkdownCodeW
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
-import ThreadListItemMenuButton from '../leftContainer/ThreadListItemMenuButton';
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
 import { Divider } from '@mui/material';
@@ -73,13 +70,6 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       ...slots,
       firstMessage: slots?.firstMessage ?? HelloMessage,
       thread: slots?.thread ?? ThreadRootContainer,
-      listContainer: slots?.threadsList ? HiddenContent : slots?.listContainer ?? HiddenContent,
-      threadsList: slots?.threadsList ?? HiddenContent,
-      threadListItemMenuButton: slots?.threadListItemMenuButton ?? ThreadListItemMenuButton,
-      listDrawer: slots?.threadsList ? HiddenContent : slots?.listDrawer ?? React.Fragment,
-      listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,
-      listTimeText: slots?.listTimeText ?? Typography,
-      listDrawerTitle: slots?.listDrawerTitle ?? Typography,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,

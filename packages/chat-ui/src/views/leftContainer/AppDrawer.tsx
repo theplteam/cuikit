@@ -1,23 +1,26 @@
 import * as React from 'react';
-import { useChatModel } from '../core/ChatGlobalContext';
 import { useObserverValue } from '../hooks/useObserverValue';
 import MdBottomDriver from '../../ui/MdBottomDriver';
-import { useLocalizationContext } from '../core/LocalizationContext';
+import { useThreadListContext } from '../core/threadList/ThreadListContext';
 
 type Props = React.PropsWithChildren;
 
 const AppDrawer: React.FC<Props> = ({ children }) => {
-  const chat = useChatModel();
-  const open = useObserverValue(chat.actions.menuDriverOpen) ?? false;
+  const { locale, threadListModel } = useThreadListContext();
+  const open = useObserverValue(threadListModel.menuDriverOpen) ?? false;
 
-  const locale = useLocalizationContext();
+  const onClose = () => {
+    if (threadListModel) {
+      threadListModel.menuDriverOpen.value = false
+    }
+  };
 
   return (
     <MdBottomDriver
       keepMounted
-      open={open}
+      open={!!open}
       title={locale.historyTitle}
-      onClose={() => chat.actions.menuDriverOpen.value = false}
+      onClose={onClose}
     >
       {children}
     </MdBottomDriver>
