@@ -1,6 +1,6 @@
 import Chat from './views/Chat';
 import ChatPage from './views/chatUi/ChatPage';
-import ChatHistory from './views/leftContainer/ChatHistory';
+import History from './views/leftContainer/History';
 import ChatLicenseInfo from './views/utils/ChatLicenseInfo';
 import { NewChatButton, NewChatIconButton, useChatContext } from './views';
 import { useThreadContext } from './views/thread/ThreadContext';
@@ -22,7 +22,7 @@ type ChatApiRef = ApiRefType | null;
 export {
   Chat,
   ChatPage,
-  ChatHistory,
+  History,
   NewChatButton,
   NewChatIconButton,
   useChatContext,

@@ -6,7 +6,7 @@ import { historyClassNames } from '../../core/history/historyClassNames';
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
   position: 'relative',
-  [`& .${historyClassNames.historyListItem}`]: {
+  [`& .${historyClassNames.listItem}`]: {
     height: 56,
     width: '100%',
     boxSizing: 'border-box',
@@ -27,7 +27,7 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
         opacity: 1,
       },
     },
-    [`&.${historyClassNames.historyListItemSelected}`]: {
+    [`&.${historyClassNames.listItemSelected}`]: {
       backgroundColor: theme.palette.action.selected,
     },
   }

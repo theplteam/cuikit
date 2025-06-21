@@ -3,7 +3,7 @@ import ChatTheme from '../core/ChatTheme';
 import { Thread, Message } from '../../models';
 import { HistoryProps } from '../core/history/HistoryType';
 import { useChatApiRef } from '../hooks/useChatApiRef';
-import ChatHistory from '../leftContainer/ChatHistory';
+import History from '../leftContainer/History';
 import { useElementRef } from './../hooks/useElementRef';
 import Chat from '../Chat';
 import Stack from '@mui/material/Stack';
@@ -11,10 +11,10 @@ import Box from '@mui/material/Box';
 import { ChatUsersProps } from '../core/useChatProps';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 
-type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { chatHistoryProps?: HistoryProps, className?: string };
+type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string };
 
 const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>) => {
-  const { chatHistoryProps, apiRef, loading, lang, className, ...chatProps } = usersProps;
+  const { historyProps, apiRef, loading, lang, className, ...chatProps } = usersProps;
   const chatApiRef = useChatApiRef();
   const ref = useElementRef();
 
@@ -29,11 +29,11 @@ const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPag
         position="relative"
         className={className}
       >
-        <ChatHistory
+        <History
           apiRef={userApiRef}
           loading={loading}
           lang={lang}
-          {...chatHistoryProps}
+          {...historyProps}
         />
         <ChatMobileAppBar apiRef={userApiRef} />
         <Box

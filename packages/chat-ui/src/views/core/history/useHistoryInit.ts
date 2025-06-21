@@ -11,7 +11,7 @@ import MdMenuItem from '../../../ui/menu/MdMenuItem';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { ChatHistoryProps } from '../../leftContainer/ChatHistory';
+import { HistoryComponentProps } from '../../leftContainer/History';
 import { Thread } from '../../../models/ThreadModel';
 import ThreadListMapBlockAllStyled from '../../leftContainer/listMap/ThreadListMapBlockAllStyled';
 import TimeTextWrapper from '../../leftContainer/TimeTextWrapper';
@@ -39,7 +39,7 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
   return componentSlots;
 };
 
-export const useHistoryInit = (props: ChatHistoryProps) => {
+export const useHistoryInit = (props: HistoryComponentProps) => {
   const { apiRef, loading, threadActions, } = props;
   const userLocale = props?.lang === 'ru' ? ruRU : CHAT_LOCALE;
   const userSlots = useSlots(props?.slots);

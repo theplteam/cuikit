@@ -16,7 +16,7 @@ const TimeGroupItem: React.FC<Props> = ({ group, loading }) => {
   return (
     <slots.listTimeTextWrapper
       {...slotProps.listTimeTextWrapper}
-      className={clsx(historyClassNames.historyListTimeTextWrapper, slotProps.listTimeTextWrapper?.className)}
+      className={clsx(historyClassNames.listTimeTextWrapper, slotProps.listTimeTextWrapper?.className)}
     >
       {loading
         ? (

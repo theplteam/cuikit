@@ -39,7 +39,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
 
   return (
     <slots.threadsListItem
-      className={clsx(historyClassNames.historyListItem, { [historyClassNames.historyListItemSelected]: selected })}
+      className={clsx(historyClassNames.listItem, { [historyClassNames.listItemSelected]: selected })}
       onClick={handleClickListItem}
     >
       <slots.baseListItemText

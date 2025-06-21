@@ -1,6 +1,6 @@
 export const historyClassNames = {
-  historyContainer: 'chat-ui-history-container',
-  historyListItem: 'chat-ui-history-list-item',
-  historyListItemSelected: 'chat-ui-history-list-item-selected',
-  historyListTimeTextWrapper: 'chat-ui-history-list-item-time-text-wrapper',
+  container: 'chat-ui-history-container',
+  listItem: 'chat-ui-history-list-item',
+  listItemSelected: 'chat-ui-history-list-item-selected',
+  listTimeTextWrapper: 'chat-ui-history-list-item-time-text-wrapper',
 };
