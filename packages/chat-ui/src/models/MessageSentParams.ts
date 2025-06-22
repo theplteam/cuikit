@@ -44,7 +44,7 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
      * Set current reasoning header.
      * This will lock automatic headers. To unlock, call the unlock method.
      */
-    setViewType: (viewType: 'stream' | 'headlines') => void,
+    setViewType: (viewType: 'stream' | 'headlines' | 'headersStream') => void,
     /**
      * Unlock auto managment for locked options (after calling the setHeader, setTimeSec, etc.)
      */

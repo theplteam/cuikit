@@ -92,7 +92,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
         alignItems="center"
       >
         <LineBoxStyled sx={{ opacity: reasoning ? 1 : 0 }} />
-        {reasoningType === ReasoningViewType.STREAM && (
+        {(reasoningType === ReasoningViewType.STREAM || reasoningType === ReasoningViewType.HEADERS_STREAM) && (
           <Collapse in={isExpanding} timeout={transitionDuration} sx={{ flex: 1 }}>
             <Box
               ml={2}
@@ -104,7 +104,7 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
             </Box>
           </Collapse>
         )}
-        {reasoningType === ReasoningViewType.HEADLINES && (
+        {reasoningType === ReasoningViewType.SHORT_BLOCKS && (
           <>
             <Collapse in={isExpanding} timeout={transitionDuration} collapsedSize={fullCollapseSize}>
               <Fade in={isExpanding} timeout={transitionDuration}>
