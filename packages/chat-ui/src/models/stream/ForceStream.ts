@@ -58,6 +58,7 @@ export class ForceStream {
         randomInt(100, 300),
       )
     } else {
+      if (this.model) this.model.typing.value = false;
       this._promise?.resolve(true);
     }
   }
