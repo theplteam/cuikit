@@ -20,7 +20,6 @@ const ChatMobileAppBar: React.FC<Props> = ({ apiRef }) => {
 
   return (
     <Stack
-      width="100%"
       height={64}
       paddingX={1}
       justifyContent="center"

@@ -12,7 +12,9 @@ import { DrawerProps } from '@mui/material/Drawer';
 import { StackProps } from '@mui/material/Stack';
 import { Thread } from '../../../models/ThreadModel';
 import { IdType } from '../../../types';
-import HistoryModel from './HistoryModel';
+import { HistoryModel } from './HistoryModel';
+import { Threads } from '../../../models/Threads';
+import { Message } from '../../../models/MessageModel';
 
 export type HistorySlotPropsType = {
   baseMenuItem: MdMenuItemProps;
@@ -64,6 +66,7 @@ export type HistorySlotPropsType = {
 export type HistorySlotType = { [key in keyof HistorySlotPropsType]: SlotValue<HistorySlotPropsType[key]> };
 
 export type HistoryContextType = {
+  threadsModel: Threads<Message, Thread> | undefined;
   historyModel: HistoryModel;
   apiRef: React.MutableRefObject<ApiRefType | null>;
   loading: boolean;

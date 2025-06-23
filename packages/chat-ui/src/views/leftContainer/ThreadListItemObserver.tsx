@@ -3,7 +3,7 @@ import { Thread, ThreadModel } from '../../models';
 import ThreadListItem from './ThreadListItem';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { Threads } from '../../models/Threads';
-import HistoryModel from '../core/history/HistoryModel';
+import { HistoryModel } from '../core/history/HistoryModel';
 import { HistorySlotType } from '../core/history/HistoryType';
 
 type Props = {

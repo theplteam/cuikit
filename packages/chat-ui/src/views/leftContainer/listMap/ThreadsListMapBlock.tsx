@@ -9,13 +9,13 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { useHistoryContext } from '../../core/history/HistoryContext';
 
 const ThreadsListMapBlock: React.FC = () => {
-  const { apiRef, loading, slots, slotProps, historyModel } = useHistoryContext();
+  const { apiRef, loading, slots, slotProps, historyModel, threadsModel } = useHistoryContext();
   const internal = apiRef.current?._internal;
-  const threads = useObserverValue(internal?.model.list) ?? [];
-  const groupsMap = useThreadsList(threads, internal?.model) ?? {};
+  const threads = useObserverValue(threadsModel?.list) ?? [];
+  const groupsMap = useThreadsList(threads, threadsModel) ?? {};
 
   const setThread = (thread: Thread) => {
-    if (internal?.model.currentThread.value?.id !== thread.id) {
+    if (threadsModel?.currentThread.value?.id !== thread.id) {
       internal?.onChangeCurrentThread?.({ thread });
       apiRef.current?.onChangeThread(thread.id);
     }
@@ -24,8 +24,9 @@ const ThreadsListMapBlock: React.FC = () => {
   return (
     <>
       <slots.threadsList {...slotProps.threadsList}>
-        {loading ? <HistorySkeleton /> : null}
-        {(!loading && internal?.model) ? (
+        {(loading || !threadsModel) ? (
+          <HistorySkeleton />
+        ) : (
           <>
             {groupsMap.map((groupModel, key) => (
               <ThreadListMapBlockGroupItem
@@ -33,14 +34,14 @@ const ThreadsListMapBlock: React.FC = () => {
                 listGroupItem={groupModel}
                 setThread={setThread}
                 index={key}
-                model={internal.model}
+                model={threadsModel}
                 slots={slots}
                 historyModel={historyModel}
               />
             ))}
-            <ThreadListItemMenu model={internal.model} />
+            <ThreadListItemMenu model={threadsModel} />
           </>
-        ) : null}
+        )}
       </slots.threadsList>
       <ThreadDeleteConfirm />
     </>

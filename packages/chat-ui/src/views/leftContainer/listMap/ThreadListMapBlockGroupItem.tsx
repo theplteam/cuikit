@@ -6,7 +6,7 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { Thread } from '../../../models';
 import { Threads } from '../../../models/Threads';
 import DelayRenderer from '../../../ui/DelayRenderer';
-import HistoryModel from '../../core/history/HistoryModel';
+import { HistoryModel } from '../../core/history/HistoryModel';
 import { HistorySlotType } from '../../core/history/HistoryType';
 
 type Props = {

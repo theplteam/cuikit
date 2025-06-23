@@ -5,7 +5,7 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
-import { Threads } from '../../models/Threads';
+import historyModel from './history/HistoryModel';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -62,7 +62,6 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    * The object contains data for internal chat operation
    */
   _internal: {
-    model: Threads<DM, DD>,
     handleCreateNewThread?: () => DD,
     onChangeCurrentThread?: (v: DD) => void,
     onThreadDeleted?: (v: DD) => void,
@@ -71,7 +70,6 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    * The object contains data for history operation
    */
   history: {
-    _setInternalInitialized: (v: boolean) => void,
     setMenuDriverOpen: (v: boolean) => void,
     setDeleteItem: (v: DD | undefined) => void,
   };
@@ -106,13 +104,10 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     branch: new ObservableReactValue([]),
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
-    _internal: {
-      model: new Threads({ transformThread: (v: Thread) => v }, [], NOOP),
-    },
+    _internal: {},
     history: {
-      _setInternalInitialized: NOOP,
-      setMenuDriverOpen: NOOP,
-      setDeleteItem: NOOP,
+      setMenuDriverOpen: historyModel.setMenuDriverOpen,
+      setDeleteItem: historyModel.setDeleteItem,
     },
   });
 

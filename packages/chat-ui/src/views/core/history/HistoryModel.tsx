@@ -1,12 +1,24 @@
+import { Threads } from "../../../models/Threads";
 import { Thread } from "../../../models/ThreadModel";
 import { ObservableReactValue } from "../../../utils/observers/ObservableReactValue";
+import { Message } from "../../../models/MessageModel";
 
-class HistoryModel {
-  readonly internalInitialized = new ObservableReactValue(false);
+export class HistoryModel {
+  readonly threadsModel = new ObservableReactValue<Threads<Message, Thread> | undefined>(undefined);
 
   readonly menuDriverOpen = new ObservableReactValue(false);
 
   readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
-}
 
-export default HistoryModel;
+  setMenuDriverOpen = (v: boolean) => {
+    this.menuDriverOpen.value = v;
+  }
+
+  setDeleteItem = (v: Thread | undefined) => {
+    this.deleteItem.value = v;
+  }
+};
+
+const historyModel = new HistoryModel();
+
+export default historyModel;

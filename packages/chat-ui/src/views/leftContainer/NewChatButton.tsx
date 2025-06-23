@@ -9,9 +9,8 @@ type Props = {
 };
 
 const useDisabled = () => {
-  const { apiRef } = useHistoryContext();
-  const model = apiRef.current?._internal.model;
-  const thread = useObserverValue(model?.currentThread);
+  const { threadsModel } = useHistoryContext();
+  const thread = useObserverValue(threadsModel?.currentThread);
 
   const isEmpty = useObserverValue(thread?.isEmpty) as boolean;
   return isEmpty;
