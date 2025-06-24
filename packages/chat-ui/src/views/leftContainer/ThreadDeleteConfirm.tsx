@@ -8,20 +8,22 @@ import Typography from '@mui/material/Typography';
 import { useHistoryContext } from '../core/history/HistoryContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { slots, slotProps, locale, historyModel, internal } = useHistoryContext();
-  const deleteItem = useObserverValue(historyModel.deleteItem);
+  const { slots, slotProps, locale, internal, apiRef } = useHistoryContext();
+  const deleteItem = useObserverValue(internal?.model.deleteItem);
 
   const handleClose = () => {
-    historyModel.deleteItem.value = undefined;
-  }
+    if (internal) {
+      internal.model.deleteItem.value = undefined;
+    }
+  };
 
   const handleDelete = () => {
     if (deleteItem) {
       internal?.model.delete(deleteItem.id);
-      internal?.onThreadDeleted?.({ thread: deleteItem });
+      apiRef.current?.onThreadDeleted?.({ thread: deleteItem });
     }
     handleClose();
-  }
+  };
 
   return (
     <Dialog

@@ -9,13 +9,13 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { useHistoryContext } from '../../core/history/HistoryContext';
 
 const ThreadsListMapBlock: React.FC = () => {
-  const { apiRef, loading, slots, slotProps, historyModel, internal } = useHistoryContext();
+  const { apiRef, loading, slots, slotProps, internal } = useHistoryContext();
   const threads = useObserverValue(internal?.model.list) ?? [];
   const groupsMap = useThreadsList(threads, internal?.model) ?? {};
 
   const setThread = (thread: Thread) => {
     if (internal?.model?.currentThread.value?.id !== thread.id) {
-      internal?.onChangeCurrentThread?.({ thread });
+      apiRef.current?.onChangeCurrentThread?.({ thread });
       apiRef.current?.onChangeThread(thread.id);
     }
   };
@@ -35,7 +35,6 @@ const ThreadsListMapBlock: React.FC = () => {
                 index={key}
                 model={internal.model}
                 slots={slots}
-                historyModel={historyModel}
               />
             ))}
             <ThreadListItemMenu model={internal.model} />

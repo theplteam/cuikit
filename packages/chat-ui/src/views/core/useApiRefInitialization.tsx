@@ -54,13 +54,21 @@ export const useApiRefInitialization = (
       return model.currentThread.value?.data;
     };
 
-    internalApi.value = {
-      model,
-      handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
-      onChangeCurrentThread: props.onChangeCurrentThread,
-      onThreadDeleted: props.onThreadDeleted,
+    const setMenuDrawerOpen = (v: boolean) => {
+      model.menuDrawerOpen.value = v;
     };
 
+    const setDeleteItem = (v: any | undefined) => {
+      model.deleteItem.value = v;
+    };
+
+    internalApi.value = { model };
+
+    apiManager.setMethod('setMenuDrawerOpen', setMenuDrawerOpen);
+    apiManager.setMethod('setDeleteItem', setDeleteItem);
+    apiManager.setMethod('handleCreateNewThread', props.handleCreateNewThread ?? ThreadModel.createEmptyData);
+    apiManager.setMethod('onChangeCurrentThread', props.onChangeCurrentThread);
+    apiManager.setMethod('onThreadDeleted', props.onThreadDeleted);
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);

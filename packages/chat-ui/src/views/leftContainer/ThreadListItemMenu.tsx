@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
-  const { slots, slotProps, locale, threadActions, historyModel } = useHistoryContext();
+  const { slots, slotProps, locale, threadActions, internal } = useHistoryContext();
   const menuConfig = model.listGroups.menuConfig;
   const config = useObserverValue(menuConfig);
 
@@ -28,8 +28,8 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
 
   const handleDelete = () => {
     handleClose();
-    if (thread) {
-      historyModel.deleteItem.value = thread.data;
+    if (thread && internal) {
+      internal.model.deleteItem.value = thread.data;
     }
   };
 

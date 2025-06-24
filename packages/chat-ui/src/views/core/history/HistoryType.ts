@@ -12,7 +12,6 @@ import { DrawerProps } from '@mui/material/Drawer';
 import { StackProps } from '@mui/material/Stack';
 import { Thread } from '../../../models/ThreadModel';
 import { IdType } from '../../../types';
-import HistoryModel from './HistoryModel';
 import { InternalApiType } from './internalApi';
 
 export type HistorySlotPropsType = {
@@ -37,7 +36,7 @@ export type HistorySlotPropsType = {
    */
   threadsListItem: BoxProps;
   /**
-   * Driver component (mobile version)
+   * Drawer component (mobile version)
    */
   listDrawer: DrawerProps;
   /**
@@ -66,7 +65,6 @@ export type HistorySlotType = { [key in keyof HistorySlotPropsType]: SlotValue<H
 
 export type HistoryContextType = {
   internal: InternalApiType | undefined;
-  historyModel: HistoryModel;
   apiRef: React.MutableRefObject<ApiRefType | null>;
   loading: boolean;
   locale: Localization;

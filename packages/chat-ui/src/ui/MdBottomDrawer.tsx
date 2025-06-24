@@ -14,7 +14,7 @@ type Props = React.PropsWithChildren<{
   keepMounted?: boolean;
 }>;
 
-const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar, keepMounted }) => {
+const MdBottomDrawer: React.FC<Props> = ({ open, onClose, title, children, disableCustomScrollbar, keepMounted }) => {
   const container = React.useRef<HTMLDivElement | null>(null);
   const { slots, slotProps } = useHistoryContext();
 
@@ -59,4 +59,4 @@ const MdBottomDriver: React.FC<Props> = ({ open, onClose, title, children, disab
   );
 }
 
-export default MdBottomDriver;
+export default MdBottomDrawer;

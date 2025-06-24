@@ -6,18 +6,18 @@ import { MoreVertIcon } from '../../icons';
 import { historyClassNames } from '../core/history/historyClassNames';
 import clsx from 'clsx';
 import { HistorySlotType } from '../core/history/HistoryType';
-import HistoryModel from '../core/history/HistoryModel';
+import { Threads } from '../../models/Threads';
 
 type Props = {
+  model: Threads<any, any>;
   thread: ThreadModel;
   selected: boolean;
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
-  historyModel: HistoryModel;
   slots: Pick<HistorySlotType, 'threadsListItem'> & Pick<HistorySlotType, 'baseListItemText'> & Pick<HistorySlotType, 'threadListItemMenuButton'>;
 };
 
-const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel, historyModel, slots }) => {
+const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, slots }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
@@ -33,7 +33,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
   if (isEmpty) return null;
 
   const handleClickListItem = () => {
-    historyModel.menuDriverOpen.value = false;
+    model.menuDrawerOpen.value = false;
     setThread(thread.data);
   }
 

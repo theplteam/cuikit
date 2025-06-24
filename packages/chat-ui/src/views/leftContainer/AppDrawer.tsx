@@ -1,29 +1,29 @@
 import * as React from 'react';
 import { useObserverValue } from '../hooks/useObserverValue';
-import MdBottomDriver from '../../ui/MdBottomDriver';
+import MdBottomDrawer from '../../ui/MdBottomDrawer';
 import { useHistoryContext } from '../core/history/HistoryContext';
 
 type Props = React.PropsWithChildren;
 
 const AppDrawer: React.FC<Props> = ({ children }) => {
-  const { locale, historyModel } = useHistoryContext();
-  const open = useObserverValue(historyModel.menuDriverOpen) ?? false;
+  const { locale, internal } = useHistoryContext();
+  const open = useObserverValue(internal?.model.menuDrawerOpen) ?? false;
 
   const onClose = () => {
-    if (historyModel) {
-      historyModel.menuDriverOpen.value = false
+    if (internal) {
+      internal.model.menuDrawerOpen.value = false
     }
   };
 
   return (
-    <MdBottomDriver
+    <MdBottomDrawer
       keepMounted
       open={!!open}
       title={locale.historyTitle}
       onClose={onClose}
     >
       {children}
-    </MdBottomDriver>
+    </MdBottomDrawer>
   );
 };
 

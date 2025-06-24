@@ -3,9 +3,6 @@ import { ObservableReactValue } from "../../../utils/observers/ObservableReactVa
 
 export type InternalApiType = {
   model: Threads<any, any>,
-  handleCreateNewThread?: () => any,
-  onChangeCurrentThread?: (v: any) => void,
-  onThreadDeleted?: (v: any) => void,
 }
 
 const internalApi = new ObservableReactValue<InternalApiType | undefined>(undefined);

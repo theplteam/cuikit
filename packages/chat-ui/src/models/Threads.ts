@@ -12,6 +12,10 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
 
   readonly listGroups = new ThreadListCache();
 
+  readonly menuDrawerOpen = new ObservableReactValue(false);
+
+  readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
+
   constructor(
     adapter: AdapterType,
     threads: Thread[],
@@ -56,5 +60,13 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
   createFromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;
     return new ThreadModel(data, streamFn);
+  }
+
+  setMenuDrawerOpen = (v: boolean) => {
+    this.menuDrawerOpen.value = v;
+  }
+
+  setDeleteItem = (v: Thread | undefined) => {
+    this.deleteItem.value = v;
   }
 }

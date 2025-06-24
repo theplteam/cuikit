@@ -54,17 +54,29 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   getProgressStatus: () => string;
   /**
-   * Change thread branch
+   * Change thread branch.
    */
   handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
   /**
-   * Changes the state of opening the driver menu
+   * Changes the state of opening the drawer menu.
    */
-  setMenuDriverOpen?: (v: boolean) => void,
+  setMenuDrawerOpen: (v: boolean) => void,
   /**
-   * Changes the value of deleteItem; if there is a value, a confirm dialog opens
+   * Changes the value of deleteItem; if there is a value, a confirm dialog opens.
    */
-  setDeleteItem?: (v: DD | undefined) => void,
+  setDeleteItem: (v: DD | undefined) => void,
+  /**
+    * Create new thread.
+    */
+  handleCreateNewThread?: () => DD,
+  /**
+    * Change current thread.
+    */
+  onChangeCurrentThread?: (v: DD) => void,
+  /**
+    * Triggered when thread is deleted.
+    */
+  onThreadDeleted?: (v: DD) => void,
 };
 
 export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
@@ -96,12 +108,14 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     branch: new ObservableReactValue([]),
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
+    setMenuDrawerOpen: NOOP,
+    setDeleteItem: NOOP,
   });
 
   React.useMemo(() => {
     if (userApiRef) {
       const { getListener, branch, allMessages, updateScrollButtonState, ...otherProps } = apiRef.current;
-      userApiRef.current = { ...userApiRef.current, ...otherProps };
+      userApiRef.current = otherProps;
     }
   }, [userApiRef]);
 
