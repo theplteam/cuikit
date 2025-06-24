@@ -6,10 +6,10 @@ import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
 import { useHistoryContext } from '../core/history/HistoryContext';
 
 const ChatHistory: React.FC = () => {
-  const { slots, slotProps, apiRef, locale } = useHistoryContext();
+  const { slots, slotProps, apiRef, locale, internal } = useHistoryContext();
 
   const openNewThread = () => {
-    const thread = apiRef.current?._internal?.handleCreateNewThread?.();
+    const thread = internal?.handleCreateNewThread?.();
     if (thread) {
       apiRef.current?.openNewThread(thread);
     }

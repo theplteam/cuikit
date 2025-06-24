@@ -5,7 +5,6 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
-import historyModel from './history/HistoryModel';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -59,20 +58,13 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   handleChangeBranch: ThreadMessages<DM>['handleChangeBranch'];
   /**
-   * The object contains data for internal chat operation
+   * Changes the state of opening the driver menu
    */
-  _internal: {
-    handleCreateNewThread?: () => DD,
-    onChangeCurrentThread?: (v: DD) => void,
-    onThreadDeleted?: (v: DD) => void,
-  };
+  setMenuDriverOpen?: (v: boolean) => void,
   /**
-   * The object contains data for history operation
+   * Changes the value of deleteItem; if there is a value, a confirm dialog opens
    */
-  history: {
-    setMenuDriverOpen: (v: boolean) => void,
-    setDeleteItem: (v: DD | undefined) => void,
-  };
+  setDeleteItem?: (v: DD | undefined) => void,
 };
 
 export type PrivateApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
@@ -104,17 +96,12 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     branch: new ObservableReactValue([]),
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
-    _internal: {},
-    history: {
-      setMenuDriverOpen: historyModel.setMenuDriverOpen,
-      setDeleteItem: historyModel.setDeleteItem,
-    },
   });
 
   React.useMemo(() => {
     if (userApiRef) {
       const { getListener, branch, allMessages, updateScrollButtonState, ...otherProps } = apiRef.current;
-      userApiRef.current = otherProps;
+      userApiRef.current = { ...otherProps, ...userApiRef.current };
     }
   }, [userApiRef]);
 

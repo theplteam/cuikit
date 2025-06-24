@@ -3,14 +3,15 @@ import { AddIcon } from '../../icons';
 import Box from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useHistoryContext } from '../core/history/HistoryContext';
+import internalApi from '../../views/core/history/InternalApiModel';
 
 type Props = {
   openNewThread: () => void;
 };
 
 const useDisabled = () => {
-  const { threadsModel } = useHistoryContext();
-  const thread = useObserverValue(threadsModel?.currentThread);
+  const internal = useObserverValue(internalApi);
+  const thread = useObserverValue(internal?.model?.currentThread);
 
   const isEmpty = useObserverValue(thread?.isEmpty) as boolean;
   return isEmpty;

@@ -1,11 +1,7 @@
-import { Threads } from "../../../models/Threads";
 import { Thread } from "../../../models/ThreadModel";
 import { ObservableReactValue } from "../../../utils/observers/ObservableReactValue";
-import { Message } from "../../../models/MessageModel";
 
-export class HistoryModel {
-  readonly threadsModel = new ObservableReactValue<Threads<Message, Thread> | undefined>(undefined);
-
+class HistoryModel {
   readonly menuDriverOpen = new ObservableReactValue(false);
 
   readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
@@ -19,6 +15,4 @@ export class HistoryModel {
   }
 };
 
-const historyModel = new HistoryModel();
-
-export default historyModel;
+export default HistoryModel;

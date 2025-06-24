@@ -15,7 +15,8 @@ import ContainerSubtitle from '../../../ui/ContainerSubtitle';
 import { CHAT_LOCALE } from '../../../locale/enEN';
 import { ruRU } from '../../../locale/ruRU';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
-import historyModel from './HistoryModel';
+import HistoryModel from './HistoryModel';
+import internalApi from './InternalApiModel';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -44,10 +45,19 @@ export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<
   const { apiRef, loading, threadActions, slotProps } = props;
   const userLocale = props?.lang === 'ru' ? ruRU : CHAT_LOCALE;
   const userSlots = useSlots(props?.slots);
-  const threadsModel = useObserverValue(historyModel.threadsModel);
+  const historyModel = React.useMemo(() => new HistoryModel(), []);
+  const internal = useObserverValue(internalApi);
+
+  React.useEffect(() => {
+    apiRef.current = {
+      ...apiRef.current!,
+      setDeleteItem: historyModel.setDeleteItem,
+      setMenuDriverOpen: historyModel.setMenuDriverOpen,
+    }
+  }, []);
 
   const value: HistoryContextType = React.useMemo(() => ({
-    threadsModel,
+    internal,
     historyModel,
     apiRef,
     loading: !!loading,
@@ -55,7 +65,7 @@ export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<
     slots: userSlots,
     locale: userLocale,
     slotProps: slotProps || {},
-  }), [apiRef, threadsModel, loading, props]);
+  }), [apiRef, internal, loading, props]);
 
   return (
     <Context.Provider value={value}>

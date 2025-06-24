@@ -9,13 +9,12 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { useHistoryContext } from '../../core/history/HistoryContext';
 
 const ThreadsListMapBlock: React.FC = () => {
-  const { apiRef, loading, slots, slotProps, historyModel, threadsModel } = useHistoryContext();
-  const internal = apiRef.current?._internal;
-  const threads = useObserverValue(threadsModel?.list) ?? [];
-  const groupsMap = useThreadsList(threads, threadsModel) ?? {};
+  const { apiRef, loading, slots, slotProps, historyModel, internal } = useHistoryContext();
+  const threads = useObserverValue(internal?.model.list) ?? [];
+  const groupsMap = useThreadsList(threads, internal?.model) ?? {};
 
   const setThread = (thread: Thread) => {
-    if (threadsModel?.currentThread.value?.id !== thread.id) {
+    if (internal?.model?.currentThread.value?.id !== thread.id) {
       internal?.onChangeCurrentThread?.({ thread });
       apiRef.current?.onChangeThread(thread.id);
     }
@@ -24,7 +23,7 @@ const ThreadsListMapBlock: React.FC = () => {
   return (
     <>
       <slots.threadsList {...slotProps.threadsList}>
-        {(loading || !threadsModel) ? (
+        {(loading || !internal) ? (
           <HistorySkeleton />
         ) : (
           <>
@@ -34,12 +33,12 @@ const ThreadsListMapBlock: React.FC = () => {
                 listGroupItem={groupModel}
                 setThread={setThread}
                 index={key}
-                model={threadsModel}
+                model={internal.model}
                 slots={slots}
                 historyModel={historyModel}
               />
             ))}
-            <ThreadListItemMenu model={threadsModel} />
+            <ThreadListItemMenu model={internal.model} />
           </>
         )}
       </slots.threadsList>

@@ -6,7 +6,7 @@ import { MoreVertIcon } from '../../icons';
 import { historyClassNames } from '../core/history/historyClassNames';
 import clsx from 'clsx';
 import { HistorySlotType } from '../core/history/HistoryType';
-import { HistoryModel } from '../core/history/HistoryModel';
+import HistoryModel from '../core/history/HistoryModel';
 
 type Props = {
   thread: ThreadModel;
