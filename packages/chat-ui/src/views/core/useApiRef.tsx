@@ -101,7 +101,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
   React.useMemo(() => {
     if (userApiRef) {
       const { getListener, branch, allMessages, updateScrollButtonState, ...otherProps } = apiRef.current;
-      userApiRef.current = { ...otherProps, ...userApiRef.current };
+      userApiRef.current = { ...userApiRef.current, ...otherProps };
     }
   }, [userApiRef]);
 

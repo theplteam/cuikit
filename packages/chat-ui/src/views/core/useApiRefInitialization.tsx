@@ -4,7 +4,7 @@ import { IdType } from '../../types';
 import { Thread, ThreadModel } from '../../models';
 import { ChatPropsTypes } from './useChatProps';
 import { ApiManager } from './useApiManager';
-import internalApi, { InternalApiModel } from './history/InternalApiModel';
+import internalApi from './history/internalApi';
 
 export const useApiRefInitialization = (
   apiManager: ApiManager,
@@ -54,14 +54,12 @@ export const useApiRefInitialization = (
       return model.currentThread.value?.data;
     };
 
-    const internal = {
+    internalApi.value = {
       model,
       handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
       onChangeCurrentThread: props.onChangeCurrentThread,
       onThreadDeleted: props.onThreadDeleted,
     };
-
-    internalApi.value = new InternalApiModel(internal)
 
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);

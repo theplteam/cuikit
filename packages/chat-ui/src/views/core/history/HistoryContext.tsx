@@ -16,7 +16,7 @@ import { CHAT_LOCALE } from '../../../locale/enEN';
 import { ruRU } from '../../../locale/ruRU';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import HistoryModel from './HistoryModel';
-import internalApi from './InternalApiModel';
+import internalApi from './internalApi';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({

@@ -3,7 +3,7 @@ import { AddIcon } from '../../icons';
 import Box from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useHistoryContext } from '../core/history/HistoryContext';
-import internalApi from '../../views/core/history/InternalApiModel';
+import internalApi from '../core/history/internalApi';
 
 type Props = {
   openNewThread: () => void;
