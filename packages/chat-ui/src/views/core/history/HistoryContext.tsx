@@ -54,7 +54,7 @@ export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<
       setDeleteItem: historyModel.setDeleteItem,
       setMenuDriverOpen: historyModel.setMenuDriverOpen,
     }
-  }, []);
+  }, [historyModel]);
 
   const value: HistoryContextType = React.useMemo(() => ({
     internal,
