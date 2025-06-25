@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Thread, ThreadModel } from '../../models';
 import ThreadListItem from './ThreadListItem';
-import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { Threads } from '../../models/Threads';
+import { HistorySlotType } from '../core/history/HistoryType';
 
 type Props = {
   thread: ThreadModel;
   setThread: (thread: Thread) => void;
   model: Threads<any, any>;
-  slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
+  slots: Pick<HistorySlotType, 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
 const ThreadListItemObserver: React.FC<Props> = ({ thread, setThread, model, slots }) => {
@@ -21,6 +21,7 @@ const ThreadListItemObserver: React.FC<Props> = ({ thread, setThread, model, slo
       setThread={setThread}
       thread={thread}
       listModel={model.listGroups}
+      model={model}
       slots={slots}
     />
   );

@@ -1,26 +1,30 @@
 import * as React from 'react';
-import { useChatModel } from '../core/ChatGlobalContext';
 import { useObserverValue } from '../hooks/useObserverValue';
-import MdBottomDriver from '../../ui/MdBottomDriver';
-import { useLocalizationContext } from '../core/LocalizationContext';
+import MdBottomDrawer from '../../ui/MdBottomDrawer';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
-type Props = React.PropsWithChildren;
+type Props = React.PropsWithChildren<{ className?: string }>;
 
-const AppDrawer: React.FC<Props> = ({ children }) => {
-  const chat = useChatModel();
-  const open = useObserverValue(chat.actions.menuDriverOpen) ?? false;
+const AppDrawer: React.FC<Props> = ({ children, className }) => {
+  const { locale, internal } = useHistoryContext();
+  const open = useObserverValue(internal?.model.menuDrawerOpen) ?? false;
 
-  const locale = useLocalizationContext();
+  const onClose = () => {
+    if (internal) {
+      internal.model.menuDrawerOpen.value = false
+    }
+  };
 
   return (
-    <MdBottomDriver
+    <MdBottomDrawer
       keepMounted
-      open={open}
+      open={!!open}
       title={locale.historyTitle}
-      onClose={() => chat.actions.menuDriverOpen.value = false}
+      className={className}
+      onClose={onClose}
     >
       {children}
-    </MdBottomDriver>
+    </MdBottomDrawer>
   );
 };
 

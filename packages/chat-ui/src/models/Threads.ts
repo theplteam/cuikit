@@ -1,7 +1,6 @@
 import { Message } from './MessageModel';
 import { ObservableReactValue } from '../utils/observers';
 import { ThreadModel, Thread } from './ThreadModel';
-import { ChatActions } from './ChatActions';
 import { AdapterType } from '../views/adapter/AdapterType';
 import { MessageSentParams } from './MessageSentParams';
 import { ThreadListCache } from './ThreadListCache';
@@ -11,9 +10,11 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
 
   readonly currentThread = new ObservableReactValue<ThreadModel<DM, DD> | undefined>(undefined);
 
-  readonly actions = new ChatActions();
-
   readonly listGroups = new ThreadListCache();
+
+  readonly menuDrawerOpen = new ObservableReactValue(false);
+
+  readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
 
   constructor(
     adapter: AdapterType,
@@ -59,5 +60,13 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
   createFromData = (...params: ConstructorParameters<typeof ThreadModel<DM, DD>>) => {
     const [data, streamFn] = params;
     return new ThreadModel(data, streamFn);
+  }
+
+  setMenuDrawerOpen = (v: boolean) => {
+    this.menuDrawerOpen.value = v;
+  }
+
+  setDeleteItem = (v: Thread | undefined) => {
+    this.deleteItem.value = v;
   }
 }

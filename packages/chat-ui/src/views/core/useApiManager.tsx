@@ -5,7 +5,7 @@ export class ApiManager {
   constructor(
     public apiRef: React.RefObject<PrivateApiRefType>,
     public userApiRef: React.RefObject<ApiRefType> | undefined,
-  ) {}
+  ) { }
 
   setMethod = <K extends keyof ApiRefType>(name: K, method: ApiRefType[K]) => {
     const apiRef = this.apiRef;
