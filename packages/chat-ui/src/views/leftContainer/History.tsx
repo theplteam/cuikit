@@ -2,11 +2,9 @@ import * as React from 'react';
 import { HistoryProps } from '../core/history/HistoryType';
 import { ApiRefType } from '../core/useApiRef';
 import { HistoryProvider } from '../core/history/HistoryContext';
-import ChatHistory from './ChatHistory';
 import { useMobile } from '../../ui/Responsive';
-import AppDrawer from './AppDrawer';
-import Box from '@mui/material/Box';
 import HistoryContainer from './HistoryContainer';
+import HistoryAppDrawer from './HistoryAppDrawer';
 
 export type HistoryComponentProps = {
   apiRef: React.MutableRefObject<ApiRefType | null>;
@@ -21,11 +19,7 @@ const History: React.FC<HistoryComponentProps> = (props) => {
     <HistoryProvider {...props}>
       {isMobile
         ? (
-          <AppDrawer>
-            <Box display="flex" flexDirection="column" height={500}>
-              <ChatHistory />
-            </Box>
-          </AppDrawer>
+          <HistoryAppDrawer />
         ) : (
           <HistoryContainer className={props.className} />
         )}
