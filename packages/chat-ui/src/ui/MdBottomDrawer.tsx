@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Scrollbar from './Scrollbar';
 import { useHistoryContext } from '../views/core/history/HistoryContext';
 import { drawerClasses } from '@mui/material/Drawer';
+import { historyClassNames } from 'views/core/history/historyClassNames';
 
 type Props = React.PropsWithChildren<{
   open: boolean;
@@ -32,6 +33,7 @@ const MdBottomDrawer: React.FC<Props> = ({ open, onClose, title, children, disab
             borderTopRightRadius: 16,
           },
         }}
+        className={historyClassNames.listDrawer}
         onClose={onClose}
         {...slotProps.listDrawer}
       >
