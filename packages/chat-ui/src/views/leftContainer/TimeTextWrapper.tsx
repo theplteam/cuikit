@@ -1,7 +1,6 @@
-import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
-const TimeTextWrapper = styled(Box)(({ theme }) => ({
+const TimeTextWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(1.5, 2, 1, 1.5),
   position: 'sticky',
   top: 0,

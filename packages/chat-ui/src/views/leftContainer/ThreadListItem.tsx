@@ -4,7 +4,6 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { MoreVertIcon } from '../../icons';
 import { historyClassNames } from '../core/history/historyClassNames';
-import clsx from 'clsx';
 import { HistorySlotType } from '../core/history/HistoryType';
 import { Threads } from '../../models/Threads';
 
@@ -14,7 +13,7 @@ type Props = {
   selected: boolean;
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
-  slots: Pick<HistorySlotType, 'threadsListItem' | 'baseListItemText' | 'threadListItemMenuButton'>;
+  slots: Pick<HistorySlotType, 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
 const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, slots }) => {
@@ -35,11 +34,16 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
   const handleClickListItem = () => {
     model.menuDrawerOpen.value = false;
     setThread(thread.data);
+  };
+
+  const classes = [historyClassNames.listItem];
+  if (selected) {
+    classes.push(historyClassNames.listItemSelected);
   }
 
   return (
-    <slots.threadsListItem
-      className={clsx(historyClassNames.listItem, { [historyClassNames.listItemSelected]: selected })}
+    <div
+      className={classes.join(' ')}
       onClick={handleClickListItem}
     >
       <slots.baseListItemText
@@ -63,7 +67,7 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
       >
         <MoreVertIcon />
       </slots.threadListItemMenuButton>
-    </slots.threadsListItem>
+    </div>
   );
 };
 

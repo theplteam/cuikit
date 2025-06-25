@@ -26,7 +26,6 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
     historyContainer: slots?.historyContainer ?? Box,
     historyWrapper: slots?.historyWrapper ?? Stack,
     threadsList: slots?.threadsList ?? ThreadListMapBlockAllStyled,
-    threadsListItem: slots?.threadsListItem ?? Box,
     threadListItemMenuButton: slots?.threadListItemMenuButton ?? IconButton,
     listDrawer: slots?.listDrawer ?? Drawer,
     listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,

@@ -35,6 +35,7 @@ const ThreadsListMapBlock: React.FC = () => {
                 index={key}
                 model={internal.model}
                 slots={slots}
+                slotProps={slotProps}
               />
             ))}
             <ThreadListItemMenu model={internal.model} />

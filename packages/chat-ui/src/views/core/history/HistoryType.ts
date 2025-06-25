@@ -32,10 +32,6 @@ export type HistorySlotPropsType = {
    */
   threadsList: StackProps;
   /**
-   * Thread list item wrapper
-   */
-  threadsListItem: BoxProps;
-  /**
    * Drawer component (mobile version)
    */
   listDrawer: DrawerProps;
@@ -58,7 +54,7 @@ export type HistorySlotPropsType = {
   /**
    * listTimeText wrapper
    */
-  listTimeTextWrapper: BoxProps;
+  listTimeTextWrapper: React.HTMLAttributes<HTMLDivElement>;
 };
 
 export type HistorySlotType = { [key in keyof HistorySlotPropsType]: SlotValue<HistorySlotPropsType[key]> };
