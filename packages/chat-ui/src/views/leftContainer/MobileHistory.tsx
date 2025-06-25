@@ -5,7 +5,7 @@ import HistoryAppDrawer from './HistoryAppDrawer';
 
 const MobileHistory: React.FC<HistoryComponentProps> = (props) => (
   <HistoryProvider {...props}>
-    <HistoryAppDrawer />
+    <HistoryAppDrawer className={props.className} />
   </HistoryProvider>
 );
 
