@@ -11,6 +11,7 @@ import type { ChatUsersProps } from './views/core/useChatProps';
 import { chatClassNames } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
+import MobileHistory from './views/leftContainer/MobileHistory';
 
 export * from './models';
 export * from './views/adapter';
@@ -23,6 +24,7 @@ export {
   Chat,
   ChatPage,
   History,
+  MobileHistory,
   NewChatButton,
   NewChatIconButton,
   useChatContext,
