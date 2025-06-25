@@ -14,7 +14,7 @@ type Props = {
   selected: boolean;
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
-  slots: Pick<HistorySlotType, 'threadsListItem'> & Pick<HistorySlotType, 'baseListItemText'> & Pick<HistorySlotType, 'threadListItemMenuButton'>;
+  slots: Pick<HistorySlotType, 'threadsListItem' | 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
 const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, slots }) => {
