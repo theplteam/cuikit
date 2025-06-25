@@ -3,9 +3,9 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import MdBottomDrawer from '../../ui/MdBottomDrawer';
 import { useHistoryContext } from '../core/history/HistoryContext';
 
-type Props = React.PropsWithChildren;
+type Props = React.PropsWithChildren<{ className?: string }>;
 
-const AppDrawer: React.FC<Props> = ({ children }) => {
+const AppDrawer: React.FC<Props> = ({ children, className }) => {
   const { locale, internal } = useHistoryContext();
   const open = useObserverValue(internal?.model.menuDrawerOpen) ?? false;
 
@@ -20,6 +20,7 @@ const AppDrawer: React.FC<Props> = ({ children }) => {
       keepMounted
       open={!!open}
       title={locale.historyTitle}
+      className={className}
       onClose={onClose}
     >
       {children}
