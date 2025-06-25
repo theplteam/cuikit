@@ -9,4 +9,6 @@ export const chatClassNames = {
   markdownImage: 'chat-ui-markdown-image',
   markdownSmoothedPending: 'chat-ui-markdown-smooth-pending',
   markdownSmoothedAnimating: 'chat-ui-markdown-smooth-animating',
+  attachmentPreviewFile: 'chat-ui-attachment-preview-file',
+  attachmentPreviewError: 'chat-ui-attachment-preview-error',
 };

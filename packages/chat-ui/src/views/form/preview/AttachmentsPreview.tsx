@@ -10,12 +10,25 @@ import PreviewItem from './PreviewItem';
 import 'photoswipe/style.css';
 import { IdType } from '../../../types';
 import { useMobile } from '../../../ui/Responsive';
+import { styled } from '@mui/material/styles';
+import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = {
   thread?: ThreadModel;
   attachments: AttachmentModel[];
   setAttachments: (a: AttachmentModel[]) => void;
 };
+
+const StackStyled = styled(Stack)(({ theme }) => ({
+  [`& .${chatClassNames.attachmentPreviewError}`]: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.common.white,
+  },
+  [`& .${chatClassNames.attachmentPreviewFile}`]: {
+    backgroundColor: theme.palette.grey[200],
+    color: 'inherit',
+  },
+}));
 
 const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachments }) => {
   const { enableFileAttachments, onFileDetached } = useChatContext();
@@ -53,7 +66,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
 
   return (
     <Scrollbar style={{ maxHeight: 170, borderRadius: 16 }}>
-      <Stack
+      <StackStyled
         flexWrap={isMobile ? "nowrap" : "wrap"}
         flexDirection="row"
         gap={1}
@@ -70,7 +83,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
             galleryId={galleryId}
           />
         ))}
-      </Stack>
+      </StackStyled>
     </Scrollbar>
   );
 };

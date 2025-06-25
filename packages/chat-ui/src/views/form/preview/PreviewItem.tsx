@@ -12,7 +12,7 @@ import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
 import { IdType } from '../../../types';
 import PreviewTooltip from './PreviewTooltip';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
+import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = {
   item: AttachmentModel;
@@ -58,10 +58,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
       <BoxStyled
         ref={setElement}
         width={showInGallery ? 80 : 200}
-        sx={{
-          backgroundColor: (theme) => error ? materialDesignSysPalette.error : theme.palette.grey[200],
-          color: (theme) => error ? theme.palette.common.white : 'inherit',
-        }}
+        className={error ? chatClassNames.attachmentPreviewError : chatClassNames.attachmentPreviewFile}
       >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
         {showInGallery
