@@ -1,3 +1,4 @@
+import { ToolType } from '../types/ToolType';
 import { IdType } from '../types';
 import { Attachment } from './AttachmentModel';
 import { InternalMessageType, Message } from './MessageModel';
@@ -5,7 +6,7 @@ import { InternalMessageType, Message } from './MessageModel';
 export type MessageSentParams<M extends InternalMessageType = InternalMessageType> = {
   /** User's message content */
   content: Message['content'],
-
+  /** User's message attachments */
   attachments: Attachment[],
   /** User's message */
   message: M,
@@ -13,6 +14,8 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
   assistantMessage: M,
   /** Thread history */
   history: M[],
+  /** User's tool */
+  tool: ToolType | undefined,
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.
@@ -49,7 +52,7 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
      * Unlock auto managment for locked options (after calling the setHeader, setTimeSec, etc.)
      */
     unlockAutoManagement: (options?: ('headers' | 'time' | 'viewType')[]) => void,
-  }
+  },
   actions: {
     /** set your thread id */
     updateThreadId: (newId: IdType) => void;

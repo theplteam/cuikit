@@ -53,7 +53,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
       }
     };
 
-    apiRef.current?.sendUserMessage(content, thread?.tool.value);
+    apiRef.current?.sendUserMessage(content);
     setText('');
 
     setAttachments([]);
