@@ -2,26 +2,23 @@ import * as React from 'react';
 import TimeGroupItem from '../TimeGroupItem';
 import ThreadListItemObserver from '../ThreadListItemObserver';
 import { ThreadListGroupItem } from '../../../models/ThreadListGroupItem';
-import { SlotsType } from '../../core/usePropsSlots';
-import { SlotPropsType } from '../../core/SlotPropsType';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { Message, Thread } from '../../../models';
-import DelayRenderer from '../../../ui/DelayRenderer';
+import { Thread } from '../../../models';
 import { Threads } from '../../../models/Threads';
-import { useChatSlots } from '../../core/ChatSlotsContext';
+import DelayRenderer from '../../../ui/DelayRenderer';
+import { HistorySlotPropsType, HistorySlotType } from '../../core/history/HistoryType';
 
-type Props<DM extends Message = any, DD extends Thread = any> = {
+type Props = {
   listGroupItem: ThreadListGroupItem;
-  slot: SlotsType<DM, DD>['listTimeText'];
-  slotProps: SlotPropsType<DM, DD>['listTimeText'] | undefined;
   setThread: (thread: Thread) => void;
   index: number;
-  model: Threads<any, any>
+  model: Threads<any, any>;
+  slots: HistorySlotType;
+  slotProps: Partial<HistorySlotPropsType>;
 };
 
-const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, slotProps, slot, setThread, index, model }) => {
+const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, setThread, index, model, slots, slotProps }) => {
   const threads = useObserverValue(listGroupItem.threads) ?? [];
-  const { slots, coreSlots } = useChatSlots();
 
   const list = React.useMemo(() => threads.map((thread) => (
     <ThreadListItemObserver
@@ -29,10 +26,7 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, slotProps
       setThread={setThread}
       thread={thread}
       model={model}
-      slots={{
-        listItemText: coreSlots.listItemText,
-        threadListItemMenuButton: slots.threadListItemMenuButton,
-      }}
+      slots={slots}
     />
   )), [threads.length]);
 
@@ -43,8 +37,8 @@ const ThreadListMapBlockGroupItem: React.FC<Props> = ({ listGroupItem, slotProps
       <TimeGroupItem
         key={listGroupItem.data.id}
         group={listGroupItem.data}
-        textComponent={slot}
-        textComponentProps={slotProps}
+        slots={slots}
+        slotProps={slotProps}
       />
       {list}
     </DelayRenderer>

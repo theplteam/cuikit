@@ -1,17 +1,12 @@
 import Stack from '@mui/material/Stack';
-import { styled, alpha } from '@mui/material/styles';
-import { chatClassNames } from '../../core/chatClassNames';
+import { styled } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import { motion } from '../../../utils/materialDesign/motion';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
-
-const classSelected = 'boxSelected';
-const classShadowRight = 'shadowRight';
-
-const getGradient = (hex: string) => `linear-gradient(to left, ${hex} 0%, ${hex} 80%, ${alpha(hex, 0)} 100%)`;
+import { historyClassNames } from '../../core/history/historyClassNames';
 
 const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
-  [`& .${chatClassNames.threadListItem}`]: {
+  position: 'relative',
+  [`& .${historyClassNames.listItem}`]: {
     height: 56,
     width: '100%',
     boxSizing: 'border-box',
@@ -26,32 +21,14 @@ const ThreadListMapBlockAllStyled = styled(Stack)(({ theme }) => ({
         transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
       },
     },
-    [`& .${classShadowRight}`]: {
-      position: 'absolute',
-      right: 0,
-      top: 0,
-      height: '100%',
-      width: 65,
-      pointerEvents: 'none',
-      backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerLow),
-      [theme.breakpoints.down('md')]: {
-        backgroundImage: getGradient('#fff'),
-      },
-    },
     '&:hover': {
-      background: materialDesignSysPalette.surfaceContainerHigh,
-      [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient(materialDesignSysPalette.surfaceContainerHigh),
-      },
+      backgroundColor: theme.palette.action.hover,
       [`& .${iconButtonClasses.root}`]: {
         opacity: 1,
       },
     },
-    [`&.${classSelected}`]: {
-      background: 'rgb(225,233,240)',
-      [`& .${classShadowRight}`]: {
-        backgroundImage: getGradient('#e1e9f0'),
-      }
+    [`&.${historyClassNames.listItemSelected}`]: {
+      backgroundColor: theme.palette.action.selected,
     },
   }
 }));
