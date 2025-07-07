@@ -19,7 +19,7 @@ import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
-import HelloMessage from '../thread/HelloMessage';
+import InitialThreadMessage from '../thread/InitialThreadMessage';
 import MessageMarkdownCode from '../message/markdown/MessageMarkdownCode';
 import MessageMarkdownBlockquote from '../message/markdown/MessageMarkdownBlockquote';
 import MessageMarkdownCodeWrapper from '../message/markdown/MessageMarkdownCodeWrapper';
@@ -54,7 +54,7 @@ type SlotsReturnType<DM extends Message, DD extends Thread<DM>> = {
 export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
   usersProps: ChatUsersProps<DM, DD>
 ): SlotsReturnType<DM, DD> => {
-  const { coreSlots, slots, slotProps, helloMessage } = usersProps;
+  const { coreSlots, slots, slotProps } = usersProps;
 
   const res = React.useMemo(() => {
     const core: CoreSlots = {
@@ -68,7 +68,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     const componentSlots: SlotsType<DM, DD> = {
       ...chatIconSlots,
       ...slots,
-      firstMessage: slots?.firstMessage ?? HelloMessage,
+      firstMessage: slots?.firstMessage ?? InitialThreadMessage,
       thread: slots?.thread ?? ThreadRootContainer,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
@@ -121,12 +121,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     markdownH4: { variant: 'h4' },
     markdownH5: { variant: 'h5' },
     markdownH6: { variant: 'h6' },
-
     ...slotProps,
-    firstMessage: {
-      thread: slotProps?.firstMessage?.thread,
-      text: slotProps?.firstMessage?.text ?? helloMessage,
-    },
   }) as SlotPropsType<DM, DD>, [slotProps])
 
   return {
