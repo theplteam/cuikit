@@ -99,6 +99,7 @@ export const useThreadSendMessage = (
         role: ChatMessageOwner.USER,
         time: moment().unix(),
         parentId: parentMessage?.id,
+        tool: thread?.tool.value,
       });
 
       assistantMessage = new MessageModel({
