@@ -133,10 +133,6 @@ export class MessageModel<DM extends Message = Message> {
     return this.role === ChatMessageOwner.ASSISTANT;
   }
 
-  get tool() {
-    return this._data.tool;
-  }
-
   get content() {
     let data: Message['content'] = this.text;
 

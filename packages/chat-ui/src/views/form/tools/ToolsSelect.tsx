@@ -16,7 +16,7 @@ type ToolsSelectProps = {
 
 const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { enableTools, toolsList } = useChatContext();
+  const { enableTools, toolsList, onToolChanged } = useChatContext();
   const tool = useObserverValue(thread?.tool);
   const coreSlots = useChatCoreSlots();
   const isMobile = useMobile();
@@ -31,10 +31,9 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   };
 
   const handleSelect = (item: ToolType) => {
-    if (thread) {
-      if (tool?.id === item.id) thread.tool.value = undefined;
-      else thread.tool.value = item;
-    }
+    const newValue = tool?.id === item.id ? undefined : item;
+    if (thread) thread.tool.value = newValue;
+    onToolChanged?.(newValue);
     handleClose();
   };
 
@@ -75,7 +74,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
         <Chip
           icon={<tool.icon fontSize='small' />}
           label={isMobile ? undefined : tool.smallLabel}
-          onDelete={() => thread.tool.value = undefined}
+          onDelete={() => handleSelect(tool)}
         />
       ) : null}
     </Stack>
