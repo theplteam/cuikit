@@ -48,7 +48,11 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
    * Set your own waiting status for a chat response.
    */
-  setProgressStatus: (status: string) => void;
+  setProgressStatus: (status: string, inProgress?: boolean) => void;
+  /**
+   * Set text for specific message
+   */
+  setMessageText: (messageId: string, text: string) => void;
   /**
    * Get waiting status for a chat response.
    */
@@ -110,6 +114,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getConversationBlockHeight: () => 0,
     setMenuDrawerOpen: NOOP,
     setDeleteItem: NOOP,
+    setMessageText: NOOP,
   });
 
   React.useMemo(() => {
