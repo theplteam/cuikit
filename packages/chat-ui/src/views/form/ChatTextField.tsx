@@ -1,7 +1,5 @@
 import * as React from 'react';
 import InputBase, { InputBaseProps, inputBaseClasses } from '@mui/material/InputBase';
-import clsx from 'clsx';
-import { styled } from '@mui/material/styles';
 import { useElementRef } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import useEnterPress, { handleIgnoreEnterPress } from '../hooks/useEnterPress';
@@ -16,20 +14,6 @@ type Props = {
   disabled?: boolean;
   isTyping?: boolean;
 };
-
-const fullHeightClassname = 'PL-inputBase-fullHeight';
-
-const InputBaseStyled = styled(InputBase)(({ theme }) => ({
-  flex: 1,
-  padding: theme.spacing(1),
-  // если включить, то будет анимация увеличения размера, но глючит перенос на новую строку:
-  //  верхняя строчка в textarea добавляется моментально и вылезает за пределы textarea, а затем transition её догоняет
-  /*[`&:not(.${inputClasses.fullHeight})`]: {
-    [`& .${inputClasses.input}`]: {
-      transition: theme.transitions.create('height', { duration: theme.m3.sys.motion.duration.medium1 }),
-    },
-  },*/
-}));
 
 const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, isTyping }) => {
   const inputRef = useElementRef<HTMLInputElement>();
@@ -78,19 +62,17 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           overflowX: 'auto',
         }}
       >
-        <InputBaseStyled
+        <InputBase
           fullWidth
           multiline
-          className={clsx({ [fullHeightClassname]: expand })}
           placeholder={locale.textFieldPlaceholder}
           value={text}
           inputRef={inputRef}
-          size="small"
           sx={{
             flex: 1,
-            p: 1,
+            padding: (theme) => theme.spacing(1, 0),
             [`&& .${inputBaseClasses.input}`]: {
-              minHeight: expand ? '79vh' : 'auto',
+              minHeight: expand ? '78vh' : 'auto',
             },
           }}
           disabled={disabled}

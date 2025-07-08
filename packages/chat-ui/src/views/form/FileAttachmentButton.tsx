@@ -9,7 +9,6 @@ import { PhotoCameraIcon, FolderIcon, AttachFileIcon } from '../../icons';
 import { ChatViewConstants } from '../../views/ChatViewConstants';
 import AttachmentModel, { Attachment } from '../../models/AttachmentModel';
 import { langReplace } from '../../locale/langReplace';
-import { Stack } from '@mui/material';
 
 type Props = {
   attachments: AttachmentModel[];
@@ -129,13 +128,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   if (!enableFileAttachments) return null;
 
   return (
-    <Stack
-      alignItems="center"
-      justifyContent="center"
-      width={48}
-      height={40}
-      position="relative"
-    >
+    <div>
       <coreSlots.iconButton
         disabled={disabled}
         onClick={handleClick}
@@ -186,7 +179,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
         style={{ display: 'none' }}
         onChange={handleFileUpload}
       />
-    </Stack>
+    </div>
   );
 };
 

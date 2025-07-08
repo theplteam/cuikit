@@ -14,8 +14,8 @@ type Props = {
 
 const DivStyled = styled('div')(({ theme }) => ({
   position: 'absolute',
-  top: 4,
-  right: 4,
+  top: 8,
+  right: 8,
   transition: theme.transitions.create('opacity', { duration: motion.duration.short4 }),
 }));
 
@@ -26,7 +26,11 @@ const TextFieldExpandButton: React.FC<Props> = ({ expand, onClick, show }) => {
   return (
     <DivStyled style={{ opacity: show ? 1 : 0 }}>
       <Tooltip title={locale.innerRowExpand}>
-        <coreSlots.iconButton sx={{ transform: 'rotate(45deg)', width: '48px', height: '48px' }} disabled={!show} onClick={onClick}>
+        <coreSlots.iconButton
+          sx={{ transform: 'rotate(45deg)' }}
+          disabled={!show}
+          onClick={onClick}
+        >
           {expand ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
         </coreSlots.iconButton>
       </Tooltip>
