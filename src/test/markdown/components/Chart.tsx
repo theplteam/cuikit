@@ -1,3 +1,4 @@
+import React from 'react';
 import { XAxis, YAxis, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 type Props = {
@@ -12,7 +13,7 @@ const Chart: React.FC<Props> = ({ data }) => {
       <BarChart width={600} height={300} data={chartData}>
         <XAxis dataKey="name" />
         <YAxis />
-        <Bar dataKey="value" barSize={30} fill="#8884d8" />
+        <Bar dataKey="value" fill="#8884d8" isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
   );

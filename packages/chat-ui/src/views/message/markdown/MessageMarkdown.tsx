@@ -12,6 +12,7 @@ import { Message, Thread } from '../../../models';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
+import Skeleton from '@mui/material/Skeleton';
 
 type Props = {
   text: string;
@@ -41,6 +42,21 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
     });
   }, [inProgress]);
 
+  const customOverrides = React.useMemo(() => {
+    const obj = {};
+    customMarkdownComponents?.forEach((v) => {
+      const name = (v instanceof Object && 'name' in v) ? v.name : '';
+      const data = {
+        [name]: {
+          component: v,
+        }
+      };
+      Object.assign(obj, data);
+    });
+
+    return obj;
+  }, [customMarkdownComponents]);
+
   const paragraphSettings = React.useMemo(() => ({
     component: MarkdownParagraphParser,
     props: {
@@ -52,13 +68,25 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
 
   useSmoothManager(text, inProgress);
 
+  const markdownText = React.useMemo(() => {
+    if (!customMarkdownComponents?.length) return text;
+    const replacedText = inProgressProp ? text.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
+      const isSelfClosing = match.trim().endsWith('/>') || match.trim().endsWith('>');
+      if (!isSelfClosing) {
+        return `<Skeleton />`;
+      }
+      return match;
+    }) : text;
+    return replacedText;
+  }, [inProgressProp, customMarkdownComponents, text]);
+
   return (
     <MarkdownToJsx
       options={{
         forceBlock: true,
         forceWrapper: true,
         overrides: {
-          ...customMarkdownComponents,
+          ...customOverrides,
           a: {
             component: slots.markdownA,
             props: {
@@ -149,10 +177,14 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
           },
           p: paragraphSettings,
           span: paragraphSettings,
+          Skeleton: {
+            component: Skeleton,
+            props: { height: 60, variant: "rectangular" },
+          },
         },
       }}
     >
-      {text}
+      {markdownText}
     </MarkdownToJsx>
   );
 }

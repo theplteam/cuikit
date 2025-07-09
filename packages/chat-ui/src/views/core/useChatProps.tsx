@@ -181,9 +181,8 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   onShowAlert?: onShowAlertType;
   /**
    * Allows rendering arbitrary React components in markdown.
-   * `key` must match the name of the component.
    */
-  customMarkdownComponents?: { [key: string]: { component: React.ElementType } };
+  customMarkdownComponents?: React.ElementType[];
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

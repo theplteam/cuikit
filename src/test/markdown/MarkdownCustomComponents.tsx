@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   ChatPage,
-  useAssistantAnswerMock,
+  MessageSentParams,
   Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
@@ -35,15 +35,24 @@ const App: React.FC = () => {
     ]
   );
 
-  const { onUserMessageSent, handleStopMessageStreaming } =
-    useAssistantAnswerMock();
+  const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
+    const split = markdownString.split(' ');
+
+    for await (const chunk of split) {
+      await new Promise((resolve) => setTimeout(() => {
+        params.pushChunk(chunk + ' ');
+        resolve(true)
+      }, 200))
+    }
+
+    params.onFinish();
+  }, []);
 
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
         initialThread={threads[0]}
         threads={threads}
-        handleStopMessageStreaming={handleStopMessageStreaming}
         slotProps={{
           markdownH1: {
             variant: "h4",
@@ -58,11 +67,7 @@ const App: React.FC = () => {
             color: "primary",
           },
         }}
-        customMarkdownComponents={{
-          Chart: {
-            component: Chart,
-          },
-        }}
+        customMarkdownComponents={[Chart]}
         onUserMessageSent={onUserMessageSent}
       />
     </Box>
