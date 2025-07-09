@@ -14,7 +14,6 @@ Hello! Here is an example of a graph.
 <ReactComponent>
 <Chart data='[{"name": "Bar 1", "value": 100}, {"name": "Bar 2", "value": 200}, {"name": "Bar 3", "value": 300}, {"name": "Bar 4", "value": 400}, {"name": "Bar 5", "value": 500}]' />
 </ReactComponent>
-Hello! Here is an example of a graph. Hello! Here is an example of a graph. Hello! Here is an example of a graph.
 `;
 
 const App: React.FC = () => {
