@@ -72,11 +72,10 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
     if (!customMarkdownComponents?.length) return text;
     const replacedText = text.replace(/<ReactComponent>([\s\S]*?)(<\/ReactComponent>|$)/g, (match, inner) => {
       const hasClosing = match.trim().endsWith('</ReactComponent>');
-      console.log('inner', inner);
       if (!hasClosing) {
         return `<Skeleton />`;
       }
-      return inner.replace(/<\/ReactComponent>/g, '');
+      return inner;
     });
 
     return replacedText;
