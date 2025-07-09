@@ -70,15 +70,17 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;
-    const replacedText = inProgressProp ? text.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
-      const isSelfClosing = match.trim().endsWith('/>') || match.trim().endsWith('>');
-      if (!isSelfClosing) {
+    const replacedText = text.replace(/<ReactComponent>([\s\S]*?)(<\/ReactComponent>|$)/g, (match, inner) => {
+      const hasClosing = match.trim().endsWith('</ReactComponent>');
+      console.log('inner', inner);
+      if (!hasClosing) {
         return `<Skeleton />`;
       }
-      return match;
-    }) : text;
+      return inner.replace(/<\/ReactComponent>/g, '');
+    });
+
     return replacedText;
-  }, [inProgressProp, customMarkdownComponents, text]);
+  }, [customMarkdownComponents, text]);
 
   return (
     <MarkdownToJsx
