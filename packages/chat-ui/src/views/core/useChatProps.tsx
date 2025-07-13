@@ -179,6 +179,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * If this function is present, the default snackbar will not be shown; instead, this function will be called.
    */
   onShowAlert?: onShowAlertType;
+  /**
+   * Allows rendering arbitrary React components in markdown.
+   */
+  customMarkdownComponents?: React.ElementType[];
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату
