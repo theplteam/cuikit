@@ -9,7 +9,7 @@ const ThreadStructure = React.lazy(() => import('./common/ThreadStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
-const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
+const ThreadInteraction = React.lazy(() => import('./common/ThreadInteraction'));
 const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
 const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
 const UsingContext = React.lazy(() => import('./customization/UsingContext'));
@@ -25,6 +25,9 @@ const FileAttachmentError = React.lazy(() => import('./fileAttachment/FileAttach
 const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAttachmentProgress'));
 const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
+const HistoryBase = React.lazy(() => import('./customization/HistoryBase'));
+const ChatBase = React.lazy(() => import('./customization/ChatBase'));
+const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -49,7 +52,7 @@ const App: React.FC = () => {
       case 'api-reference': variant = ApiRefTest; break;
       case 'portal-list': variant = ThreadsListPortal; break;
       case 'context-usage': variant = UsingContext; break;
-      case 'thread-actions': variant = ThreadActions; break;
+      case 'thread-interaction': variant = ThreadInteraction; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
       case 'message-finishing': variant = MessagingFinishing; break;
@@ -63,6 +66,9 @@ const App: React.FC = () => {
       case 'message-attachment-progress': variant = FileAttachmentProgress; break;
       case 'message-attachment-restrictions': variant = FileAttachmentRestrictions; break;
       case 'snackbar': variant = ExternalSnackbar; break;
+      case 'history-base': variant = HistoryBase; break;
+      case 'chat-base': variant = ChatBase; break;
+      case 'thread-actions': variant = ThreadActions; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { MockComponent } from '../utils/MockComponent';
-import ListItemText, { ListItemTextProps } from '@mui/material/ListItemText';
 import Button, { type ButtonProps } from '@mui/material/Button';
 import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -35,7 +34,6 @@ export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 export type CoreSlots = {
   button: SlotValue<ButtonProps>;
   iconButton: SlotValue<IconButtonProps>;
-  listItemText: SlotValue<ListItemTextProps>;
   menuItem: SlotValue<MdMenuItemProps>;
 };
 
@@ -60,8 +58,6 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
       iconButton: coreSlots?.iconButton ?? IconButton,
-      // TODO: Props error
-      listItemText: coreSlots?.listItemText ?? ListItemText,
       menuItem: coreSlots?.menuItem ?? MdMenuItem,
     };
 
