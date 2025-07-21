@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
 import React from 'react';
 
 const StyledUl = styled('ul')(({ theme }) => ({
@@ -28,7 +27,7 @@ const StyledUl = styled('ul')(({ theme }) => ({
       marginTop: theme.spacing(1.5),
     },
   },
-  '&.rtl-marker li::before': {
+  '& li:dir(rtl)::before': {
     left: 'auto',
     right: theme.spacing(-3),
   },
@@ -53,25 +52,10 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
 }));
 
 const MessageMarkdownUl: React.FC<React.HTMLAttributes<HTMLUListElement>> = (props) => {
-  const checkRtlText = () => {
-    const rtlChars = /[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/;
-    const item = React.Children.toArray(props.children)[0];
-
-    if (item) {
-      const li = item as React.ReactElement;
-      const isRtl = rtlChars.test(li.props.children);
-      return isRtl;
-    }
-
-    return false;
-  };
-
-  const isRtl = checkRtlText();
 
   return (
     <StyledUl
       {...props}
-      className={clsx(props.className, { ['rtl-marker']: isRtl })}
     />
   );
 };
