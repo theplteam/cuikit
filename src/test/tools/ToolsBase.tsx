@@ -48,7 +48,6 @@ const App: React.FC = () => {
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
-        enableTools
         toolsList={toolsList}
         initialThread={threads[0]}
         threads={threads}

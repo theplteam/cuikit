@@ -16,7 +16,7 @@ type ToolsSelectProps = {
 
 const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { enableTools, toolsList, onToolChanged } = useChatContext();
+  const { toolsList, onToolChanged } = useChatContext();
   const tool = useObserverValue(thread?.tool);
   const coreSlots = useChatCoreSlots();
   const isMobile = useMobile();
@@ -37,7 +37,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
     handleClose();
   };
 
-  if (!enableTools) return null;
+  if (!toolsList?.length) return null;
 
   return (
     <Stack direction='row' gap={1} alignItems='center'>

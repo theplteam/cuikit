@@ -138,10 +138,6 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
-   * Enable chat tools
-   */
-  enableTools?: boolean;
-  /**
    * List of tools
    */
   toolsList?: ToolType[];
