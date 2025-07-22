@@ -33,7 +33,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   const handleSelect = (item: ToolType) => {
     const newValue = tool?.id === item.id ? undefined : item;
     if (thread) thread.tool.value = newValue;
-    onToolChanged?.(newValue);
+    onToolChanged?.(newValue?.id);
     handleClose();
   };
 

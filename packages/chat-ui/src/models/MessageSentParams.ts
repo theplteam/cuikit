@@ -1,4 +1,3 @@
-import { ToolType } from '../types/ToolType';
 import { IdType } from '../types';
 import { Attachment } from './AttachmentModel';
 import { InternalMessageType, Message } from './MessageModel';
@@ -14,8 +13,8 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
   assistantMessage: M,
   /** Thread history */
   history: M[],
-  /** Active tool */
-  tool: ToolType | undefined,
+  /** Active tool id */
+  toolId: IdType | undefined,
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.

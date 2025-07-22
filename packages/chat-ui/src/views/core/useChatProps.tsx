@@ -186,7 +186,7 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Callback fired when active tool changed.
    */
-  onToolChanged?: (tool: ToolType | undefined) => void;
+  onToolChanged?: (toolId: IdType | undefined) => void;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

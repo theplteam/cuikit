@@ -7,7 +7,6 @@ import { arrayLast } from '../utils/arrayUtils/arrayLast';
 import { v4 as uuid } from 'uuid';
 import MessageAttachmentsModel from './MessageAttachmentsModel';
 import { Attachment } from './AttachmentModel';
-import { ToolType } from '../types/ToolType';
 
 export enum ChatMessageOwner {
   USER = 'user',
@@ -34,7 +33,6 @@ export type Message = {
   parentId?: IdType;
   time?: number;
   rating?: RatingType;
-  tool?: ToolType;
   reasoning?: {
     title?: string;
     text?: string;
