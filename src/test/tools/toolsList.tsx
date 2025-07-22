@@ -3,33 +3,33 @@ import { BulbIcon, EditSparkleIcon, ImageCollectionIcon, InternetIcon, AnalysesI
 
 export const toolsList: ToolType[] = [
   {
-    id: 'image',
+    type: 'image',
     icon: ImageCollectionIcon,
     label: 'Create an image',
-    smallLabel: "Image",
+    chipLabel: "Image",
   },
   {
-    id: 'search',
+    type: 'search',
     icon: InternetIcon,
     label: 'Search the web',
-    smallLabel: "Search",
+    chipLabel: "Search",
   },
   {
-    id: 'canvas',
+    type: 'canvas',
     icon: EditSparkleIcon,
     label: 'Write text or code',
-    smallLabel: "Canvas",
+    chipLabel: "Canvas",
   },
   {
-    id: 'research',
+    type: 'research',
     icon: AnalysesIcon,
     label: 'Run deep research',
-    smallLabel: "Research"
+    chipLabel: "Research"
   },
   {
-    id: 'justify',
+    type: 'justify',
     icon: BulbIcon,
     label: 'Think more',
-    smallLabel: "Justify",
+    chipLabel: "Justify",
   },
 ];
