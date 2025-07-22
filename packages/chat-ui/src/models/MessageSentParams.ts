@@ -13,8 +13,8 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
   assistantMessage: M,
   /** Thread history */
   history: M[],
-  /** Active tool id */
-  toolId: IdType | undefined,
+  /** Active tool type */
+  toolType: string | undefined,
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.

@@ -28,7 +28,8 @@ import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
-import { Divider } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
 
 export type SlotValue<T = any> = React.JSXElementConstructor<T>;
@@ -72,6 +73,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       firstMessage: slots?.firstMessage ?? InitialThreadMessage,
       thread: slots?.thread ?? ThreadRootContainer,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
+      chip: slots?.chip ?? Chip,
 
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
       attachmentPreviewItem: slots?.attachmentPreviewItem ?? PreviewItemBox,

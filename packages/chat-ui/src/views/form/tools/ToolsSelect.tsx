@@ -1,12 +1,11 @@
 import * as React from 'react';
 import MdMenu from '../../../ui/menu/MdMenu';
-import { useChatCoreSlots } from '../../../views/core/ChatSlotsContext';
+import { useChatSlots } from '../../../views/core/ChatSlotsContext';
 import { SettingsIcon } from '../../../icons';
 import { ThreadModel } from '../../../models/ThreadModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import { useChatContext } from '../../../views/core/ChatGlobalContext';
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
 import { useMobile } from '../../../ui/Responsive';
 import { ToolType } from '../../../types/ToolType';
 
@@ -18,7 +17,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { toolsList, onToolChanged } = useChatContext();
   const tool = useObserverValue(thread?.tool);
-  const coreSlots = useChatCoreSlots();
+  const { coreSlots, slots } = useChatSlots();
   const isMobile = useMobile();
 
   const handleClose = () => setAnchorEl(null);
@@ -31,9 +30,9 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   };
 
   const handleSelect = (item: ToolType) => {
-    const newValue = tool?.id === item.id ? undefined : item;
-    if (thread) thread.tool.value = newValue;
-    onToolChanged?.(newValue?.id);
+    const newTool = tool?.type === item.type ? undefined : item;
+    if (thread) thread.tool.value = newTool;
+    onToolChanged?.(newTool?.type);
     handleClose();
   };
 
@@ -60,9 +59,9 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
         >
           {toolsList?.map((item) => (
             <coreSlots.menuItem
-              key={item.id}
+              key={item.type}
               startIcon={item.icon}
-              selected={item.id === tool?.id}
+              selected={item.type === tool?.type}
               onClick={() => handleSelect(item)}
             >
               {item.label}
@@ -71,9 +70,9 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
         </MdMenu>
       </div>
       {(tool && thread) ? (
-        <Chip
-          icon={<tool.icon fontSize='small' />}
-          label={isMobile ? undefined : tool.smallLabel}
+        <slots.chip
+          icon={tool.icon ? <tool.icon fontSize='small' /> : undefined}
+          label={isMobile ? undefined : (tool.chipLabel || tool.label)}
           onDelete={() => handleSelect(tool)}
         />
       ) : null}

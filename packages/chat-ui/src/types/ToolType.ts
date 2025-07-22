@@ -1,9 +1,8 @@
 import SvgIcon from "@mui/material/SvgIcon";
-import { IdType } from "../types";
 
 export type ToolType = {
-  id: IdType,
-  icon: typeof SvgIcon,
+  type: string,
   label: string,
-  smallLabel: string,
+  icon?: typeof SvgIcon,
+  chipLabel?: string,
 };
