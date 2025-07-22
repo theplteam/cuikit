@@ -3,9 +3,11 @@ import InputBase, { InputBaseProps, inputBaseClasses } from '@mui/material/Input
 import { useElementRef } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
 import useEnterPress, { handleIgnoreEnterPress } from '../hooks/useEnterPress';
-import SimpleScrollbar from '../../ui/SimpleScrollbar';
+import SimpleScrollbar, { simpleBarClasses } from '../../ui/SimpleScrollbar';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import TextFieldExpandButton from './TextFieldExpandButton';
+import { motion } from '../../utils/materialDesign/motion';
+import Box from '@mui/material/Box';
 
 type Props = {
   text: string;
@@ -19,6 +21,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
   const [expand, setExpand] = React.useState(false);
+  const [animating, setAnimating] = React.useState(false);
   const locale = useLocalizationContext();
 
   const isTablet = useTablet();
@@ -42,24 +45,42 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
 
   const showExpandButton = height > 75;
 
-  const handleExpand = () => {
+  const toggleExpand = () => {
     setExpand(!expand);
     inputRef.current?.focus();
   };
 
+  React.useEffect(() => {
+    setAnimating(true);
+    const timeout = setTimeout(() => {
+      setAnimating(false);
+    }, 250);
+
+    return () => clearTimeout(timeout);
+  }, [expand]);
+
   return (
-    <>
+    <Box
+      width="100%"
+      height="100%"
+      sx={{
+        [`& .${simpleBarClasses.track}`]: {
+          opacity: animating ? 0 : 1,
+        },
+      }}
+    >
       <TextFieldExpandButton
         show={showExpandButton}
         expand={expand}
-        onClick={handleExpand}
+        onClick={toggleExpand}
       />
       <SimpleScrollbar
         style={{
+          transition: `min-height ${motion.duration.medium1} ease`,
           height: expand ? '80vh' : undefined,
-          maxHeight: expand ? '80vh' : 160,
+          maxHeight: 160,
+          minHeight: expand ? '80vh' : 0,
           width: '100%',
-          overflowX: 'auto',
         }}
       >
         <InputBase
@@ -69,8 +90,6 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           value={text}
           inputRef={inputRef}
           sx={{
-            flex: 1,
-            cursor: 'default',
             padding: (theme) => theme.spacing(1),
             [`&& .${inputBaseClasses.input}`]: {
               minHeight: expand ? '78vh' : 'auto',
@@ -87,7 +106,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           {...inputProps}
         />
       </SimpleScrollbar>
-    </>
+    </Box>
   );
 };
 
