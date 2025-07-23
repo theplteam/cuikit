@@ -5,7 +5,6 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
-import { ToolType } from '../../types/ToolType';
 import { EventsEmitter, EventsEmitterMethods } from '../../models/EventsEmitter';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
