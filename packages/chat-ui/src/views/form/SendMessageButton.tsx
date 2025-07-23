@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Box from '@mui/material/Box';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { motion } from '../../utils/materialDesign/motion';
@@ -22,7 +23,7 @@ const SendMessageButton: React.FC<Props> = ({ onSendMessage, isTyping, disabled 
   };
 
   return (
-    <div>
+    <Box>
       <slots.sendMessageButton
         {...slotProps.sendMessageButton}
         disabled={disabled || (!handleStopMessageStreaming && !!isTyping)}
@@ -34,7 +35,7 @@ const SendMessageButton: React.FC<Props> = ({ onSendMessage, isTyping, disabled 
       >
         {(!!isTyping && !!handleStopMessageStreaming) ? <slots.stopStreamIcon /> : <slots.sendMessageIcon />}
       </slots.sendMessageButton>
-    </div>
+    </Box>
   );
 };
 

@@ -8,6 +8,7 @@ import { useLocalizationContext } from '../core/LocalizationContext';
 import TextFieldExpandButton from './TextFieldExpandButton';
 import { motion } from '../../utils/materialDesign/motion';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
 type Props = {
   text: string;
@@ -16,6 +17,14 @@ type Props = {
   disabled?: boolean;
   isTyping?: boolean;
 };
+
+const InputBaseStyled = styled(InputBase)(({ theme }) => ({
+  height: '100%',
+  [`&.${inputBaseClasses.root}`]: {
+    padding: theme.spacing(0, 4, 0, 1.5),
+    height: '100%',
+  },
+}))
 
 const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, isTyping }) => {
   const inputRef = useElementRef<HTMLInputElement>();
@@ -42,7 +51,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
     if (isTyping) setExpand(false);
   }, [isTyping]);
 
-  const showExpandButton = height > 75;
+  const showExpandButton = expand || height > 75;
 
   const toggleExpand = () => {
     setExpand(!expand);
@@ -57,6 +66,9 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
         [`& .${simpleBarClasses.content}`]: {
           height: '100%',
         },
+        [`& .${simpleBarClasses.contentWrapper}`]: {
+          height: expand ? '100% !important' : 'auto',
+        },
       }}
     >
       <TextFieldExpandButton
@@ -66,29 +78,21 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
       />
       <SimpleScrollbar
         style={{
-          transition: `min-height ${motion.duration.medium1} ease`,
-          height: expand ? '80vh' : undefined,
-          maxHeight: 160,
+          transition: `min-height ${motion.duration.medium1} ease, max-height ${motion.duration.medium1} ease`,
+          maxHeight: expand ? '80vh' : 160,
           minHeight: expand ? '80vh' : 0,
           width: '100%',
           marginTop: 8,
         }}
       >
-        <InputBase
+        <InputBaseStyled
           fullWidth
           multiline
           placeholder={locale.textFieldPlaceholder}
           value={text}
           inputRef={inputRef}
           sx={{
-            height: '100%',
-            [`&.${inputBaseClasses.root}`]: {
-              padding: (theme) => theme.spacing(0, 4, 0, 1.5),
-              cursor: 'default',
-              height: '100%',
-            },
             [`&& .${inputBaseClasses.input}`]: {
-              height: expand ? '100%' : 'auto',
               alignSelf: 'flex-start',
             },
           }}
