@@ -5,6 +5,7 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
+import { ToolType } from '../../types/ToolType';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -70,6 +71,10 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   setDeleteItem: (v: DD | undefined) => void,
   /**
+    * Set active tool. If there is no `threadId`, change the value of the current thread.
+    */
+  setActiveTool: (v: ToolType | undefined, threadId?: IdType) => void,
+  /**
     * Create new thread.
     */
   handleCreateNewThread?: () => DD,
@@ -113,6 +118,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
     setMenuDrawerOpen: NOOP,
+    setActiveTool: NOOP,
     setDeleteItem: NOOP,
     setMessageText: NOOP,
   });
