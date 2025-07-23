@@ -7,7 +7,6 @@ import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import { useChatContext } from '../../../views/core/ChatGlobalContext';
 import Stack from '@mui/material/Stack';
 import { useMobile } from '../../../ui/Responsive';
-import { ToolType } from '../../../types/ToolType';
 
 type ToolsSelectProps = {
   thread?: ThreadModel;
@@ -17,6 +16,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { toolsList, onToolChanged } = useChatContext();
   const tool = useObserverValue(thread?.tool);
+  const activeTool = toolsList?.find((t) => t.type === tool);
   const { coreSlots, slots } = useChatSlots();
   const isMobile = useMobile();
 
@@ -29,10 +29,10 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
     }
   };
 
-  const handleSelect = (item: ToolType) => {
-    const newTool = tool?.type === item.type ? undefined : item;
-    if (thread) thread.tool.value = newTool;
-    onToolChanged?.(newTool?.type);
+  const handleSelect = (type: string) => {
+    const newValue = tool === type ? undefined : type;
+    if (thread) thread.tool.value = newValue;
+    onToolChanged?.(newValue);
     handleClose();
   };
 
@@ -57,23 +57,23 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
           }}
           onClose={handleClose}
         >
-          {toolsList?.map((item) => (
+          {toolsList?.map(({ type, icon, label }) => (
             <coreSlots.menuItem
-              key={item.type}
-              startIcon={item.icon}
-              selected={item.type === tool?.type}
-              onClick={() => handleSelect(item)}
+              key={type}
+              startIcon={icon}
+              selected={type === tool}
+              onClick={() => handleSelect(type)}
             >
-              {item.label}
+              {label}
             </coreSlots.menuItem>
           ))}
         </MdMenu>
       </div>
-      {(tool && thread) ? (
+      {activeTool ? (
         <slots.chip
-          icon={tool.icon ? <tool.icon fontSize='small' /> : undefined}
-          label={isMobile ? undefined : (tool.chipLabel || tool.label)}
-          onDelete={() => handleSelect(tool)}
+          icon={activeTool.icon ? <activeTool.icon fontSize='small' /> : undefined}
+          label={isMobile ? undefined : (activeTool.chipLabel || activeTool.label)}
+          onDelete={() => handleSelect(activeTool.type)}
         />
       ) : null}
     </Stack>

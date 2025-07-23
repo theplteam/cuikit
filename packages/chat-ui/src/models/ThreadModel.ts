@@ -6,7 +6,6 @@ import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { MessageSentParams } from './MessageSentParams';
 import { IdType } from '../types';
-import { ToolType } from '../types/ToolType';
 
 export type NewMessageResponse = {
   user: Message,
@@ -45,7 +44,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly streamStatus = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
 
-  readonly tool = new ObservableReactValue<ToolType | undefined>(undefined);
+  readonly tool = new ObservableReactValue<string | undefined>(undefined);
 
   readonly helloMessage = new MessageModel({
     id: 'helloMessage' + randomId(),
