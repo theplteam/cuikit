@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import ToolsSelect from './tools/ToolsSelect';
-import FileAttachmentButton from './FileAttachmentButton';
 import AttachmentModel from '../../models/AttachmentModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import SendMessageButton from './SendMessageButton';
+import FileAttachmentBlock from './attachments/FileAttachmentBlock';
 
 type Props = {
   thread?: ThreadModel;
@@ -22,7 +22,7 @@ const RowInnerFooter: React.FC<Props> = ({ attachments, setAttachments, onSendMe
   return (
     <Stack direction='row' justifyContent='space-between' alignItems='center'>
       <Stack direction='row' alignItems='center'>
-        <FileAttachmentButton
+        <FileAttachmentBlock
           attachments={attachments}
           setAttachments={setAttachments}
           isTyping={isTyping}
