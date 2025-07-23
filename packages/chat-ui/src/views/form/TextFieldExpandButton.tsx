@@ -17,6 +17,7 @@ const DivStyled = styled('div')(({ theme }) => ({
   top: 8,
   right: 8,
   transition: theme.transitions.create('opacity', { duration: motion.duration.short4 }),
+  zIndex: 99,
 }));
 
 const TextFieldExpandButton: React.FC<Props> = ({ expand, onClick, show }) => {

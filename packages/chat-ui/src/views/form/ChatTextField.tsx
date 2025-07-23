@@ -81,6 +81,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           maxHeight: 160,
           minHeight: expand ? '80vh' : 0,
           width: '100%',
+          marginTop: 8,
         }}
       >
         <InputBase
@@ -91,7 +92,8 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           inputRef={inputRef}
           sx={{
             [`&.${inputBaseClasses.root}`]: {
-              padding: (theme) => theme.spacing(0, 1.5),
+              padding: (theme) => theme.spacing(0, 4, 0, 1.5),
+              cursor: 'default',
             },
             [`&& .${inputBaseClasses.input}`]: {
               minHeight: expand ? '78vh' : 'auto',
