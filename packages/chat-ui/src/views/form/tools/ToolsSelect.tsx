@@ -72,7 +72,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
       {activeTool ? (
         <slots.chip
           icon={activeTool.icon ? <activeTool.icon fontSize='small' /> : undefined}
-          label={(isMobile && activeTool.icon) ? undefined : (activeTool.chipLabel || activeTool.label)}
+          label={(isMobile && activeTool.icon) ? undefined : (activeTool.chipLabel ?? activeTool.label)}
           onDelete={() => handleSelect(activeTool.type)}
         />
       ) : null}
