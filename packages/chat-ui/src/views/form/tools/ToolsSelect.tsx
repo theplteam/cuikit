@@ -1,6 +1,6 @@
 import * as React from 'react';
 import MdMenu from '../../../ui/menu/MdMenu';
-import { useChatSlots } from '../../../views/core/ChatSlotsContext';
+import { useChatCoreSlots } from '../../../views/core/ChatSlotsContext';
 import { SettingsIcon } from '../../../icons';
 import { ThreadModel } from '../../../models/ThreadModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
@@ -10,14 +10,15 @@ import { useMobile } from '../../../ui/Responsive';
 
 type ToolsSelectProps = {
   thread?: ThreadModel;
+  isTyping?: boolean;
 };
 
-const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
+const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread, isTyping }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { toolsList, onToolChanged } = useChatContext();
   const tool = useObserverValue(thread?.tool);
   const activeTool = toolsList?.find((t) => t.type === tool);
-  const { coreSlots, slots } = useChatSlots();
+  const coreSlots = useChatCoreSlots();
   const isMobile = useMobile();
 
   const handleClose = () => setAnchorEl(null);
@@ -41,7 +42,7 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
   return (
     <Stack direction='row' gap={1} alignItems='center'>
       <div>
-        <coreSlots.iconButton onClick={toggleMenu}>
+        <coreSlots.iconButton disabled={isTyping} onClick={toggleMenu}>
           <SettingsIcon />
         </coreSlots.iconButton>
         <MdMenu
@@ -70,9 +71,10 @@ const ToolsSelect: React.FC<ToolsSelectProps> = ({ thread }) => {
         </MdMenu>
       </div>
       {activeTool ? (
-        <slots.chip
+        <coreSlots.chip
           icon={activeTool.icon ? <activeTool.icon fontSize='small' /> : undefined}
           label={(isMobile && activeTool.icon) ? undefined : (activeTool.chipLabel ?? activeTool.label)}
+          disabled={isTyping}
           onDelete={() => handleSelect(activeTool.type)}
         />
       ) : null}
