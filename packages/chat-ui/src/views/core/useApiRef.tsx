@@ -5,7 +5,6 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
-import { ToolType } from '../../types/ToolType';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -73,7 +72,7 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
     * Set active tool. If there is no `threadId`, change the value of the current thread.
     */
-  setActiveTool: (v: ToolType | undefined, threadId?: IdType) => void,
+  setActiveTool: (v: string | undefined, threadId?: IdType) => void,
   /**
     * Create new thread.
     */
