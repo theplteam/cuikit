@@ -79,7 +79,7 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
     * Set active tool. If there is no `threadId`, change the value of the current thread.
     */
-  setActiveTool: (v: ToolType | undefined, threadId?: IdType) => void,
+  setActiveTool: (v: string | undefined, threadId?: IdType) => void,
   /**
     * Create new thread.
     */

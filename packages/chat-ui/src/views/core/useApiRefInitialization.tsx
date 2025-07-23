@@ -5,7 +5,6 @@ import { Thread, ThreadModel } from '../../models';
 import { ChatPropsTypes } from './useChatProps';
 import { ApiManager } from './useApiManager';
 import internalApi from './history/internalApi';
-import { ToolType } from '../../types/ToolType';
 
 export const useApiRefInitialization = (
   apiManager: ApiManager,
@@ -63,14 +62,14 @@ export const useApiRefInitialization = (
       model.deleteItem.value = v;
     };
 
-    const setActiveTool = (v: ToolType | undefined, threadId?: IdType) => {
+    const setActiveTool = (v: string | undefined, threadId?: IdType) => {
       if (threadId) {
         const thread = model.list.value.find((t) => t.id === threadId);
         if (thread) thread.tool.value = v;
       } else if (model.currentThread.value) {
         model.currentThread.value.tool.value = v;
       }
-      props.onToolChanged?.(v?.type);
+      props.onToolChanged?.(v);
     };
 
     internalApi.value = { model };
