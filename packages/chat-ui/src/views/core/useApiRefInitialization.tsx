@@ -87,5 +87,6 @@ export const useApiRefInitialization = (
     apiManager.setMethod('deleteThread', handleDeleteThread);
     apiManager.setMethod('getCurrentThread', getCurrentThread);
     apiManager.setMethod('getThreadById', getThreadById);
+    apiManager.setMethod('emitter', model.emitter.getMethods());
   }, [props, model]);
 }

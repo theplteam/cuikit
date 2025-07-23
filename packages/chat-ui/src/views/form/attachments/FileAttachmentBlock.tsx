@@ -18,7 +18,7 @@ type Props = {
 
 const FileAttachmentBlock: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
   const { slots } = useChatSlots();
-  const { enableFileAttachments, acceptableFileFormat, maxFileSizeBytes, maxFileCount, onFileAttached, snackbar } = useChatContext();
+  const { enableFileAttachments, acceptableFileFormat, maxFileSizeBytes, maxFileCount, onFileAttached, snackbar, model } = useChatContext();
   const { thread } = useThreadContext();
 
   const cameraRef = React.useRef<HTMLInputElement>(null);
@@ -129,6 +129,8 @@ const FileAttachmentBlock: React.FC<Props> = ({ attachments, setAttachments, isT
 
     if (fileRef.current?.value) fileRef.current.value = '';
     if (cameraRef.current?.value) cameraRef.current.value = '';
+
+    model.emitter.emit('onFilesAttached', { ids: fileAttachments.map(v => v.id) })
   };
 
   const disabled = attachments.length >= ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE || isTyping || !thread;
