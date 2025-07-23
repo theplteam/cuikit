@@ -23,7 +23,7 @@ const inputClasses = {
 const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   flex: 1,
   [`&.${inputBaseClasses.root}`]: {
-    padding: theme.spacing(1, 1.5, 0, 1.5),
+    padding: theme.spacing(0, 1.5),
   }
   // если включить, то будет анимация увеличения размера, но глючит перенос на новую строку:
   //  верхняя строчка в textarea добавляется моментально и вылезает за пределы textarea, а затем transition её догоняет
@@ -62,6 +62,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
         maxHeight: 160,
         width: '100%',
         overflowX: 'auto',
+        marginTop: 8,
       }}
     >
       <InputBaseStyled
