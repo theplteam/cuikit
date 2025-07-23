@@ -70,6 +70,7 @@ export class MessageSender<DM extends Message> {
       history: this.thread.messages.currentMessages.value.map(getInternalMessage),
       message: internalUserMessage,
       assistantMessage: getInternalMessage(message),
+      toolType: this.thread.tool.value?.type,
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,

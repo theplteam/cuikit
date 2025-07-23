@@ -17,6 +17,7 @@ import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
+import { ToolType } from '../../types/ToolType';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -137,10 +138,13 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
+   * List of tools
+   */
+  toolsList?: ToolType[];
+  /**
    * Enable user's ability to add files in messages
    */
   enableFileAttachments?: boolean;
-
   /**
    * Prevent the user from deleting/adding files during message editing
    */
@@ -183,6 +187,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * If this function is present, the default snackbar will not be shown; instead, this function will be called.
    */
   onShowAlert?: onShowAlertType;
+  /**
+   * Callback fired when active tool changed.
+   */
+  onToolChanged?: (type: string | undefined) => void;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

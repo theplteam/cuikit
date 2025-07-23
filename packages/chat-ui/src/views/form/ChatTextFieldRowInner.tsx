@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatTextField from './ChatTextField';
 import Stack from '@mui/material/Stack';
-import SendMessageButton from './SendMessageButton';
 import { inputBaseClasses } from '@mui/material/InputBase';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadModel } from '../../models/ThreadModel';
@@ -13,7 +12,7 @@ import { Message } from '../../models';
 import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
-import FileAttachmentBlock from './attachments/FileAttachmentBlock';
+import RowInnerFooter from './RowInnerFooter';
 
 type Props = {
   thread?: ThreadModel;
@@ -70,24 +69,20 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   return (
     <StackStyled gap={attachments.length ? 1 : 0}>
       {previewComponent}
-      <Stack direction="row" alignItems="flex-end" gap={1}>
-        <FileAttachmentBlock
-          attachments={attachments}
-          setAttachments={setAttachments}
-          isTyping={isTyping}
-        />
-        <ChatTextField
-          text={text}
-          setText={setText}
-          disabled={disabledTextField}
-          onSendMessage={onSendMessage}
-        />
-        <SendMessageButton
-          disabled={disabledButton}
-          isTyping={isTyping}
-          onSendMessage={onSendMessage}
-        />
-      </Stack>
+      <ChatTextField
+        text={text}
+        setText={setText}
+        disabled={disabledTextField}
+        onSendMessage={onSendMessage}
+      />
+      <RowInnerFooter
+        thread={thread}
+        attachments={attachments}
+        setAttachments={setAttachments}
+        isTyping={isTyping}
+        disabledSendMessage={disabledButton}
+        onSendMessage={onSendMessage}
+      />
     </StackStyled>
   );
 };
