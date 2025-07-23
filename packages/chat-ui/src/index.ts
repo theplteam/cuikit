@@ -2,7 +2,6 @@ import Chat from './views/Chat';
 import ChatPage from './views/chatUi/ChatPage';
 import History from './views/leftContainer/History';
 import ChatLicenseInfo from './views/utils/ChatLicenseInfo';
-import { NewChatButton, NewChatIconButton, useChatContext } from './views';
 import { useThreadContext } from './views/thread/ThreadContext';
 import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
 import { useChatApiRef } from './views/hooks/useChatApiRef';
@@ -15,6 +14,7 @@ import MobileHistory from './views/leftContainer/MobileHistory';
 
 export * from './models';
 export * from './views/adapter';
+export * from './views';
 // TODO: Hard fix
 export * from './temporalExports';
 
@@ -25,9 +25,6 @@ export {
   ChatPage,
   History,
   MobileHistory,
-  NewChatButton,
-  NewChatIconButton,
-  useChatContext,
   useThreadContext,
   ChatLicenseInfo,
   useAssistantAnswerMock,

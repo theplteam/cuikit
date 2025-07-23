@@ -8,12 +8,12 @@ import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadModel } from '../../models/ThreadModel';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
-import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { Message } from '../../models';
 import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
+import FileAttachmentBlock from './attachments/FileAttachmentBlock';
 
 type Props = {
   thread?: ThreadModel;
@@ -71,7 +71,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     <StackStyled gap={attachments.length ? 1 : 0}>
       {previewComponent}
       <Stack direction="row" alignItems="flex-end" gap={1}>
-        <FileAttachmentButton
+        <FileAttachmentBlock
           attachments={attachments}
           setAttachments={setAttachments}
           isTyping={isTyping}

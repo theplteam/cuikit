@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { useChatCoreSlots } from '../core/ChatSlotsContext';
-import { useMobile } from '../../ui/Responsive';
-import { useLocalizationContext } from '../core/LocalizationContext';
-import MdMenu from '../../ui/menu/MdMenu';
-import { useChatContext } from '../core/ChatGlobalContext';
-import { useThreadContext } from '../thread/ThreadContext';
-import { PhotoCameraIcon, FolderIcon, AttachFileIcon } from '../../icons';
-import { ChatViewConstants } from '../../views/ChatViewConstants';
-import AttachmentModel, { Attachment } from '../../models/AttachmentModel';
-import { langReplace } from '../../locale/langReplace';
+import AttachmentModel from '../../../models/AttachmentModel';
+import { useChatSlots } from '../../core/ChatSlotsContext';
+import { useChatContext } from '../../core/ChatGlobalContext';
+import { useThreadContext } from '../../thread/ThreadContext';
+import { useLocalizationContext } from '../../core/LocalizationContext';
+import { ChatViewConstants } from '../../ChatViewConstants';
+import { langReplace } from '../../../locale/langReplace';
+import { Attachment } from '../../../models';
 import { Stack } from '@mui/material';
+import { FileAttachmentButtonFilesConfig } from './FileAttachmentButton';
 
 type Props = {
   attachments: AttachmentModel[];
@@ -17,25 +16,41 @@ type Props = {
   isTyping?: boolean;
 };
 
-const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
-  const coreSlots = useChatCoreSlots();
+const FileAttachmentBlock: React.FC<Props> = ({ attachments, setAttachments, isTyping }) => {
+  const { slots } = useChatSlots();
   const { enableFileAttachments, acceptableFileFormat, maxFileSizeBytes, maxFileCount, onFileAttached, snackbar } = useChatContext();
   const { thread } = useThreadContext();
 
   const cameraRef = React.useRef<HTMLInputElement>(null);
   const fileRef = React.useRef<HTMLInputElement>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const isMobile = useMobile();
   const locale = useLocalizationContext();
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (isMobile) {
-      setAnchorEl(event.currentTarget);
-      return;
+  const onOpenFileDialog = (config?: FileAttachmentButtonFilesConfig) => {
+    if (fileRef.current) {
+      if (config?.acceptableFileFormat) {
+        fileRef.current.setAttribute('accept', accetableFormatToString(config?.acceptableFileFormat));
+      }
+
+      if (config?.multiple === false) {
+        fileRef.current?.removeAttribute('multiple');
+      }
+
+      fileRef.current?.click();
+
+      if (config?.acceptableFileFormat) {
+        fileRef.current.setAttribute('accept', accetableFormatToString(acceptableFileFormat));
+      }
+
+      if (config?.multiple === false) {
+        fileRef.current.setAttribute('multiple', 'true');
+      }
     }
-    fileRef.current?.click();
-  };
+  }
+
+  const onOpenDeviceCamera = () => {
+    cameraRef.current?.click();
+  }
 
   const checkType = (file: File, allowedTypes: string[]) => {
     const fileType = file.type;
@@ -114,17 +129,10 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     if (fileRef.current?.value) fileRef.current.value = '';
     if (cameraRef.current?.value) cameraRef.current.value = '';
-    if (isMobile) setAnchorEl(null);
   };
 
   const disabled = attachments.length >= ChatViewConstants.MAX_ATTACHMENTS_IN_MESSAGE || isTyping || !thread;
-  const inputAccept = React.useMemo(() => {
-    if (!acceptableFileFormat) return '*';
-    if (Array.isArray(acceptableFileFormat)) {
-      return acceptableFileFormat.map((f) => ((f.includes('/') || f.includes('.')) ? f : `${f}/*`)).join(',');
-    }
-    return acceptableFileFormat;
-  }, [acceptableFileFormat]);
+  const inputAccept = React.useMemo(() => accetableFormatToString(acceptableFileFormat), [acceptableFileFormat]);
 
   if (!enableFileAttachments) return null;
 
@@ -136,38 +144,11 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
       height={40}
       position="relative"
     >
-      <coreSlots.iconButton
+      <slots.attachmentFormButton
         disabled={disabled}
-        onClick={handleClick}
-      >
-        <AttachFileIcon />
-      </coreSlots.iconButton>
-      <MdMenu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        onClose={() => setAnchorEl(null)}
-      >
-        <coreSlots.menuItem
-          startIcon={PhotoCameraIcon}
-          onClick={() => cameraRef.current?.click()}
-        >
-          {locale.attachmentImageShot}
-        </coreSlots.menuItem>
-        <coreSlots.menuItem
-          startIcon={FolderIcon}
-          onClick={() => fileRef.current?.click()}
-        >
-          {locale.attachmentImageGallery}
-        </coreSlots.menuItem>
-      </MdMenu>
+        onOpenDeviceCamera={onOpenDeviceCamera}
+        onOpenFileDialog={onOpenFileDialog}
+      />
       <input
         ref={cameraRef}
         capture="environment"
@@ -190,4 +171,12 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
   );
 };
 
-export default FileAttachmentButton;
+const accetableFormatToString = (acceptableFileFormat: string | string[] | undefined) => {
+  if (!acceptableFileFormat) return '*';
+  if (Array.isArray(acceptableFileFormat)) {
+    return acceptableFileFormat.map((f) => ((f.includes('/') || f.includes('.')) ? f : `${f}/*`)).join(',');
+  }
+  return acceptableFileFormat;
+};
+
+export default FileAttachmentBlock;

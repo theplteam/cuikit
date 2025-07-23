@@ -30,6 +30,7 @@ import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock'
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
 import { Divider } from '@mui/material';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
+import FileAttachmentButton from '../form/attachments/FileAttachmentButton';
 
 export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -76,6 +77,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
       attachmentPreviewItem: slots?.attachmentPreviewItem ?? PreviewItemBox,
       attachmentPreviewError: slots?.attachmentPreviewError ?? PreviewErrorBox,
+      attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
       // MARKDOWN
       markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
       markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
