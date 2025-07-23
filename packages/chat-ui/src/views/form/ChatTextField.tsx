@@ -21,7 +21,6 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
   const [expand, setExpand] = React.useState(false);
-  const [animating, setAnimating] = React.useState(false);
   const locale = useLocalizationContext();
 
   const isTablet = useTablet();
@@ -50,22 +49,13 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
     inputRef.current?.focus();
   };
 
-  React.useEffect(() => {
-    setAnimating(true);
-    const timeout = setTimeout(() => {
-      setAnimating(false);
-    }, 250);
-
-    return () => clearTimeout(timeout);
-  }, [expand]);
-
   return (
     <Box
       width="100%"
       height="100%"
       sx={{
-        [`& .${simpleBarClasses.track}`]: {
-          opacity: animating ? 0 : 1,
+        [`& .${simpleBarClasses.content}`]: {
+          height: '100%',
         },
       }}
     >
@@ -91,12 +81,15 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           value={text}
           inputRef={inputRef}
           sx={{
+            height: '100%',
             [`&.${inputBaseClasses.root}`]: {
               padding: (theme) => theme.spacing(0, 4, 0, 1.5),
               cursor: 'default',
+              height: '100%',
             },
             [`&& .${inputBaseClasses.input}`]: {
-              minHeight: expand ? '78vh' : 'auto',
+              height: expand ? '100%' : 'auto',
+              alignSelf: 'flex-start',
             },
           }}
           disabled={disabled}
