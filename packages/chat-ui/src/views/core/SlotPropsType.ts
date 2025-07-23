@@ -11,6 +11,8 @@ import type { MessagePaginationProps } from '../message/MessagePagination';
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
+import { FileAttachmentButtonProps } from '../form/attachments/FileAttachmentButton';
+import { ChipProps } from '@mui/material/Chip';
 
 type ChildrenProps = React.PropsWithChildren;
 
@@ -27,6 +29,20 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   sendMessageButton: IconButtonProps;
 
   messageRowInner: { thread: DD } & any;
+  /**
+   * Container for attachment preview item.
+   */
+  attachmentPreviewItem: BoxProps;
+  /**
+   * Container for attachment preview item with error.
+   */
+  attachmentPreviewError: BoxProps;
+  /**
+   * Chip component
+   */
+  chip: ChipProps;
+
+  attachmentFormButton: FileAttachmentButtonProps;
 
   // MESSAGE
   /**

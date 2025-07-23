@@ -120,3 +120,7 @@ export const UnfoldMoreIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
 export const UnfoldLessIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
   d: "M7.41 18.59 8.83 20 12 16.83 15.17 20l1.41-1.41L12 14zm9.18-13.18L15.17 4 12 7.17 8.83 4 7.41 5.41 12 10z"
 }), 'UnfoldLess');
+
+export const SettingsIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
+  d: "M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z",
+}), 'Settings');

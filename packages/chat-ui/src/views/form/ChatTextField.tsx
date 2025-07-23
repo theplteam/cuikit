@@ -90,7 +90,9 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
           value={text}
           inputRef={inputRef}
           sx={{
-            padding: (theme) => theme.spacing(1),
+            [`&.${inputBaseClasses.root}`]: {
+              padding: (theme) => theme.spacing(0, 1.5),
+            },
             [`&& .${inputBaseClasses.input}`]: {
               minHeight: expand ? '78vh' : 'auto',
             },

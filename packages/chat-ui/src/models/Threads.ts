@@ -4,6 +4,7 @@ import { ThreadModel, Thread } from './ThreadModel';
 import { AdapterType } from '../views/adapter/AdapterType';
 import { MessageSentParams } from './MessageSentParams';
 import { ThreadListCache } from './ThreadListCache';
+import { EventsEmitter } from './EventsEmitter';
 
 export class Threads<DM extends Message, DD extends Thread<DM>> {
   readonly list = new ObservableReactValue<ThreadModel<DM, DD>[]>([]);
@@ -15,6 +16,8 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
   readonly menuDrawerOpen = new ObservableReactValue(false);
 
   readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
+
+  readonly emitter = new EventsEmitter();
 
   constructor(
     adapter: AdapterType,
