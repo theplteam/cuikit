@@ -12,7 +12,6 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
 import { FileAttachmentButtonProps } from '../form/attachments/FileAttachmentButton';
-import { ChipProps } from '@mui/material/Chip';
 
 type ChildrenProps = React.PropsWithChildren;
 
@@ -37,10 +36,6 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Container for attachment preview item with error.
    */
   attachmentPreviewError: BoxProps;
-  /**
-   * Chip component
-   */
-  chip: ChipProps;
 
   attachmentFormButton: FileAttachmentButtonProps;
 

@@ -27,7 +27,7 @@ const RowInnerFooter: React.FC<Props> = ({ attachments, setAttachments, onSendMe
           setAttachments={setAttachments}
           isTyping={isTyping}
         />
-        <ToolsSelect thread={thread} />
+        <ToolsSelect thread={thread} isTyping={isTyping} />
       </Stack>
       <SendMessageButton
         disabled={disabledSendMessage}

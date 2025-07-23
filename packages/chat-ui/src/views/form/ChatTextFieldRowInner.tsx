@@ -67,7 +67,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   ), [attachments, thread]);
 
   return (
-    <StackStyled gap={attachments.length ? 1 : 0}>
+    <StackStyled>
       {previewComponent}
       <ChatTextField
         text={text}

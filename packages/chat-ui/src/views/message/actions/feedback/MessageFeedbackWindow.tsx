@@ -2,7 +2,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import InputBase from '@mui/material/InputBase';
-import { useChatSlots } from '../../../core/ChatSlotsContext';
+import { useChatCoreSlots } from '../../../core/ChatSlotsContext';
 import { CloseIcon } from '../../../../icons';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -23,7 +23,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
 
   const locale = useLocalizationContext();
   const { onSendMessageFeedback, feedbackLikeOptions, feedbackDislikeOptions } = useChatContext();
-  const { coreSlots, slots } = useChatSlots();
+  const coreSlots = useChatCoreSlots();
 
   const handelClear = () => {
     setFeedback('');
@@ -96,7 +96,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           const isActive = tags.find((t) => t.id === tag.id);
           return (
             <Box key={tag.id}>
-              <slots.chip
+              <coreSlots.chip
                 label={tag.label}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{

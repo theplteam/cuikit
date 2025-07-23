@@ -28,7 +28,7 @@ import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
-import Chip from '@mui/material/Chip';
+import Chip, { ChipProps } from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
 import FileAttachmentButton from '../form/attachments/FileAttachmentButton';
@@ -40,6 +40,7 @@ export type CoreSlots = {
   iconButton: SlotValue<IconButtonProps>;
   listItemText: SlotValue<ListItemTextProps>;
   menuItem: SlotValue<MdMenuItemProps>;
+  chip: SlotValue<ChipProps>;
 };
 
 export type SlotsType<DM extends Message, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
@@ -63,6 +64,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
       iconButton: coreSlots?.iconButton ?? IconButton,
+      chip: coreSlots?.chip ?? Chip,
       // TODO: Props error
       listItemText: coreSlots?.listItemText ?? ListItemText,
       menuItem: coreSlots?.menuItem ?? MdMenuItem,
@@ -74,7 +76,6 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       firstMessage: slots?.firstMessage ?? InitialThreadMessage,
       thread: slots?.thread ?? ThreadRootContainer,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
-      chip: slots?.chip ?? Chip,
 
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
       attachmentPreviewItem: slots?.attachmentPreviewItem ?? PreviewItemBox,
