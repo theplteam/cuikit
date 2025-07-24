@@ -44,6 +44,15 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly streamStatus = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
 
+  readonly tool = new ObservableReactValue<string | undefined>(undefined);
+
+  readonly helloMessage = new MessageModel({
+    id: 'helloMessage' + randomId(),
+    content: '',
+    role: ChatMessageOwner.ASSISTANT,
+    time: 0
+  });
+
   /**
    * We can pass threads with empty history to improve performance
    * When opening such a thread, we need to call the getFullThread method to load the history

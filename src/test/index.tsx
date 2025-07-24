@@ -28,6 +28,7 @@ const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'))
 const HistoryBase = React.lazy(() => import('./customization/HistoryBase'));
 const ChatBase = React.lazy(() => import('./customization/ChatBase'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
+const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -69,6 +70,7 @@ const App: React.FC = () => {
       case 'history-base': variant = HistoryBase; break;
       case 'chat-base': variant = ChatBase; break;
       case 'thread-actions': variant = ThreadActions; break;
+      case 'tools': variant = ToolsBase; break;
     }
 
     // console.log(`componentName: ${componentName}`, !!variant);
