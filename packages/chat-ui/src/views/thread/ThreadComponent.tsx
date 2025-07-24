@@ -21,6 +21,7 @@ type Props = {
   enableBranches: boolean | undefined;
   apiManager: ApiManager;
   initialThread: Thread<Message> | undefined;
+  className?: string;
 };
 
 const MessagesRowStyled = styled(Stack)(({ theme }) => ({
@@ -40,7 +41,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   background: theme.palette.background.paper,
 }));
 
-const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, loading, apiManager, enableBranches, initialThread }: Props) => {
+const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, className, loading, apiManager, enableBranches, initialThread }: Props) => {
   const scrollApiRef = React.useRef<ChatScrollApiRef>({ handleBottomScroll: NOOP });
 
   const {
@@ -78,7 +79,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
       }}
       scrollRef={scrollApiRef}
     >
-      <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread}>
+      <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread} className={className}>
         <MessagesRowStyled
           justifyContent={thread?.messages.length ? 'stretch' : 'center'}
         >
