@@ -32,10 +32,11 @@ const InitialThreadMessage: React.FC<Props> = ({ thread }) => {
   return (
     <ChatMessageComponent
       key="helloMessage"
-      isLatest={messageConfig.stream}
-      message={message}
+      isLatest={false}
       isFirst={false}
+      message={message}
       thread={thread}
+      forceStream={messageConfig.stream}
       enableAssistantActions={false}
     />
   );

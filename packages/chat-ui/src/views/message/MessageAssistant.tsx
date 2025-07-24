@@ -24,6 +24,7 @@ type Props = {
   thread: ThreadModel;
   isLatest?: boolean;
   elevation?: boolean;
+  forceStream?: boolean;
 };
 
 const {
@@ -64,7 +65,7 @@ const MessageContainerStyled = styled(MessageContainer)(() => ({
   }*/
 }));
 
-const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation, forceStream }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -127,7 +128,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
             thread={thread}
             messageText={text}
             showStatus={!!isLatest && (index === texts.length - 1)}
-            inProgress={!!isLatest && !!typing}
+            inProgress={forceStream || (!!isLatest && !!typing)}
           />
         ))}
       </Stack>
