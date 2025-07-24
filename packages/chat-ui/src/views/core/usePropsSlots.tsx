@@ -28,6 +28,7 @@ import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
+import MessageMarkdownWrapper from '../message/markdown/MessageMarkdownWrapper';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
@@ -82,6 +83,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       attachmentPreviewError: slots?.attachmentPreviewError ?? PreviewErrorBox,
       attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
       // MARKDOWN
+      markdownWrapper: slots?.markdownWrapper ?? MessageMarkdownWrapper,
       markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
       markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
       markdownA: slots?.markdownA ?? Link,
@@ -130,6 +132,10 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     markdownH5: { variant: 'h5' },
     markdownH6: { variant: 'h6' },
     ...slotProps,
+    markdownCodeWrapper: {
+      dir: 'ltr',
+      ...slotProps?.markdownCodeWrapper,
+    },
   }) as SlotPropsType<DM, DD>, [slotProps])
 
   return {
