@@ -2,18 +2,17 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ChatTextField from './ChatTextField';
 import Stack from '@mui/material/Stack';
-import SendMessageButton from './SendMessageButton';
 import { inputBaseClasses } from '@mui/material/InputBase';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadModel } from '../../models/ThreadModel';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
-import FileAttachmentButton from './FileAttachmentButton';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { Message } from '../../models';
 import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
+import RowInnerFooter from './RowInnerFooter';
 
 type Props = {
   thread?: ThreadModel;
@@ -68,26 +67,22 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   ), [attachments, thread]);
 
   return (
-    <StackStyled gap={attachments.length ? 1 : 0}>
+    <StackStyled>
       {previewComponent}
-      <Stack direction="row" alignItems="flex-end" gap={1}>
-        <FileAttachmentButton
-          attachments={attachments}
-          setAttachments={setAttachments}
-          isTyping={isTyping}
-        />
-        <ChatTextField
-          text={text}
-          setText={setText}
-          disabled={disabledTextField}
-          onSendMessage={onSendMessage}
-        />
-        <SendMessageButton
-          disabled={disabledButton}
-          isTyping={isTyping}
-          onSendMessage={onSendMessage}
-        />
-      </Stack>
+      <ChatTextField
+        text={text}
+        setText={setText}
+        disabled={disabledTextField}
+        onSendMessage={onSendMessage}
+      />
+      <RowInnerFooter
+        thread={thread}
+        attachments={attachments}
+        setAttachments={setAttachments}
+        isTyping={isTyping}
+        disabledSendMessage={disabledButton}
+        onSendMessage={onSendMessage}
+      />
     </StackStyled>
   );
 };

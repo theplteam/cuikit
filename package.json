@@ -17,6 +17,7 @@
     "@google/genai": "^0.13.0",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
+    "emittery": "^1.2.0",
     "markdown-to-jsx": "^7.7.6",
     "md5": "^2.3.0",
     "moment": "^2.30.1",

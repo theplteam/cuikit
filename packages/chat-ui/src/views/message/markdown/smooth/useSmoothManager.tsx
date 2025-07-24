@@ -16,7 +16,7 @@ class SmoothManager {
   // Adding a small delay at the start to allow elements to render correctly
   private firstDelayValueMs = 500;
 
-  constructor() {}
+  constructor() { }
 
   check = async () => {
     if (this.ran) return;

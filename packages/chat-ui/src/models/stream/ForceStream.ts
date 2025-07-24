@@ -1,3 +1,4 @@
+import { MessageModel } from '../../models/MessageModel';
 import { PromiseUtils } from '../../utils/PromiseUtils';
 import { arrayChunk } from '../../utils/arrayUtils/arrayChunk';
 import { randomInt } from '../../utils/numberUtils/randomInt';
@@ -16,7 +17,7 @@ export class ForceStream {
 
   constructor(
     private _text: string,
-    private model?: { text: string },
+    private model?: MessageModel,
     private onPushTextPart?: (text: string) => void,
   ) {}
 
@@ -57,6 +58,7 @@ export class ForceStream {
         randomInt(100, 300),
       )
     } else {
+      if (this.model) this.model.typing.value = false;
       this._promise?.resolve(true);
     }
   }

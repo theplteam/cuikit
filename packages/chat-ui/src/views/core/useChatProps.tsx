@@ -17,6 +17,7 @@ import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
+import { ToolType } from '../../types/ToolType';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -137,10 +138,13 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
+   * List of tools
+   */
+  toolsList?: ToolType[];
+  /**
    * Enable user's ability to add files in messages
    */
   enableFileAttachments?: boolean;
-
   /**
    * Prevent the user from deleting/adding files during message editing
    */
@@ -176,6 +180,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   getConversationBlockHeightMin?: (calculatedHeight: number) => number;
   /**
+   * The function outputs the first message in the thread.
+   */
+  initialThreadMessage?: (threadId: IdType) => { text: string, stream: boolean } | undefined;
+  /**
    * If this function is present, the default snackbar will not be shown; instead, this function will be called.
    */
   onShowAlert?: onShowAlertType;
@@ -183,6 +191,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Allows rendering arbitrary React components in markdown.
    */
   customMarkdownComponents?: React.ElementType[];
+  /**
+   * Callback fired when active tool changed.
+   */
+  onToolChanged?: (type: string | undefined) => void;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату
@@ -212,10 +224,6 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
   apiRef: React.MutableRefObject<ApiRefType<DM, DD> | null>;
-  /**
-   * Show a welcome message at the beginning of the thread.
-   */
-  helloMessage?: string
 }> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {

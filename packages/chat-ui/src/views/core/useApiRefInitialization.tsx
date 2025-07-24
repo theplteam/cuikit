@@ -62,8 +62,19 @@ export const useApiRefInitialization = (
       model.deleteItem.value = v;
     };
 
+    const setActiveTool = (v: string | undefined, threadId?: IdType) => {
+      if (threadId) {
+        const thread = model.list.value.find((t) => t.id === threadId);
+        if (thread) thread.tool.value = v;
+      } else if (model.currentThread.value) {
+        model.currentThread.value.tool.value = v;
+      }
+      props.onToolChanged?.(v);
+    };
+
     internalApi.value = { model };
 
+    apiManager.setMethod('setActiveTool', setActiveTool);
     apiManager.setMethod('setMenuDrawerOpen', setMenuDrawerOpen);
     apiManager.setMethod('setDeleteItem', setDeleteItem);
     apiManager.setMethod('handleCreateNewThread', props.handleCreateNewThread ?? ThreadModel.createEmptyData);
@@ -75,5 +86,6 @@ export const useApiRefInitialization = (
     apiManager.setMethod('deleteThread', handleDeleteThread);
     apiManager.setMethod('getCurrentThread', getCurrentThread);
     apiManager.setMethod('getThreadById', getThreadById);
+    apiManager.setMethod('emitter', model.emitter.getMethods());
   }, [props, model]);
 }

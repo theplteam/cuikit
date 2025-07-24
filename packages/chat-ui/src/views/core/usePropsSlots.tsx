@@ -19,7 +19,7 @@ import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
-import HelloMessage from '../thread/HelloMessage';
+import InitialThreadMessage from '../thread/InitialThreadMessage';
 import MessageMarkdownCode from '../message/markdown/MessageMarkdownCode';
 import MessageMarkdownBlockquote from '../message/markdown/MessageMarkdownBlockquote';
 import MessageMarkdownCodeWrapper from '../message/markdown/MessageMarkdownCodeWrapper';
@@ -28,7 +28,10 @@ import ThreadRootContainer from '../thread/ThreadRootContainer';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
-import { Divider } from '@mui/material';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
+import FileAttachmentButton from '../form/attachments/FileAttachmentButton';
 
 export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -37,6 +40,7 @@ export type CoreSlots = {
   iconButton: SlotValue<IconButtonProps>;
   listItemText: SlotValue<ListItemTextProps>;
   menuItem: SlotValue<MdMenuItemProps>;
+  chip: SlotValue<ChipProps>;
 };
 
 export type SlotsType<DM extends Message, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
@@ -54,12 +58,13 @@ type SlotsReturnType<DM extends Message, DD extends Thread<DM>> = {
 export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
   usersProps: ChatUsersProps<DM, DD>
 ): SlotsReturnType<DM, DD> => {
-  const { coreSlots, slots, slotProps, helloMessage } = usersProps;
+  const { coreSlots, slots, slotProps } = usersProps;
 
   const res = React.useMemo(() => {
     const core: CoreSlots = {
       button: coreSlots?.button ?? Button,
       iconButton: coreSlots?.iconButton ?? IconButton,
+      chip: coreSlots?.chip ?? Chip,
       // TODO: Props error
       listItemText: coreSlots?.listItemText ?? ListItemText,
       menuItem: coreSlots?.menuItem ?? MdMenuItem,
@@ -68,11 +73,14 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     const componentSlots: SlotsType<DM, DD> = {
       ...chatIconSlots,
       ...slots,
-      firstMessage: slots?.firstMessage ?? HelloMessage,
+      firstMessage: slots?.firstMessage ?? InitialThreadMessage,
       thread: slots?.thread ?? ThreadRootContainer,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
+      attachmentPreviewItem: slots?.attachmentPreviewItem ?? PreviewItemBox,
+      attachmentPreviewError: slots?.attachmentPreviewError ?? PreviewErrorBox,
+      attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
       // MARKDOWN
       markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
       markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
@@ -121,12 +129,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     markdownH4: { variant: 'h4' },
     markdownH5: { variant: 'h5' },
     markdownH6: { variant: 'h6' },
-
     ...slotProps,
-    firstMessage: {
-      thread: slotProps?.firstMessage?.thread,
-      text: slotProps?.firstMessage?.text ?? helloMessage,
-    },
   }) as SlotPropsType<DM, DD>, [slotProps])
 
   return {

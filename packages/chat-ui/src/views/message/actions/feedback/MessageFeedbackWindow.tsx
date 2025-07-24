@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { materialDesignSysPalette } from '../../../../utils/materialDesign/palette';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import InputBase from '@mui/material/InputBase';
@@ -7,7 +6,6 @@ import { useChatCoreSlots } from '../../../core/ChatSlotsContext';
 import { CloseIcon } from '../../../../icons';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import Chip from '@mui/material/Chip';
 import { Popover } from '@mui/material';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { MessageFeedbackTagType, MessageModel } from '../../../../models/MessageModel';
@@ -68,7 +66,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
             borderRadius: 2,
             gap: 2,
             maxWidth: 500,
-            backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+            backgroundColor: (theme) => theme.palette.grey[200],
           }
         }
       }}
@@ -98,12 +96,12 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           const isActive = tags.find((t) => t.id === tag.id);
           return (
             <Box key={tag.id}>
-              <Chip
+              <coreSlots.chip
                 label={tag.label}
                 variant={isActive ? 'filled' : 'outlined'}
                 sx={{
-                  color: isActive ? materialDesignSysPalette.primary : materialDesignSysPalette.secondary,
-                  backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
+                  color: (theme) => isActive ? theme.palette.common.white : theme.palette.grey[600],
+                  backgroundColor: (theme) => isActive ? theme.palette.primary.main : undefined,
                 }}
                 onClick={() => handleTag(tag)}
               />
@@ -120,7 +118,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
           padding: 1,
           borderRadius: 2,
           border: '1px solid',
-          borderColor: materialDesignSysPalette.outline,
+          borderColor: (theme) => theme.palette.divider,
         }}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setFeedback(event.target.value);

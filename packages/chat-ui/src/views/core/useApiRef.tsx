@@ -5,6 +5,7 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
+import { EventsEmitter, EventsEmitterMethods } from '../../models/EventsEmitter';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -23,6 +24,11 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    * Get thread by id
    */
   getThreadById: (id: IdType) => DD | undefined;
+
+  /**
+   * Represents an instance of an event emitter used to handle chat events
+   */
+  emitter: EventsEmitterMethods;
   /**
    * Get messages from current branch
    * @see https://docs.playliner.com/introduction/branching/
@@ -48,7 +54,11 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
    * Set your own waiting status for a chat response.
    */
-  setProgressStatus: (status: string) => void;
+  setProgressStatus: (status: string, inProgress?: boolean) => void;
+  /**
+   * Set text for specific message
+   */
+  setMessageText: (messageId: string, text: string) => void;
   /**
    * Get waiting status for a chat response.
    */
@@ -65,6 +75,10 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    * Changes the value of deleteItem; if there is a value, a confirm dialog opens.
    */
   setDeleteItem: (v: DD | undefined) => void,
+  /**
+    * Set active tool. If there is no `threadId`, change the value of the current thread.
+    */
+  setActiveTool: (v: string | undefined, threadId?: IdType) => void,
   /**
     * Create new thread.
     */
@@ -109,7 +123,10 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     getListener: () => undefined,
     getConversationBlockHeight: () => 0,
     setMenuDrawerOpen: NOOP,
+    setActiveTool: NOOP,
     setDeleteItem: NOOP,
+    setMessageText: NOOP,
+    emitter: EventsEmitter.getMockMethods(),
   });
 
   React.useMemo(() => {
