@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { motion } from '../../utils/materialDesign/motion';
 
 type Props = {
   onSendMessage: () => void;
@@ -22,25 +23,12 @@ const SendMessageButton: React.FC<Props> = ({ onSendMessage, isTyping, disabled 
   };
 
   return (
-    <Box
-      display="flex"
-      alignItems="flex-end"
-      justifyContent="center"
-      width={48}
-      height={40}
-      position="relative"
-    >
+    <Box>
       <slots.sendMessageButton
         {...slotProps.sendMessageButton}
         disabled={disabled || (!handleStopMessageStreaming && !!isTyping)}
         sx={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          height: '48px',
-          width: '48px',
-          transition: (theme) => theme.transitions.create('color', { duration: '200ms' }),
+          transition: (theme) => theme.transitions.create('color', { duration: motion.duration.short4 }),
           ...slotProps.sendMessageButton?.sx,
         }}
         onClick={onClick}

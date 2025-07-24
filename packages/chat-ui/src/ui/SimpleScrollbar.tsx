@@ -10,6 +10,7 @@ type Props = React.PropsWithChildren<{
 
 type SimpleBarClassesType = Readonly<{
   contentWrapper: string;
+  content: string;
   track: string;
   hover: string;
   scrollbarVisibleBefore: string;
@@ -17,6 +18,7 @@ type SimpleBarClassesType = Readonly<{
 
 export const simpleBarClasses: SimpleBarClassesType = {
   contentWrapper: 'simplebar-content-wrapper',
+  content: 'simplebar-content',
   track: 'simplebar-track',
   hover: 'simplebar-hover',
   scrollbarVisibleBefore: 'simplebar-visible:before',
