@@ -1,0 +1,1 @@
+export type onShowAlertType = (text: string, type: 'info' | 'error') => void;

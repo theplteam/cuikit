@@ -4,6 +4,7 @@ import { IdType } from '../../types';
 import { Thread, ThreadModel } from '../../models';
 import { ChatPropsTypes } from './useChatProps';
 import { ApiManager } from './useApiManager';
+import internalApi from './history/internalApi';
 
 export const useApiRefInitialization = (
   apiManager: ApiManager,
@@ -11,14 +12,14 @@ export const useApiRefInitialization = (
   props: ChatPropsTypes<any, any>,
 ) => {
   React.useEffect(() => {
-    const getAllThreads = () => model.list.value.map(v => v.data.data);
+    const getAllThreads = () => model.list.value.map(v => v.data);
 
     const onChangeThread = async (threadId: IdType) => {
       const threadModel = model.get(threadId);
       model.currentThread.value = threadModel;
 
       if (!!threadModel && !!threadModel.isLoadingFullData.value && !!props.getFullThread) {
-        let fullThread = props.getFullThread(threadModel.data.data.id);
+        let fullThread = props.getFullThread(threadModel.id);
 
         if (fullThread instanceof Promise) {
           fullThread = await fullThread;
@@ -41,14 +42,6 @@ export const useApiRefInitialization = (
       model.currentThread.value = model.createFromData(thread ?? ThreadModel.createEmptyData(), props.onUserMessageSent);;
     };
 
-    const setMenuDriverOpen = (value: boolean) => {
-      model.actions.menuDriverOpen.value = value;
-    };
-
-    const setDeleteThreadItem = (thread?: Thread) => {
-      model.actions.deleteItem.value = thread;
-    };
-
     const handleDeleteThread = (id: IdType) => {
       model.delete(id);
     };
@@ -58,17 +51,41 @@ export const useApiRefInitialization = (
     };
 
     const getCurrentThread = () => {
-      return model.currentThread.value?.data.data;
+      return model.currentThread.value?.data;
     };
 
+    const setMenuDrawerOpen = (v: boolean) => {
+      model.menuDrawerOpen.value = v;
+    };
+
+    const setDeleteItem = (v: any | undefined) => {
+      model.deleteItem.value = v;
+    };
+
+    const setActiveTool = (v: string | undefined, threadId?: IdType) => {
+      if (threadId) {
+        const thread = model.list.value.find((t) => t.id === threadId);
+        if (thread) thread.tool.value = v;
+      } else if (model.currentThread.value) {
+        model.currentThread.value.tool.value = v;
+      }
+      props.onToolChanged?.(v);
+    };
+
+    internalApi.value = { model };
+
+    apiManager.setMethod('setActiveTool', setActiveTool);
+    apiManager.setMethod('setMenuDrawerOpen', setMenuDrawerOpen);
+    apiManager.setMethod('setDeleteItem', setDeleteItem);
+    apiManager.setMethod('handleCreateNewThread', props.handleCreateNewThread ?? ThreadModel.createEmptyData);
+    apiManager.setMethod('onChangeCurrentThread', props.onChangeCurrentThread);
+    apiManager.setMethod('onThreadDeleted', props.onThreadDeleted);
     apiManager.setMethod('onChangeThread', onChangeThread);
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
     apiManager.setMethod('deleteThread', handleDeleteThread);
     apiManager.setMethod('getCurrentThread', getCurrentThread);
-    apiManager.setMethod('setDeleteThreadItem', setDeleteThreadItem);
-    apiManager.setMethod('setMenuDriverOpen', setMenuDriverOpen);
     apiManager.setMethod('getThreadById', getThreadById);
-
+    apiManager.setMethod('emitter', model.emitter.getMethods());
   }, [props, model]);
 }

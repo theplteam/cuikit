@@ -4,31 +4,26 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useSnackbar } from '../hooks/useSnackbar';
-import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
-import { useChatContext } from '../core/ChatGlobalContext';
-import { useLocalizationContext } from '../core/LocalizationContext';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 const ThreadDeleteConfirm: React.FC = () => {
-  const { model, onThreadDeleted, apiRef } = useChatContext();
-  const deleteItem = useObserverValue(model.actions.deleteItem);
-  const coreSlots = useChatCoreSlots();
-  const snackbar = useSnackbar();
-  const locale = useLocalizationContext();
+  const { slots, slotProps, locale, internal, apiRef } = useHistoryContext();
+  const deleteItem = useObserverValue(internal?.model.deleteItem);
 
   const handleClose = () => {
-    apiRef.current?.setDeleteThreadItem(undefined);
-  }
+    if (internal) {
+      internal.model.deleteItem.value = undefined;
+    }
+  };
 
   const handleDelete = () => {
     if (deleteItem) {
-      model.delete(deleteItem.id);
-      onThreadDeleted?.({ thread: deleteItem });
-      snackbar.show(locale.threadDeletedSuccess);
+      internal?.model.delete(deleteItem.id);
+      apiRef.current?.onThreadDeleted?.({ thread: deleteItem });
     }
     handleClose();
-  }
+  };
 
   return (
     <Dialog
@@ -45,17 +40,19 @@ const ThreadDeleteConfirm: React.FC = () => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <coreSlots.button
+        <slots.baseButton
           onClick={handleClose}
+          {...slotProps.baseButton}
         >
           {locale.no}
-        </coreSlots.button>
-        <coreSlots.button
+        </slots.baseButton>
+        <slots.baseButton
           color="primary"
           onClick={handleDelete}
+          {...slotProps.baseButton}
         >
           {locale.yes}
-        </coreSlots.button>
+        </slots.baseButton>
       </DialogActions>
     </Dialog>
   );

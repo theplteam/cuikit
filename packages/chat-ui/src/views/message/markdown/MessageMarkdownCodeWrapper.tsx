@@ -6,7 +6,7 @@ import { useChatCoreSlots } from '../../../views/core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
 import { ContentCopyIcon } from '../../../icons';
 import { useLocalizationContext } from '../../../views/core/LocalizationContext';
-import { useSnackbar } from '../../../views/hooks/useSnackbar';
+import { useChatContext } from '../../../views/core/ChatGlobalContext';
 import { Prism } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -33,7 +33,7 @@ const MessageMarkdownCodeWrapper: React.FC<Props> = ({ children, ...other }) => 
   const [codeText, setCodeText] = React.useState('');
   const coreSlots = useChatCoreSlots();
   const locale = useLocalizationContext();
-  const snackbar = useSnackbar();
+  const { snackbar } = useChatContext();
 
   const childrenProps = React.useMemo(() => React.Children.map(children, element => {
     if (!React.isValidElement(element)) return;
@@ -53,7 +53,7 @@ const MessageMarkdownCodeWrapper: React.FC<Props> = ({ children, ...other }) => 
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeText)
-      .then(() => snackbar.show(locale.messageCopiedToClipboard));;
+      .then(() => snackbar.show(locale.messageCopiedToClipboard, 'info'));
   }
 
   return (

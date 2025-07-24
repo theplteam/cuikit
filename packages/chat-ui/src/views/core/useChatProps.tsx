@@ -15,7 +15,9 @@ import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
+import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
+import { ToolType } from '../../types/ToolType';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -62,10 +64,6 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Action buttons for the assistant's message.
    */
   assistantActions?: React.JSXElementConstructor<{ message: Extract<DM, { role: ChatMessageOwner.ASSISTANT }>, thread: DD }>[];
-  /**
-   * Action buttons for the thread's list item menu.
-   */
-  threadActions?: React.JSXElementConstructor<{ thread: DD, onClose: () => void }>[];
   /**
    * Runtime processing of the assistant's message.
    * @param text
@@ -140,10 +138,13 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
+   * List of tools
+   */
+  toolsList?: ToolType[];
+  /**
    * Enable user's ability to add files in messages
    */
   enableFileAttachments?: boolean;
-
   /**
    * Prevent the user from deleting/adding files during message editing
    */
@@ -178,6 +179,18 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Minimum height of the message container for user + assistant, so that the message from the user appears at the top
    */
   getConversationBlockHeightMin?: (calculatedHeight: number) => number;
+  /**
+   * The function outputs the first message in the thread.
+   */
+  initialThreadMessage?: (threadId: IdType) => { text: string, stream: boolean } | undefined;
+  /**
+   * If this function is present, the default snackbar will not be shown; instead, this function will be called.
+   */
+  onShowAlert?: onShowAlertType;
+  /**
+   * Callback fired when active tool changed.
+   */
+  onToolChanged?: (type: string | undefined) => void;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату
@@ -207,10 +220,6 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
   apiRef: React.MutableRefObject<ApiRefType<DM, DD> | null>;
-  /**
-   * Show a welcome message at the beginning of the thread.
-   */
-  helloMessage?: string
 }> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {

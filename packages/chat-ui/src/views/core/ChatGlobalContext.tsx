@@ -4,6 +4,7 @@ import { Thread, ThreadModel, Message, FileAttachedParams } from '../../models';
 import { PrivateApiRefType } from './useApiRef';
 import { Threads } from '../../models/Threads';
 import { FnType } from '../../models/types';
+import SnackbarModel from '../../models/SnackbarModel';
 import { useAdapterContext } from '../adapter/AdapterContext';
 import { useApiRefInitialization } from './useApiRefInitialization';
 import { ApiManager } from './useApiManager';
@@ -13,6 +14,7 @@ export type ChatGlobalContextType<DM extends Message = any, DD extends Thread<DM
   model: Threads<DM, DD>;
   actionsAssistant: { element: Exclude<ChatPropsTypes<DM, DD>['assistantActions'], undefined>[number] }[];
   handleCreateNewThread: FnType<DD>;
+  snackbar: SnackbarModel;
   onFileAttached?: (params: FileAttachedParams) => Promise<void> | void;
 } & Omit<ChatPropsTypes<DM, DD>, 'assistantActions' | 'thread' | 'threads' | 'handleCreateNewThread'>;
 
@@ -34,6 +36,8 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
     // therefore it needs to be recreated, since changes may occur during loading
   ), [props.loading]);
 
+  const snackbar = React.useMemo(() => new SnackbarModel(props.onShowAlert), [props.onShowAlert]);
+
   useApiRefInitialization(
     apiManager,
     model,
@@ -50,6 +54,7 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
     ...props,
     apiRef: apiManager.apiRef,
     model,
+    snackbar,
     actionsAssistant: (props.assistantActions ?? []).map(element => ({ element })),
     handleCreateNewThread: props.handleCreateNewThread ?? ThreadModel.createEmptyData,
   }), [model, props, props.loading]);
@@ -65,7 +70,7 @@ const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobal
   const context = React.useContext(Context);
 
   if (!context) {
-    throw new Error("useMessagesContext must be used within a ChatGlobalProvider");
+    throw new Error("useChatContext must be used within a ChatGlobalProvider");
   }
 
   return context;

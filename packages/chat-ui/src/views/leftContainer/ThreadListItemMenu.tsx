@@ -1,22 +1,18 @@
 import * as React from 'react';
 import { DeleteIcon } from '../../icons';
 import MdMenu from '../../ui/menu/MdMenu';
-import { useChatSlots } from '../core/ChatSlotsContext';
-import { useLocalizationContext } from '../core/LocalizationContext';
-import { useChatContext } from '../core/ChatGlobalContext';
 import { Threads } from '../../models/Threads';
 import { useObserverValue } from '../hooks/useObserverValue';
+import { useHistoryContext } from '../core/history/HistoryContext';
 
 type Props = {
   model: Threads<any, any>;
 };
 
 const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
+  const { slots, locale, threadActions, internal } = useHistoryContext();
   const menuConfig = model.listGroups.menuConfig;
   const config = useObserverValue(menuConfig);
-  const { coreSlots } = useChatSlots();
-  const { threadActions, apiRef } = useChatContext();
-  const locale = useLocalizationContext();
 
   const anchorEl = config?.anchorEl;
   const thread = config?.thread;
@@ -28,14 +24,14 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
         thread: menuConfig.value.thread,
       };
     }
-  }
+  };
 
   const handleDelete = () => {
     handleClose();
-    if (thread) {
-      apiRef.current?.setDeleteThreadItem(thread.data.data);
+    if (thread && internal) {
+      internal.model.deleteItem.value = thread.data;
     }
-  }
+  };
 
   return (
     <MdMenu
@@ -55,16 +51,16 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
         ? threadActions.map((ActionComponent, index) => (
           <ActionComponent
             key={index}
-            thread={thread.data.data}
+            thread={thread.data}
             onClose={handleClose}
           />
         )) : (
-          <coreSlots.menuItem
+          <slots.baseMenuItem
             startIcon={DeleteIcon}
             onClick={handleDelete}
           >
             {locale.threadActionDelete}
-          </coreSlots.menuItem>
+          </slots.baseMenuItem>
         )}
     </MdMenu>
   );

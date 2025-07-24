@@ -1,24 +1,22 @@
 import * as React from 'react';
-import { ThreadModel } from '../../models/ThreadModel';
+import { Thread, ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useChatContext } from '../core/ChatGlobalContext';
 import { ThreadListCache } from '../../models/ThreadListCache';
-import { chatClassNames } from '../core/chatClassNames';
 import { MoreVertIcon } from '../../icons';
-import { CoreSlots, SlotsTypeEase } from '../core/usePropsSlots';
+import { historyClassNames } from '../core/history/historyClassNames';
+import { HistorySlotType } from '../core/history/HistoryType';
+import { Threads } from '../../models/Threads';
 
 type Props = {
+  model: Threads<any, any>;
   thread: ThreadModel;
   selected: boolean;
-  setThread: (thread: ThreadModel['data']['data']) => void;
+  setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
-  slots: Pick<SlotsTypeEase, 'threadListItemMenuButton'> & Pick<CoreSlots, 'listItemText'>;
+  slots: Pick<HistorySlotType, 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
-const classSelected = 'boxSelected';
-const classShadowRight = 'shadowRight';
-
-const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listModel, slots }) => {
+const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, slots }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
@@ -28,21 +26,19 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
     event.stopPropagation();
   }, [listModel]);
 
-  const { apiRef } = useChatContext();
-
   const isEmpty = useObserverValue(thread.isEmpty);
-  const title = useObserverValue(thread.data.observableTitle);
+  const title = useObserverValue(thread.observableTitle);
 
   if (isEmpty) return null;
 
   const handleClickListItem = () => {
-    apiRef.current?.setMenuDriverOpen(false);
-    setThread(thread.data.data);
-  }
+    model.menuDrawerOpen.value = false;
+    setThread(thread.data);
+  };
 
-  const classes = [chatClassNames.threadListItem];
+  const classes = [historyClassNames.listItem];
   if (selected) {
-    classes.push(classSelected);
+    classes.push(historyClassNames.listItemSelected);
   }
 
   return (
@@ -50,7 +46,7 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
       className={classes.join(' ')}
       onClick={handleClickListItem}
     >
-      <slots.listItemText
+      <slots.baseListItemText
         primary={title ?? 'TITLE'}
         sx={{
           textOverflow: 'ellipsis',
@@ -58,7 +54,6 @@ const ThreadListItem: React.FC<Props> = ({ thread, selected, setThread, listMode
           overflow: 'hidden',
         }}
       />
-      <div className={`${chatClassNames.threadListItem} ${classShadowRight}`} />
       <slots.threadListItemMenuButton
         size="small"
         sx={{

@@ -1,6 +1,6 @@
 {
   "name": "@plteam/chat-ui",
-  "version": "2.1.13",
+  "version": "3.1.2",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -33,6 +33,7 @@
     "@mui/system": "^5.15.14 || ^6.0.0",
     "@mui/utils": "^5.15.14",
     "clsx": "^2.1.0",
+    "emittery": "^1.2.0",
     "lodash.throttle": "^4.1.1",
     "markdown-to-jsx": "^7.7.6",
     "moment": "^2.24.0",

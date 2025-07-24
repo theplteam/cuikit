@@ -1,8 +1,9 @@
-import { Attachment, ChatMessageContentType, InternalMessageType, Message, MessageModel } from './MessageModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
 import { StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
 import { MessageText } from './MessageText';
+import { Attachment } from './AttachmentModel';
 
 export class MessageSender<DM extends Message> {
   constructor(
@@ -69,6 +70,7 @@ export class MessageSender<DM extends Message> {
       history: this.thread.messages.currentMessages.value.map(getInternalMessage),
       message: internalUserMessage,
       assistantMessage: getInternalMessage(message),
+      toolType: this.thread.tool.value,
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,
@@ -79,7 +81,7 @@ export class MessageSender<DM extends Message> {
         this.thread.isTyping.value = false;
 
         message.data.content = message.texts.value.map((v) => ({
-          type: ChatMessageContentType.TEXT,
+          type: 'text',
           text: v.text,
         }));
       },
@@ -97,8 +99,8 @@ export class MessageSender<DM extends Message> {
         unlockAutoManagement: message.reasoningManager.unlockAutoManagment,
       },
       actions: {
-        updateThreadId: (newId: IdType) => this.thread.data.setId(newId),
-        updateThreadTitle: (newTitle) => this.thread.data.observableTitle.value = newTitle,
+        updateThreadId: (newId: IdType) => this.thread.id = newId,
+        updateThreadTitle: (newTitle) => this.thread.observableTitle.value = newTitle,
         updateUserMessageId: (newId: IdType) => this.userMessage.data.id = newId,
         updateAssistantMessageId: (newId: IdType) => message.data.id = newId,
         updateCurrentTextIndex: this.updateCurrentTextIndex,

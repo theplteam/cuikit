@@ -1,30 +1,36 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
 import { MenuIcon } from '../../../icons';
-import { useChatContext } from './../../core/ChatGlobalContext';
-import { useChatSlots } from './../../core/ChatSlotsContext';
-import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
-import { Box } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import { useMobile } from '../../../ui/Responsive';
+import { ApiRefType } from '../../core/useApiRef';
 
-const ChatMobileAppBar: React.FC = () => {
-  const { apiRef } = useChatContext();
-  const { coreSlots } = useChatSlots();
+type Props = {
+  apiRef: React.MutableRefObject<ApiRefType | null>;
+};
 
+const ChatMobileAppBar: React.FC<Props> = ({ apiRef }) => {
+  const isMobile = useMobile();
   const handleClick = () => {
-    apiRef.current?.setMenuDriverOpen(true);
-  }
+    apiRef.current?.setMenuDrawerOpen?.(true);
+  };
+
+  if (!isMobile) return null;
 
   return (
     <Stack
-      justifyContent="center"
       height={64}
-      sx={{ backgroundColor: materialDesignSysPalette.surfaceContainerLow }}
       paddingX={1}
+      justifyContent="center"
+      sx={{
+        backgroundColor: (theme) => theme.palette.grey[200],
+      }}
     >
       <Box>
-        <coreSlots.iconButton onClick={handleClick}>
+        <IconButton onClick={handleClick}>
           <MenuIcon />
-        </coreSlots.iconButton>
+        </IconButton>
       </Box>
     </Stack>
   );

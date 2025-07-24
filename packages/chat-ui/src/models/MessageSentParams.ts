@@ -1,10 +1,11 @@
 import { IdType } from '../types';
-import { Attachment, InternalMessageType, Message } from './MessageModel';
+import { Attachment } from './AttachmentModel';
+import { InternalMessageType, Message } from './MessageModel';
 
 export type MessageSentParams<M extends InternalMessageType = InternalMessageType> = {
   /** User's message content */
   content: Message['content'],
-
+  /** User's message attachments */
   attachments: Attachment[],
   /** User's message */
   message: M,
@@ -12,6 +13,8 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
   assistantMessage: M,
   /** Thread history */
   history: M[],
+  /** Active tool type */
+  toolType: string | undefined,
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.
@@ -43,12 +46,12 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
      * Set current reasoning header.
      * This will lock automatic headers. To unlock, call the unlock method.
      */
-    setViewType: (viewType: 'stream' | 'headlines') => void,
+    setViewType: (viewType: 'stream' | 'headlines' | 'headersStream') => void,
     /**
      * Unlock auto managment for locked options (after calling the setHeader, setTimeSec, etc.)
      */
     unlockAutoManagement: (options?: ('headers' | 'time' | 'viewType')[]) => void,
-  }
+  },
   actions: {
     /** set your thread id */
     updateThreadId: (newId: IdType) => void;

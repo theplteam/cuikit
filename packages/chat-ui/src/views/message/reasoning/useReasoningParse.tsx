@@ -9,7 +9,7 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
   const [description, setDescription] = React.useState('');
   const locale = useLocalizationContext();
 
-  const reasoningType = useObserverValue(message.reasoningManager.viewType) ?? ReasoningViewType.HEADLINES;
+  const reasoningType = useObserverValue(message.reasoningManager.viewType) ?? ReasoningViewType.HEADERS_STREAM;
 
   const parserFn = React.useCallback(throttle((newText: string) => {
     const matches = newText.split("\n\n").reverse();
@@ -56,7 +56,9 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
         const { newText, newTitle } = result;
 
         if (!!newText && description !== newText) {
-          setDescription(newText);
+          if (reasoningType === ReasoningViewType.SHORT_BLOCKS) {
+            setDescription(newText);
+          }
           if (inProgress) {
             reasoningManager.setHeader(newTitle);
           }

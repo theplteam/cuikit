@@ -2,10 +2,6 @@ import * as React from 'react';
 import ThreadComponent from './thread/ThreadComponent';
 import { ChatUsersProps, useChatProps } from './core/useChatProps';
 import { ChatGlobalProvider } from './core/ChatGlobalContext';
-import AppDrawer from './leftContainer/AppDrawer';
-import Box from '@mui/material/Box';
-import ThreadsList from './leftContainer/ThreadsList';
-import { HiddenDesktop } from '../ui/Responsive';
 import ChatSnackbar from './ChatSnackbar';
 import { ChatSlotsProvider } from './core/ChatSlotsContext';
 import { usePropsSlots } from './core/usePropsSlots';
@@ -23,43 +19,25 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
   const { slots, slotProps, coreSlots } = usePropsSlots(usersProps);
 
   return (
-    <>
-      <ChatGlobalProvider
-        props={props}
-        apiManager={apiManager}
-      >
-        <LocalizationProvider locale={usersProps.lang}>
-          <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
-            <slots.listDrawer>
-              <HiddenDesktop>
-                <AppDrawer>
-                  <Box display="flex" flexDirection="column" height={500}>
-                    {/* eslint-disable-next-line react/jsx-max-depth */}
-                    <ThreadsList />
-                  </Box>
-                </AppDrawer>
-              </HiddenDesktop>
-            </slots.listDrawer>
-            <slots.listContainer>
-              <ThreadsList />
-            </slots.listContainer>
-            <slots.threadsList {...slotProps.threadsList}>
-              <ThreadsList />
-            </slots.threadsList>
-            <ThreadComponent
-              initialThread={props.initialThread}
-              enableBranches={props.enableBranches}
-              apiManager={apiManager}
-              contentRef={usersProps.scrollerRef}
-              loading={usersProps.loading}
-            />
-            {usersProps.children}
-          </ChatSlotsProvider>
-        </LocalizationProvider>
-      </ChatGlobalProvider>
+    <ChatGlobalProvider
+      props={props}
+      apiManager={apiManager}
+    >
+      <LocalizationProvider locale={usersProps.lang}>
+        <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
+          <ThreadComponent
+            initialThread={props.initialThread}
+            enableBranches={props.enableBranches}
+            apiManager={apiManager}
+            contentRef={usersProps.scrollerRef}
+            loading={usersProps.loading}
+          />
+          {usersProps.children}
+        </ChatSlotsProvider>
+      </LocalizationProvider>
       <ChatSnackbar />
-    </>
+    </ChatGlobalProvider>
   );
-}
+};
 
 export default Chat;
