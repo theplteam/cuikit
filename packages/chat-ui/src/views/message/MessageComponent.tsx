@@ -14,9 +14,10 @@ type Props = {
   enableAssistantActions?: boolean;
   style?: React.CSSProperties;
   elevation?: boolean;
+  forceStream?: boolean;
 };
 
-const MessageComponent: React.FC<Props> = ({style, elevation, message, isLatest, isFirst, enableAssistantActions, thread}) => {
+const MessageComponent: React.FC<Props> = ({ style, elevation, message, isLatest, isFirst, enableAssistantActions, thread, forceStream }) => {
   return (
     <MessageComponentBox
       isUser={message.isUser}
@@ -41,6 +42,7 @@ const MessageComponent: React.FC<Props> = ({style, elevation, message, isLatest,
             enableAssistantActions={enableAssistantActions}
             thread={thread}
             elevation={elevation}
+            forceStream={forceStream}
           />
         )}
     </MessageComponentBox>
