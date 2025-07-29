@@ -3,7 +3,7 @@ import React from 'react';
 
 const StyledUl = styled('ul')(({ theme }) => ({
   listStyle: 'none',
-  padding: '0px 1.625em',
+  paddingLeft: '1.625em',
   '& li': {
     marginBottom: 8,
     '&:last-child': {
@@ -27,9 +27,13 @@ const StyledUl = styled('ul')(({ theme }) => ({
       marginTop: theme.spacing(1.5),
     },
   },
-  '& li:dir(rtl)::before': {
-    left: 'auto',
-    right: theme.spacing(-3),
+  '&:dir(rtl)': {
+    paddingLeft: 0,
+    paddingRight: '1.625em',
+    '& li::before': {
+      left: 'auto',
+      right: theme.spacing(-3),
+    }
   },
 }));
 
