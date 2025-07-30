@@ -13,6 +13,13 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 }
 
+export enum MessageStatus {
+  START = 'start',
+  TYPING_MESSAGE = 'typingMessage',
+  THINKING = 'thinking',
+  FINISH_MESSAGE = 'finishMessage',
+};
+
 export type RatingType = 'like' | 'dislike';
 
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
@@ -33,6 +40,7 @@ export type Message = {
   parentId?: IdType;
   time?: number;
   rating?: RatingType;
+  initialStatus?: string;
   reasoning?: {
     title?: string;
     text?: string;
@@ -58,6 +66,8 @@ export class MessageModel<DM extends Message = Message> {
 
   readonly attachments = new MessageAttachmentsModel();
 
+  readonly status = new ObservableReactValue<string | undefined>(undefined);
+
   /**
    * An observable flag indicating the start/finish of message typing.
    */
@@ -75,6 +85,8 @@ export class MessageModel<DM extends Message = Message> {
       );
       this.attachments.init(content.filter(c => c.type !== 'text') as Attachment[]);
     }
+
+    this.status.value = _data.initialStatus;
 
     if (_data.reasoning) {
       if (_data.reasoning.title) {

@@ -74,7 +74,11 @@ const QuestionItemStyled = styled(Box)(({ theme }) => ({
 
 const ToolsPanel: React.FC<{ apiRef: React.MutableRefObject<ChatApiRef>, handleDrawerClose: () => void }> = ({ apiRef, handleDrawerClose }) => {
   const sendMessage = React.useCallback((text: string) => {
-    const longAwaitingAnswer = setTimeout(() => apiRef.current?.setProgressStatus('Please wait a little longer.'), 2500);
+    const longAwaitingAnswer = setTimeout(() => {
+      const thread = apiRef.current?.getCurrentThread();
+      const lastMessage = thread.messagesArray[thread.messagesArray.length - 1];
+      apiRef.current?.setMessageStatus(lastMessage.id, 'Please wait a little longer.');
+    }, 2500);
 
     apiRef.current?.sendUserMessage(text)
       .then(() => clearTimeout(longAwaitingAnswer));

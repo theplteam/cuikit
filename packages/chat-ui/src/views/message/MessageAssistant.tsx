@@ -2,9 +2,6 @@ import * as React from 'react';
 import { keyframes, styled } from '@mui/material/styles';
 import MessageContainer from './MessageContainer';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
-import { clsx } from 'clsx';
-import { messageActionsClasses } from './messageActionsClasses';
-import { NOOP } from '../../utils/NOOP';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -22,14 +19,8 @@ type Props = {
   message: MessageModel;
   enableAssistantActions?: boolean;
   thread: ThreadModel;
-  isLatest?: boolean;
   elevation?: boolean;
 };
-
-const {
-  latestMessageClassName,
-  actionsClassName,
-} = messageActionsClasses;
 
 const fadeIn = keyframes`
   from {
@@ -64,7 +55,7 @@ const MessageContainerStyled = styled(MessageContainer)(() => ({
   }*/
 }));
 
-const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -72,20 +63,16 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
-  const [isTypedOnce, setIsTypedOnce] = React.useState(false);
-
-  React.useEffect(() => {
-    if (typing && !isTypedOnce) {
-      setIsTypedOnce(true);
-    };
-  }, [typing]);
 
   const getInternalMessage = useInternalMessageTransformer();
+
+  const isHelloMessage = `${message.id}`.startsWith('helloMessage');
+  const showControls = !isHelloMessage && !typing && !!enableAssistantActions;
 
   const containerId = message.photoswipeContainerId;
 
   React.useEffect(() => {
-    if (typing) return NOOP;
+    if (typing) return;
     const lightbox = PhotoSwipeLightbox({
       gallery: `#${message.photoswipeContainerId}`,
       children: `a.${chatClassNames.markdownImage}`,
@@ -103,52 +90,48 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
 
   return (
     <MessageContainerStyled
-      // ref={setElement}
       gap={1}
-      className={clsx(
-        { [latestMessageClassName]: isLatest },
-        chatClassNames.messageAssistantRoot,
-        // { [hoverMessageClassName]: isHover },
-      )}
+      className={chatClassNames.messageAssistantRoot}
       elevation={elevation}
+    // ref={setElement} 
+    // className={clsx(
+    //   chatClassNames.messageAssistantRoot,
+    //   { [hoverMessageClassName]: isHover },
+    // )}
     >
-      {(enableReasoning) ? (
+      {enableReasoning ? (
         <MessageReasoning
           message={message}
-          thread={thread}
-          isLatest={isLatest}
         />
       ) : null}
       <Stack id={containerId} gap={1}>
-        {texts.map((text, index) => (
+        <slots.messageAssistantProgress
+          {...slotProps.messageAssistantProgress}
+          message={message}
+          thread={thread}
+        />
+        {texts.map((text) => (
           <AssistantTextBlock
             key={text.modelId}
             message={message}
-            thread={thread}
             messageText={text}
-            showStatus={!!isLatest && (index === texts.length - 1)}
-            inProgress={!!isLatest && !!typing}
+            inProgress={!!typing}
           />
         ))}
       </Stack>
-      {(!typing && enableAssistantActions) ? (
-        <MessageActionsAssistant
-          message={message}
-          thread={thread}
-          className={actionsClassName}
-          isTypedOnce={isTypedOnce}
-        />
+      {showControls ? (
+        <>
+          <MessageActionsAssistant
+            message={message}
+            thread={thread}
+          />
+          <slots.messageAssistantFooter
+            {...slotProps.messageAssistantFooter}
+            message={getInternalMessage(message)}
+            className={slotProps.messageAssistantFooter?.className}
+          />
+        </>
       ) : null}
-      {(!typing && !!enableAssistantActions) && (
-        <slots.messageAssistantFooter
-          {...slotProps.messageAssistantFooter}
-          message={getInternalMessage(message)}
-          className={clsx(
-            { [chatClassNames.markdownSmoothedPending]: isTypedOnce },
-            slotProps.messageAssistantFooter?.className,
-          )}
-        />
-      )}
     </MessageContainerStyled>
   );
 };

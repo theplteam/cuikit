@@ -1,6 +1,6 @@
 import {
   ThreadModel,
-  StreamResponseState,
+  MessageStatus,
   TextContent,
   MessageUserContent,
   MessageModel,
@@ -121,9 +121,9 @@ export const useThreadSendMessage = (
 
     const parentMessage = thread.messagesArray.find(v => v.id === messageEdit.parentId);
 
-    thread.streamStatus.value = StreamResponseState.START;
-
     const { userMessage, assistantMessage } = await onCreatePair(content, 'editMessage', parentMessage);
+
+    assistantMessage.status.value = MessageStatus.START;
 
     // TODO: There is a bug here, when we change the branch, the user's message is automatically added to it,
     //  so a new user message is passed in the history
@@ -177,8 +177,6 @@ export const useThreadSendMessage = (
     return new Promise<boolean>(async (resolve) => {
 
       if (content.length && thread) {
-        thread.streamStatus.value = StreamResponseState.START;
-
         try {
           if (thread.isEmpty.value) {
             if (onFirstMessageSent) {
@@ -194,11 +192,13 @@ export const useThreadSendMessage = (
 
           const pair = await onCreatePair(content, 'newMessage');
 
+          pair.assistantMessage.status.value = MessageStatus.START;
+
           onSendMessage(content, pair.userMessage, pair.assistantMessage)
             .then(({ message }) => {
               resolve(true);
               onAssistantMessageTypingFinish?.({ message, thread: thread.data });
-              thread.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
+              pair.assistantMessage.status.value = MessageStatus.FINISH_MESSAGE;
             })
             .catch(() => resolve(false));
 

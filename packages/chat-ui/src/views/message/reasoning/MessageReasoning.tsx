@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MessageReasoningFull from './MessageReasoningFull';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { MessageModel, StreamResponseState, ThreadModel } from '../../../models';
+import { MessageModel, MessageStatus } from '../../../models';
 import { Collapse, Fade } from '@mui/material';
 import { useReasoningParse } from './useReasoningParse';
 import ReasoningTextSmooth from './ReasoningTextSmooth';
@@ -16,8 +16,6 @@ import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = {
   message: MessageModel;
-  thread: ThreadModel;
-  isLatest: boolean | undefined;
 };
 
 const LineBoxStyled = styled(Box)(({ theme }) => ({
@@ -35,20 +33,19 @@ enum ViewType {
 
 const transitionDuration = 200;
 
-const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
+const MessageReasoning: React.FC<Props> = ({ message }) => {
   const [viewType, setViewType] = React.useState<ViewType>(ViewType.SHORT);
   const [fullCollapseSize, setFullCollapseSize] = React.useState(0);
 
   const { apiRef } = useThreadContext();
 
-  const statusText = useObserverValue(thread.streamStatus) ?? '';
+  const statusText = useObserverValue(message.status) ?? '';
 
   const shortRef = React.useRef<HTMLDivElement | null>(null);
 
   const reasoning = useObserverValue(message.reasoningManager.text) ?? '';
 
-  const inProgress = statusText === StreamResponseState.THINKING
-    && !!isLatest && !!reasoning;
+  const inProgress = statusText === MessageStatus.THINKING && !!reasoning;
 
   const [isExpanding, setIsExpanding] = React.useState(false);
   const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);
@@ -139,7 +136,5 @@ const MessageReasoning: React.FC<Props> = ({ message, thread, isLatest }) => {
 }
 
 export default React.memo(MessageReasoning, (prevProps, nextProps) => {
-  return prevProps.message.id === nextProps.message.id
-    && prevProps.thread.id === nextProps.thread.id
-    && prevProps.isLatest === nextProps.isLatest;
+  return prevProps.message.id === nextProps.message.id;
 });;
