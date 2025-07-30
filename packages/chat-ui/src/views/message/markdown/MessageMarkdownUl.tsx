@@ -1,7 +1,6 @@
 import { styled } from '@mui/material/styles';
-import React from 'react';
 
-const StyledUl = styled('ul')(({ theme }) => ({
+const MessageMarkdownUl = styled('ul')(({ theme }) => ({
   listStyle: 'none',
   paddingLeft: '1.625em',
   '& li': {
@@ -63,14 +62,5 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
     }
   },
 }));
-
-const MessageMarkdownUl: React.FC<React.HTMLAttributes<HTMLUListElement>> = (props) => {
-
-  return (
-    <StyledUl
-      {...props}
-    />
-  );
-};
 
 export { MessageMarkdownUl, ChatMessageOl };
