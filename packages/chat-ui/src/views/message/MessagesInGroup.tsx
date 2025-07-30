@@ -37,6 +37,7 @@ const MessagesInGroup: React.FC<Props> = ({ messages, thread, isLatestGroup, gap
           enableAssistantActions
           message={message}
           thread={thread}
+          showStatus={isLatestGroup}
         />
       ))}
     </Stack>

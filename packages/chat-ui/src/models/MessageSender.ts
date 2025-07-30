@@ -1,5 +1,5 @@
-import { InternalMessageType, Message, MessageModel, MessageStatus } from './MessageModel';
-import { ThreadModel } from './ThreadModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
+import { StreamResponseState, ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
 import { MessageText } from './MessageText';
@@ -23,14 +23,14 @@ export class MessageSender<DM extends Message> {
   }
 
   pushChunk = (chunk: string) => {
-    if (!this.assistantMessage.text && this.assistantMessage.status.value !== MessageStatus.TYPING_MESSAGE) {
-      this.assistantMessage.status.value = MessageStatus.TYPING_MESSAGE;
+    if (!this.assistantMessage.text && this.thread.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
+      this.thread.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
     }
     this.assistantMessage.text += chunk;
   }
 
   setStatus = (status: string) => {
-    this.assistantMessage.status.value = status;
+    this.thread.streamStatus.value = status;
   }
 
   changeTypingStatus = (status: boolean) => {
@@ -87,8 +87,8 @@ export class MessageSender<DM extends Message> {
       },
       reasoning: {
         pushChunk: (chunk) => {
-          if (this.assistantMessage.status.value !== MessageStatus.THINKING) {
-            this.assistantMessage.status.value = MessageStatus.THINKING;
+          if (this.thread.streamStatus.value !== StreamResponseState.THINKING) {
+            this.thread.streamStatus.value = StreamResponseState.THINKING;
           }
           message.reasoningManager.pushChunk(chunk);
         },

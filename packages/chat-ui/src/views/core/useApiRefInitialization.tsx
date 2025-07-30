@@ -72,23 +72,8 @@ export const useApiRefInitialization = (
       props.onToolChanged?.(v);
     };
 
-    const setMessageStatus = (messageId: IdType, status: string | undefined, inProgress?: boolean) => {
-      if (!model.currentThread.value) return;
-
-      const message = model.currentThread.value.messagesArray.find((m) => m.id === messageId);
-      if (!message) return;
-
-      message.status.value = status;
-
-      if (inProgress) {
-        message.typing.value = inProgress;
-        model.currentThread.value.isTyping.value = inProgress;
-      }
-    }
-
     internalApi.value = { model };
 
-    apiManager.setMethod('setMessageStatus', setMessageStatus);
     apiManager.setMethod('setActiveTool', setActiveTool);
     apiManager.setMethod('setMenuDrawerOpen', setMenuDrawerOpen);
     apiManager.setMethod('setDeleteItem', setDeleteItem);

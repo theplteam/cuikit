@@ -4,7 +4,7 @@ import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { MessageModel, MessageStatus, ThreadModel } from '../../models';
+import { MessageModel, StreamResponseState, ThreadModel } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import Stack from '@mui/material/Stack';
 
@@ -53,22 +53,22 @@ export const StatusBoxStyled = styled(Stack)(() => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ message }) => {
-  const state = useObserverValue(message.status);
+const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
+  const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
   const reasoningTitle = useObserverValue(message.reasoningManager.text) ?? '';
   const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? '';
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
   let text = state;
 
-  if (state === MessageStatus.START) {
+  if (state === StreamResponseState.START) {
     text = locale.thinking;
   }
 
   if (
     !text
-    || state === MessageStatus.TYPING_MESSAGE
-    || state === MessageStatus.FINISH_MESSAGE
+    || state === StreamResponseState.TYPING_MESSAGE
+    || state === StreamResponseState.FINISH_MESSAGE
     || !!reasoningTitle
     || !!reasoningTime
   ) return null;
