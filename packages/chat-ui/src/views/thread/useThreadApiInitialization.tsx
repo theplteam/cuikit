@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useMessageProgressStatus } from './useMessageProgressStatus';
 import { ThreadModel } from '../../models/ThreadModel';
 import { ApiManager } from '../core/useApiManager';
 import { getThreadListeners } from '../utils/getThreadListeners';
 import { useThreadSendMessage } from './useThreadSendMessage';
 import { useConversationBlockHeightCallback } from './useConversationBlockHeightCallback';
 import { IdType } from '../../types';
+import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 
 type OnMessageSendType = ReturnType<typeof useThreadSendMessage>['onSendNewsMessage'];
 type OnEditMessageType = ReturnType<typeof useThreadSendMessage>['onEditMessage'];
@@ -17,13 +17,7 @@ export const useThreadApiInitialization = (
   onEditMessage: OnEditMessageType,
   getConversationBlockHeightMin?: (calculatedHeight: number) => number,
 ) => {
-  const handleChangeStreamStatus = useMessageProgressStatus(thread);
-
   const getConversationBlockHeight = useConversationBlockHeightCallback(getConversationBlockHeightMin);
-
-  React.useMemo(() => {
-    apiManager.setMethod('setProgressStatus', handleChangeStreamStatus);
-  }, [handleChangeStreamStatus]);
 
   React.useMemo(() => {
     apiManager.setMethod('sendUserMessage', onMessageSend);
@@ -35,25 +29,34 @@ export const useThreadApiInitialization = (
 
     const messages = thread.messages;
 
-    apiManager.setMethods({
-      getAllMessages: () => messages.allMessages.value.map(v => v.data),
-      getBranchMessages: () => messages.currentMessages.value.map(v => v.data),
-      handleChangeBranch: messages.handleChangeBranch,
-      setProgressStatus: handleChangeStreamStatus,
-    });
-
     const setMessageText = (messageId: IdType, text: string) => {
       const message = thread.messages.allMessages.value.find(v => v.id === messageId);
       if (message?.texts?.value?.length) {
         message.texts.value[message.texts.value.length - 1].text = text;
       }
-    }
+    };
+
+    const setMessageStatus = (status: string | undefined, isTyping?: boolean, messageId?: IdType) => {
+      const currentMessages = thread.messages.currentMessages.value;
+      const message = messageId ? currentMessages.find((m) => m.id === messageId) : arrayLast(currentMessages);
+      if (message) {
+        message.status.value = status;
+        message.typing.value = !!isTyping;
+        thread.isTyping.value = !!isTyping;
+      }
+    };
 
     apiManager.setPrivateMethod('allMessages', messages.allMessages);
     apiManager.setPrivateMethod('branch', messages.currentMessages);
     apiManager.setPrivateMethod('getListener', getThreadListeners(thread));
-    apiManager.setMethod('getProgressStatus', () => thread.streamStatus.value ?? '');
-    apiManager.setMethod('setMessageText', setMessageText);
+
+    apiManager.setMethods({
+      getAllMessages: () => messages.allMessages.value.map(v => v.data),
+      getBranchMessages: () => messages.currentMessages.value.map(v => v.data),
+      handleChangeBranch: messages.handleChangeBranch,
+      setMessageText,
+      setMessageStatus,
+    });
 
   }, [thread]);
 

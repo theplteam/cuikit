@@ -20,7 +20,6 @@ type Props = {
   enableAssistantActions?: boolean;
   thread: ThreadModel;
   elevation?: boolean;
-  showStatus?: boolean;
 };
 
 const fadeIn = keyframes`
@@ -56,7 +55,7 @@ const MessageContainerStyled = styled(MessageContainer)(() => ({
   }*/
 }));
 
-const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation, showStatus }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -66,9 +65,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
   const { enableReasoning } = useChatContext();
 
   const getInternalMessage = useInternalMessageTransformer();
-
-  const isHelloMessage = `${message.id}`.startsWith('helloMessage');
-  const showControls = !isHelloMessage && !typing && !!enableAssistantActions;
+  const showControls = !typing && !!enableAssistantActions;
 
   const containerId = message.photoswipeContainerId;
 
@@ -103,18 +100,13 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       {enableReasoning ? (
         <MessageReasoning
           message={message}
-          thread={thread}
         />
       ) : null}
       <Stack id={containerId} gap={1}>
-        {showStatus
-          ? (
-            <slots.messageAssistantProgress
-              {...slotProps.messageAssistantProgress}
-              message={message}
-              thread={thread}
-            />
-          ) : null}
+        <slots.messageAssistantProgress
+          {...slotProps.messageAssistantProgress}
+          message={message}
+        />
         {texts.map((text) => (
           <AssistantTextBlock
             key={text.modelId}
