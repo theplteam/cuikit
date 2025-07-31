@@ -198,7 +198,7 @@ export const useThreadSendMessage = (
             .then(({ message }) => {
               resolve(true);
               onAssistantMessageTypingFinish?.({ message, thread: thread.data });
-              pair.assistantMessage.status.value = MessageStatus.FINISH_MESSAGE;
+              pair.assistantMessage.status.value = MessageStatus.FINISH;
             })
             .catch(() => resolve(false));
 

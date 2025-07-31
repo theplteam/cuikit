@@ -23,8 +23,8 @@ export class MessageSender<DM extends Message> {
   }
 
   pushChunk = (chunk: string) => {
-    if (!this.assistantMessage.text && this.assistantMessage.status.value !== MessageStatus.TYPING_MESSAGE) {
-      this.assistantMessage.status.value = MessageStatus.TYPING_MESSAGE;
+    if (!this.assistantMessage.text && this.assistantMessage.status.value !== MessageStatus.TYPING) {
+      this.assistantMessage.status.value = MessageStatus.TYPING;
     }
     this.assistantMessage.text += chunk;
   }

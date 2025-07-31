@@ -15,9 +15,9 @@ export enum ChatMessageOwner {
 
 export enum MessageStatus {
   START = 'start',
-  TYPING_MESSAGE = 'typingMessage',
+  TYPING = 'typing',
   THINKING = 'thinking',
-  FINISH_MESSAGE = 'finishMessage',
+  FINISH = 'finish',
 };
 
 export type RatingType = 'like' | 'dislike';
@@ -86,8 +86,8 @@ export class MessageModel<DM extends Message = Message> {
       this.attachments.init(content.filter(c => c.type !== 'text') as Attachment[]);
     }
 
-    this.status.value = _data.initialStatus;
-    if (_data.initialStatus === MessageStatus.TYPING_MESSAGE) {
+    if (_data.initialStatus) {
+      this.status.value = _data.initialStatus;
       this.typing.value = true;
     }
 

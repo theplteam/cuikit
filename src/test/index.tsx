@@ -1,5 +1,6 @@
 import * as React from 'react';
 const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse'));
+const MessageStatus = React.lazy(() => import('./common/MessageStatus'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
 const MarkdownExample = React.lazy(() => import('./markdown/MarkdownExample'));
 const MarkdownCustomExample = React.lazy(() => import('./markdown/MarkdownCustomExample'));
@@ -47,6 +48,7 @@ const App: React.FC = () => {
       case 'common': variant = BaseExample; break;
       case 'openai-adapter': variant = OpenAI; break;
       case 'awaiting-response': variant = AwaitingResponse; break;
+      case 'message-status': variant = MessageStatus; break;
       case 'thread-structure': variant = ThreadStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;

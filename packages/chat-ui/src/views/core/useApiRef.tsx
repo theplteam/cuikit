@@ -56,9 +56,9 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   setMessageStatus: (status: string, isTyping?: boolean, messageId?: IdType) => void;
   /**
-   * Set text for specific message
+   * Set text for a message. If there is no `messageId`, the changes will be applied to the assistant's last message.
    */
-  setMessageText: (messageId: string, text: string) => void;
+  setMessageText: (text: string, messageId?: IdType) => void;
   /**
    * Change thread branch.
    */

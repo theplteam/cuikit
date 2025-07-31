@@ -66,8 +66,8 @@ const MessageAssistantProgress: React.FC<Props> = ({ message }) => {
 
   if (
     !text
-    || state === MessageStatus.TYPING_MESSAGE
-    || state === MessageStatus.FINISH_MESSAGE
+    || state === MessageStatus.TYPING
+    || state === MessageStatus.FINISH
     || !!reasoningTitle
     || !!reasoningTime
   ) return null;

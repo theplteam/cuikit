@@ -29,10 +29,11 @@ export const useThreadApiInitialization = (
 
     const messages = thread.messages;
 
-    const setMessageText = (messageId: IdType, text: string) => {
-      const message = thread.messages.allMessages.value.find(v => v.id === messageId);
+    const setMessageText = (text: string, messageId?: IdType) => {
+      const currentMessages = thread.messages.currentMessages.value;
+      const message = messageId ? currentMessages.find((m) => m.id === messageId) : arrayLast(currentMessages);
       if (message?.texts?.value?.length) {
-        message.texts.value[message.texts.value.length - 1].text = text;
+        message.text = text;
       }
     };
 

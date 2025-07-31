@@ -69,6 +69,9 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
     this._data = data;
     this.observableTitle.value = data.title;
 
+    if (data.messages?.find((m) => m.initialStatus)) {
+      this.isTyping.value = true;
+    }
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];
 
