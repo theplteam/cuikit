@@ -31,6 +31,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
             apiManager={apiManager}
             contentRef={usersProps.scrollerRef}
             loading={usersProps.loading}
+            className={usersProps.className}
           />
           {usersProps.children}
         </ChatSlotsProvider>

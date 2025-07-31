@@ -54,11 +54,15 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
    * Set your own waiting status for a chat response.
    */
-  setMessageStatus: (messageId: IdType, status: string, inProgress?: boolean) => void;
+  setProgressStatus: (status: string, inProgress?: boolean) => void;
   /**
    * Set text for specific message
    */
   setMessageText: (messageId: string, text: string) => void;
+  /**
+   * Get waiting status for a chat response.
+   */
+  getProgressStatus: () => string;
   /**
    * Change thread branch.
    */
@@ -104,9 +108,10 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     openNewThread: NOOP,
     updateScrollButtonState: NOOP,
     deleteThread: NOOP,
+    getProgressStatus: () => '',
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     onEditMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
-    setMessageStatus: NOOP,
+    setProgressStatus: NOOP,
     handleChangeBranch: NOOP,
     getCurrentThread: () => undefined,
     getThreadById: () => undefined,

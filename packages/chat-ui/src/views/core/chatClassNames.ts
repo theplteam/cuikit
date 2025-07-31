@@ -1,6 +1,7 @@
 export const chatClassNames = {
   threadRoot: 'chat-ui-thread-root',
   threadRootContainer: 'chat-ui-thread-root-container',
+  textFieldRoot: 'chat-ui-textfield-root',
   messageReasoningRoot: 'chat-ui-message-reasoning-root',
   messageAssistantRoot: 'chat-ui-message-assistant-root',
   messageUserRoot: 'chat-ui-message-user-root',

@@ -20,6 +20,7 @@ type Props = {
   enableAssistantActions?: boolean;
   thread: ThreadModel;
   elevation?: boolean;
+  showStatus?: boolean;
 };
 
 const fadeIn = keyframes`
@@ -55,7 +56,7 @@ const MessageContainerStyled = styled(MessageContainer)(() => ({
   }*/
 }));
 
-const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation, showStatus }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -102,14 +103,18 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       {enableReasoning ? (
         <MessageReasoning
           message={message}
+          thread={thread}
         />
       ) : null}
       <Stack id={containerId} gap={1}>
-        <slots.messageAssistantProgress
-          {...slotProps.messageAssistantProgress}
-          message={message}
-          thread={thread}
-        />
+        {showStatus
+          ? (
+            <slots.messageAssistantProgress
+              {...slotProps.messageAssistantProgress}
+              message={message}
+              thread={thread}
+            />
+          ) : null}
         {texts.map((text) => (
           <AssistantTextBlock
             key={text.modelId}
