@@ -14,27 +14,32 @@ const InitialThreadMessage: React.FC<Props> = ({ thread }) => {
   const isLoadingFullData = useObserverValue(thread.isLoadingFullData);
   const messageConfig = React.useMemo(() => initialThreadMessage?.(thread.id), [thread.id, isLoadingFullData]);
   const message = thread.helloMessage;
+  const isSameText = message.text.trim() === messageConfig?.text.trim();
 
   React.useEffect(() => {
-    if (!messageConfig || message.text === messageConfig.text) return;
+    if (!messageConfig || isSameText) return;
+
     message.text = '';
+    const stream = new ForceStream(messageConfig.text, message);
+
     if (messageConfig.stream) {
       message.typing.value = true;
-      const stream = new ForceStream(messageConfig.text, message);
       stream.start();
     } else {
       message.text = messageConfig.text;
     }
-  }, [thread.id, isLoadingFullData, messageConfig]);
+
+    return () => {
+      stream.forceStop();
+    }
+  }, [thread.id, messageConfig]);
 
   if (!messageConfig) return null;
 
   return (
     <ChatMessageComponent
       key="helloMessage"
-      isLatest={messageConfig.stream}
       message={message}
-      isFirst={false}
       thread={thread}
       enableAssistantActions={false}
     />

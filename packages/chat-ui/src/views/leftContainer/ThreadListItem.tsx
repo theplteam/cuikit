@@ -48,10 +48,12 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
     >
       <slots.baseListItemText
         primary={title ?? 'TITLE'}
-        sx={{
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
+        slotProps={{
+          primary: {
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+          },
         }}
       />
       <slots.threadListItemMenuButton

@@ -24,6 +24,7 @@ export type Thread<DM extends Message = any> = {
   title: string;
   date?: string;
   messages?: DM[];
+  initialStatus?: string;
 } & { isNew?: boolean };
 
 export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {
@@ -77,7 +78,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   ) {
     this._data = data;
     this.observableTitle.value = data.title;
-    this.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
+    this.streamStatus.value = data.initialStatus;
 
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];
