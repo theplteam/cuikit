@@ -17,7 +17,6 @@ const DivStyled = styled('div')(({ theme }) => ({
   top: 8,
   right: 8,
   transition: theme.transitions.create('opacity', { duration: motion.duration.short4 }),
-  zIndex: 99,
 }));
 
 const TextFieldExpandButton: React.FC<Props> = ({ expand, onClick, show }) => {
@@ -25,7 +24,7 @@ const TextFieldExpandButton: React.FC<Props> = ({ expand, onClick, show }) => {
   const coreSlots = useChatCoreSlots();
 
   return (
-    <DivStyled style={{ opacity: show ? 1 : 0 }}>
+    <DivStyled style={{ opacity: show ? 1 : 0, zIndex: show ? 99 : 0 }}>
       <Tooltip title={locale.innerRowExpand}>
         <coreSlots.iconButton
           sx={{ transform: 'rotate(45deg)' }}
