@@ -40,7 +40,7 @@ const MessagesInGroup: React.FC<Props> = ({ messages, isLatestGroup, thread, gap
           message={message}
           thread={thread}
           isFirst={!key}
-          isLatest={isLatestGroup ? key === messagesLength -1 : undefined}
+          isLatest={isLatestGroup ? key === messagesLength - 1 : undefined}
         />
       ))}
     </Stack>
