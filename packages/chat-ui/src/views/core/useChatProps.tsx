@@ -35,6 +35,10 @@ type RequiredProps<DD extends Thread<any>> = {
 // используется внутри библиотеки
 export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
+   * You can customize the styles using styled-components or by passing your own classnames.
+   */
+  className?: string;
+  /**
    * Show loading component
    */
   loading: boolean;

@@ -34,6 +34,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
       component: slots[componentKey],
       props: {
         ...slotProps[componentKey],
+
         className: clsx(
           slotProps?.[componentKey]?.className,
           { [chatClassNames.markdownSmoothedPending]: inProgress }
@@ -62,7 +63,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
     props: {
       pSlot: slots.markdownP,
       pSlotProps: slotProps.markdownP,
-      inProgress: inProgress
+      inProgress: inProgress,
     }
   }), [inProgress, slots, slotProps]);
 
@@ -86,6 +87,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
       options={{
         forceBlock: true,
         forceWrapper: true,
+        wrapper: slots.markdownWrapper,
         overrides: {
           ...customOverrides,
           a: {
@@ -101,18 +103,22 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
           table: getLazySmoothComponent('markdownTable'),
           thead: {
             component: slots.markdownThead,
-            props: slotProps.markdownThead,
+            props: {
+              ...slotProps.markdownThead,
+            },
           },
           tbody: {
             component: slots.markdownTbody,
-            props: slotProps.markdownTbody,
+            props: {
+              ...slotProps.markdownTbody,
+            },
           },
           th: {
             component: slots.markdownTh,
             props: {
               ...slotProps.markdownTh,
               textComponent: slots.markdownTdText,
-              textComponentProps: slotProps.markdownTdText
+              textComponentProps: slotProps.markdownTdText,
             },
           },
           td: {
@@ -120,20 +126,26 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
             props: {
               ...slotProps.markdownTd,
               textComponent: slots.markdownTdText,
-              textComponentProps: slotProps.markdownTdText
+              textComponentProps: slotProps.markdownTdText,
             },
           },
           tr: {
             component: slots.markdownTr,
-            props: slotProps.markdownTr,
+            props: {
+              ...slotProps.markdownTr,
+            },
           },
           ul: {
             component: slots.markdownUl,
-            props: slotProps.markdownUl,
+            props: {
+              ...slotProps.markdownUl,
+            },
           },
           ol: {
             component: slots.markdownOl,
-            props: slotProps.markdownOl,
+            props: {
+              ...slotProps.markdownOl,
+            },
           },
           li: {
             // Looks like this is also needed in slots

@@ -4,7 +4,7 @@ const MessageMarkdownUl = styled('ul')(({ theme }) => ({
   listStyle: 'none',
   paddingLeft: '1.625em',
   '& li': {
-    paddingLeft: '6px !important',
+    paddingLeft: 6,
     marginBottom: 8,
     '&:last-child': {
       marginBottom: 0,
@@ -14,7 +14,7 @@ const MessageMarkdownUl = styled('ul')(({ theme }) => ({
     '&::before': {
       content: '""',
       position: 'absolute',
-      top: theme.spacing(1),
+      top: theme.spacing(1.3),
       left: theme.spacing(-2),
       width: 6,
       height: 6,
@@ -24,6 +24,18 @@ const MessageMarkdownUl = styled('ul')(({ theme }) => ({
     },
     'ul': {
       marginTop: theme.spacing(1.5),
+    },
+  },
+  '&:dir(rtl)': {
+    paddingLeft: 0,
+    paddingRight: '1.625em',
+    '& li': {
+      paddingRight: 6,
+      paddingLeft: 0,
+      '&::before': {
+        left: 'auto',
+        right: theme.spacing(-2),
+      }
     }
   },
 }));
@@ -31,7 +43,7 @@ const MessageMarkdownUl = styled('ul')(({ theme }) => ({
 const ChatMessageOl = styled('ol')(({ theme }) => ({
   paddingLeft: '1.625em',
   '& li': {
-    paddingLeft: '6px !important',
+    paddingLeft: 6,
     marginBottom: 8,
     '&:last-child': {
       marginBottom: 0,
@@ -44,6 +56,14 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
     '& ul': {
       marginTop: theme.spacing(1.5),
     },
+  },
+  '&:dir(rtl)': {
+    paddingLeft: 0,
+    paddingRight: '1.625em',
+    '& li': {
+      paddingLeft: 0,
+      paddingRight: 6,
+    }
   },
 }));
 
