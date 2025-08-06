@@ -45,11 +45,11 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
 
   const customOverrides = React.useMemo(() => {
     const obj = {};
-    customMarkdownComponents?.forEach((v) => {
-      const name = (v instanceof Object && 'name' in v) ? v.name : '';
+    customMarkdownComponents?.forEach(({ component }) => {
+      const name = (component instanceof Object && 'name' in component) ? component.name : '';
       const data = {
         [name]: {
-          component: v,
+          component: component,
         }
       };
       Object.assign(obj, data);
@@ -71,16 +71,17 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;
-    const replacedText = text.replace(/<ReactComponent>([\s\S]*?)(<\/ReactComponent>|$)/g, (match, inner) => {
-      const hasClosing = match.trim().endsWith('</ReactComponent>');
-      if (!hasClosing) {
-        return `<Skeleton />`;
+    const replacedText = inProgressProp ? text.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
+      const isSelfClosing = match.trim().endsWith('/>') || match.trim().endsWith('>');
+      if (!isSelfClosing) {
+        const userHeight = customMarkdownComponents.find(({ name }) => match.startsWith(`<${name} `))?.skeletonHeight;
+        const height = `${userHeight || 60}px`;
+        return `<Skeleton height={${height}} />`;
       }
-      return inner;
-    });
-
+      return match;
+    }) : text;
     return replacedText;
-  }, [customMarkdownComponents, text]);
+  }, [inProgressProp, customMarkdownComponents, text]);
 
   return (
     <MarkdownToJsx
@@ -192,7 +193,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
           span: paragraphSettings,
           Skeleton: {
             component: Skeleton,
-            props: { height: 60, variant: "rectangular" },
+            props: { variant: "rectangular" },
           },
         },
       }}

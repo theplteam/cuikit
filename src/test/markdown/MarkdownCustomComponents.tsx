@@ -5,15 +5,29 @@ import {
   Thread,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
-import Chart from "./components/Chart";
+import { BarChart } from '@mui/x-charts/BarChart';
+
+type ChartProps = {
+  series: string,
+};
+
+const Chart: React.FC<ChartProps> = ({ series }) => {
+  const seriesParsed = JSON.parse(series);
+
+  return (
+    <BarChart
+      xAxis={[{ data: ['group A', 'group B', 'group C'] }]}
+      series={seriesParsed}
+      height={300}
+    />
+  )
+};
 
 const markdownString = `
 Hello! Here is an example of a graph.
 
 **Example**
-<ReactComponent>
-<Chart data='[{"name": "Bar 1", "value": 100}, {"name": "Bar 2", "value": 200}, {"name": "Bar 3", "value": 300}, {"name": "Bar 4", "value": 400}, {"name": "Bar 5", "value": 500}]' />
-</ReactComponent>
+<Chart series='[{ "data": ["4", "3", "5"] }, { "data": ["1", "6", "3"] }, { "data": ["2", "5", "6"] }]' />
 `;
 
 const App: React.FC = () => {
@@ -50,26 +64,18 @@ const App: React.FC = () => {
     params.onFinish();
   }, []);
 
+  const customMarkdownComponents = [{
+    name: "Chart",
+    component: Chart,
+    skeletonHeight: 300,
+  }];
+
   return (
     <Box height="100dvh" width="100dvw">
       <ChatPage
         initialThread={threads[0]}
         threads={threads}
-        slotProps={{
-          markdownH1: {
-            variant: "h4",
-            color: "primary",
-          },
-          markdownH2: {
-            variant: "h5",
-            color: "primary",
-          },
-          markdownH3: {
-            variant: "h6",
-            color: "primary",
-          },
-        }}
-        customMarkdownComponents={[Chart]}
+        customMarkdownComponents={customMarkdownComponents}
         onUserMessageSent={onUserMessageSent}
       />
     </Box>
