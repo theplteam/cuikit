@@ -113,6 +113,14 @@ export const ErrorOutlineOutlinedIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
   d: "M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
 }), 'ErrorOutlineOutlined');
 
+export const UnfoldMoreIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
+  d: "M12 5.83 15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15z"
+}), 'UnfoldMore');
+
+export const UnfoldLessIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
+  d: "M7.41 18.59 8.83 20 12 16.83 15.17 20l1.41-1.41L12 14zm9.18-13.18L15.17 4 12 7.17 8.83 4 7.41 5.41 12 10z"
+}), 'UnfoldLess');
+
 export const SettingsIcon = createSvgIcon(/*#__PURE__*/jsx("path", {
   d: "M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z",
 }), 'Settings');

@@ -19,7 +19,7 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Override the full thread component
    */
-  thread: { id: string } & ChildrenProps;
+  thread: { id: string, className?: string; } & ChildrenProps;
   /**
    * Welcome message from the assistant for a new thread or the initial message from the assistant in an existing thread.
    */
@@ -78,6 +78,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Custom markdown renderer for reasoning block
    */
   markdownReasoningRoot: BoxProps;
+    /**
+   * Render markdown wrapper
+   */
+  markdownWrapper: BoxProps;
   /**
    * Render links
    */
