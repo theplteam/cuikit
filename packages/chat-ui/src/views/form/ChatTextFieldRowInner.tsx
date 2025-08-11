@@ -9,10 +9,10 @@ import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { Message } from '../../models';
-import AttachmentModel from '../../models/AttachmentModel';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
 import RowInnerFooter from './RowInnerFooter';
+import useFileAttachment from './attachments/useFileAttachment';
 
 type Props = {
   thread?: ThreadModel;
@@ -37,8 +37,10 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const isLoadingAttachments = useObserverValue(thread?.isLoadingAttachments);
   const isLoadingFullData = useObserverValue(thread?.isLoadingFullData);
 
+  const attachmentConfig = useFileAttachment();
+  const { attachments, setAttachments, handleFileUpload } = attachmentConfig;
+
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
-  const [attachments, setAttachments] = React.useState<AttachmentModel[]>([]);
 
   const onSendMessage = () => {
     if (isLoadingAttachments?.length) return;
@@ -58,7 +60,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setText('');
 
     setAttachments([]);
-  }
+  };
 
   const disabledTextField = !thread || isTyping || isLoadingFullData;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
@@ -74,12 +76,12 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
         text={text}
         setText={setText}
         disabled={disabledTextField}
+        handleFileUpload={handleFileUpload}
         onSendMessage={onSendMessage}
       />
       <RowInnerFooter
         thread={thread}
-        attachments={attachments}
-        setAttachments={setAttachments}
+        attachmentConfig={attachmentConfig}
         isTyping={isTyping}
         disabledSendMessage={disabledButton}
         onSendMessage={onSendMessage}

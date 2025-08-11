@@ -9,11 +9,13 @@ import TextFieldExpandButton from './TextFieldExpandButton';
 import { motion } from '../../utils/materialDesign/motion';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { useChatContext } from '../../views/core/ChatGlobalContext';
 
 type Props = {
   text: string;
   setText: (value: string) => void;
   onSendMessage: () => void;
+  handleFileUpload: (fileList: FileList | null) => void,
   disabled?: boolean;
   isTyping?: boolean;
 };
@@ -26,11 +28,12 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, isTyping }) => {
+const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, handleFileUpload, disabled, isTyping }) => {
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
   const [expand, setExpand] = React.useState(false);
   const locale = useLocalizationContext();
+  const { enableFileAttachments } = useChatContext();
 
   const isTablet = useTablet();
   const onEnterPress = useEnterPress(onSendMessage);
@@ -56,6 +59,14 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
   const toggleExpand = () => {
     setExpand(!expand);
     inputRef.current?.focus();
+  };
+
+  const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    // Bug in Mozilla, only one file can be pasted: https://bugzilla.mozilla.org/show_bug.cgi?id=864052
+    if (event.clipboardData.files.length && enableFileAttachments) {
+      event.preventDefault();
+      handleFileUpload(event.clipboardData.files);
+    }
   };
 
   return (
@@ -97,6 +108,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
             },
           }}
           disabled={disabled}
+          onPaste={handlePaste}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setText(event.target.value);
           }}
