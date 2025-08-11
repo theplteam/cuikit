@@ -78,7 +78,6 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     >
       {previewComponent}
       <ChatTextField
-        width={controlsInFooter ? 'calc(100% - 43px)' : '100%'}
         text={text}
         setText={setText}
         expand={expand}

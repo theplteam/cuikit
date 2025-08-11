@@ -9,6 +9,7 @@ import TextFieldExpandButton from './TextFieldExpandButton';
 import { motion } from '../../utils/materialDesign/motion';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { ChatViewConstants } from '../../views/ChatViewConstants';
 
 type Props = {
   text: string;
@@ -16,7 +17,6 @@ type Props = {
   onSendMessage: () => void;
   expand: boolean;
   setExpand: (value: boolean) => void;
-  width: string;
   disabled?: boolean;
 };
 
@@ -26,9 +26,9 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
     padding: theme.spacing(1, 1.5),
     height: '100%',
   },
-}))
+}));
 
-const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, width, expand, setExpand }) => {
+const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, expand, setExpand }) => {
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
   const locale = useLocalizationContext();
@@ -63,7 +63,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
 
   return (
     <Box
-      width={width}
+      width={`calc(100% - ${ChatViewConstants.INPUT_BUTTON_SIZE}px)`}
       height="100%"
       sx={{
         [`& .${simpleBarClasses.content}`]: {
