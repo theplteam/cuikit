@@ -3,6 +3,7 @@ import {
   ChatPage,
   MessageSentParams,
   Thread,
+  useAssistantAnswerMock,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import { BarChart } from '@mui/x-charts/BarChart';
@@ -31,6 +32,7 @@ Hello! Here is an example of a graph.
 `;
 
 const App: React.FC = () => {
+  const { streamGenerator } = useAssistantAnswerMock();
   const [threads] = React.useState<Thread[]>(
     [
       {
@@ -52,13 +54,10 @@ const App: React.FC = () => {
   );
 
   const onUserMessageSent = React.useCallback(async (params: MessageSentParams) => {
-    const split = markdownString.split(' ');
+    const stream = streamGenerator(markdownString, { delay: 100 });
 
-    for await (const chunk of split) {
-      await new Promise((resolve) => setTimeout(() => {
-        params.pushChunk(chunk + ' ');
-        resolve(true)
-      }, 200))
+    for await (const chunk of stream) {
+      params.pushChunk(chunk);
     }
 
     params.onFinish();
