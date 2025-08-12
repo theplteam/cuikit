@@ -5,10 +5,12 @@ import MessageMarkdown from './MessageMarkdown';
 import { SlotValue } from '../../core/usePropsSlots';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
+import { IdType } from '../../../types';
+import { v4 as uuid } from 'uuid';
 
 type Props = {
   text: string;
-  id?: string;
+  messageId: IdType;
   rootComponent: SlotValue<BoxProps>;
   rootComponentProps: BoxProps | undefined;
   inProgress: boolean;
@@ -34,14 +36,15 @@ export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
   },
 }));
 
-const MessageMarkdownBlock: React.FC<Props> = ({ text, id, inProgress, ...otherProps }) => {
+const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ...otherProps }) => {
+  const markdownId = React.useMemo(() => `${messageId}-${uuid()}`, [messageId]);
   return (
     <otherProps.rootComponent
       {...otherProps.rootComponentProps}
       className={clsx(otherProps.rootComponentProps?.className, chatClassNames.markdownParentRoot)}
-      id={id}
+      id={markdownId}
     >
-      <MessageMarkdown inProgress={inProgress} text={text} />
+      <MessageMarkdown inProgress={inProgress} text={text} markdownId={markdownId} />
     </otherProps.rootComponent>
   );
 }
