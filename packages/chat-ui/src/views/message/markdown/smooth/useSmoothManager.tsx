@@ -24,7 +24,7 @@ class SmoothManager {
 
     let delayMs = 0;
 
-    const parent = document.getElementById(`${markdownId}`);
+    const parent = document.getElementById(markdownId);
 
     const elements = (parent?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
 
