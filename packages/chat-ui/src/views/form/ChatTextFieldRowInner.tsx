@@ -12,6 +12,7 @@ import { Message } from '../../models';
 import AttachmentsPreview from './preview/AttachmentsPreview';
 import attachmentsStore from '../../models/AttachmentsStore';
 import RowInnerFooter from './RowInnerFooter';
+import SendMessageButton from './SendMessageButton';
 import useFileAttachment from './attachments/useFileAttachment';
 
 type Props = {
@@ -31,7 +32,7 @@ const StackStyled = styled(Stack)(({ theme }) => ({
 }));
 
 const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
-  const { defaultTextFieldValue, apiRef } = useChatContext();
+  const { defaultTextFieldValue, apiRef, enableFileAttachments, toolsList } = useChatContext();
 
   const isTyping = useObserverValue(thread?.isTyping);
   const isLoadingAttachments = useObserverValue(thread?.isLoadingAttachments);
@@ -41,9 +42,11 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const { attachments, setAttachments, handleFileUpload } = attachmentConfig;
 
   const [text, setText] = React.useState(defaultTextFieldValue ?? '');
+  const [expand, setExpand] = React.useState(false);
 
   const onSendMessage = () => {
     if (isLoadingAttachments?.length) return;
+    setExpand(false);
     let content: Message['content'] = text;
     if (attachments.length) {
       attachmentsStore.items.push(...attachments.filter((a) => !a.error.value));
@@ -62,6 +65,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setAttachments([]);
   };
 
+  const controlsInFooter = enableFileAttachments || !!toolsList?.length;
   const disabledTextField = !thread || isTyping || isLoadingFullData;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 
@@ -70,22 +74,36 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   ), [attachments, thread]);
 
   return (
-    <StackStyled>
+    <StackStyled
+      flexDirection={controlsInFooter ? 'column' : 'row'}
+      alignItems={controlsInFooter ? undefined : 'flex-end'}
+    >
       {previewComponent}
       <ChatTextField
         text={text}
         setText={setText}
+        expand={expand}
+        setExpand={setExpand}
         disabled={disabledTextField}
         handleFileUpload={handleFileUpload}
         onSendMessage={onSendMessage}
       />
-      <RowInnerFooter
-        thread={thread}
-        attachmentConfig={attachmentConfig}
-        isTyping={isTyping}
-        disabledSendMessage={disabledButton}
-        onSendMessage={onSendMessage}
-      />
+      {controlsInFooter
+        ? (
+          <RowInnerFooter
+            thread={thread}
+            attachmentConfig={attachmentConfig}
+            isTyping={isTyping}
+            disabledSendMessage={disabledButton}
+            onSendMessage={onSendMessage}
+          />
+        ) : (
+          <SendMessageButton
+            disabled={disabledButton}
+            isTyping={isTyping}
+            onSendMessage={onSendMessage}
+          />
+        )}
     </StackStyled>
   );
 };
