@@ -12,15 +12,14 @@ import { Message, Thread } from '../../../models';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
-import { IdType } from '../../../types';
 
 type Props = {
   text: string;
-  messageId: IdType;
+  markdownId: string;
   inProgress: boolean;
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, messageId, inProgress: inProgressProp }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, markdownId, inProgress: inProgressProp }) => {
   const { slots, slotProps } = useChatSlots();
   const { processAssistantText } = useChatContext();
 
@@ -53,7 +52,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, messageId, inProgress: inProgr
     }
   }), [inProgress, slots, slotProps]);
 
-  useSmoothManager(text, inProgress, messageId);
+  useSmoothManager(text, inProgress, markdownId);
 
   return (
     <MarkdownToJsx

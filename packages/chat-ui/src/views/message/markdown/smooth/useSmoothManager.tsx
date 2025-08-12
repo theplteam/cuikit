@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ChatViewConstants } from '../../../ChatViewConstants';
 import { chatClassNames } from '../../../core/chatClassNames';
-import { IdType } from '../../../../types';
 
 type AnimatedElementsType = HTMLSpanElement | HTMLDivElement | HTMLLIElement;
 
@@ -19,13 +18,13 @@ class SmoothManager {
 
   constructor() { }
 
-  check = async (messageId: IdType) => {
+  check = async (markdownId: string) => {
     if (this.ran) return;
     this.ran = true;
 
     let delayMs = 0;
 
-    const parent = document.getElementById(`${messageId}`);
+    const parent = document.getElementById(`${markdownId}`);
 
     const elements = (parent?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
 
@@ -73,7 +72,7 @@ class SmoothManager {
 
     this.ran = false;
 
-    if (delayMs > 0) this.check(messageId);
+    if (delayMs > 0) this.check(markdownId);
   }
 
   /*checkThrottle = throttle(
@@ -89,9 +88,9 @@ class SmoothManager {
 
 const smoothManager = new SmoothManager();
 
-export const useSmoothManager = (text: string, inProgress: boolean, messageId: IdType) => {
+export const useSmoothManager = (text: string, inProgress: boolean, markdownId: string) => {
   React.useEffect(() => {
-    if (inProgress) smoothManager.check(messageId);
+    if (inProgress) smoothManager.check(markdownId);
   }, [text, inProgress]);
 
 }
