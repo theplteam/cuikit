@@ -63,11 +63,12 @@ const App: React.FC = () => {
     params.onFinish();
   }, []);
 
-  const customMarkdownComponents = [{
-    name: "Chart",
-    component: Chart,
-    skeletonHeight: 300,
-  }];
+  const customMarkdownComponents = React.useMemo(() =>
+    [{
+      name: "Chart",
+      component: Chart,
+      skeletonHeight: 300,
+    }], []);
 
   return (
     <Box height="100dvh" width="100dvw">
