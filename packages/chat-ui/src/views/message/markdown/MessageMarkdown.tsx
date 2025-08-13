@@ -45,8 +45,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
 
   const customOverrides = React.useMemo(() => {
     const obj = {};
-    customMarkdownComponents?.forEach(({ component }) => {
-      const name = (component instanceof Object && 'name' in component) ? component.name : '';
+    customMarkdownComponents?.forEach(({ name, component }) => {
       const data = {
         [name]: {
           component: component,
@@ -72,7 +71,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;
     const replacedText = inProgressProp ? text.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
-      const isSelfClosing = match.trim().endsWith('/>') || match.trim().endsWith('>');
+      const isSelfClosing = match.trim().endsWith('/>');
       if (!isSelfClosing) {
         const userHeight = customMarkdownComponents.find(({ name }) => match.startsWith(`<${name} `))?.skeletonHeight;
         const height = `${userHeight || 60}px`;
