@@ -11,9 +11,8 @@ const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 const ThreadInteraction = React.lazy(() => import('./common/ThreadInteraction'));
-const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
 const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
-const UsingContext = React.lazy(() => import('./customization/UsingContext'));
+const ConstructorExample = React.lazy(() => import('./customization/ConstructorExample'));
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
 const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
@@ -26,8 +25,8 @@ const FileAttachmentError = React.lazy(() => import('./fileAttachment/FileAttach
 const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAttachmentProgress'));
 const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
-const HistoryBase = React.lazy(() => import('./customization/HistoryBase'));
-const ChatBase = React.lazy(() => import('./customization/ChatBase'));
+const HistoryBase = React.lazy(() => import('./common/HistoryBase'));
+const ChatBase = React.lazy(() => import('./common/ChatBase'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
 
@@ -53,8 +52,7 @@ const App: React.FC = () => {
       case 'thread-structure': variant = ThreadStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
-      case 'portal-list': variant = ThreadsListPortal; break;
-      case 'context-usage': variant = UsingContext; break;
+      case 'constructor-example': variant = ConstructorExample; break;
       case 'thread-interaction': variant = ThreadInteraction; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
