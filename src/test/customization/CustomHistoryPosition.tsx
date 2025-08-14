@@ -68,9 +68,7 @@ const threads: Thread[] = [
 const App: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
   const [activeThreadName, setActiveThreadName] = React.useState<string>(threads[0].title);
-
   const apiRef = useChatApiRef();
-  const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
@@ -131,7 +129,6 @@ const App: React.FC = () => {
           threads={threads}
           handleStopMessageStreaming={handleStopMessageStreaming}
           apiRef={apiRef}
-          scrollerRef={scrollRef}
           onUserMessageSent={onUserMessageSent}
           onChangeCurrentThread={onChangeCurrentThread}
         />
