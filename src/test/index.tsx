@@ -13,6 +13,7 @@ const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 const ThreadInteraction = React.lazy(() => import('./common/ThreadInteraction'));
 const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
 const CustomHistoryPosition = React.lazy(() => import('./customization/CustomHistoryPosition'));
+const ChatChildren = React.lazy(() => import('./customization/ChatChildren'));
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
 const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
@@ -53,6 +54,7 @@ const App: React.FC = () => {
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
       case 'custom-history-position': variant = CustomHistoryPosition; break;
+      case 'chat-children': variant = ChatChildren; break;
       case 'thread-interaction': variant = ThreadInteraction; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
