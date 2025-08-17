@@ -7,6 +7,7 @@ import MessageGalleryItem from './MessageGalleryItem';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
 import AttachmentModel from '../../../models/AttachmentModel';
 import 'photoswipe/style.css';
+import useGalleryItemSize from './useGalleryItemSize';
 
 type Props = {
   id: IdType;
@@ -52,6 +53,7 @@ const MessageGallery: React.FC<Props> = ({ id, items, onDeleteItem }) => {
 
   const columns = React.useMemo(() => items.length < 4 ? items.length : items.length === 4 ? 2 : 3, [items.length]);
   const rows = React.useMemo(() => Math.ceil(items.length / columns), [columns, items.length]);
+  const size = useGalleryItemSize(items.length);
 
   return (
     <GridBox
@@ -59,7 +61,9 @@ const MessageGallery: React.FC<Props> = ({ id, items, onDeleteItem }) => {
       display="grid"
       gap={1}
       sx={{
-        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        width: '100%',
+        gridTemplateColumns: `repeat(${columns}, minmax(0, ${size}px))`,
+        gridAutoRows: size,
         direction: 'rtl',
       }}
       overflow="hidden"
