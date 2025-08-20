@@ -1,7 +1,6 @@
 import * as React from 'react';
 import MarkdownToJsx from 'markdown-to-jsx';
 import { useChatSlots } from '../../core/ChatSlotsContext';
-import { useChatContext } from '../../core/ChatGlobalContext';
 import MarkdownParagraphParser from './MessageMarkdownParagraphParser';
 import { useSmoothManager } from './smooth/useSmoothManager';
 import MarkdownComponentSmoother from './smooth/MarkdownComponentSmoother';
@@ -16,11 +15,11 @@ import { useInProgressStateCache } from './useInProgressStateCache';
 type Props = {
   text: string;
   inProgress: boolean;
+  processAssistantText?: (text: string) => string;
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText }) => {
   const { slots, slotProps } = useChatSlots();
-  const { processAssistantText } = useChatContext();
 
   const inProgress = useInProgressStateCache(inProgressProp);
 

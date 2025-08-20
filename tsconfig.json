@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@plteam/chat-ui": ["./packages/chat-ui/src"]
+      "@plteam/chat-ui": ["./packages/chat-ui/src"],
+      "@plteam/chat-ui/markdownRenderer": ["./packages/chat-ui/src/markdownRenderer"]
     },
     "target": "ES2023",
     "lib": ["ES2023"],
