@@ -71,6 +71,7 @@ export class MessageSender<DM extends Message> {
       message: internalUserMessage,
       assistantMessage: getInternalMessage(message),
       toolType: this.thread.tool.value,
+      aiModel: this.thread.data.aiModel,
       pushChunk: this.pushChunk,
       setText: this.setText,
       setStatus: this.setStatus,

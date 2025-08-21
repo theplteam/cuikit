@@ -23,6 +23,7 @@ export type Thread<DM extends Message = any> = {
   id: IdType;
   title: string;
   date?: string;
+  aiModel?: string;
   messages?: DM[];
 } & { isNew?: boolean };
 

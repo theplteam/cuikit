@@ -16,12 +16,14 @@ import { CHAT_LOCALE } from '../../../locale/enEN';
 import { ruRU } from '../../../locale/ruRU';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import internalApi from './internalApi';
+import ListItemButton from '@mui/material/ListItemButton';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({
     baseButton: slots?.baseButton ?? Button,
     baseIconButton: slots?.baseIconButton ?? IconButton,
     baseListItemText: slots?.baseListItemText ?? ListItemText,
+    baseListItemButton: slots?.baseListItemButton ?? ListItemButton,
     baseMenuItem: slots?.baseMenuItem ?? MdMenuItem,
     historyContainer: slots?.historyContainer ?? Box,
     historyWrapper: slots?.historyWrapper ?? Stack,
@@ -32,6 +34,7 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
     listTimeText: slots?.listTimeText ?? Typography,
     listTimeTextWrapper: slots?.listTimeTextWrapper ?? TimeTextWrapper,
     listDrawerTitle: slots?.listDrawerTitle ?? Typography,
+    aiModelButton: slots?.aiModelButton ?? Button,
   }) as HistorySlotType, [slots]);
 
   return componentSlots;
@@ -40,7 +43,7 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
 const Context = React.createContext<HistoryContextType | undefined>(undefined);
 
 export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<HistoryComponentProps>) => {
-  const { apiRef, loading, threadActions, slotProps } = props;
+  const { apiRef, loading, threadActions, aiModelList, slotProps } = props;
   const userLocale = props?.lang === 'ru' ? ruRU : CHAT_LOCALE;
   const userSlots = useSlots(props?.slots);
   const internal = useObserverValue(internalApi);
@@ -53,6 +56,7 @@ export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<
     slots: userSlots,
     locale: userLocale,
     slotProps: slotProps || {},
+    aiModelList: aiModelList || [],
   }), [apiRef, internal, loading, props]);
 
   return (
