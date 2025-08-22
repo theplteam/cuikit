@@ -12,6 +12,8 @@ import { chatClassNames } from '../views/core/chatClassNames';
 import { keyframes, styled } from '@mui/material/styles';
 import { ChatViewConstants } from '../views/ChatViewConstants';
 import { SlotPropsType } from '../views/core/SlotPropsType';
+import { usePhotoswipeInitialization } from '../views/message/hooks/usePhotoswipeInitialization';
+import { v4 as uuid4 } from 'uuid';
 type ExtractMarkdownKeys<T> = {
   [K in keyof T as K extends `markdown${string}` ? K : never]: T[K]
 }
@@ -58,8 +60,14 @@ const ChatMarkdown: React.FC<Props> = ({ slots: slotsUser, slotProps: slotPropsU
   const slots = React.useMemo(() => getMarkdownSlots(slotsUser), [slotsUser]);
   const slotProps = React.useMemo(() => getMarkdownSlotProps(slotPropsUser), [slotPropsUser]);
 
+  const containerId = React.useMemo(() => uuid4(), []);
+  usePhotoswipeInitialization(containerId, inProgress);
+
   return (
-    <BoxStyled className={clsx(chatClassNames.messageAssistantRoot, className)}>
+    <BoxStyled
+      id={containerId}
+      className={clsx(chatClassNames.messageAssistantRoot, className)}
+    >
       <ChatSlotsProvider slots={slots} slotProps={slotProps}>
         {!loading && <MarkdownComponent inProgress={inProgress} text={text} />}
         {children}
