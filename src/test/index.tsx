@@ -26,8 +26,6 @@ const FileAttachmentError = React.lazy(() => import('./fileAttachment/FileAttach
 const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAttachmentProgress'));
 const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
-const HistoryBase = React.lazy(() => import('./common/HistoryBase'));
-const ChatBase = React.lazy(() => import('./common/ChatBase'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
 
@@ -69,8 +67,6 @@ const App: React.FC = () => {
       case 'message-attachment-progress': variant = FileAttachmentProgress; break;
       case 'message-attachment-restrictions': variant = FileAttachmentRestrictions; break;
       case 'snackbar': variant = ExternalSnackbar; break;
-      case 'history-base': variant = HistoryBase; break;
-      case 'chat-base': variant = ChatBase; break;
       case 'thread-actions': variant = ThreadActions; break;
       case 'tools': variant = ToolsBase; break;
     }
