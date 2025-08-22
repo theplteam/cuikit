@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { motion } from '../../utils/materialDesign/motion';
+import { ChatViewConstants } from '../../views/ChatViewConstants';
 
 type Props = {
   onSendMessage: () => void;
@@ -23,7 +24,7 @@ const SendMessageButton: React.FC<Props> = ({ onSendMessage, isTyping, disabled 
   };
 
   return (
-    <Box>
+    <Box width={ChatViewConstants.INPUT_BUTTON_SIZE} height={ChatViewConstants.INPUT_BUTTON_SIZE}>
       <slots.sendMessageButton
         {...slotProps.sendMessageButton}
         disabled={disabled || (!handleStopMessageStreaming && !!isTyping)}

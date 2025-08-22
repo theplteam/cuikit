@@ -48,6 +48,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@plteam/chat-ui': path.resolve(__dirname, './packages/chat-ui/src'),
+        '@plteam/chat-ui/markdownRenderer': path.resolve(__dirname, './packages/chat-ui/src/markdownRenderer'),
       }
     },
     build: buildOptions,

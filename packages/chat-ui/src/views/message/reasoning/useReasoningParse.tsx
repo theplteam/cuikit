@@ -5,6 +5,33 @@ import { useLocalizationContext } from '../../core/LocalizationContext';
 import { useObserverValue } from '../../hooks/useObserverValue';
 import { ReasoningViewType } from '../../../models/MessageReasoningModel';
 
+export const parseReasoningText = (text: string) => {
+  const matches = text.split("\n\n").reverse();
+  if (matches.length < 1) return undefined;
+
+  let titleIndex = -1;
+  let textIndex = -1;
+  for (let i = 1; i < matches.length; i++) {
+
+    const titleMatches = Array.from(matches[i].matchAll(/\*\*(.*?)\*\*/g));
+    if (titleMatches.length) {
+      titleIndex = i;
+      break;
+    } else {
+      textIndex = i;
+    }
+  }
+
+  let newTitle = '';
+  if (matches[titleIndex]) {
+    newTitle = matches[titleIndex]
+      .replaceAll('*', '')
+      .replaceAll('#', '')
+  }
+
+  return { newTitle, newText: matches[textIndex] }
+}
+
 export const useReasoningParse = (text: string, message: MessageModel, inProgress: boolean) => {
   const [description, setDescription] = React.useState('');
   const locale = useLocalizationContext();
@@ -12,30 +39,7 @@ export const useReasoningParse = (text: string, message: MessageModel, inProgres
   const reasoningType = useObserverValue(message.reasoningManager.viewType) ?? ReasoningViewType.HEADERS_STREAM;
 
   const parserFn = React.useCallback(throttle((newText: string) => {
-    const matches = newText.split("\n\n").reverse();
-    if (matches.length < 1) return undefined;
-
-    let titleIndex = -1;
-    let textIndex = -1;
-    for (let i = 1; i < matches.length; i++) {
-
-      const titleMatches = Array.from(matches[i].matchAll(/\*\*(.*?)\*\*/g));
-      if (titleMatches.length) {
-        titleIndex = i;
-        break;
-      } else {
-        textIndex = i;
-      }
-    }
-
-    let newTitle = '';
-    if (matches[titleIndex]) {
-      newTitle = matches[titleIndex]
-        .replaceAll('*', '')
-        .replaceAll('#', '')
-    }
-
-    return { newTitle, newText: matches[textIndex] }
+    return parseReasoningText(newText);
   }, 300, { leading: false, trailing: true }), []);
 
   React.useEffect(() => {
