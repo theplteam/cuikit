@@ -192,6 +192,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   onShowAlert?: onShowAlertType;
   /**
+   * Allows rendering arbitrary React components in markdown.
+   */
+  customMarkdownComponents?: { name: string, component: React.ElementType, skeletonHeight?: number }[];
+  /**
    * Callback fired when active tool changed.
    */
   onToolChanged?: (type: string | undefined) => void;
