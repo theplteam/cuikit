@@ -60,7 +60,7 @@ const ChatMarkdown: React.FC<Props> = ({ slots: slotsUser, slotProps: slotPropsU
   const slots = React.useMemo(() => getMarkdownSlots(slotsUser), [slotsUser]);
   const slotProps = React.useMemo(() => getMarkdownSlotProps(slotPropsUser), [slotPropsUser]);
 
-  const containerId = React.useMemo(() => uuid4(), []);
+  const containerId = React.useMemo(() => 'id' + uuid4(), []);
   usePhotoswipeInitialization(containerId, inProgress);
 
   return (
