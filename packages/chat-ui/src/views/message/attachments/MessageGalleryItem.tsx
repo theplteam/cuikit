@@ -6,7 +6,6 @@ import GalleryItem from '../../../views/form/preview/GalleryItem';
 import { IdType } from '../../../types';
 import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
-import useGalleryItemSize from './useGalleryItemSize';
 
 type Props = {
   item: AttachmentModel;
@@ -23,6 +22,7 @@ const GridItem = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   position: 'relative',
   borderRadius: '8px',
+  aspectRatio: 1,
   '& a': {
     width: '100%',
     height: '100%',
@@ -50,7 +50,6 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
     return endIndex - startIndex;
   };
 
-  const size = useGalleryItemSize(itemsCount);
   const className = React.useMemo(() => {
     if (itemsCount === 1) return '';
 
@@ -69,8 +68,7 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
       ${isLeftColumn ? 'left-column' : ''} 
       ${isRightColumn ? 'right-column' : ''}
       ${isTopRow && itemsCount > 4 && itemsCount < 6 ? 'bottom-row' : ''}
-      ${!isTopRow && !isBottomRow && itemsCount > 6 && itemsCount < 9 && !isRightColumn ? 'bottom-row' : ''}
-      ${rows > 3 && index === 8 ? 'bottom-row' : ''}
+      ${row === rows - 2 && itemsCount % 3 !== 0 && isLeftColumn ? 'bottom-row' : ''}
       ${rows === 1 && isLeftColumn ? 'bottom-row' : ''}
       ${isLastAndSingle ? 'left-column' : ''}
     `;
@@ -82,16 +80,16 @@ const MessageGalleryItem: React.FC<Props> = ({ item, galleryId, columns, rows, i
     <GridItem
       key={item.id}
       sx={{
-        width: size,
-        height: size,
+        width: '100%',
+        height: '100%',
       }}
-      className={className}
     >
       <GalleryItem
         id={`${galleryId}-${item.id}`}
         poster={poster}
         videoUrl={isVideo ? url : undefined}
         showPlayIcon={isVideo}
+        className={className}
       />
       {onDelete ? <PreviewDeleteButton onClick={() => onDelete(item.id)} /> : null}
     </GridItem>
