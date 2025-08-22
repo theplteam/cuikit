@@ -12,14 +12,16 @@ import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
 import Skeleton from '@mui/material/Skeleton';
+import { ChatUsersProps } from '../../core/useChatProps';
 
 type Props = {
   text: string;
   inProgress: boolean;
   processAssistantText?: (text: string) => string;
+  customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
   const { slots, slotProps } = useChatSlots();
 
   const inProgress = useInProgressStateCache(inProgressProp);
