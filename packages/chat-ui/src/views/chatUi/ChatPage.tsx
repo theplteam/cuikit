@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { ChatUsersProps } from '../core/useChatProps';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
+import { useMobile } from '../../ui/Responsive';
 
 type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string };
 
@@ -17,6 +18,7 @@ const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPag
   const { historyProps, apiRef, loading, lang, className, ...chatProps } = usersProps;
   const chatApiRef = useChatApiRef();
   const ref = useElementRef();
+  const isMobile = useMobile();
 
   const userApiRef = apiRef ?? chatApiRef;
 
@@ -33,6 +35,7 @@ const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPag
           apiRef={userApiRef}
           loading={loading}
           lang={lang}
+          isMobile={isMobile}
           {...historyProps}
         />
         <ChatMobileAppBar apiRef={userApiRef} />

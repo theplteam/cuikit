@@ -11,10 +11,10 @@ const ThreadStructure = React.lazy(() => import('./common/ThreadStructure'));
 const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
-const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
-const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
+const ThreadInteraction = React.lazy(() => import('./common/ThreadInteraction'));
 const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
-const UsingContext = React.lazy(() => import('./customization/UsingContext'));
+const CustomHistoryPosition = React.lazy(() => import('./customization/CustomHistoryPosition'));
+const ChatChildren = React.lazy(() => import('./customization/ChatChildren'));
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
 const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
@@ -27,6 +27,7 @@ const FileAttachmentError = React.lazy(() => import('./fileAttachment/FileAttach
 const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAttachmentProgress'));
 const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
+const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
 const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
 
 const App: React.FC = () => {
@@ -52,9 +53,9 @@ const App: React.FC = () => {
       case 'thread-structure': variant = ThreadStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
-      case 'portal-list': variant = ThreadsListPortal; break;
-      case 'context-usage': variant = UsingContext; break;
-      case 'thread-actions': variant = ThreadActions; break;
+      case 'custom-history-position': variant = CustomHistoryPosition; break;
+      case 'chat-children': variant = ChatChildren; break;
+      case 'thread-interaction': variant = ThreadInteraction; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
       case 'message-finishing': variant = MessagingFinishing; break;
@@ -68,6 +69,7 @@ const App: React.FC = () => {
       case 'message-attachment-progress': variant = FileAttachmentProgress; break;
       case 'message-attachment-restrictions': variant = FileAttachmentRestrictions; break;
       case 'snackbar': variant = ExternalSnackbar; break;
+      case 'thread-actions': variant = ThreadActions; break;
       case 'tools': variant = ToolsBase; break;
     }
 
