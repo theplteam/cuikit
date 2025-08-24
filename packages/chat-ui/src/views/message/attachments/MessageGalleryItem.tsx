@@ -19,7 +19,7 @@ type Props = {
 
 const GridItem = styled(Box)(({ theme }) => ({
   width: '100%',
-  backgroundColor: theme.palette.common.white,
+  backgroundColor: theme.palette.background.paper,
   position: 'relative',
   borderRadius: '8px',
   aspectRatio: 1,

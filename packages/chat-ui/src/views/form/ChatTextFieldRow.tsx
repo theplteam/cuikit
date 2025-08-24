@@ -15,7 +15,7 @@ const ThreadWidthBlockStyled = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
   width: '100%',
   padding: theme.spacing(0, paddingSidesSx, 1, paddingSidesSx),
-  backgroundColor: theme.palette.common.white,
+  backgroundColor: theme.palette.background.default,
   alignItems: 'center',
   '&:before': {
     content: '""',
@@ -26,7 +26,7 @@ const ThreadWidthBlockStyled = styled(Box)(({ theme }) => ({
     height: 100,
     pointerEvents: 'none',
     zIndex: -1,
-    background: `linear-gradient(180deg, rgba(255,255,255, 0), rgba(255,255,255, 1) 60%)`,
+    background: `linear-gradient(180deg, rgba(255,255,255, 0), ${theme.palette.background.default} 60%)`,
   },
 }));
 
