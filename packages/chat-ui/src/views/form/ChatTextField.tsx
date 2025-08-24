@@ -106,6 +106,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, handleFi
           inputRef={inputRef}
           sx={{
             [`&& .${inputBaseClasses.input}`]: {
+              color: (theme) => theme.palette.text.primary,
               alignSelf: 'flex-start',
             },
           }}

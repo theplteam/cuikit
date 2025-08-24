@@ -15,9 +15,9 @@ const PreviewDeleteButton: React.FC<Props> = ({ onClick }) => {
         position: 'absolute',
         top: 8,
         right: 8,
-        backgroundColor: (theme) => theme.palette.common.white,
+        backgroundColor: (theme) => theme.palette.background.default,
         ':hover': {
-          backgroundColor: (theme) => theme.palette.grey[200],
+          backgroundColor: (theme) => theme.palette.primary.dark,
         }
       }}
       onClick={onClick}
