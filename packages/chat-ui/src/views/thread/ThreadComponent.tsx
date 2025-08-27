@@ -77,6 +77,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
         getCurrentBranch,
         getConversationBlockHeightMin,
       }}
+      contentRef={contentRef}
       scrollRef={scrollApiRef}
     >
       <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread} className={className}>
