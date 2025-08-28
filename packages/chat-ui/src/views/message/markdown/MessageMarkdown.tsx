@@ -16,12 +16,13 @@ import { ChatUsersProps } from '../../core/useChatProps';
 
 type Props = {
   text: string;
+  markdownId: string;
   inProgress: boolean;
   processAssistantText?: (text: string) => string;
   customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, markdownId, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
   const { slots, slotProps } = useChatSlots();
 
   const inProgress = useInProgressStateCache(inProgressProp);
@@ -67,7 +68,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
     }
   }), [inProgress, slots, slotProps]);
 
-  useSmoothManager(text, inProgress);
+  useSmoothManager(text, inProgress, markdownId);
 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;
