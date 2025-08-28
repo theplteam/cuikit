@@ -1,7 +1,6 @@
 import * as React from 'react';
 import MarkdownToJsx from 'markdown-to-jsx';
 import { useChatSlots } from '../../core/ChatSlotsContext';
-import { useChatContext } from '../../core/ChatGlobalContext';
 import MarkdownParagraphParser from './MessageMarkdownParagraphParser';
 import { useSmoothManager } from './smooth/useSmoothManager';
 import MarkdownComponentSmoother from './smooth/MarkdownComponentSmoother';
@@ -12,15 +11,18 @@ import { Message, Thread } from '../../../models';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
+import Skeleton from '@mui/material/Skeleton';
+import { ChatUsersProps } from '../../core/useChatProps';
 
 type Props = {
   text: string;
   inProgress: boolean;
+  processAssistantText?: (text: string) => string;
+  customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
   const { slots, slotProps } = useChatSlots();
-  const { processAssistantText } = useChatContext();
 
   const inProgress = useInProgressStateCache(inProgressProp);
 
@@ -42,6 +44,20 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
     });
   }, [inProgress]);
 
+  const customOverrides = React.useMemo(() => {
+    const obj = {};
+    customMarkdownComponents?.forEach(({ name, component }) => {
+      const data = {
+        [name]: {
+          component: component,
+        }
+      };
+      Object.assign(obj, data);
+    });
+
+    return obj;
+  }, [customMarkdownComponents]);
+
   const paragraphSettings = React.useMemo(() => ({
     component: MarkdownParagraphParser,
     props: {
@@ -53,6 +69,20 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
 
   useSmoothManager(text, inProgress);
 
+  const markdownText = React.useMemo(() => {
+    if (!customMarkdownComponents?.length) return text;
+    const replacedText = inProgressProp ? text.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
+      const isSelfClosing = match.trim().endsWith('/>');
+      if (!isSelfClosing) {
+        const userHeight = customMarkdownComponents.find(({ name }) => match.startsWith(`<${name} `))?.skeletonHeight;
+        const height = `${userHeight || 60}px`;
+        return `<Skeleton height={${height}} />`;
+      }
+      return match;
+    }) : text;
+    return replacedText;
+  }, [inProgressProp, customMarkdownComponents, text]);
+
   return (
     <MarkdownToJsx
       options={{
@@ -60,6 +90,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
         forceWrapper: true,
         wrapper: slots.markdownWrapper,
         overrides: {
+          ...customOverrides,
           a: {
             component: slots.markdownA,
             props: {
@@ -160,10 +191,14 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp }) 
           },
           p: paragraphSettings,
           span: paragraphSettings,
+          Skeleton: {
+            component: Skeleton,
+            props: { variant: "rectangular" },
+          },
         },
       }}
     >
-      {text}
+      {markdownText}
     </MarkdownToJsx>
   );
 }
