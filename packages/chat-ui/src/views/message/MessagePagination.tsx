@@ -46,7 +46,8 @@ const MessagePagination: React.FC<MessagePaginationProps> = ({ message, classes,
       sx={{
         position: 'absolute',
         right: 4,
-        bottom: -messagePaginationHeight - 4
+        bottom: -messagePaginationHeight - 4,
+        color: (theme) => theme.palette.text.primary,
       }}
       gap={0.5}
       alignItems="center"
