@@ -16,10 +16,11 @@ export const useThreadApiInitialization = (
   onMessageSend: OnMessageSendType,
   onEditMessage: OnEditMessageType,
   getConversationBlockHeightMin?: (calculatedHeight: number) => number,
+  contentRef?: React.RefObject<HTMLDivElement | null>,
 ) => {
   const handleChangeStreamStatus = useMessageProgressStatus(thread);
 
-  const getConversationBlockHeight = useConversationBlockHeightCallback(getConversationBlockHeightMin);
+  const getConversationBlockHeight = useConversationBlockHeightCallback(contentRef, getConversationBlockHeightMin);
 
   React.useMemo(() => {
     apiManager.setMethod('setProgressStatus', handleChangeStreamStatus);
