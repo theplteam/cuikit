@@ -28,11 +28,12 @@ type Props<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<
     ChatGlobalContextType<any, any>,
     'onFirstMessageSent' | 'onAssistantMessageTypingFinish' | 'enableBranches' | 'beforeUserMessageSend' | 'getCurrentBranch' | 'getConversationBlockHeightMin'
   >;
+  contentRef?: React.RefObject<HTMLDivElement | null>;
 }>;
 
 const Context = React.createContext<ThreadContextType<any, any> | undefined>(undefined);
 
-const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, globalProps }: Props<DM, DD>) => {
+const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, model, thread, apiManager, scrollRef, contentRef, globalProps }: Props<DM, DD>) => {
   const mobileMessageActions = useMobileMessageActions();
   const messageMode = useMessagesMode();
   const internalMessageTransformer = useInternalMessageTransformer();
@@ -47,7 +48,7 @@ const ThreadProvider = <DM extends Message, DD extends Thread<DM>>({ children, m
     apiManager,
   );
 
-  useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage, globalProps.getConversationBlockHeightMin);
+  useThreadApiInitialization(thread, apiManager, onSendNewsMessage, onEditMessage, globalProps.getConversationBlockHeightMin, contentRef);
 
   React.useMemo(() => {
     if (thread) {
