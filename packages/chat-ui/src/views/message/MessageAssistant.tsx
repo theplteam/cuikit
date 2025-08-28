@@ -88,16 +88,13 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
         />
       ) : null}
       <Stack id={containerId} gap={1}>
-        <slots.messageAssistantProgress
-          {...slotProps.messageAssistantProgress}
-          message={message}
-        />
-        {texts.map((text) => (
+        {texts.map((text, index) => (
           <AssistantTextBlock
             key={text.modelId}
             message={message}
             messageText={text}
             inProgress={!!typing}
+            showStatus={texts.length === index - 1}
           />
         ))}
       </Stack>
