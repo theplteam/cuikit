@@ -12,7 +12,7 @@ import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
 import { ToolType } from './types/ToolType';
-import { AIModelType } from './types/AiModelType';
+import { AIModelType } from './types/AIModelType';
 import { parseReasoningText } from './views/message/reasoning/useReasoningParse';
 
 export * from './models';

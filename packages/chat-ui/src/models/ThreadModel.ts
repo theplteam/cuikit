@@ -47,6 +47,8 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly tool = new ObservableReactValue<string | undefined>(undefined);
 
+  readonly aiModel = new ObservableReactValue<string | undefined>(undefined);
+
   readonly helloMessage = new MessageModel({
     id: 'helloMessage' + randomId(),
     content: '',
@@ -79,6 +81,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
     this._data = data;
     this.observableTitle.value = data.title;
     this.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
+    this.aiModel.value = data.aiModel;
 
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];

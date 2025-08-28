@@ -52,6 +52,7 @@ const App: React.FC = () => {
         handleStopMessageStreaming={handleStopMessageStreaming}
         historyProps={{
           aiModelList,
+          openNewThreadOnModelChange: true,
         }}
         onUserMessageSent={onUserMessageSent}
       />
