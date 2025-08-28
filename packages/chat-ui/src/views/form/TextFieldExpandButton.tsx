@@ -5,6 +5,7 @@ import { UnfoldLessIcon, UnfoldMoreIcon } from '../../icons';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import { useChatCoreSlots } from '../core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
+import { ChatViewConstants } from '../../views/ChatViewConstants';
 
 type Props = {
   expand: boolean,
@@ -17,7 +18,8 @@ const DivStyled = styled('div')(({ theme }) => ({
   top: 8,
   right: 8,
   transition: theme.transitions.create('opacity', { duration: motion.duration.short4 }),
-  zIndex: 99,
+  width: ChatViewConstants.INPUT_BUTTON_SIZE,
+  height: ChatViewConstants.INPUT_BUTTON_SIZE,
 }));
 
 const TextFieldExpandButton: React.FC<Props> = ({ expand, onClick, show }) => {
@@ -25,7 +27,7 @@ const TextFieldExpandButton: React.FC<Props> = ({ expand, onClick, show }) => {
   const coreSlots = useChatCoreSlots();
 
   return (
-    <DivStyled style={{ opacity: show ? 1 : 0 }}>
+    <DivStyled style={{ opacity: show ? 1 : 0, zIndex: show ? 99 : 0 }}>
       <Tooltip title={locale.innerRowExpand}>
         <coreSlots.iconButton
           sx={{ transform: 'rotate(45deg)' }}

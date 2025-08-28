@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { IdType } from '../../../types';
 import { v4 as uuid } from 'uuid';
+import { useChatContext } from '../../core/ChatGlobalContext';
 
 type Props = {
   text: string;
@@ -37,14 +38,22 @@ export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
 }));
 
 const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ...otherProps }) => {
-  const markdownId = React.useMemo(() => `${messageId}-${uuid()}`, [messageId]);
+  const markdownId = React.useMemo(() => `markdown-${messageId}-${uuid()}`, [messageId]);
+  const { processAssistantText, customMarkdownComponents } = useChatContext();
+
   return (
     <otherProps.rootComponent
       {...otherProps.rootComponentProps}
       className={clsx(otherProps.rootComponentProps?.className, chatClassNames.markdownParentRoot)}
       id={markdownId}
     >
-      <MessageMarkdown inProgress={inProgress} text={text} markdownId={markdownId} />
+      <MessageMarkdown
+        inProgress={inProgress}
+        text={text}
+        processAssistantText={processAssistantText}
+        customMarkdownComponents={customMarkdownComponents}
+        markdownId={markdownId}
+      />
     </otherProps.rootComponent>
   );
 }

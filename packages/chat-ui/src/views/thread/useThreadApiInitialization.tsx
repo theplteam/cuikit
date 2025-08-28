@@ -16,8 +16,10 @@ export const useThreadApiInitialization = (
   onMessageSend: OnMessageSendType,
   onEditMessage: OnEditMessageType,
   getConversationBlockHeightMin?: (calculatedHeight: number) => number,
+  contentRef?: React.RefObject<HTMLDivElement | null>,
 ) => {
-  const getConversationBlockHeight = useConversationBlockHeightCallback(getConversationBlockHeightMin);
+
+  const getConversationBlockHeight = useConversationBlockHeightCallback(contentRef, getConversationBlockHeightMin);
 
   React.useMemo(() => {
     apiManager.setMethod('sendUserMessage', onMessageSend);

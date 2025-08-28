@@ -5,7 +5,6 @@ import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { MessageModel } from '../../models/MessageModel';
 import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
-import PhotoSwipeLightbox from '../photoswipe/PhotoSwipeLightbox';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import MessageReasoning from './reasoning/MessageReasoning';
 import { useChatContext } from '../core/ChatGlobalContext';
@@ -14,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import AssistantTextBlock from './AssistantTextBlock';
 import { chatClassNames } from '../core/chatClassNames';
 import { ChatViewConstants } from '../ChatViewConstants';
+import { usePhotoswipeInitialization } from './hooks/usePhotoswipeInitialization';
 
 type Props = {
   message: MessageModel;
@@ -69,22 +69,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
 
   const containerId = message.photoswipeContainerId;
 
-  React.useEffect(() => {
-    if (typing) return;
-    const lightbox = PhotoSwipeLightbox({
-      gallery: `#${message.photoswipeContainerId}`,
-      children: `a.${chatClassNames.markdownImage}`,
-      pswpModule: () => import('photoswipe'),
-      zoom: false,
-      showHideAnimationType: 'fade',
-    });
-
-    lightbox.init();
-
-    return () => {
-      lightbox.destroy();
-    }
-  }, [typing, containerId]);
+  usePhotoswipeInitialization(containerId, typing);
 
   return (
     <MessageContainerStyled

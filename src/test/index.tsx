@@ -4,6 +4,7 @@ const MessageStatus = React.lazy(() => import('./common/MessageStatus'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
 const MarkdownExample = React.lazy(() => import('./markdown/MarkdownExample'));
 const MarkdownCustomExample = React.lazy(() => import('./markdown/MarkdownCustomExample'));
+const MarkdownCustomComponents = React.lazy(() => import('./markdown/MarkdownCustomComponents'));
 const MarkdownRtlText = React.lazy(() => import('./markdown/MarkdownRtlText'));
 const CustomSlots = React.lazy(() => import('./customization/CustomSlots'));
 const BaseExample = React.lazy(() => import('./common/BaseExample'));
@@ -43,6 +44,7 @@ const App: React.FC = () => {
       case 'message-editing': variant = UserMessageEditingExample; break;
       case 'markdown-example': variant = MarkdownExample; break;
       case 'markdown-custom': variant = MarkdownCustomExample; break;
+      case 'markdown-custom-components': variant = MarkdownCustomComponents; break;
       case 'markdown-rtl': variant = MarkdownRtlText; break;
       case 'custom-slots': variant = CustomSlots; break;
       case 'common': variant = BaseExample; break;

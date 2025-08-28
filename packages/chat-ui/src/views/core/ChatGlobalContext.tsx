@@ -76,6 +76,10 @@ const useChatContext = <DM extends Message, DD extends Thread<DM>>(): ChatGlobal
   return context;
 };
 
+export const useSafeChatContext = <DM extends Message, DD extends Thread<DM>>()  => {
+  return (React.useContext(Context) ?? {}) as ChatGlobalContextType<DM, DD>;
+};
+
 const useChatModel = () => useChatContext().model;
 
 const ChatGlobalProvider = React.memo(ChatGlobalProviderComponent, (prevProps, nextProps) => {

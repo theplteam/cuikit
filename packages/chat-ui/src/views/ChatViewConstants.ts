@@ -8,6 +8,12 @@ export class ChatViewConstants {
 
   static readonly DIALOGUE_ROOT_ID = 'chatRootBlockId';
 
+  static readonly MESSAGE_ROW_PADDING_TOP = 8;
+
+  static readonly MESSAGE_ROW_PADDING_BOTTOM = 32;
+
+  static readonly INPUT_BUTTON_SIZE = 43;
+
   static readonly TEXT_FIELD_ROW_ID = 'chatTextFieldRowId';
 
   static readonly MESSAGE_BOX_ID = 'chatMessageBoxId';
