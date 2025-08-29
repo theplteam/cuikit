@@ -26,7 +26,6 @@ const App: React.FC = () => {
           id: '1',
           role: "user",
           content: "Hello!",
-          parentId: '0',
         },
         {
           id: '2',

@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import { ChatUsersProps } from '../core/useChatProps';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
 
-type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string, themeProps: Omit<ThemeProps, 'children'> };
+type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string, themeProps?: Omit<ThemeProps, 'children'> };
 
 const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>) => {
   const { historyProps, apiRef, loading, lang, className, themeProps, ...chatProps } = usersProps;

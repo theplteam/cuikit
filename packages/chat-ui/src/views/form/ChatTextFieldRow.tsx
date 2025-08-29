@@ -38,10 +38,12 @@ const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
       id={ChatViewConstants.TEXT_FIELD_ROW_ID}
       className={chatClassNames.textFieldRoot}
     >
-      <slots.messageRowInner
-        {...slotProps.messageRowInner}
-        thread={thread}
-      />
+      <slots.threadInputWrapper {...slotProps.threadInputWrapper}>
+        <slots.threadInput
+          {...slotProps.threadInput}
+          thread={thread}
+        />
+      </slots.threadInputWrapper>
     </ThreadWidthBlockStyled>
   );
 };

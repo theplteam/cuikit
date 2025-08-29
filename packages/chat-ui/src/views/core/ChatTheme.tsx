@@ -32,7 +32,7 @@ const ChatTheme: React.FC<ThemeProps> = ({ children, userTheme, mode = 'light', 
   const palette: { light: PaletteOptions, dark: PaletteOptions } = React.useMemo(() => ({
     light: {
       mode: "light",
-      background: { default: "#f5f5f5", paper: "#fff" },
+      background: { default: "#fff", paper: "#f5f5f5" },
       ...lightPalette,
     },
     dark: {
