@@ -60,7 +60,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
         className="pswp-gallery"
         id={galleryId}
         paddingRight={(attachments.length && isMobile) ? 0 : 1.5}
-        paddingBottom={(attachments.length && isMobile) ? 1.5 : 0}
+        paddingBottom={attachments.length ? 1.5 : 0}
       >
         {attachments.map((a) => (
           <PreviewItem
