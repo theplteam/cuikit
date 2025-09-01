@@ -204,6 +204,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * @default false
    */
   disableRtl?: boolean;
+  /**
+   * Typing animation speed in milliseconds.
+   * @default 600
+   */
+  typingSpeed?: number;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

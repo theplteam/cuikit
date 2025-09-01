@@ -13,6 +13,7 @@ import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
 import Skeleton from '@mui/material/Skeleton';
 import { ChatUsersProps } from '../../core/useChatProps';
+import { useChatContext } from '../../core/ChatGlobalContext';
 
 type Props = {
   text: string;
@@ -23,7 +24,7 @@ type Props = {
 
 const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
   const { slots, slotProps } = useChatSlots();
-
+  const { typingSpeed } = useChatContext();
   const inProgress = useInProgressStateCache(inProgressProp);
 
   if (processAssistantText) {
@@ -67,7 +68,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
     }
   }), [inProgress, slots, slotProps]);
 
-  useSmoothManager(text, inProgress);
+  useSmoothManager(text, inProgress, typingSpeed);
 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
+import Stack, { StackProps } from '@mui/material/Stack';
+import { styled, keyframes } from '@mui/material/styles';
 import ChatMessages from '../message/MessagesComponent';
 import ChatTextFieldRow from '../form/ChatTextFieldRow';
 import Box from '@mui/material/Box';
@@ -14,6 +14,7 @@ import { Thread, Message } from '../../models';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
 import { useObserverValue } from '../hooks/useObserverValue';
+import { chatClassNames } from '../core/chatClassNames';
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -24,14 +25,33 @@ type Props = {
   className?: string;
 };
 
-const MessagesRowStyled = styled(Stack)({
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const MessagesRowStyled = styled(({ animationSpeed, ...props }: StackProps & { animationSpeed?: number }) => (
+  <Stack {...props} />
+))(({ animationSpeed })=> ({
   width: '100%',
   alignItems: 'center',
   flex: 1,
   paddingBottom: ChatViewConstants.MESSAGE_ROW_PADDING_BOTTOM,
   paddingTop: ChatViewConstants.MESSAGE_ROW_PADDING_TOP,
   boxSizing: 'border-box',
-});
+  [`.${chatClassNames.markdownSmoothedPending}`]: {
+    opacity: 0,
+  },
+  [`.${chatClassNames.markdownSmoothedAnimating}`]: {
+    opacity: 0,
+    // here `delay` has no meaning, since it is overwritten in style for each element
+    animation: `${fadeIn} ${animationSpeed ?? ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
+  },
+}));
 
 const TextRowBlock = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -51,7 +71,8 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     getCurrentBranch,
     model,
     beforeUserMessageSend,
-    getConversationBlockHeightMin
+    getConversationBlockHeightMin,
+    typingSpeed,
   } = useChatContext<DM, DD>();
 
   const thread = useObserverValue(model.currentThread);
@@ -83,6 +104,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
       <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread} className={className}>
         <MessagesRowStyled
           justifyContent={thread?.messages.length ? 'stretch' : 'center'}
+          animationSpeed={typingSpeed}
         >
           {!!thread && (
             <>
