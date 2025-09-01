@@ -26,13 +26,14 @@ export const simpleBarClasses: SimpleBarClassesType = {
 
 const SimpleBarStyled = styled(SimpleBar, {
   shouldForwardProp: (propName) => propName !== 'maxContent'
-})<{ maxContent?: boolean }>(({ maxContent }) => ({
+})<{ maxContent?: boolean }>(({ maxContent, theme }) => ({
   [`& .${simpleBarClasses.contentWrapper}`]: {
     minWidth: maxContent ? 'max-content' : undefined,
   },
 
   [`& .${simpleBarClasses.track}`]: {
     [`& .${simpleBarClasses.scrollbarVisibleBefore}`]: {
+      backgroundColor: theme.palette.action.active,
       opacity: 0.25,
       transition: 'opacity 0.3s'
     },

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import NewChatButton from './NewChatButton';
 import Box from '@mui/material/Box';
-import Scrollbar from '../../ui/Scrollbar';
+import SimpleScrollbar from '../../ui/SimpleScrollbar';
 import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
 import { useHistoryContext } from '../core/history/HistoryContext';
 
@@ -29,9 +29,9 @@ const ChatHistory: React.FC = () => {
         </slots.listSubtitle>
       </Box>
       <Box overflow="hidden">
-        <Scrollbar style={{ maxHeight: '100%' }}>
+        <SimpleScrollbar style={{ maxHeight: '100%' }}>
           <ThreadsListMapBlock />
-        </Scrollbar>
+        </SimpleScrollbar>
       </Box>
     </slots.historyWrapper>
   );

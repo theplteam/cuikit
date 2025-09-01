@@ -2,7 +2,6 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import AttachmentModel from '../../../models/AttachmentModel';
-import Scrollbar from '../../../ui/Scrollbar';
 import { ThreadModel } from '../../../models/ThreadModel';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin/dist/photoswipe-video-plugin.esm.js';
@@ -10,6 +9,7 @@ import PreviewItem from './PreviewItem';
 import 'photoswipe/style.css';
 import { IdType } from '../../../types';
 import { useMobile } from '../../../ui/Responsive';
+import SimpleScrollbar from '../../../ui/SimpleScrollbar';
 
 type Props = {
   thread?: ThreadModel;
@@ -52,7 +52,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
   if (!enableFileAttachments) return null;
 
   return (
-    <Scrollbar style={{ maxHeight: 170, borderRadius: 16 }}>
+    <SimpleScrollbar style={{ maxHeight: 170, borderRadius: 16 }}>
       <Stack
         flexWrap={isMobile ? "nowrap" : "wrap"}
         flexDirection="row"
@@ -60,7 +60,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
         className="pswp-gallery"
         id={galleryId}
         paddingRight={(attachments.length && isMobile) ? 0 : 1.5}
-        paddingBottom={(attachments.length && isMobile) ? 1.5 : 0}
+        paddingBottom={attachments.length ? 1.5 : 0}
       >
         {attachments.map((a) => (
           <PreviewItem
@@ -71,7 +71,7 @@ const AttachmentsPreview: React.FC<Props> = ({ thread, attachments, setAttachmen
           />
         ))}
       </Stack>
-    </Scrollbar>
+    </SimpleScrollbar>
   );
 };
 

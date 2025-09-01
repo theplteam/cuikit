@@ -45,7 +45,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const poster = useObserverValue(item.poster);
 
   const { element, setElement } = useElementRefState();
-  const isHover = useHover(element);
+  const { hovered } = useHover(element);
   const isMobile = useMobile();
 
   const isVideo = type === 'video';
@@ -76,7 +76,7 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
               showPlayIcon={isVideo}
             />
           ) : <FileItem name={name} type={type} error={error} />}
-        {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
+        {(isMobile || hovered) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
       </component.wrapper>
     </TooltipStyled>
   );

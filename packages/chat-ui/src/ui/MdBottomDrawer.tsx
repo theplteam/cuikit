@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CloseIcon } from '../icons';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Scrollbar from './Scrollbar';
+import SimpleScrollbar from './SimpleScrollbar';
 import { useHistoryContext } from '../views/core/history/HistoryContext';
 import { drawerClasses } from '@mui/material/Drawer';
 
@@ -50,9 +50,9 @@ const MdBottomDrawer: React.FC<Props> = ({ open, onClose, title, children, disab
           </Stack>
           {!!disableCustomScrollbar && children}
           {!disableCustomScrollbar && (
-            <Scrollbar style={{ maxHeight: height }}>
+            <SimpleScrollbar style={{ maxHeight: height }}>
               {children}
-            </Scrollbar>
+            </SimpleScrollbar>
           )}
         </Stack>
       </slots.listDrawer>

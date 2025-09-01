@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { useChatSlots } from '../../../core/ChatSlotsContext';
-import { materialDesignSysPalette } from '../../../../utils/materialDesign/palette';
 import { RatingType } from '../../../../models/MessageModel';
 
 type Props = {
@@ -12,7 +11,7 @@ type Props = {
 };
 
 const MessageFeedbackButton: React.FC<Props> = ({ type, activeType, onClick, tooltip }) => {
-  const { coreSlots, slots } = useChatSlots();
+  const { slotProps, slots } = useChatSlots();
 
   const isActive = type === activeType;
 
@@ -29,17 +28,18 @@ const MessageFeedbackButton: React.FC<Props> = ({ type, activeType, onClick, too
 
   return (
     <Tooltip title={tooltip}>
-      <coreSlots.iconButton
+      <slots.messageRatingButton
         size='small'
         sx={{
-          color: isActive ? materialDesignSysPalette.primary : undefined,
-          backgroundColor: isActive ? materialDesignSysPalette.primaryContainer : undefined,
-          ':hover': { backgroundColor: isActive ? materialDesignSysPalette.primaryFixedDim : undefined },
+          color: (theme) => isActive ? theme.palette.text.secondary : undefined,
+          backgroundColor: (theme) => isActive ? theme.palette.action.selected : undefined,
+          ':hover': { backgroundColor: (theme) => isActive ? theme.palette.action.hover : undefined },
         }}
         onClick={() => onClick(type)}
+        {...slotProps.messageRatingButton}
       >
         {icon[type][isActive ? 'active' : 'default']}
-      </coreSlots.iconButton>
+      </slots.messageRatingButton>
     </Tooltip>
   );
 }
