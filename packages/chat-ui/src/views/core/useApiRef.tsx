@@ -52,17 +52,13 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   openNewThread: (thread?: DD) => void;
   /**
-   * Set your own waiting status for a chat response.
+   * Set status for a message. If there is no `messageId`, the changes will be applied to the assistant's last message.
    */
-  setProgressStatus: (status: string, inProgress?: boolean) => void;
+  setMessageStatus: (status: string, isTyping?: boolean, messageId?: IdType) => void;
   /**
-   * Set text for specific message
+   * Set text for a message. If there is no `messageId`, the changes will be applied to the assistant's last message.
    */
-  setMessageText: (messageId: string, text: string) => void;
-  /**
-   * Get waiting status for a chat response.
-   */
-  getProgressStatus: () => string;
+  setMessageText: (text: string, messageId?: IdType) => void;
   /**
    * Change thread branch.
    */
@@ -108,10 +104,9 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     openNewThread: NOOP,
     updateScrollButtonState: NOOP,
     deleteThread: NOOP,
-    getProgressStatus: () => '',
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     onEditMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
-    setProgressStatus: NOOP,
+    setMessageStatus: NOOP,
     handleChangeBranch: NOOP,
     getCurrentThread: () => undefined,
     getThreadById: () => undefined,
