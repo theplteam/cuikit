@@ -13,18 +13,17 @@ import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
 import Skeleton from '@mui/material/Skeleton';
 import { ChatUsersProps } from '../../core/useChatProps';
-import { useChatContext } from '../../core/ChatGlobalContext';
 
 type Props = {
   text: string;
   inProgress: boolean;
   processAssistantText?: (text: string) => string;
   customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
+  typingSpeed?: number;
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents, typingSpeed }) => {
   const { slots, slotProps } = useChatSlots();
-  const { typingSpeed } = useChatContext();
   const inProgress = useInProgressStateCache(inProgressProp);
 
   if (processAssistantText) {

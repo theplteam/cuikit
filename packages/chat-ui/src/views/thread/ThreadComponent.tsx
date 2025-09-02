@@ -34,9 +34,9 @@ const fadeIn = keyframes`
   }
 `;
 
-const MessagesRowStyled = styled(({ animationSpeed, ...props }: StackProps & { animationSpeed?: number }) => (
-  <Stack {...props} />
-))(({ animationSpeed })=> ({
+const MessagesRowStyled = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'animationSpeed',
+})<StackProps & { animationSpeed?: number }>(({ animationSpeed }) => ({
   width: '100%',
   alignItems: 'center',
   flex: 1,
