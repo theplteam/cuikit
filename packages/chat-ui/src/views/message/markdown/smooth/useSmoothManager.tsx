@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ChatViewConstants } from '../../../ChatViewConstants';
 import { chatClassNames } from '../../../core/chatClassNames';
+import { BoxRefType } from '../../../hooks/useElementRef';
 
 type AnimatedElementsType = HTMLSpanElement | HTMLDivElement | HTMLLIElement;
 
@@ -9,14 +10,16 @@ class SmoothManager {
 
   readonly id = Math.ceil(Math.random() * 1000);
 
-  private delayValueMs = 40;
+  private delayValueMs = 30;
 
   private _firstDelaySet = false;
 
   // Adding a small delay at the start to allow elements to render correctly
-  private firstDelayValueMs = 500;
+  private firstDelayValueMs = 400;
 
-  constructor() { }
+  constructor(
+    private parentRef: BoxRefType,
+  ) { }
 
   check = async () => {
     if (this.ran) return;
@@ -24,11 +27,14 @@ class SmoothManager {
 
     let delayMs = 0;
 
-    const allMarkdownElements = document.getElementsByClassName(chatClassNames.messageAssistantRoot);
+    // Ищем ближайшего родителя с классом messageAssistantRoot от текущего ref
+    const rootEl = this.parentRef.current?.closest(`.${chatClassNames.messageAssistantRoot}`) as HTMLElement | null;
+    if (!rootEl) {
+      this.ran = false;
+      return;
+    }
 
-    const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
-
-    const elements = (parent?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
+    const elements = (rootEl?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
 
     if (elements.length && !this._firstDelaySet) {
       this._firstDelaySet = true;
@@ -88,16 +94,14 @@ class SmoothManager {
   }
 }
 
-const smoothManager = new SmoothManager();
-
-export const useSmoothManager = (text: string, inProgress: boolean) => {
-  /*const model = React.useMemo(
-    () => inProgress ? new SmoothManager() : undefined,
+export const useSmoothManager = (text: string, inProgress: boolean, parentRef: BoxRefType) => {
+  const model = React.useMemo(
+    () => inProgress ? new SmoothManager(parentRef) : undefined,
     [inProgress]
-  );*/
+  );
 
   React.useEffect(() => {
-    if (inProgress) smoothManager.check();
+    if (inProgress) model?.check();
   }, [text, inProgress]);
 
 }

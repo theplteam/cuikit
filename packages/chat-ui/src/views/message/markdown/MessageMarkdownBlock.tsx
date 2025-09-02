@@ -6,6 +6,7 @@ import { SlotValue } from '../../core/usePropsSlots';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { useChatContext } from '../../core/ChatGlobalContext';
+import { useElementRef } from '../../hooks/useElementRef';
 
 type Props = {
   text: string;
@@ -37,16 +38,19 @@ export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
 
 const MessageMarkdownBlock: React.FC<Props> = ({ text, id, inProgress, ...otherProps }) => {
   const { processAssistantText, customMarkdownComponents } = useChatContext();
+  const boxRef = useElementRef();
 
   return (
     <otherProps.rootComponent
       {...otherProps.rootComponentProps}
+      ref={boxRef}
       className={clsx(otherProps.rootComponentProps?.className, chatClassNames.markdownParentRoot)}
       id={id}
     >
       <MessageMarkdown
         inProgress={inProgress}
         text={text}
+        parentRef={boxRef}
         processAssistantText={processAssistantText}
         customMarkdownComponents={customMarkdownComponents}
       />

@@ -14,6 +14,7 @@ import { ChatViewConstants } from '../views/ChatViewConstants';
 import { SlotPropsType } from '../views/core/SlotPropsType';
 import { usePhotoswipeInitialization } from '../views/message/hooks/usePhotoswipeInitialization';
 import { v4 as uuid4 } from 'uuid';
+import { useElementRef } from '../views/hooks/useElementRef';
 type ExtractMarkdownKeys<T> = {
   [K in keyof T as K extends `markdown${string}` ? K : never]: T[K]
 }
@@ -56,7 +57,7 @@ const BoxStyled = styled(Box)({
 const MarkdownComponent = React.memo(MessageMarkdown);
 
 const ChatMarkdown: React.FC<Props> = ({ slots: slotsUser, slotProps: slotPropsUser, children, className, inProgress, loading, text }) => {
-
+  const ref = useElementRef();
   const slots = React.useMemo(() => getMarkdownSlots(slotsUser), [slotsUser]);
   const slotProps = React.useMemo(() => getMarkdownSlotProps(slotPropsUser), [slotPropsUser]);
 
@@ -65,11 +66,12 @@ const ChatMarkdown: React.FC<Props> = ({ slots: slotsUser, slotProps: slotPropsU
 
   return (
     <BoxStyled
+      ref={ref}
       id={containerId}
       className={clsx(chatClassNames.messageAssistantRoot, className)}
     >
       <ChatSlotsProvider slots={slots} slotProps={slotProps}>
-        {!loading && <MarkdownComponent inProgress={inProgress} text={text} />}
+        {!loading && <MarkdownComponent inProgress={inProgress} text={text} parentRef={ref} />}
         {children}
       </ChatSlotsProvider>
     </BoxStyled>

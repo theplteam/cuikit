@@ -13,15 +13,17 @@ import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
 import Skeleton from '@mui/material/Skeleton';
 import { ChatUsersProps } from '../../core/useChatProps';
+import { BoxRefType } from '../../hooks/useElementRef';
 
 type Props = {
   text: string;
   inProgress: boolean;
   processAssistantText?: (text: string) => string;
   customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
+  parentRef: BoxRefType;
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents, parentRef }) => {
   const { slots, slotProps } = useChatSlots();
 
   const inProgress = useInProgressStateCache(inProgressProp);
@@ -67,7 +69,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
     }
   }), [inProgress, slots, slotProps]);
 
-  useSmoothManager(text, inProgress);
+  useSmoothManager(text, inProgress, parentRef);
 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;
