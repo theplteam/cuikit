@@ -7,6 +7,7 @@ const TimeTextWrapper = styled('div')(({ theme }) => ({
   left: 0,
   backgroundColor: theme.palette.background.default,
   zIndex: 1,
+  background: theme.palette.grey[200],
   [theme.breakpoints.down('md')]: {
     background: '#fff',
     top: 0,
