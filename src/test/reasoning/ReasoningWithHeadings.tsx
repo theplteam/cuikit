@@ -135,13 +135,13 @@ const App: React.FC = () => {
 
   const onUserMessageSent = async (params: MessageSentParams) => {
     await (new Promise((resolve) => setTimeout(resolve, 1000)));
-    const streamThinking = streamGenerator(thinkingText, { chunkSize: 50 });
+    const streamThinking = streamGenerator(thinkingText, { chunkSize: 20 });
 
     for await (const part of streamThinking) {
       params.reasoning.pushChunk(part);
     }
 
-    const streamBody = streamGenerator(answerText, { chunkSize: 40 });
+    const streamBody = streamGenerator(answerText, { chunkSize: 30 });
 
     for await (const part of streamBody) {
       params.pushChunk(part);
