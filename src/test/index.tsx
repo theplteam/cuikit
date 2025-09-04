@@ -12,9 +12,7 @@ const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
-const ThreadsListPortal = React.lazy(() => import('./customization/ThreadsListPortal'));
 const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
-const UsingContext = React.lazy(() => import('./customization/UsingContext'));
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
 const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
@@ -52,8 +50,6 @@ const App: React.FC = () => {
       case 'thread-structure': variant = ThreadStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
-      case 'portal-list': variant = ThreadsListPortal; break;
-      case 'context-usage': variant = UsingContext; break;
       case 'thread-actions': variant = ThreadActions; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
