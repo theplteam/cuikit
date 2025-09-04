@@ -18,6 +18,7 @@ import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 import { ToolType } from '../../types/ToolType';
+import { LangKeys } from '../../locale/Localization';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -228,7 +229,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
   /**
    * The language in which the chat interface will be displayed.
    */
-  lang: 'en' | 'ru' | string;
+  lang: LangKeys;
   /**
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
