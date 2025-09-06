@@ -217,7 +217,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
   /**
    * The components used for each slot inside. Can be instantiated with `useChatSlots`
    */
-  slots: Partial<Omit<SlotsType<DM, DD>, 'core'>>;
+  slots: Partial<SlotsType<DM, DD>>;
   /**
    * The props used for each slot inside. Can be instantiated with `useChatSlots`
    */
