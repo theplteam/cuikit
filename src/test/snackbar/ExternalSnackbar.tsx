@@ -56,7 +56,7 @@ const App: React.FC = () => {
         initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        maxFileSize={5 * 1024 * 1024}
+        maxFileSizeBytes={5 * 1024 * 1024}
         maxFileCount={3}
         acceptableFileFormat={["image", "application/pdf"]}
         onUserMessageSent={onUserMessageSent}
