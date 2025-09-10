@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { keyframes, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MessageContainer from './MessageContainer';
 import MessageActionsAssistant from './actions/MessageActionsAssistant';
 import { clsx } from 'clsx';
@@ -14,7 +14,6 @@ import { useInternalMessageTransformer } from '../adapter/AdapterContext';
 import Stack from '@mui/material/Stack';
 import AssistantTextBlock from './AssistantTextBlock';
 import { chatClassNames } from '../core/chatClassNames';
-import { ChatViewConstants } from '../ChatViewConstants';
 import { usePhotoswipeInitialization } from './hooks/usePhotoswipeInitialization';
 
 type Props = {
@@ -30,26 +29,9 @@ const {
   actionsClassName,
 } = messageActionsClasses;
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
 const MessageContainerStyled = styled(MessageContainer)(() => ({
   width: '100%',
   flexDirection: 'column',
-  [`.${chatClassNames.markdownSmoothedPending}`]: {
-    opacity: 0,
-  },
-  [`.${chatClassNames.markdownSmoothedAnimating}`]: {
-    opacity: 0,
-    // here `delay` has no meaning, since it is overwritten in style for each element
-    animation: `${fadeIn} ${ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
-  },
   /*[`&:not(.${latestMessageClassName})`]: {
     [`& .${actionsClassName}`]: {
       opacity: 0,
