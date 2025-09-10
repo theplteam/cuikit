@@ -88,11 +88,6 @@ export const useChatScrollFunctions = (
    * Following the message has always been jerky and is now irrelevant,
    * since modern LLMs quickly provide an answer, the user won't have time to read it
    */
-  /*useMessageFollowing(
-    showButton,
-    getPosition,
-    scrollTo,
-  );*/
 
   return {
     scrollButtonEnabled: showButton,
