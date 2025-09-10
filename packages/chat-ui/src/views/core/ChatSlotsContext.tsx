@@ -12,8 +12,8 @@ type ChatSlotsContextType<DM extends Message, DD extends Thread<DM>> = {
 const Context = React.createContext<ChatSlotsContextType<any, any> | undefined>(undefined);
 
 type ProviderProps<DM extends Message, DD extends Thread<DM>> = React.PropsWithChildren<{
-  slots: SlotsType<DM, DD>;
-  coreSlots: CoreSlots;
+  slots: Partial<SlotsType<DM, DD>>;
+  coreSlots?: Partial<CoreSlots>;
   slotProps: Partial<SlotPropsType<DM, DD>>;
 }>;
 

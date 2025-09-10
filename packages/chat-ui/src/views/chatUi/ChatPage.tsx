@@ -14,7 +14,7 @@ import { useMobile } from '../../ui/Responsive';
 
 type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string };
 
-const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>) => {
+const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>): React.JSX.Element => {
   const { historyProps, apiRef, loading, lang, className, ...chatProps } = usersProps;
   const chatApiRef = useChatApiRef();
   const ref = useElementRef();

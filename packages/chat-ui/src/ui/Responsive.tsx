@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery, { UseMediaQueryOptions } from '@mui/material/useMediaQuery';
 import React from 'react';
-import { Breakpoint } from '@mui/system/createTheme/createBreakpoints';
+import { Breakpoint } from '@mui/system/createTheme';
 
 export const useTablet = (options?: UseMediaQueryOptions) => {
   const theme = useTheme();

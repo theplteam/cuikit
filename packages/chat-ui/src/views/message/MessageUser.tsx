@@ -134,7 +134,6 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
           chatClassNames.messageUserRoot,
         )
       }
-      width={message.text ? '80%' : 'auto'}
       maxWidth="80%"
     >
       <MessageAttachments message={message} />

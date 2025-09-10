@@ -73,8 +73,8 @@ export const useAssistantAnswerMock = (mockOptions?: Partial<{ delayTimeout: num
       text = generateRandomLoremIpsum(params?.loremIpsumSize ?? mockOptions?.loremIpsumSize ?? "medium");
     }
 
-    const delay = params?.delay ?? 150;
-    const chunkSize = params?.chunkSize ?? 15;
+    const delay = params?.delay ?? 100;
+    const chunkSize = params?.chunkSize ?? 30;
     let index = 0;
     while (index < text.length && !stop) {
       const chunk = text.slice(index, index + chunkSize);

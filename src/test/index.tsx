@@ -3,6 +3,7 @@ const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
 const MarkdownExample = React.lazy(() => import('./markdown/MarkdownExample'));
 const MarkdownCustomExample = React.lazy(() => import('./markdown/MarkdownCustomExample'));
+const MarkdownCustomComponents = React.lazy(() => import('./markdown/MarkdownCustomComponents'));
 const MarkdownRtlText = React.lazy(() => import('./markdown/MarkdownRtlText'));
 const CustomSlots = React.lazy(() => import('./customization/CustomSlots'));
 const BaseExample = React.lazy(() => import('./common/BaseExample'));
@@ -43,6 +44,7 @@ const App: React.FC = () => {
       case 'message-editing': variant = UserMessageEditingExample; break;
       case 'markdown-example': variant = MarkdownExample; break;
       case 'markdown-custom': variant = MarkdownCustomExample; break;
+      case 'markdown-custom-components': variant = MarkdownCustomComponents; break;
       case 'markdown-rtl': variant = MarkdownRtlText; break;
       case 'custom-slots': variant = CustomSlots; break;
       case 'common': variant = BaseExample; break;
@@ -54,6 +56,7 @@ const App: React.FC = () => {
       case 'custom-history-position': variant = CustomHistoryPosition; break;
       case 'chat-children': variant = ChatChildren; break;
       case 'thread-interaction': variant = ThreadInteraction; break;
+      case 'thread-actions': variant = ThreadActions; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
       case 'message-finishing': variant = MessagingFinishing; break;

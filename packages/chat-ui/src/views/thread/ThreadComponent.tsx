@@ -24,14 +24,14 @@ type Props = {
   className?: string;
 };
 
-const MessagesRowStyled = styled(Stack)(({ theme }) => ({
+const MessagesRowStyled = styled(Stack)({
   width: '100%',
   alignItems: 'center',
   flex: 1,
-  paddingBottom: theme.spacing(4),
-  paddingTop: theme.spacing(1),
+  paddingBottom: ChatViewConstants.MESSAGE_ROW_PADDING_BOTTOM,
+  paddingTop: ChatViewConstants.MESSAGE_ROW_PADDING_TOP,
   boxSizing: 'border-box',
-}));
+});
 
 const TextRowBlock = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -77,6 +77,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
         getCurrentBranch,
         getConversationBlockHeightMin,
       }}
+      contentRef={contentRef}
       scrollRef={scrollApiRef}
     >
       <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread} className={className}>

@@ -18,6 +18,7 @@ import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 import { ToolType } from '../../types/ToolType';
+import { LangKeys } from '../../locale/Localization';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -192,9 +193,18 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   onShowAlert?: onShowAlertType;
   /**
+   * Allows rendering arbitrary React components in markdown.
+   */
+  customMarkdownComponents?: { name: string, component: React.ElementType, skeletonHeight?: number }[];
+  /**
    * Callback fired when active tool changed.
    */
   onToolChanged?: (type: string | undefined) => void;
+  /**
+   * If the value is `true`, default markdown wrapper will be forced into `ltr` mode.
+   * @default false
+   */
+  disableRtl?: boolean;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату
@@ -207,7 +217,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
   /**
    * The components used for each slot inside. Can be instantiated with `useChatSlots`
    */
-  slots: Partial<Omit<SlotsType<DM, DD>, 'core'>>;
+  slots: Partial<SlotsType<DM, DD>>;
   /**
    * The props used for each slot inside. Can be instantiated with `useChatSlots`
    */
@@ -219,7 +229,7 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
   /**
    * The language in which the chat interface will be displayed.
    */
-  lang: 'en' | 'ru' | string;
+  lang: LangKeys;
   /**
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */

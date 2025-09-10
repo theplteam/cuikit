@@ -54,8 +54,55 @@ type SlotsReturnType<DM extends Message, DD extends Thread<DM>> = {
   slotProps: Partial<SlotPropsType<DM, DD>>;
 };
 
+export const getMarkdownSlots = <DM extends Message, DD extends Thread<DM>>(
+  slots: ChatUsersProps<DM, DD>['slots']
+) => ({
+  markdownWrapper: slots?.markdownWrapper ?? MessageMarkdownWrapper,
+  markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
+  markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
+  markdownA: slots?.markdownA ?? Link,
+  markdownTable: slots?.markdownTable ?? MessageMarkdownTable,
+  markdownThead: slots?.markdownThead ?? TableHead,
+  markdownTbody: slots?.markdownTbody ?? TableBody,
+  markdownTh: slots?.markdownTh ?? MessageMarkdownTableCell,
+  markdownTd: slots?.markdownTd ?? MessageMarkdownTableCell,
+  markdownTdText: slots?.markdownTdText ?? Typography,
+  markdownTr: slots?.markdownTr ?? TableRow,
+  markdownSpan: slots?.markdownSpan ?? Typography,
+  markdownUl: slots?.markdownUl ?? MessageMarkdownUl,
+  markdownOl: slots?.markdownOl ?? ChatMessageOl,
+  markdownH1: slots?.markdownH1 ?? Typography,
+  markdownH2: slots?.markdownH2 ?? Typography,
+  markdownH3: slots?.markdownH3 ?? Typography,
+  markdownH4: slots?.markdownH4 ?? Typography,
+  markdownH5: slots?.markdownH5 ?? Typography,
+  markdownH6: slots?.markdownH6 ?? Typography,
+  markdownImg: slots?.markdownImg ?? MessageMarkdownImage,
+  markdownCodeWrapper: slots?.markdownCodeWrapper ?? MessageMarkdownCodeWrapper,
+  markdownCode: slots?.markdownCode ?? MessageMarkdownCode,
+  markdownHr: slots?.markdownHr ?? Divider,
+  markdownBlockquote: slots?.markdownBlockquote ?? MessageMarkdownBlockquote,
+  markdownP: slots?.markdownP ?? Typography,
+});
+
+export const getMarkdownSlotProps = <DM extends Message, DD extends Thread<DM>>(
+  slotProps: ChatUsersProps<DM, DD>['slotProps']
+) => ({
+  markdownH1: { variant: 'h1' },
+  markdownH2: { variant: 'h2' },
+  markdownH3: { variant: 'h3' },
+  markdownH4: { variant: 'h4' },
+  markdownH5: { variant: 'h5' },
+  markdownH6: { variant: 'h6' },
+  markdownCodeWrapper: {
+    dir: 'ltr',
+    ...slotProps?.markdownCodeWrapper,
+  },
+  ...slotProps,
+} as SlotPropsType<DM, DD>);
+
 export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
-  usersProps: ChatUsersProps<DM, DD>
+  usersProps: Pick<ChatUsersProps<DM, DD>, 'slots' | 'slotProps' | 'coreSlots'>
 ): SlotsReturnType<DM, DD> => {
   const { coreSlots, slots, slotProps } = usersProps;
 
@@ -79,32 +126,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       attachmentPreviewError: slots?.attachmentPreviewError ?? PreviewErrorBox,
       attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
       // MARKDOWN
-      markdownWrapper: slots?.markdownWrapper ?? MessageMarkdownWrapper,
-      markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
-      markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
-      markdownA: slots?.markdownA ?? Link,
-      markdownTable: slots?.markdownTable ?? MessageMarkdownTable,
-      markdownThead: slots?.markdownThead ?? TableHead,
-      markdownTbody: slots?.markdownTbody ?? TableBody,
-      markdownTh: slots?.markdownTh ?? MessageMarkdownTableCell,
-      markdownTd: slots?.markdownTd ?? MessageMarkdownTableCell,
-      markdownTdText: slots?.markdownTdText ?? Typography,
-      markdownTr: slots?.markdownTr ?? TableRow,
-      markdownSpan: slots?.markdownSpan ?? Typography,
-      markdownUl: slots?.markdownUl ?? MessageMarkdownUl,
-      markdownOl: slots?.markdownOl ?? ChatMessageOl,
-      markdownH1: slots?.markdownH1 ?? Typography,
-      markdownH2: slots?.markdownH2 ?? Typography,
-      markdownH3: slots?.markdownH3 ?? Typography,
-      markdownH4: slots?.markdownH4 ?? Typography,
-      markdownH5: slots?.markdownH5 ?? Typography,
-      markdownH6: slots?.markdownH6 ?? Typography,
-      markdownImg: slots?.markdownImg ?? MessageMarkdownImage,
-      markdownCodeWrapper: slots?.markdownCodeWrapper ?? MessageMarkdownCodeWrapper,
-      markdownCode: slots?.markdownCode ?? MessageMarkdownCode,
-      markdownHr: slots?.markdownHr ?? Divider,
-      markdownBlockquote: slots?.markdownBlockquote ?? MessageMarkdownBlockquote,
-      markdownP: slots?.markdownP ?? Typography,
+      ...getMarkdownSlots(slots),
       messagePagination: slots?.messagePagination ?? MessagePagination,
       messagePaginationRoot: slots?.messagePaginationRoot ?? Stack,
       messagePaginationButton: slots?.messagePaginationButton ?? core.iconButton,
@@ -121,12 +143,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
   }, [slots]);
 
   const componentSlotProps = React.useMemo(() => ({
-    markdownH1: { variant: 'h1' },
-    markdownH2: { variant: 'h2' },
-    markdownH3: { variant: 'h3' },
-    markdownH4: { variant: 'h4' },
-    markdownH5: { variant: 'h5' },
-    markdownH6: { variant: 'h6' },
+    ...getMarkdownSlotProps(slotProps),
     ...slotProps,
     markdownCodeWrapper: {
       dir: 'ltr',
