@@ -7,7 +7,7 @@ const useHover = (element: HTMLDivElement | null) => {
   useEventListener("mouseover", () => setHovered(true), element);
   useEventListener("mouseout", () => setHovered(false), element);
 
-  return hovered;
+  return { hovered,  setHovered };
 }
 
 export default useHover;

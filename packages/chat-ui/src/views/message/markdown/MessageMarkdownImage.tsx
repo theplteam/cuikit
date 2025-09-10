@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 import { chatClassNames } from '../../core/chatClassNames';
 
 type Props = React.JSX.IntrinsicElements['img'] & {
@@ -11,7 +10,7 @@ type Props = React.JSX.IntrinsicElements['img'] & {
 const BoxStyled = styled(Box)(({ theme }) => ({
   marginTop: 8,
   width: '100%',
-  backgroundColor: materialDesignSysPalette.surfaceBright,
+  backgroundColor: theme.palette.background.paper,
   position: 'relative',
   '& a': {
     width: 'inherit',

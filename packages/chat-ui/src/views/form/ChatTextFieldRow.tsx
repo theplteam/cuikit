@@ -15,7 +15,7 @@ const ThreadWidthBlockStyled = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
   width: '100%',
   padding: theme.spacing(0, paddingSidesSx, 1, paddingSidesSx),
-  backgroundColor: theme.palette.common.white,
+  backgroundColor: theme.palette.background.default,
   alignItems: 'center',
   '&:before': {
     content: '""',
@@ -26,7 +26,7 @@ const ThreadWidthBlockStyled = styled(Box)(({ theme }) => ({
     height: 100,
     pointerEvents: 'none',
     zIndex: -1,
-    background: `linear-gradient(180deg, rgba(255,255,255, 0), rgba(255,255,255, 1) 60%)`,
+    background: `linear-gradient(180deg, rgba(255,255,255, 0), ${theme.palette.background.default} 60%)`,
   },
 }));
 
@@ -38,10 +38,12 @@ const ChatTextFieldRow: React.FC<Props> = ({ thread }) => {
       id={ChatViewConstants.TEXT_FIELD_ROW_ID}
       className={chatClassNames.textFieldRoot}
     >
-      <slots.messageRowInner
-        {...slotProps.messageRowInner}
-        thread={thread}
-      />
+      <slots.threadInputWrapper {...slotProps.threadInputWrapper}>
+        <slots.threadInput
+          {...slotProps.threadInput}
+          thread={thread}
+        />
+      </slots.threadInputWrapper>
     </ThreadWidthBlockStyled>
   );
 };

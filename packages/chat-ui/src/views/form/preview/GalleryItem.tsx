@@ -1,7 +1,7 @@
 import React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import 'photoswipe/style.css';
-import PlayIcon from './PlayIcon';
+import { useChatSlots } from '../../../views/core/ChatSlotsContext';
 
 type Props = {
   id: string;
@@ -12,6 +12,8 @@ type Props = {
 };
 
 const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl, showPlayIcon, className }) => {
+  const { slots, slotProps } = useChatSlots();
+
   if (!poster) {
     return (
       <Skeleton
@@ -34,7 +36,7 @@ const GalleryItem: React.FC<Props> = ({ poster, id, videoUrl, showPlayIcon, clas
       target="_blank"
       rel="noreferrer"
     >
-      {showPlayIcon ? <PlayIcon /> : null}
+      {showPlayIcon ? <slots.attachmentVideoPlayIcon {...slotProps.attachmentVideoPlayIcon} /> : null}
       <img className={className} src={poster.src} alt="" />
     </a>
   );

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { MessageModel, StreamResponseState, ThreadModel } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
@@ -14,11 +13,9 @@ type Props = {
   stopAnimation?: boolean;
 } & BoxProps;
 
-const palette = materialDesignSysPalette;
-
 const keyframeName = 'chat-ui-analyze-await';
 
-export const StatusBoxStyled = styled(Stack)(() => ({
+export const StatusBoxStyled = styled(Stack)(({ theme }) => ({
   [`@keyframes ${keyframeName}`]: {
     from: {
       backgroundPosition: '-100% top'
@@ -29,26 +26,20 @@ export const StatusBoxStyled = styled(Stack)(() => ({
   },
   textFillColor: 'transparent',
   backgroundPosition: '-100% top',
-  color: palette.outline,
+  color: theme.palette.text.secondary,
   animationDelay: '.5s',
   animationDuration: '4.5s',
   animationIterationCount: 'infinite',
   animationName: keyframeName,
-  background: `${palette.outlineVariant} -webkit-gradient(linear,100% 0,0 0,from(${palette.outlineVariant}),color-stop(.5,${palette.onSurface}),to(${palette.outlineVariant}))`,
-  // background: `${palette.outlineVariant} linear-gradient(90deg, ${palette.outlineVariant} 0%, ${palette.onSurface} 50%, ${palette.outlineVariant} 100%)`,
+  background: `${theme.palette.text.secondary} -webkit-gradient(linear,100% 0,0 0,from(${theme.palette.text.secondary}),color-stop(.5,${theme.palette.text.primary}),to(${theme.palette.text.secondary}))`,
   backgroundClip: 'text',
   backgroundRepeat: 'no-repeat',
   backgroundSize: '50% 200%',
   width: '100%',
   cursor: 'default',
-  /*'&:hover': {
-    textFillColor: palette.onSurface,
-    animation: 'none',
-    background: 'transparent',
-  },*/
   fallbacks: [
     {
-      background: `linear-gradient(90deg, ${palette.outlineVariant} 0%, ${palette.onSurface} 50%, ${palette.outlineVariant} 100%)`
+      background: `linear-gradient(90deg, ${theme.palette.text.secondary} 0%, ${theme.palette.text.primary} 50%, ${theme.palette.text.secondary} 100%)`
     }
   ]
 }));

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
 
 type Props = React.JSX.IntrinsicElements['code'];
 
-const CodeStyled = styled('code')(() => ({
-  backgroundColor: materialDesignSysPalette.surfaceContainer,
+const CodeStyled = styled('code')(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
   padding: '.15rem .3rem',
   fontSize: '.875rem',
   borderRadius: 4,
