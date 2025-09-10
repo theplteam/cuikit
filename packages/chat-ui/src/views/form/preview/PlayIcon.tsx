@@ -15,7 +15,7 @@ const AvatarStyled = styled(Avatar)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
-const PlayIcon = () => (
+const PlayIcon: React.FC = () => (
   <AvatarStyled>
     <SvgIcon sx={{ width: '70%', height: '70%', color: 'inherit' }}>
       <svg

@@ -144,11 +144,11 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Render lists (<ul>)
    */
-  markdownUl: React.OlHTMLAttributes<HTMLOListElement>;
+  markdownUl: React.HTMLAttributes<HTMLUListElement>;
   /**
    * Render numeric lists (<ol>)
    */
-  markdownOl: React.HTMLAttributes<HTMLUListElement>;
+  markdownOl: React.OlHTMLAttributes<HTMLOListElement>;
   /**
    * Render headers (<h1>)
    */

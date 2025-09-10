@@ -13,7 +13,7 @@ import ChatMobileAppBar from './components/ChatMobileAppBar';
 
 type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string, themeProps?: Omit<ThemeProps, 'children'> };
 
-const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>) => {
+const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>): React.JSX.Element => {
   const { historyProps, apiRef, loading, lang, className, themeProps, ...chatProps } = usersProps;
   const chatApiRef = useChatApiRef();
   const ref = useElementRef();
