@@ -63,7 +63,7 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Render the component while sending a request to the chat or while "thinking."
    */
-  messageAssistantProgress: BoxProps & { thread: ThreadModel<DM, DD>, message: MessageModel<DM> };
+  messageAssistantProgress: BoxProps & { message: MessageModel<DM> };
   /**
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */
