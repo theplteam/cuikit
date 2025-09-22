@@ -16,9 +16,7 @@ class SmoothManager {
   // Adding a small delay at the start to allow elements to render correctly
   private firstDelayValueMs = 500;
 
-  constructor() { }
-
-  check = async () => {
+  check = async (typingSpeed: number) => {
     if (this.ran) return;
     this.ran = true;
 
@@ -68,13 +66,13 @@ class SmoothManager {
           el.classList.remove(chatClassNames.markdownSmoothedAnimating);
           el.style.animationDelay = '0s';
         });
-      }, ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS)
+      }, typingSpeed)
 
     }
 
     this.ran = false;
 
-    if (delayMs > 0) this.check();
+    if (delayMs > 0) this.check(typingSpeed);
   }
 
   /*checkThrottle = throttle(
@@ -90,14 +88,9 @@ class SmoothManager {
 
 const smoothManager = new SmoothManager();
 
-export const useSmoothManager = (text: string, inProgress: boolean) => {
-  /*const model = React.useMemo(
-    () => inProgress ? new SmoothManager() : undefined,
-    [inProgress]
-  );*/
+export const useSmoothManager = (text: string, inProgress: boolean, typingSpeed?: number) => {
 
   React.useEffect(() => {
-    if (inProgress) smoothManager.check();
+    if (inProgress) smoothManager.check(typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);
   }, [text, inProgress]);
-
 }

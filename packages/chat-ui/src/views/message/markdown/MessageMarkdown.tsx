@@ -19,11 +19,11 @@ type Props = {
   inProgress: boolean;
   processAssistantText?: (text: string) => string;
   customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
+  typingSpeed?: number;
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents, typingSpeed }) => {
   const { slots, slotProps } = useChatSlots();
-
   const inProgress = useInProgressStateCache(inProgressProp);
 
   if (processAssistantText) {
@@ -67,7 +67,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
     }
   }), [inProgress, slots, slotProps]);
 
-  useSmoothManager(text, inProgress);
+  useSmoothManager(text, inProgress, typingSpeed);
 
   const markdownText = React.useMemo(() => {
     if (!customMarkdownComponents?.length) return text;
