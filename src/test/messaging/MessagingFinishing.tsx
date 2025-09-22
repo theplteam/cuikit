@@ -104,10 +104,10 @@ const App: React.FC = () => {
           threads={threads}
           apiRef={apiRef}
           slots={{
-            messageRowInner: SendMessageRow,
+            threadInput: SendMessageRow,
           }}
           slotProps={{
-            messageRowInner: { apiRef },
+            threadInput: { apiRef },
           }}
           onUserMessageSent={onUserMessageSent}
         />
