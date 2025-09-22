@@ -1,3 +1,5 @@
+export type LangKeys = 'enUS' | 'ruRU' | 'zhCN' | 'koKR' | 'jaJP' | 'en' | 'ru' | 'zh' | 'ko' | 'ja';
+
 export type Localization = {
   yes: string;
   no: string;

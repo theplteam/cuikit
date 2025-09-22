@@ -1,10 +1,10 @@
-import { Localization } from '../../locale/Localization';
+import { LangKeys, Localization } from '../../locale/Localization';
 import * as React from 'react';
 import { useLocalizationInit } from './useLocalizationInit';
 
 type LocalizationType = Localization;
 
-type Props = React.PropsWithChildren<{ locale?: string }>;
+type Props = React.PropsWithChildren<{ locale?: LangKeys }>;
 
 const Context = React.createContext<LocalizationType | undefined>(undefined);
 

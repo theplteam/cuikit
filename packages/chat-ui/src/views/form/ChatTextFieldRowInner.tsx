@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import ChatTextField from './ChatTextField';
-import Stack from '@mui/material/Stack';
-import { inputBaseClasses } from '@mui/material/InputBase';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadModel } from '../../models/ThreadModel';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import { motion } from '../../utils/materialDesign/motion';
 import { useChatContext } from '../core/ChatGlobalContext';
 import { Message } from '../../models';
 import AttachmentsPreview from './preview/AttachmentsPreview';
@@ -18,18 +13,6 @@ import useFileAttachment from './attachments/useFileAttachment';
 type Props = {
   thread?: ThreadModel;
 };
-
-const StackStyled = styled(Stack)(({ theme }) => ({
-  position: 'relative',
-  outline: `1px solid ${materialDesignSysPalette.outlineVariant}`,
-  borderRadius: 24,
-  padding: theme.spacing(1),
-  transition: theme.transitions.create(
-    ['border-radius', 'outline'], { duration: motion.duration.short2 }),
-  [`&:has(.${inputBaseClasses.focused})`]: {
-    outline: `2px solid ${materialDesignSysPalette.primary}`,
-  },
-}));
 
 const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const { defaultTextFieldValue, apiRef, enableFileAttachments, toolsList } = useChatContext();
@@ -74,10 +57,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   ), [attachments, thread]);
 
   return (
-    <StackStyled
-      flexDirection={controlsInFooter ? 'column' : 'row'}
-      alignItems={controlsInFooter ? undefined : 'flex-end'}
-    >
+    <>
       {previewComponent}
       <ChatTextField
         text={text}
@@ -104,7 +84,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
             onSendMessage={onSendMessage}
           />
         )}
-    </StackStyled>
+    </>
   );
 };
 

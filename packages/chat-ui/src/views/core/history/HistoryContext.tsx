@@ -12,10 +12,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ContainerSubtitle from '../../../ui/ContainerSubtitle';
-import { CHAT_LOCALE } from '../../../locale/enEN';
-import { ruRU } from '../../../locale/ruRU';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import internalApi from './internalApi';
+import { useLocalizationInit } from '../useLocalizationInit';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -41,7 +40,7 @@ const Context = React.createContext<HistoryContextType | undefined>(undefined);
 
 export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<HistoryComponentProps>) => {
   const { apiRef, loading, threadActions, slotProps } = props;
-  const userLocale = props?.lang === 'ru' ? ruRU : CHAT_LOCALE;
+  const userLocale = useLocalizationInit(props.lang);
   const userSlots = useSlots(props?.slots);
   const internal = useObserverValue(internalApi);
 

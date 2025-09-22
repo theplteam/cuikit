@@ -66,7 +66,6 @@ const App: React.FC = () => {
           initialThread={dd[0]}
           threads={dd}
           handleStopMessageStreaming={model.stopStreaming}
-          listPlacement="right"
           onUserMessageSent={model.streamMessage}
         />
       </ChatGptAdapter>

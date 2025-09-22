@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { materialDesignSysPalette } from './../../../utils/materialDesign/palette';
 import Stack from '@mui/material/Stack';
 import { useChatCoreSlots } from '../../../views/core/ChatSlotsContext';
 import Typography from '@mui/material/Typography';
@@ -24,8 +23,8 @@ const PrismStyled = styled(Prism)(() => ({
   borderRadius: '0 0 4px 4px !important',
 }))
 
-const MenuBar = styled(Stack)(() => ({
-  backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+const MenuBar = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
   borderRadius: '4px 4px 0 0',
 }))
 
