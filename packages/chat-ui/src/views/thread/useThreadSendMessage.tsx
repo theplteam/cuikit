@@ -89,7 +89,7 @@ export const useThreadSendMessage = (
         transformMessage ? transformMessage(pairs.assistantMessage) : pairs.assistantMessage
       );
     } else {
-      if (!parentMessage) {
+      if (!parentMessage && reason !== 'editMessage') {
         parentMessage = arrayLast(branchMessages);
       }
 

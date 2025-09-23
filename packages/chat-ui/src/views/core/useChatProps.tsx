@@ -5,16 +5,16 @@ import {
   Message,
   MessageFeedbackTagType,
   MessageModel,
-  RatingType
-} from '../../models/MessageModel';
+  RatingType,
+  MessageSentParams,
+  FileAttachedParams,
+} from '../../models';
 import { SlotPropsType } from './SlotPropsType';
 import { ApiRefType } from './useApiRef';
 import { Thread } from '../../models';
 import { ChatEventListeners } from './ChatEventListeners';
 import { BeforeUserMessageSendFnType } from '../thread/useThreadSendMessage';
 import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
-import { MessageSentParams } from '../../models/MessageSentParams';
-import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 import { ToolType } from '../../types/ToolType';
@@ -205,6 +205,16 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * @default false
    */
   disableRtl?: boolean;
+  /**
+   * Typing animation speed in milliseconds.
+   * @default 600
+   */
+  typingSpeed?: number;
+  /**
+   * If the value is `true`, default markdown wrapper will be forced into `ltr` mode.
+   * @default false
+   */
+  disableMessageReloading?: boolean;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

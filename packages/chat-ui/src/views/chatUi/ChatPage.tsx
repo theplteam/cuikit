@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ChatTheme from '../core/ChatTheme';
+import ChatTheme, { ThemeProps } from '../core/ChatTheme';
 import { Thread, Message } from '../../models';
 import { HistoryProps } from '../core/history/HistoryType';
 import { useChatApiRef } from '../hooks/useChatApiRef';
@@ -10,32 +10,31 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { ChatUsersProps } from '../core/useChatProps';
 import ChatMobileAppBar from './components/ChatMobileAppBar';
-import { useMobile } from '../../ui/Responsive';
 
-type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string };
+type ChatPageProps<DM extends Message, DD extends Thread<DM>> = ChatUsersProps<DM, DD> & { historyProps?: HistoryProps, className?: string, themeProps?: Omit<ThemeProps, 'children'> };
 
 const ChatPage = <DM extends Message, DD extends Thread<DM>>(usersProps: ChatPageProps<DM, DD>): React.JSX.Element => {
-  const { historyProps, apiRef, loading, lang, className, ...chatProps } = usersProps;
+  const { historyProps, apiRef, loading, lang, className, themeProps, ...chatProps } = usersProps;
   const chatApiRef = useChatApiRef();
   const ref = useElementRef();
-  const isMobile = useMobile();
-
   const userApiRef = apiRef ?? chatApiRef;
 
   return (
-    <ChatTheme>
+    <ChatTheme {...themeProps}>
       <Stack
         flexDirection={{ xs: 'column', sm: 'row' }}
         height="inherit"
         width="inherit"
         position="relative"
         className={className}
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.default,
+        }}
       >
         <History
           apiRef={userApiRef}
           loading={loading}
           lang={lang}
-          isMobile={isMobile}
           {...historyProps}
         />
         <ChatMobileAppBar apiRef={userApiRef} />

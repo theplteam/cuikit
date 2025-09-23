@@ -5,16 +5,17 @@ import { HistoryProvider } from '../core/history/HistoryContext';
 import HistoryContainer from './HistoryContainer';
 import HistoryAppDrawer from './HistoryAppDrawer';
 import { LangKeys } from '../../locale/Localization';
+import { useMobile } from '../../ui/Responsive';
 
 export type HistoryComponentProps = {
   apiRef: React.MutableRefObject<ApiRefType | null>;
-  isMobile?: boolean;
   loading?: boolean;
   lang?: LangKeys;
 } & Partial<HistoryProps>;
 
 const History: React.FC<HistoryComponentProps> = (props) => {
-  const { isMobile, className, ...other } = props;
+  const { className, ...other } = props;
+  const isMobile = useMobile();
 
   return (
     <HistoryProvider {...other}>
