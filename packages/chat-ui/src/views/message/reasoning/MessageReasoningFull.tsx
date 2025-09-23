@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const ChatMarkdownReasoningBlockRoot = styled(ChatMarkdownBlockRoot)(({ theme }) => ({
-  color: theme.palette.grey[700],
+  color: theme.palette.text.secondary,
 }));
 
 const MessageReasoningFull: React.FC<Props> = ({ text, isProgress, messageId }) => {

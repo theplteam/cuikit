@@ -18,7 +18,7 @@ class SmoothManager {
 
   constructor() { }
 
-  check = async (markdownId: string) => {
+  check = async (markdownId: string, typingSpeed: number) => {
     if (this.ran) return;
     this.ran = true;
 
@@ -75,12 +75,12 @@ class SmoothManager {
       setTimeout(() => {
         elements?.forEach((el) => remove(el));
         if (controls) remove(controls)
-      }, ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS)
+      }, typingSpeed)
     }
 
     this.ran = false;
 
-    if (delayMs > 0) this.check(markdownId);
+    if (delayMs > 0) this.check(markdownId, typingSpeed);
   }
 
   /*checkThrottle = throttle(
@@ -96,8 +96,9 @@ class SmoothManager {
 
 const smoothManager = new SmoothManager();
 
-export const useSmoothManager = (text: string, inProgress: boolean, markdownId: string) => {
+export const useSmoothManager = (text: string, inProgress: boolean, markdownId: string, typingSpeed?: number) => {
+
   React.useEffect(() => {
-    if (inProgress) smoothManager.check(markdownId);
+    if (inProgress) smoothManager.check(markdownId, typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);
   }, [text, inProgress]);
-};
+}

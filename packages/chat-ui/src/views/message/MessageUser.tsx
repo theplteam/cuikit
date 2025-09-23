@@ -64,7 +64,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, elevation }) => {
 
   const mode = messageMode.values[message.id];
 
-  const isHover = useHover(element);
+  const { hovered, setHovered } = useHover(element);
 
   const onClickEdit = () => {
     messageMode.edit(message.id);
@@ -88,11 +88,13 @@ const MessageUser: React.FC<Props> = ({ message, thread, elevation }) => {
       // apiRef.current?.handleChangeBranch(newMessage);
       onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data });
     }
+    setHovered(false);
   }
 
   const onClickCancelEdit = () => {
     messageMode.view(message.id);
     message.attachments.deletedIds.value = [];
+    setHovered(false);
   }
 
   const onDeleteAttachment = (id: IdType) => {
@@ -129,7 +131,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, elevation }) => {
       mx={1.5}
       className={
         clsx(
-          { [hoverMessageClassName]: isHover || isTablet },
+          { [hoverMessageClassName]: hovered || isTablet },
           chatClassNames.messageUserRoot,
         )
       }
@@ -140,7 +142,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, elevation }) => {
         <MessageContainer
           className={chatClassNames.messageUser}
           elevation={elevation}
-          sx={{ maxWidth: '100%', backgroundColor: (theme) => theme.palette.grey[200] }}
+          sx={{ maxWidth: '100%', backgroundColor: (theme) => theme.palette.background.paper }}
         >
           <MessageMarkdownBlock
             messageId={message.id}

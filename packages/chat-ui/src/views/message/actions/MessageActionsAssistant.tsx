@@ -1,11 +1,10 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import MessageActionCopy from './MessageActionCopy';
-import { ChatMessageOwner, Message, MessageModel } from '../../../models/MessageModel';
+import { ChatMessageOwner, Message, MessageModel, ThreadModel } from '../../../models';
 import { useChatContext } from '../../core/ChatGlobalContext';
-import { ThreadModel } from '../../../models/ThreadModel';
 import MessageActionFeedback from './feedback/MessageActionFeedback';
-
+import MessageActionReload from './MessageActionReload';
 
 type Props = {
   message: MessageModel;
@@ -13,15 +12,16 @@ type Props = {
 };
 
 const MessageActionsAssistant: React.FC<Props> = ({ message, thread }) => {
-  const { actionsAssistant, disableMessageCopying, onChangeMessageRating } = useChatContext();
+  const { actionsAssistant, disableMessageCopying, onChangeMessageRating, disableMessageReloading } = useChatContext();
 
   return (
     <Stack
       direction="row"
       alignItems="center"
-      gap={1.5}
+      gap={1}
     >
       {onChangeMessageRating ? <MessageActionFeedback message={message} /> : null}
+      {!disableMessageReloading && <MessageActionReload message={message} />}
       {!disableMessageCopying && <MessageActionCopy message={message} />}
       {actionsAssistant?.map((component, k) => (
         <component.element

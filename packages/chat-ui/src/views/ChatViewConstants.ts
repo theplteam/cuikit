@@ -24,5 +24,5 @@ export class ChatViewConstants {
 
   static readonly MAX_ATTACHMENT_SIZE = 2 * 1024 * 1024 * 1024; // 2 GB;
 
-  static readonly TEXT_SMOOTH_ANIMATION_DURATION_MS = 600;
+  static readonly TEXT_SMOOTH_ANIMATION_DURATION_MS = 500;
 }

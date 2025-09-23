@@ -39,7 +39,7 @@ export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
 
 const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ...otherProps }) => {
   const markdownId = React.useMemo(() => `markdown-${uuid()}-${messageId}`, [messageId]);
-  const { processAssistantText, customMarkdownComponents } = useChatContext();
+  const { processAssistantText, customMarkdownComponents, typingSpeed } = useChatContext();
 
   return (
     <otherProps.rootComponent
@@ -53,6 +53,7 @@ const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ..
         processAssistantText={processAssistantText}
         customMarkdownComponents={customMarkdownComponents}
         markdownId={markdownId}
+        typingSpeed={typingSpeed}
       />
     </otherProps.rootComponent>
   );
