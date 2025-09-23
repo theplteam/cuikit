@@ -23,7 +23,7 @@ const markdownString = `
 
 *Italic*
 
-[Link](https://docs.playliner.com/)
+1. [Link](https://docs.playliner.com/)
 
 Ordered Lists:
 

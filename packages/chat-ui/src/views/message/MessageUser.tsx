@@ -27,7 +27,6 @@ import attachmentsStore from '../../models/AttachmentsStore';
 type Props = {
   message: MessageModel;
   thread: ThreadModel;
-  isFirst?: boolean;
   elevation?: boolean;
 };
 
@@ -52,7 +51,7 @@ const StackStyled = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
+const MessageUser: React.FC<Props> = ({ message, thread, elevation }) => {
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
@@ -146,6 +145,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
           sx={{ maxWidth: '100%', backgroundColor: (theme) => theme.palette.background.paper }}
         >
           <MessageMarkdownBlock
+            messageId={message.id}
             text={message.text}
             rootComponent={slots.markdownMessageRoot}
             rootComponentProps={slotProps.markdownMessageRoot}
@@ -153,7 +153,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
           />
         </MessageContainer>
       ) : null}
-      {((isFirst || message.parentId) && !!enableBranches) ? (
+      {enableBranches ? (
         <MessageActionsUser
           className={actionsClassName}
           disabled={isTyping}

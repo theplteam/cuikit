@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageModel, ThreadModel } from '../../models';
+import { MessageModel } from '../../models';
 import MessageMarkdownBlock from './markdown/MessageMarkdownBlock';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatSlots } from '../core/ChatSlotsContext';
@@ -8,35 +8,33 @@ import { MessageText } from '../../models/MessageText';
 
 type Props = {
   messageText: MessageText;
-  showStatus: boolean;
   inProgress: boolean;
   message: MessageModel;
-  thread: ThreadModel;
+  showStatus: boolean;
 };
 
-const AssistantTextBlock: React.FC<Props> = ({ messageText, message, showStatus, inProgress, thread }) => {
+const AssistantTextBlock: React.FC<Props> = ({ messageText, message, inProgress, showStatus }) => {
   const text = useObserverValue(messageText.observableText) ?? '';
   const { slots, slotProps } = useChatSlots();
+
+  if (!text) return null;
 
   return (
     <Stack gap={1}>
       {!!showStatus && (
-        <slots.messageAssistantProgress
-          {...slotProps.messageAssistantProgress}
+        <slots.messageAssistantStatus
+          {...slotProps.messageAssistantStatus}
           message={message}
-          thread={thread}
         />
       )}
-      {!!text && (
-        <MessageMarkdownBlock
-          text={text}
-          rootComponent={slots.markdownMessageRoot}
-          rootComponentProps={slotProps.markdownMessageRoot}
-          inProgress={inProgress}
-        />
-      )}
+      <MessageMarkdownBlock
+        text={text}
+        rootComponent={slots.markdownMessageRoot}
+        rootComponentProps={slotProps.markdownMessageRoot}
+        inProgress={inProgress}
+        messageId={message.id}
+      />
     </Stack>
-
   );
 }
 

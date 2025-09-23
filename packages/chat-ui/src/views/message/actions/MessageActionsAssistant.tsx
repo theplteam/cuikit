@@ -4,18 +4,14 @@ import MessageActionCopy from './MessageActionCopy';
 import { ChatMessageOwner, Message, MessageModel, ThreadModel } from '../../../models';
 import { useChatContext } from '../../core/ChatGlobalContext';
 import MessageActionFeedback from './feedback/MessageActionFeedback';
-import clsx from 'clsx';
-import { chatClassNames } from '../../core/chatClassNames';
 import MessageActionReload from './MessageActionReload';
 
 type Props = {
   message: MessageModel;
   thread: ThreadModel;
-  className: string;
-  isTypedOnce: boolean;
 };
 
-const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className, isTypedOnce }) => {
+const MessageActionsAssistant: React.FC<Props> = ({ message, thread }) => {
   const { actionsAssistant, disableMessageCopying, onChangeMessageRating, disableMessageReloading } = useChatContext();
 
   return (
@@ -23,10 +19,6 @@ const MessageActionsAssistant: React.FC<Props> = ({ message, thread, className, 
       direction="row"
       alignItems="center"
       gap={1}
-      className={clsx(
-        className,
-        { [chatClassNames.markdownSmoothedPending]: isTypedOnce }
-      )}
     >
       {onChangeMessageRating ? <MessageActionFeedback message={message} /> : null}
       {!disableMessageReloading && <MessageActionReload message={message} />}
