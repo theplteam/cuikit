@@ -45,6 +45,8 @@ export const StatusBoxStyled = styled(Stack)(({ theme }) => ({
 const MessageAssistantStatus: React.FC<Props> = ({ message }) => {
   const status = useObserverValue(message.status);
 
+  if (!status) return null;
+
   return (
     <StatusBoxStyled>
       <Typography variant="body1">
