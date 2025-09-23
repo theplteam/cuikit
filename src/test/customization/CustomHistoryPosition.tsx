@@ -3,8 +3,8 @@ import {
   useAssistantAnswerMock,
   Thread,
   Chat,
-  History,
   useChatApiRef,
+  DesktopHistory,
 } from "@plteam/chat-ui";
 import Box from '@mui/material/Box';
 import { useTheme } from "@mui/material/styles";
@@ -107,16 +107,16 @@ const App: React.FC = () => {
       <Drawer
         keepMounted
         open={drawerOpen}
-        anchor="right"
+        anchor={isMobile ? "bottom" : "right"}
         sx={{
           [`& .${historyClassname}`]: {
-            width: isMobile ? 200 : 400,
+            width: isMobile ? '100%' : 400,
             maxWidth: 'none',
           }
         }}
         onClose={handleDrawerClose}
       >
-        <History apiRef={apiRef} className={historyClassname} />
+        <DesktopHistory apiRef={apiRef} className={historyClassname} />
       </Drawer>
       <Box
         width="100%"

@@ -11,6 +11,7 @@ import { chatClassNames } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
+import DesktopHistory from './views/leftContainer/DesktopHistory';
 import { useHistoryContext } from './views/core/history/HistoryContext';
 import { ToolType } from './types/ToolType';
 import { parseReasoningText } from './views/message/reasoning/useReasoningParse';
@@ -29,6 +30,7 @@ export {
   ChatPage,
   History,
   MobileHistory,
+  DesktopHistory,
   useThreadContext,
   useHistoryContext,
   ChatLicenseInfo,
