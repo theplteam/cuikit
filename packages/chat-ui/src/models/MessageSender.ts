@@ -1,4 +1,4 @@
-import { InternalMessageType, Message, MessageModel, MessageStatus } from './MessageModel';
+import { InternalMessageType, Message, MessageModel } from './MessageModel';
 import { ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
@@ -84,9 +84,6 @@ export class MessageSender<DM extends Message> {
       },
       reasoning: {
         pushChunk: (chunk) => {
-          if (this.assistantMessage.status.value !== MessageStatus.THINKING) {
-            this.assistantMessage.status.value = MessageStatus.THINKING;
-          }
           message.reasoningManager.pushChunk(chunk);
         },
         setFull: message.reasoningManager.setText,

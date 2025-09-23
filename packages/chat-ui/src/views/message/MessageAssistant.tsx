@@ -15,7 +15,6 @@ import { chatClassNames } from '../core/chatClassNames';
 import { ChatViewConstants } from '../ChatViewConstants';
 import { usePhotoswipeInitialization } from './hooks/usePhotoswipeInitialization';
 import clsx from 'clsx';
-import { useSmoothManager } from './markdown/smooth/useSmoothManager';
 
 type Props = {
   message: MessageModel;
@@ -107,7 +106,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       {showControls ? (
         <Stack       
           className={clsx({ [chatClassNames.markdownSmoothedPending]: isTypedOnce })}
-          id={`footer-${message.id}`}
+          id={`message-controls-${message.id}`}
         >
           <MessageActionsAssistant
             message={message}

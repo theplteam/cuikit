@@ -5,7 +5,6 @@ import {
   MessageModel,
   ChatMessageOwner,
   InternalMessageType,
-  MessageStatus,
 } from '../../models';
 import { arrayLast } from '../../utils/arrayUtils/arrayLast';
 import { ChatUsersProps } from '../core/useChatProps';
@@ -123,8 +122,6 @@ export const useThreadSendMessage = (
 
     const { userMessage, assistantMessage } = await onCreatePair(content, 'editMessage', parentMessage);
 
-    assistantMessage.status.value = MessageStatus.START;
-
     // TODO: There is a bug here, when we change the branch, the user's message is automatically added to it,
     //  so a new user message is passed in the history
     apiManager.apiRef.current?.handleChangeBranch(userMessage);
@@ -192,13 +189,10 @@ export const useThreadSendMessage = (
 
           const pair = await onCreatePair(content, 'newMessage');
 
-          pair.assistantMessage.status.value = MessageStatus.START;
-
           onSendMessage(content, pair.userMessage, pair.assistantMessage)
             .then(({ message }) => {
               resolve(true);
               onAssistantMessageTypingFinish?.({ message, thread: thread.data });
-              pair.assistantMessage.status.value = MessageStatus.FINISH;
             })
             .catch(() => resolve(false));
 

@@ -26,10 +26,10 @@ class SmoothManager {
 
     const messageId = markdownId.split('-').pop();
     const parent = document.getElementById(markdownId);
-    const footer = document.getElementById(`footer-${messageId}`);
+    const controls = document.getElementById(`message-controls-${messageId}`);
 
     const elements = (parent?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
-    console.log('elements', elements);
+
     if (elements.length && !this._firstDelaySet) {
       this._firstDelaySet = true;
       delayMs += this.firstDelayValueMs;
@@ -58,10 +58,10 @@ class SmoothManager {
       delayMs += this.delayValueMs;
     });
 
-    if (footer) {
-      footer.classList.remove(chatClassNames.markdownSmoothedPending);
-      footer.style.animationDelay = `${delayMs + this.delayValueMs}ms`;
-      footer.classList.add(chatClassNames.markdownSmoothedAnimating);
+    if (controls) {
+      controls.classList.remove(chatClassNames.markdownSmoothedPending);
+      controls.style.animationDelay = `${delayMs + this.delayValueMs}ms`;
+      controls.classList.add(chatClassNames.markdownSmoothedAnimating);
     }
   
     delayMs -= this.delayValueMs;
@@ -74,7 +74,7 @@ class SmoothManager {
       };
       setTimeout(() => {
         elements?.forEach((el) => remove(el));
-        if (footer) remove(footer)
+        if (controls) remove(controls)
       }, ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS)
     }
 
@@ -97,7 +97,6 @@ class SmoothManager {
 const smoothManager = new SmoothManager();
 
 export const useSmoothManager = (text: string, inProgress: boolean, markdownId: string) => {
-  console.log('markdownId', markdownId);
   React.useEffect(() => {
     if (inProgress) smoothManager.check(markdownId);
   }, [text, inProgress]);

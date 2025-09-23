@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MessageReasoningFull from './MessageReasoningFull';
 import { useObserverValue } from '../../hooks/useObserverValue';
-import { MessageModel, MessageStatus } from '../../../models';
+import { MessageModel } from '../../../models';
 import { Collapse, Fade } from '@mui/material';
 import { useReasoningParse } from './useReasoningParse';
 import ReasoningTextSmooth from './ReasoningTextSmooth';
@@ -39,13 +39,12 @@ const MessageReasoning: React.FC<Props> = ({ message }) => {
 
   const { apiRef } = useThreadContext();
 
-  const statusText = useObserverValue(message.status) ?? '';
-
   const shortRef = React.useRef<HTMLDivElement | null>(null);
 
+  const typing = useObserverValue(message.typing);
   const reasoning = useObserverValue(message.reasoningManager.text) ?? '';
 
-  const inProgress = statusText === MessageStatus.THINKING && !!reasoning;
+  const inProgress = !!typing && !!reasoning;
 
   const [isExpanding, setIsExpanding] = React.useState(false);
   const { reasoningType, description } = useReasoningParse(reasoning, message, inProgress);

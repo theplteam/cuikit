@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import { MessageModel, MessageStatus } from '../../models';
+import { MessageModel } from '../../models';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 
@@ -52,7 +52,7 @@ export const StatusBoxStyled = styled(Stack)(() => ({
 }));
 
 const MessageAssistantStatus: React.FC<Props> = ({ message }) => {
-  const status = useObserverValue(message.status) as MessageStatus | string | undefined;
+  const status = useObserverValue(message.status);
 
   return (
     <StatusBoxStyled>

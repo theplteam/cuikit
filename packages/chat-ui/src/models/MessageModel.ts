@@ -13,13 +13,6 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 };
 
-export enum MessageStatus {
-  START = 'start',
-  TYPING = 'typing',
-  THINKING = 'thinking',
-  FINISH = 'finish',
-};
-
 export type RatingType = 'like' | 'dislike';
 
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
@@ -66,7 +59,7 @@ export class MessageModel<DM extends Message = Message> {
 
   readonly attachments = new MessageAttachmentsModel();
 
-  readonly status = new ObservableReactValue<MessageStatus | string | undefined>(undefined);
+  readonly status = new ObservableReactValue<string | undefined>(undefined);
 
   /**
    * An observable flag indicating the start/finish of message typing.
