@@ -1,16 +1,29 @@
 import * as React from 'react';
-import { useHistoryContext } from '../../views/core/history/HistoryContext';
-import { ArrowDropDown } from '../../icons'
-import MdMenu from '../../ui/menu/MdMenu';
-import { useObserverValue } from '../../views/hooks/useObserverValue';
-import { AIModelType } from '../../types/AIModelType';
+import { ArrowDropDown } from '../icons'
+import MdMenu from '../ui/menu/MdMenu';
+import { useObserverValue } from './hooks/useObserverValue';
+import { AIModelType } from '../types/AIModelType';
+import { useChatContext } from './core/ChatGlobalContext';
+import { useChatSlots } from './core/ChatSlotsContext';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+
+const BoxStyled = styled(Box)(({ theme }) => ({
+  position: 'sticky', 
+  top: 16, 
+  left: 16, 
+  width: 'fit-content',
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: 16,
+}));
 
 const AIModelSelect: React.FC = () => {
-  const { aiModelList, openNewThreadOnModelChange, slots, internal, apiRef, slotProps } = useHistoryContext();
+  const { aiModelList, openNewThreadOnModelChange, model, apiRef } = useChatContext();
+  const { slots, coreSlots, slotProps } = useChatSlots();
 
-  const currentThread = useObserverValue(internal?.model.currentThread);
+  const currentThread = useObserverValue(model.currentThread);
   const aiModel = useObserverValue(currentThread?.aiModel);
-  const activeModel = React.useMemo(() => aiModelList.find((m) => m.model === aiModel), [aiModel]);
+  const activeModel = React.useMemo(() => aiModelList?.find((m) => m.model === aiModel), [aiModel]);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -40,10 +53,10 @@ const AIModelSelect: React.FC = () => {
     handleClose();
   };
 
-  if (!aiModelList.length) return null;
+  if (!aiModelList?.length) return null;
 
   return (
-    <div>
+    <BoxStyled>
       <slots.aiModelButton
         endIcon={<ArrowDropDown />}
         onClick={toggleMenu}
@@ -61,21 +74,19 @@ const AIModelSelect: React.FC = () => {
         onClose={handleClose}
       >
         {aiModelList?.map((m) => (
-          <slots.baseListItemButton
+          <coreSlots.listItemButton
             key={m.model}
             selected={m.model === aiModel}
             onClick={() => handleSelect(m)}
-            {...slotProps.baseListItemButton}
           >
-            <slots.baseListItemText
+            <coreSlots.listItemText
               primary={m.label}
               secondary={m.description}
-              {...slotProps.baseListItemText}
             />
-          </slots.baseListItemButton>
+          </coreSlots.listItemButton>
         ))}
       </MdMenu>
-    </div>
+    </BoxStyled>
   );
 }
 

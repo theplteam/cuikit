@@ -50,11 +50,9 @@ const App: React.FC = () => {
         initialThread={threads[0]}
         threads={threads}
         handleStopMessageStreaming={handleStopMessageStreaming}
-        historyProps={{
-          aiModelList,
-          openNewThreadOnModelChange: true,
-        }}
         onUserMessageSent={onUserMessageSent}
+        aiModelList={aiModelList}
+        openNewThreadOnModelChange={true}
       />
     </Box>
   );

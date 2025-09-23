@@ -3,6 +3,7 @@ import { AddIcon } from '../../icons';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useHistoryContext } from '../core/history/HistoryContext';
 import internalApi from '../core/history/internalApi';
+import Box from '@mui/material/Box';
 
 type Props = {
   openNewThread: () => void;
@@ -37,7 +38,12 @@ const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
   const { slots, slotProps, locale } = useHistoryContext();
 
   return (
-    <div>
+    <Box
+      pt={1.5}
+      px={2}
+      width="100%"
+      boxSizing="border-box"
+    >
       <slots.baseButton
         fullWidth
         disabled={disabled}
@@ -48,7 +54,7 @@ const NewChatButton: React.FC<Props> = ({ openNewThread }) => {
       >
         {locale.newChat}
       </slots.baseButton>
-    </div>
+    </Box>
   );
 };
 

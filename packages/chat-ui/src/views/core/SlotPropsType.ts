@@ -12,6 +12,7 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
 import { FileAttachmentButtonProps } from '../form/attachments/FileAttachmentButton';
+import { ButtonProps } from '@mui/material/Button';
 
 type ChildrenProps = React.PropsWithChildren;
 
@@ -68,6 +69,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Typography for the component displayed while sending a request to the chat or while "thinking."
    */
   messageAssistantProgressText: TypographyProps;
+  /**
+   * Model select button component.
+   */
+  aiModelButton: ButtonProps;
 
   // MARKDOWN
   /**

@@ -19,6 +19,7 @@ import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 import { ToolType } from '../../types/ToolType';
 import { LangKeys } from '../../locale/Localization';
+import { AIModelType } from '../../types/AIModelType';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -205,6 +206,15 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * @default false
    */
   disableRtl?: boolean;
+  /**
+   * List of ai models.
+   */
+  aiModelList?: AIModelType[];
+  /**
+   * Creates new thread when model is changed if `true`.
+   * @default false
+   */
+  openNewThreadOnModelChange?: boolean;
 } & RequiredProps<DD>;
 
 // что передает пользователь, но не нужно чату

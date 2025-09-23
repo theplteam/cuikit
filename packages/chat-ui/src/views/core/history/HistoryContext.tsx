@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import ContainerSubtitle from '../../../ui/ContainerSubtitle';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import internalApi from './internalApi';
-import ListItemButton from '@mui/material/ListItemButton';
 import { useLocalizationInit } from '../useLocalizationInit';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
@@ -22,7 +21,6 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
     baseButton: slots?.baseButton ?? Button,
     baseIconButton: slots?.baseIconButton ?? IconButton,
     baseListItemText: slots?.baseListItemText ?? ListItemText,
-    baseListItemButton: slots?.baseListItemButton ?? ListItemButton,
     baseMenuItem: slots?.baseMenuItem ?? MdMenuItem,
     historyContainer: slots?.historyContainer ?? Box,
     historyWrapper: slots?.historyWrapper ?? Stack,
@@ -33,7 +31,6 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
     listTimeText: slots?.listTimeText ?? Typography,
     listTimeTextWrapper: slots?.listTimeTextWrapper ?? TimeTextWrapper,
     listDrawerTitle: slots?.listDrawerTitle ?? Typography,
-    aiModelButton: slots?.aiModelButton ?? Button,
   }) as HistorySlotType, [slots]);
 
   return componentSlots;
@@ -42,7 +39,7 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
 const Context = React.createContext<HistoryContextType | undefined>(undefined);
 
 export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<HistoryComponentProps>) => {
-  const { apiRef, loading, threadActions, slotProps, aiModelList, openNewThreadOnModelChange } = props;
+  const { apiRef, loading, threadActions, slotProps } = props;
   const userLocale = useLocalizationInit(props.lang);
   const userSlots = useSlots(props?.slots);
   const internal = useObserverValue(internalApi);
@@ -55,8 +52,6 @@ export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<
     slots: userSlots,
     locale: userLocale,
     slotProps: slotProps || {},
-    aiModelList: aiModelList || [],
-    openNewThreadOnModelChange: openNewThreadOnModelChange ?? false,
   }), [apiRef, internal, loading, props]);
 
   return (

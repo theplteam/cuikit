@@ -13,13 +13,10 @@ import { StackProps } from '@mui/material/Stack';
 import { Thread } from '../../../models/ThreadModel';
 import { IdType } from '../../../types';
 import { InternalApiType } from './internalApi';
-import { AIModelType } from '../../../types/AIModelType';
-import { ListItemButtonProps } from '@mui/material/ListItemButton';
 
 export type HistorySlotPropsType = {
   baseMenuItem: MdMenuItemProps;
   baseListItemText: ListItemTextProps;
-  baseListItemButton: ListItemButtonProps;
   baseButton: ButtonProps;
   baseIconButton: IconButtonProps;
   /**
@@ -74,8 +71,6 @@ export type HistoryContextType = {
   slots: HistorySlotType;
   slotProps: Partial<HistorySlotPropsType>;
   threadActions: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
-  aiModelList: AIModelType[];
-  openNewThreadOnModelChange: boolean;
 };
 
 export type HistoryProps = {
@@ -83,6 +78,4 @@ export type HistoryProps = {
   slots?: Partial<HistorySlotType> ;
   slotProps?: Partial<HistorySlotPropsType>;
   threadActions?: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
-  aiModelList?: AIModelType[];
-  openNewThreadOnModelChange?: boolean;
 };

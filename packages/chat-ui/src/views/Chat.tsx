@@ -9,6 +9,7 @@ import { useApiRef } from './core/useApiRef';
 import { Thread, Message } from '../models';
 import { LocalizationProvider } from './core/LocalizationContext';
 import { useApiManager } from './core/useApiManager';
+import AIModelSelect from './AIModelSelect';
 
 const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.PropsWithChildren<ChatUsersProps<DM, DD>>) => {
   const userApiRef = usersProps.apiRef;
@@ -25,6 +26,7 @@ const Chat = <DM extends Message, DD extends Thread<DM>>(usersProps: React.Props
     >
       <LocalizationProvider locale={usersProps.lang}>
         <ChatSlotsProvider slots={slots} coreSlots={coreSlots} slotProps={slotProps}>
+          <AIModelSelect />
           <ThreadComponent
             initialThread={props.initialThread}
             enableBranches={props.enableBranches}

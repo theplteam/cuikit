@@ -4,8 +4,6 @@ import Box from '@mui/material/Box';
 import Scrollbar from '../../ui/Scrollbar';
 import ThreadsListMapBlock from './listMap/ThreadsListMapBlock';
 import { useHistoryContext } from '../core/history/HistoryContext';
-import AIModelSelect from './AIModelSelect';
-import { Stack } from '@mui/material';
 
 const ChatHistory: React.FC = () => {
   const { slots, slotProps, apiRef, locale } = useHistoryContext();
@@ -24,14 +22,7 @@ const ChatHistory: React.FC = () => {
       width="100%"
       {...slotProps.historyWrapper}
     >
-      <Stack
-        pt={1.5}
-        px={2}
-        gap={2}
-      >
-        <AIModelSelect />
-        <NewChatButton openNewThread={openNewThread} />
-      </Stack>
+      <NewChatButton openNewThread={openNewThread} />
       <Box mx={2} mb={0.5}>
         <slots.listSubtitle {...slotProps.listSubtitle}>
           {locale.historyTitle}
