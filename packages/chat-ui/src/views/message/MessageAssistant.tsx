@@ -25,23 +25,9 @@ type Props = {
 const MessageContainerStyled = styled(MessageContainer)(() => ({
   width: '100%',
   flexDirection: 'column',
-  /*[`&:not(.${latestMessageClassName})`]: {
-    [`& .${actionsClassName}`]: {
-      opacity: 0,
-      transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
-    },
-  },
-  [`&.${hoverMessageClassName}`]: {
-    [`& .${actionsClassName}`]: {
-      opacity: 1,
-    },
-  }*/
 }));
 
 const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation }) => {
-  // const { element, setElement } = useElementRefState();
-
-  // const isHover = useHover(element);
   const texts = useObserverValue(message.texts) ?? [];
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
