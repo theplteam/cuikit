@@ -206,6 +206,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   disableRtl?: boolean;
   /**
+   * Typing animation speed in milliseconds.
+   * @default 600
+   */
+  typingSpeed?: number;
+  /**
    * If the value is `true`, default markdown wrapper will be forced into `ltr` mode.
    * @default false
    */

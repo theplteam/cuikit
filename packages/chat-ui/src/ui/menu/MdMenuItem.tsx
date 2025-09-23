@@ -16,14 +16,14 @@ const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   paddingLeft: theme.spacing(1.5),
   paddingRight: theme.spacing(1),
   minHeight: '48px !important',
-  '& .MuiSvgIcon-root': {
+  '& .MuiListItemIcon-root': {
     color: 'inherit',
     fontSize: '1.5rem',
   }
 }));
 
 const MdMenuItem: React.FC<MdMenuItemProps> = ({ children, startIcon, disabled, loading, ...otherProps }) => {
-  const icon = startIcon ? React.createElement(startIcon, { fontSize: 'small' }) : undefined;
+  const icon = startIcon ? React.createElement(startIcon, { fontSize: 'small', color: 'inherit' }) : undefined;
   return (
     <MenuItemStyled
       {...otherProps}

@@ -1,9 +1,8 @@
 import React from 'react';
 import { styled, Avatar } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
 
-const AvatarStyled = styled(Avatar)(() => ({
+const AvatarStyled = styled(Avatar)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -13,15 +12,16 @@ const AvatarStyled = styled(Avatar)(() => ({
   minWidth: 40,
   minHeight: 40,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  color: theme.palette.primary.main,
 }));
 
 const PlayIcon: React.FC = () => (
   <AvatarStyled>
-    <SvgIcon sx={{ width: '70%', height: '70%' }}>
+    <SvgIcon sx={{ width: '70%', height: '70%', color: 'inherit' }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill={materialDesignSysPalette.secondary}
+        fill="currentColor"
       >
         <path fill="inherit" d="M8 5v14l11-7z" />
       </svg>
