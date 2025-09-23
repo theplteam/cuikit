@@ -20,7 +20,8 @@ const HistoryContainer: React.FC<HistoryContainerProps> = ({ className }) => {
       className={clsx(historyClassNames.container, className)}
       sx={{
         maxWidth: isTablet ? 220 : 360,
-        backgroundColor: (theme) => theme.palette.grey[200],
+        backgroundColor: (theme) => theme.palette.background.paper,
+        color: (theme) => theme.palette.text.primary,
       }}
       {...slotProps.historyContainer}
     >

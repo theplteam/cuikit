@@ -6,7 +6,7 @@ import { useChatCoreSlots } from '../../../core/ChatSlotsContext';
 import { CloseIcon } from '../../../../icons';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import { Popover } from '@mui/material';
+import Popover from '@mui/material/Popover';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { MessageFeedbackTagType, MessageModel } from '../../../../models/MessageModel';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
@@ -66,7 +66,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
             borderRadius: 2,
             gap: 2,
             maxWidth: 500,
-            backgroundColor: (theme) => theme.palette.grey[200],
+            backgroundColor: (theme) => theme.palette.background.paper,
           }
         }
       }}

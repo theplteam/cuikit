@@ -2,7 +2,6 @@ import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { QuestionTemplateType } from './useQuestionTemplates';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { motion } from '../../utils/materialDesign/motion';
 import Typography from '@mui/material/Typography';
 
@@ -13,7 +12,7 @@ type Props = {
 
 const PaperStyled = styled(Paper)(({ theme }) => ({
   borderRadius: 16,
-  border: `1px solid ${materialDesignSysPalette.outlineVariant}`,
+  border: `1px solid ${theme.palette.divider}`,
   padding: theme.spacing(1),
   width: 133,
   height: 65,
@@ -23,7 +22,7 @@ const PaperStyled = styled(Paper)(({ theme }) => ({
   transition: theme.transitions.create('background', { duration: motion.duration.short2 }),
   cursor: 'pointer',
   '&:hover': {
-    background: materialDesignSysPalette.surfaceBright,
+    background: theme.palette.action.hover,
   },
   [theme.breakpoints.down('md')]: {
     margin: 4,

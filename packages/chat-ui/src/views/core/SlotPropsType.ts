@@ -13,6 +13,8 @@ import type { StackProps } from '@mui/material/Stack';
 import type { BoxProps } from '@mui/material/Box';
 import { FileAttachmentButtonProps } from '../form/attachments/FileAttachmentButton';
 import { ButtonProps } from '@mui/material/Button';
+import { TextFieldProps } from '@mui/material/TextField';
+import { AvatarProps } from '@mui/material/Avatar';
 
 type ChildrenProps = React.PropsWithChildren;
 
@@ -28,7 +30,14 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
 
   sendMessageButton: IconButtonProps;
 
-  messageRowInner: { thread: DD } & any;
+  /**
+   * New message input wrapper.
+   */
+  threadInputWrapper: StackProps;
+  /**
+   * New message input component.
+   */
+  threadInput: { thread: DD } & any;
   /**
    * Container for attachment preview item.
    */
@@ -37,8 +46,14 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Container for attachment preview item with error.
    */
   attachmentPreviewError: BoxProps;
-
+  /**
+   * 
+   */
   attachmentFormButton: FileAttachmentButtonProps;
+  /**
+   * 
+   */
+  attachmentVideoPlayIcon: AvatarProps;
 
   // MESSAGE
   /**
@@ -58,6 +73,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    */
   messagePaginationButton: IconButtonProps;
   /**
+   * IconButton for rating
+   */
+  messageRatingButton: IconButtonProps;
+  /**
    * Render some information under the assistant's message.
    */
   messageAssistantFooter: { message: InternalMessageType, className?: string };
@@ -73,6 +92,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Model select button component.
    */
   aiModelButton: ButtonProps;
+  /**
+   * Typography for the component displayed while sending a request to the chat or while "thinking."
+   */
+  messageEditInput: TextFieldProps;
 
   // MARKDOWN
   /**

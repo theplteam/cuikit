@@ -34,6 +34,9 @@ import Divider from '@mui/material/Divider';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
 import FileAttachmentButton from '../form/attachments/FileAttachmentButton';
 import ListItemButton, { ListItemButtonProps } from '@mui/material/ListItemButton';
+import MessageEditInput from '../form/MessageEditInput';
+import ThreadInputWrapper from '../form/ThreadInputWrapper';
+import PlayIcon from '../form/preview/PlayIcon';
 
 export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -128,16 +131,20 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       thread: slots?.thread ?? ThreadRootContainer,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 
-      messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
+      threadInputWrapper: slots?.threadInput ?? ThreadInputWrapper,
+      threadInput: slots?.threadInput ?? ChatTextFieldRowInner,
+      messageEditInput: slots?.messageEditInput ?? MessageEditInput,
       attachmentPreviewItem: slots?.attachmentPreviewItem ?? PreviewItemBox,
       attachmentPreviewError: slots?.attachmentPreviewError ?? PreviewErrorBox,
       attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
       aiModelButton: slots?.aiModelButton ?? Button,
+      attachmentVideoPlayIcon: slots?.attachmentVideoPlayIcon ?? PlayIcon,
       // MARKDOWN
       ...getMarkdownSlots(slots),
       messagePagination: slots?.messagePagination ?? MessagePagination,
       messagePaginationRoot: slots?.messagePaginationRoot ?? Stack,
       messagePaginationButton: slots?.messagePaginationButton ?? core.iconButton,
+      messageRatingButton: slots?.messageRatingButton ?? core.iconButton,
       messagePaginationText: slots?.messagePaginationText ?? Typography,
       messageAssistantFooter: slots?.messageAssistantFooter ?? MockComponent,
       messageAssistantProgress: slots?.messageAssistantProgress ?? MessageAssistantProgress,

@@ -20,6 +20,7 @@ export * from './views/adapter';
 export * from './views';
 // TODO: Hard fix
 export * from './temporalExports';
+export * from './views/core/ChatTheme';
 
 type ChatApiRef = ApiRefType | null;
 

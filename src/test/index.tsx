@@ -27,6 +27,7 @@ const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/Fil
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
 const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
 const ModelSelect = React.lazy(() => import('./compatibility/ModelSelect'));
+const ThemeSwitch = React.lazy(() => import('./customization/ThemeSwitch'));
 
 const App: React.FC = () => {
   const [component, setComponent] = React.useState<any>(null);
@@ -40,6 +41,7 @@ const App: React.FC = () => {
     let variant: React.JSXElementConstructor<any> | null = null;
     switch (componentName) {
       case 'select-ai-model': variant = ModelSelect; break;
+      case 'theme': variant = ThemeSwitch; break;
       case 'message-editing': variant = UserMessageEditingExample; break;
       case 'markdown-example': variant = MarkdownExample; break;
       case 'markdown-custom': variant = MarkdownCustomExample; break;

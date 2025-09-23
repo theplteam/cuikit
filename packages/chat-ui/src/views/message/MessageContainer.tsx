@@ -19,6 +19,7 @@ const ChatMessageContainerStyled = styled(
   },
   minHeight: 40,
   boxShadow: elevation ? '0px 2px 16px rgba(0, 0, 0, 0.12), 0px 7px 10px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.2);' : 'none',
+  color: theme.palette.text.primary,
 }));
 
 const MessageContainer = React.forwardRef((props: BoxProps & Props, ref) => {

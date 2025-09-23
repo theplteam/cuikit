@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 const MessageMarkdownUl = styled('ul')(({ theme }) => ({
   listStyle: 'none',
   paddingLeft: '1.625em',
-  '& li': {
+  '& > li': {
     paddingLeft: 6,
     marginBottom: 8,
     '&:last-child': {
@@ -22,7 +22,7 @@ const MessageMarkdownUl = styled('ul')(({ theme }) => ({
       borderRadius: '50%',
       background: theme.palette.primary.main,
     },
-    'ul': {
+    '& ol, & ul': {
       marginTop: theme.spacing(1.5),
     },
   },
@@ -42,7 +42,7 @@ const MessageMarkdownUl = styled('ul')(({ theme }) => ({
 
 const ChatMessageOl = styled('ol')(({ theme }) => ({
   paddingLeft: '1.625em',
-  '& li': {
+  '& > li': {
     paddingLeft: 6,
     marginBottom: 8,
     '&:last-child': {
@@ -53,7 +53,7 @@ const ChatMessageOl = styled('ol')(({ theme }) => ({
     '&::marker': {
       ...theme.typography.body1,
     },
-    '& ul': {
+    '& ol, & ul': {
       marginTop: theme.spacing(1.5),
     },
   },
