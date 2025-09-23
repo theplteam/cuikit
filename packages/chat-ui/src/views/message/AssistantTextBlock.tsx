@@ -22,8 +22,8 @@ const AssistantTextBlock: React.FC<Props> = ({ messageText, message, inProgress,
   return (
     <Stack gap={1}>
       {!!showStatus && (
-        <slots.messageAssistantProgress
-          {...slotProps.messageAssistantProgress}
+        <slots.messageAssistantStatus
+          {...slotProps.messageAssistantStatus}
           message={message}
         />
       )}

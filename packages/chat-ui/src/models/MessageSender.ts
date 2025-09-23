@@ -23,9 +23,6 @@ export class MessageSender<DM extends Message> {
   }
 
   pushChunk = (chunk: string) => {
-    if (!this.assistantMessage.text && this.assistantMessage.status.value !== MessageStatus.TYPING) {
-      this.assistantMessage.status.value = MessageStatus.TYPING;
-    }
     this.assistantMessage.text += chunk;
   }
 
@@ -79,7 +76,7 @@ export class MessageSender<DM extends Message> {
         resolver({ message: internalUserMessage });
         message.reasoningManager.updateTimeSec();
         this.thread.isTyping.value = false;
-
+        this.setStatus('');
         message.data.content = message.texts.value.map((v) => ({
           type: 'text',
           text: v.text,

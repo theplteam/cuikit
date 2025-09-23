@@ -3,10 +3,9 @@ import { styled } from '@mui/material/styles';
 import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
-import { useChatSlots } from '../core/ChatSlotsContext';
 import { MessageModel, MessageStatus } from '../../models';
-import { useLocalizationContext } from '../core/LocalizationContext';
 import Stack from '@mui/material/Stack';
+import { Typography } from '@mui/material';
 
 type Props = {
   message: MessageModel;
@@ -52,36 +51,16 @@ export const StatusBoxStyled = styled(Stack)(() => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ message }) => {
-  const state = useObserverValue(message.status) as MessageStatus | string | undefined;
-  const reasoningTitle = useObserverValue(message.reasoningManager.text) ?? '';
-  const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? '';
-  const { slots, slotProps } = useChatSlots();
-  const locale = useLocalizationContext();
-  let text = state;
-
-  if (state === MessageStatus.START) {
-    text = locale.thinking;
-  }
-
-  if (
-    !text
-    || state === MessageStatus.TYPING
-    || state === MessageStatus.FINISH
-    || !!reasoningTitle
-    || !!reasoningTime
-  ) return null;
+const MessageAssistantStatus: React.FC<Props> = ({ message }) => {
+  const status = useObserverValue(message.status) as MessageStatus | string | undefined;
 
   return (
     <StatusBoxStyled>
-      <slots.messageAssistantProgressText
-        variant="body1"
-        {...slotProps.messageAssistantProgressText}
-      >
-        {text}
-      </slots.messageAssistantProgressText>
+      <Typography variant="body1">
+        {status}
+      </Typography>
     </StatusBoxStyled>
   );
 };
 
-export default MessageAssistantProgress;
+export default MessageAssistantStatus;

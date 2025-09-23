@@ -14,6 +14,8 @@ import AssistantTextBlock from './AssistantTextBlock';
 import { chatClassNames } from '../core/chatClassNames';
 import { ChatViewConstants } from '../ChatViewConstants';
 import { usePhotoswipeInitialization } from './hooks/usePhotoswipeInitialization';
+import clsx from 'clsx';
+import { useSmoothManager } from './markdown/smooth/useSmoothManager';
 
 type Props = {
   message: MessageModel;
@@ -63,6 +65,14 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
+  const [isTypedOnce, setIsTypedOnce] = React.useState(false);
+  const messageBlockId = React.useMemo(() => `message-block-${message.id}`, [message.id]);
+
+  React.useEffect(() => {
+    if (typing && !isTypedOnce) {
+      setIsTypedOnce(true);
+    };
+  }, [typing]);
 
   const getInternalMessage = useInternalMessageTransformer();
   const showControls = !typing && !!enableAssistantActions;
@@ -76,11 +86,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       gap={1}
       className={chatClassNames.messageAssistantRoot}
       elevation={elevation}
-    // ref={setElement} 
-    // className={clsx(
-    //   chatClassNames.messageAssistantRoot,
-    //   { [hoverMessageClassName]: isHover },
-    // )}
+      id={messageBlockId}
     >
       {enableReasoning ? (
         <MessageReasoning
@@ -94,12 +100,15 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
             message={message}
             messageText={text}
             inProgress={!!typing}
-            showStatus={texts.length === index - 1}
+            showStatus={texts.length === index + 1}
           />
         ))}
       </Stack>
       {showControls ? (
-        <>
+        <Stack       
+          className={clsx({ [chatClassNames.markdownSmoothedPending]: isTypedOnce })}
+          id={`footer-${message.id}`}
+        >
           <MessageActionsAssistant
             message={message}
             thread={thread}
@@ -109,7 +118,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
             message={getInternalMessage(message)}
             className={slotProps.messageAssistantFooter?.className}
           />
-        </>
+        </Stack>
       ) : null}
     </MessageContainerStyled>
   );

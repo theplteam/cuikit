@@ -61,13 +61,13 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    */
   messageAssistantFooter: { message: InternalMessageType, className?: string };
   /**
-   * Render the component while sending a request to the chat or while "thinking."
+   * Render the message status component.
    */
-  messageAssistantProgress: BoxProps & { message: MessageModel<DM> };
+  messageAssistantStatus: BoxProps & { message: MessageModel<DM> };
   /**
-   * Typography for the component displayed while sending a request to the chat or while "thinking."
+   * Typography for the component displayed while sending a request to the chat or while "thinking".
    */
-  messageAssistantProgressText: TypographyProps;
+  messageAssistantReasoningTitle: TypographyProps;
 
   // MARKDOWN
   /**
