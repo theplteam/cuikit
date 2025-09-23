@@ -38,21 +38,18 @@ export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
 }));
 
 const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ...otherProps }) => {
-  const markdownId = React.useMemo(() => `markdown-${uuid()}-${messageId}`, [messageId]);
   const { processAssistantText, customMarkdownComponents, typingSpeed } = useChatContext();
 
   return (
     <otherProps.rootComponent
       {...otherProps.rootComponentProps}
       className={clsx(otherProps.rootComponentProps?.className, chatClassNames.markdownParentRoot)}
-      id={markdownId}
     >
       <MessageMarkdown
         inProgress={inProgress}
         text={text}
         processAssistantText={processAssistantText}
         customMarkdownComponents={customMarkdownComponents}
-        markdownId={markdownId}
         typingSpeed={typingSpeed}
       />
     </otherProps.rootComponent>

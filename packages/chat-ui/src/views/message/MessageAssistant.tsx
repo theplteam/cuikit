@@ -74,7 +74,6 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       {showControls ? (
         <Stack       
           className={clsx({ [chatClassNames.markdownSmoothedPending]: isTypedOnce })}
-          id={`message-controls-${message.id}`}
         >
           <MessageActionsAssistant
             message={message}

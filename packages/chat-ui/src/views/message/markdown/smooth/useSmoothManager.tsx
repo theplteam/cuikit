@@ -16,17 +16,15 @@ class SmoothManager {
   // Adding a small delay at the start to allow elements to render correctly
   private firstDelayValueMs = 500;
 
-  constructor() { }
-
-  check = async (markdownId: string, typingSpeed: number) => {
+  check = async (typingSpeed: number) => {
     if (this.ran) return;
     this.ran = true;
 
     let delayMs = 0;
 
-    const messageId = markdownId.split('-').pop();
-    const parent = document.getElementById(markdownId);
-    const controls = document.getElementById(`message-controls-${messageId}`);
+    const allMarkdownElements = document.getElementsByClassName(chatClassNames.messageAssistantRoot);
+
+    const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
 
     const elements = (parent?.querySelectorAll(`.${chatClassNames.markdownSmoothedPending}`) as NodeListOf<AnimatedElementsType>) ?? [];
 
@@ -58,29 +56,23 @@ class SmoothManager {
       delayMs += this.delayValueMs;
     });
 
-    if (controls) {
-      controls.classList.remove(chatClassNames.markdownSmoothedPending);
-      controls.style.animationDelay = `${delayMs + this.delayValueMs}ms`;
-      controls.classList.add(chatClassNames.markdownSmoothedAnimating);
-    }
-  
     delayMs -= this.delayValueMs;
 
     if (delayMs > 0) {
       await new Promise((resolve) => setTimeout(resolve, delayMs));
-      const remove = (el: AnimatedElementsType) => {
-        el.classList.remove(chatClassNames.markdownSmoothedAnimating);
-        el.style.animationDelay = '0s';
-      };
+
       setTimeout(() => {
-        elements?.forEach((el) => remove(el));
-        if (controls) remove(controls)
+        elements?.forEach((el) => {
+          el.classList.remove(chatClassNames.markdownSmoothedAnimating);
+          el.style.animationDelay = '0s';
+        });
       }, typingSpeed)
+
     }
 
     this.ran = false;
 
-    if (delayMs > 0) this.check(markdownId, typingSpeed);
+    if (delayMs > 0) this.check(typingSpeed);
   }
 
   /*checkThrottle = throttle(
@@ -96,9 +88,9 @@ class SmoothManager {
 
 const smoothManager = new SmoothManager();
 
-export const useSmoothManager = (text: string, inProgress: boolean, markdownId: string, typingSpeed?: number) => {
+export const useSmoothManager = (text: string, inProgress: boolean, typingSpeed?: number) => {
 
   React.useEffect(() => {
-    if (inProgress) smoothManager.check(markdownId, typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);
+    if (inProgress) smoothManager.check(typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);
   }, [text, inProgress]);
 }
