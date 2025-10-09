@@ -24,7 +24,7 @@ const ChatMobileAppBar: React.FC<Props> = ({ apiRef }) => {
       paddingX={1}
       justifyContent="center"
       sx={{
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => theme.palette.secondary.main,
       }}
     >
       <Box>

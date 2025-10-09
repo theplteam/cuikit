@@ -5,7 +5,7 @@ const TimeTextWrapper = styled('div')(({ theme }) => ({
   position: 'sticky',
   top: 0,
   left: 0,
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.secondary.main,
   zIndex: 1,
 }));
 

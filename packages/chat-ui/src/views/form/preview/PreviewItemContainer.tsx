@@ -7,6 +7,6 @@ export const PreviewErrorBox = styled(Box)(({ theme }) => ({
 }));
 
 export const PreviewItemBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   color: 'inherit',
 }));

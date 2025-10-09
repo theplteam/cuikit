@@ -24,7 +24,7 @@ const LineBoxStyled = styled(Box)(({ theme }) => ({
   height: '100%',
   width: 4,
   minWidth: 4,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   borderRadius: 999,
   transition: theme.transitions.create('opacity', { duration: '.5s' }),
 }));

@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 type Props = React.JSX.IntrinsicElements['code'];
 
 const CodeStyled = styled('code')(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   padding: '.15rem .3rem',
   fontSize: '.875rem',
   borderRadius: 4,

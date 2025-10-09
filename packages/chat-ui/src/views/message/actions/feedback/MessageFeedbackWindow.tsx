@@ -66,7 +66,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
             borderRadius: 2,
             gap: 2,
             maxWidth: 500,
-            backgroundColor: (theme) => theme.palette.background.paper,
+            backgroundColor: (theme) => theme.palette.secondary.main,
           }
         }
       }}

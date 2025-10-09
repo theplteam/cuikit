@@ -58,7 +58,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   minHeight: ChatViewConstants.TEXT_BLOCK_HEIGHT,
   display: 'flex',
   justifyContent: 'center',
-  background: theme.palette.background.paper,
+  background: theme.palette.secondary.main,
 }));
 
 const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, className, loading, apiManager, enableBranches, initialThread }: Props) => {

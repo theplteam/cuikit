@@ -15,7 +15,7 @@ type Props = {
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   borderRadius: 16,
 }));
 

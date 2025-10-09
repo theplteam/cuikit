@@ -10,7 +10,7 @@ type Props = React.JSX.IntrinsicElements['img'] & {
 const BoxStyled = styled(Box)(({ theme }) => ({
   marginTop: 8,
   width: '100%',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   position: 'relative',
   '& a': {
     width: 'inherit',

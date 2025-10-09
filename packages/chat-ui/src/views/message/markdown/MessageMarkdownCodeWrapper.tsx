@@ -24,7 +24,7 @@ const PrismStyled = styled(Prism)(() => ({
 }))
 
 const MenuBar = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   borderRadius: '4px 4px 0 0',
 }))
 
