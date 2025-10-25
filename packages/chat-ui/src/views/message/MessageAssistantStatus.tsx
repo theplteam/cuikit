@@ -2,13 +2,11 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
-import { useChatSlots } from '../core/ChatSlotsContext';
-import { MessageModel, StreamResponseState, ThreadModel } from '../../models';
-import { useLocalizationContext } from '../core/LocalizationContext';
+import { MessageModel } from '../../models';
 import Stack from '@mui/material/Stack';
+import { Typography } from '@mui/material';
 
 type Props = {
-  thread: ThreadModel;
   message: MessageModel;
   stopAnimation?: boolean;
 } & BoxProps;
@@ -44,36 +42,18 @@ export const StatusBoxStyled = styled(Stack)(({ theme }) => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
-  const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
-  const reasoningTitle = useObserverValue(message.reasoningManager.text) ?? '';
-  const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? '';
-  const { slots, slotProps } = useChatSlots();
-  const locale = useLocalizationContext();
-  let text = state;
+const MessageAssistantStatus: React.FC<Props> = ({ message }) => {
+  const status = useObserverValue(message.status);
 
-  if (state === StreamResponseState.START) {
-    text = locale.thinking;
-  }
-
-  if (
-    !text
-    || state === StreamResponseState.TYPING_MESSAGE
-    || state === StreamResponseState.FINISH_MESSAGE
-    || !!reasoningTitle
-    || !!reasoningTime
-  ) return null;
+  if (!status) return null;
 
   return (
     <StatusBoxStyled>
-      <slots.messageAssistantProgressText
-        variant="body1"
-        {...slotProps.messageAssistantProgressText}
-      >
-        {text}
-      </slots.messageAssistantProgressText>
+      <Typography variant="body1">
+        {status}
+      </Typography>
     </StatusBoxStyled>
   );
 };
 
-export default MessageAssistantProgress;
+export default MessageAssistantStatus;

@@ -11,7 +11,7 @@ import { Attachment } from './AttachmentModel';
 export enum ChatMessageOwner {
   USER = 'user',
   ASSISTANT = 'assistant',
-}
+};
 
 export type RatingType = 'like' | 'dislike';
 
@@ -33,6 +33,7 @@ export type Message = {
   parentId?: IdType;
   time?: number;
   rating?: RatingType;
+  initialStatus?: string;
   reasoning?: {
     title?: string;
     text?: string;
@@ -58,6 +59,8 @@ export class MessageModel<DM extends Message = Message> {
 
   readonly attachments = new MessageAttachmentsModel();
 
+  readonly status = new ObservableReactValue<string | undefined>(undefined);
+
   /**
    * An observable flag indicating the start/finish of message typing.
    */
@@ -74,6 +77,11 @@ export class MessageModel<DM extends Message = Message> {
         (text) => new MessageText(text.text)
       );
       this.attachments.init(content.filter(c => c.type !== 'text') as Attachment[]);
+    }
+
+    if (_data.initialStatus) {
+      this.status.value = _data.initialStatus;
+      this.typing.value = true;
     }
 
     if (_data.reasoning) {

@@ -15,7 +15,6 @@ import { SlotPropsType } from './SlotPropsType';
 import MessageMarkdownImage from '../message/markdown/MessageMarkdownImage';
 import MessagePagination from '../message/MessagePagination';
 import Stack from '@mui/material/Stack';
-import MessageAssistantProgress from '../message/MessageAssistantProgress';
 import MdMenuItem, { MdMenuItemProps } from '../../ui/menu/MdMenuItem';
 import { Thread, Message } from '../../models';
 import { ChatUsersProps } from './useChatProps';
@@ -33,6 +32,7 @@ import Chip, { ChipProps } from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
 import FileAttachmentButton from '../form/attachments/FileAttachmentButton';
+import MessageAssistantStatus from '../message/MessageAssistantStatus';
 import MessageEditInput from '../form/MessageEditInput';
 import ThreadInputWrapper from '../form/ThreadInputWrapper';
 import PlayIcon from '../form/preview/PlayIcon';
@@ -143,8 +143,8 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       messageRatingButton: slots?.messageRatingButton ?? core.iconButton,
       messagePaginationText: slots?.messagePaginationText ?? Typography,
       messageAssistantFooter: slots?.messageAssistantFooter ?? MockComponent,
-      messageAssistantProgress: slots?.messageAssistantProgress ?? MessageAssistantProgress,
-      messageAssistantProgressText: slots?.messageAssistantProgressText ?? Typography,
+      messageAssistantStatus: slots?.messageAssistantStatus ?? MessageAssistantStatus,
+      messageAssistantReasoningTitle: slots?.messageAssistantReasoningTitle ?? Typography,
     }
 
     return {

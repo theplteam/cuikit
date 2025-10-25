@@ -25,7 +25,7 @@ export class ForceStream {
     return this._promise?.promise;
   }
 
-  start = () => {
+  start = async () => {
     const textChunk = this._text.split(' ');
 
     const rndSize = this.chunkSize === 'small'
@@ -41,10 +41,12 @@ export class ForceStream {
   }
 
   forceStop = () => {
+    if (this.model) this.model.typing.value = false;
     this._stop = true;
   }
 
   private _addTextPart = (chunks: string[]) => {
+    if (this._stop) return;
     const part = chunks[0];
     const newChunks = chunks.slice(1);
     if (this.model) {

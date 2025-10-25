@@ -12,13 +12,6 @@ export type NewMessageResponse = {
   assistant: Message,
 };
 
-export enum StreamResponseState {
-  START = 'start',
-  TYPING_MESSAGE = 'typingMessage',
-  THINKING = 'thinking',
-  FINISH_MESSAGE = 'finishMessage',
-}
-
 export type Thread<DM extends Message = any> = {
   id: IdType;
   title: string;
@@ -41,8 +34,6 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   readonly isLoadingAttachments = new ObservableReactValue<IdType[]>([]);
 
   readonly isEmpty = new ObservableReactValue(false);
-
-  readonly streamStatus = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);
 
   readonly tool = new ObservableReactValue<string | undefined>(undefined);
 
@@ -77,8 +68,10 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   ) {
     this._data = data;
     this.observableTitle.value = data.title;
-    this.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
 
+    if (data.messages?.find((m) => m.initialStatus)) {
+      this.isTyping.value = true;
+    }
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];
 

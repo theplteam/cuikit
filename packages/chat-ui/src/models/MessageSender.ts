@@ -1,5 +1,5 @@
 import { InternalMessageType, Message, MessageModel } from './MessageModel';
-import { StreamResponseState, ThreadModel } from './ThreadModel';
+import { ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
 import { MessageText } from './MessageText';
@@ -23,14 +23,11 @@ export class MessageSender<DM extends Message> {
   }
 
   pushChunk = (chunk: string) => {
-    if (!this.assistantMessage.text && this.thread.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
-      this.thread.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
-    }
     this.assistantMessage.text += chunk;
   }
 
   setStatus = (status: string) => {
-    this.thread.streamStatus.value = status;
+    this.assistantMessage.status.value = status;
   }
 
   changeTypingStatus = (status: boolean) => {
@@ -79,7 +76,7 @@ export class MessageSender<DM extends Message> {
         resolver({ message: internalUserMessage });
         message.reasoningManager.updateTimeSec();
         this.thread.isTyping.value = false;
-
+        this.setStatus('');
         message.data.content = message.texts.value.map((v) => ({
           type: 'text',
           text: v.text,
@@ -87,9 +84,6 @@ export class MessageSender<DM extends Message> {
       },
       reasoning: {
         pushChunk: (chunk) => {
-          if (this.thread.streamStatus.value !== StreamResponseState.THINKING) {
-            this.thread.streamStatus.value = StreamResponseState.THINKING;
-          }
           message.reasoningManager.pushChunk(chunk);
         },
         setFull: message.reasoningManager.setText,
