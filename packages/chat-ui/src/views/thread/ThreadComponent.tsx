@@ -15,6 +15,7 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { chatClassNames } from '../core/chatClassNames';
+import {getSurfaceColor} from "../utils/colors";
 
 type Props = {
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -58,7 +59,7 @@ const TextRowBlock = styled(Box)(({ theme }) => ({
   minHeight: ChatViewConstants.TEXT_BLOCK_HEIGHT,
   display: 'flex',
   justifyContent: 'center',
-  background: theme.palette.background.paper,
+  background: getSurfaceColor(theme),
 }));
 
 const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef, className, loading, apiManager, enableBranches, initialThread }: Props) => {

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { createTheme, PaletteOptions, Theme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, PaletteOptions, Theme, ThemeProvider } from '@mui/material';
+import { ThemeProvider as StyledProvider } from '@mui/material/styles';
 import { createBreakpoints } from '@mui/system';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
@@ -10,7 +11,7 @@ export type ThemeProps = React.PropsWithChildren<{
   darkPalette?: Omit<PaletteOptions, 'mode'>,
 }>;
 
-const theme = createTheme({
+const defaultTheme = createTheme({
   breakpoints: createBreakpoints({
     values: {
       xs: 0,
@@ -32,24 +33,26 @@ const ChatTheme: React.FC<ThemeProps> = ({ children, userTheme, mode = 'light', 
   const palette: { light: PaletteOptions, dark: PaletteOptions } = React.useMemo(() => ({
     light: {
       mode: "light",
-      background: { default: "#fff", paper: "#f5f5f5" },
       ...lightPalette,
     },
     dark: {
       mode: "dark",
-      background: { default: "#121212", paper: "#1b1d1c" },
       ...darkPalette,
     },
   }), [lightPalette, darkPalette]);
 
   const chatTheme = React.useMemo(() => (
-    createTheme({ ...theme, palette: palette[mode] })
+    createTheme({ ...defaultTheme, palette: palette[mode] })
   ), [mode]);
+
+  const theme =  userTheme ?? chatTheme;
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={userTheme ?? chatTheme}>
-        {children}
+      <ThemeProvider theme={theme}>
+        <StyledProvider theme={theme}>
+          {children}
+        </StyledProvider>
       </ThemeProvider>
     </CacheProvider>
   );

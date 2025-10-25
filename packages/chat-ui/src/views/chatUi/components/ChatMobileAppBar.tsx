@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { useMobile } from '../../../ui/Responsive';
 import { ApiRefType } from '../../core/useApiRef';
+import {getSurfaceColor} from "../../utils/colors";
 
 type Props = {
   apiRef: React.MutableRefObject<ApiRefType | null>;
@@ -24,7 +25,7 @@ const ChatMobileAppBar: React.FC<Props> = ({ apiRef }) => {
       paddingX={1}
       justifyContent="center"
       sx={{
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => getSurfaceColor(theme),
       }}
     >
       <Box>

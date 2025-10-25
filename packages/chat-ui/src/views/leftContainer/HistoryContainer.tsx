@@ -4,6 +4,7 @@ import ChatHistory from './ChatHistory';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
 import { historyClassNames } from '../core/history/historyClassNames';
+import {getSurfaceColor} from "../utils/colors";
 
 export type HistoryContainerProps = {
   className?: string,
@@ -20,7 +21,7 @@ const HistoryContainer: React.FC<HistoryContainerProps> = ({ className }) => {
       className={clsx(historyClassNames.container, className)}
       sx={{
         maxWidth: isTablet ? 220 : 360,
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => getSurfaceColor(theme),
         color: (theme) => theme.palette.text.primary,
       }}
       {...slotProps.historyContainer}

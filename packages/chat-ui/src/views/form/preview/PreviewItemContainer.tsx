@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import { styled } from "@mui/material/styles"
+import {getSurfaceColor} from "../../utils/colors";
 
 export const PreviewErrorBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.error.main,
@@ -7,6 +8,6 @@ export const PreviewErrorBox = styled(Box)(({ theme }) => ({
 }));
 
 export const PreviewItemBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: getSurfaceColor(theme),
   color: 'inherit',
 }));
