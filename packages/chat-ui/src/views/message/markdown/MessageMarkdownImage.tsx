@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { chatClassNames } from '../../core/chatClassNames';
+import {getSurfaceColor} from "../../utils/colors";
 
 type Props = React.JSX.IntrinsicElements['img'] & {
   rootClassName?: string;
@@ -10,7 +11,7 @@ type Props = React.JSX.IntrinsicElements['img'] & {
 const BoxStyled = styled(Box)(({ theme }) => ({
   marginTop: 8,
   width: '100%',
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: getSurfaceColor(theme),
   position: 'relative',
   '& a': {
     width: 'inherit',

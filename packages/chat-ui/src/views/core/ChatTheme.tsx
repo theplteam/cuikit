@@ -33,22 +33,10 @@ const ChatTheme: React.FC<ThemeProps> = ({ children, userTheme, mode = 'light', 
   const palette: { light: PaletteOptions, dark: PaletteOptions } = React.useMemo(() => ({
     light: {
       mode: "light",
-      background: { default: "#fff", paper: "#fff" },
-      secondary: {
-        main: "#f5f5f5",
-        light: "rgb(247, 247, 247)",
-        dark: "rgb(171, 171, 171)",
-      },
       ...lightPalette,
     },
     dark: {
       mode: "dark",
-      background: { default: "#121212", paper: "#121212" },
-      secondary: {
-        main: "#1b1d1c",
-        light: "rgb(72, 74, 73)",
-        dark: "rgb(18, 20, 19)",
-      },
       ...darkPalette,
     },
   }), [lightPalette, darkPalette]);

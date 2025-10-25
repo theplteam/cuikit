@@ -13,6 +13,7 @@ import { useThreadContext } from '../../thread/ThreadContext';
 import SimpleScrollbar from '../../../ui/SimpleScrollbar';
 import { ReasoningViewType } from '../../../models/MessageReasoningModel';
 import { chatClassNames } from '../../core/chatClassNames';
+import {getSurfaceColor} from "../../utils/colors";
 
 type Props = {
   message: MessageModel;
@@ -24,7 +25,7 @@ const LineBoxStyled = styled(Box)(({ theme }) => ({
   height: '100%',
   width: 4,
   minWidth: 4,
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: getSurfaceColor(theme),
   borderRadius: 999,
   transition: theme.transitions.create('opacity', { duration: '.5s' }),
 }));

@@ -6,6 +6,7 @@ import GalleryItem from '../../../views/form/preview/GalleryItem';
 import { IdType } from '../../../types';
 import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
+import {getSurfaceColor} from "../../utils/colors";
 
 type Props = {
   item: AttachmentModel;
@@ -19,7 +20,7 @@ type Props = {
 
 const GridItem = styled(Box)(({ theme }) => ({
   width: '100%',
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: getSurfaceColor(theme),
   position: 'relative',
   borderRadius: '8px',
   aspectRatio: 1,

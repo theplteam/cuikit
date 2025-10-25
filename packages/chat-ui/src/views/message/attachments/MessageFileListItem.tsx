@@ -7,6 +7,7 @@ import FileItem from '../../../views/form/preview/FileItem';
 import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../../views/hooks/useObserverValue';
 import Skeleton from '@mui/material/Skeleton';
+import {getSurfaceColor} from "../../utils/colors";
 
 type Props = {
   item: AttachmentModel;
@@ -15,7 +16,7 @@ type Props = {
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: getSurfaceColor(theme),
   borderRadius: 16,
 }));
 

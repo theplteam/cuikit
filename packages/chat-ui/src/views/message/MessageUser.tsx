@@ -23,6 +23,7 @@ import MessageAttachments from './attachments/MessageAttachments';
 import { IdType } from '../../types';
 import { chatClassNames } from '../core/chatClassNames';
 import attachmentsStore from '../../models/AttachmentsStore';
+import {getSurfaceColor} from "../utils/colors";
 
 type Props = {
   message: MessageModel;
@@ -143,7 +144,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         <MessageContainer
           className={chatClassNames.messageUser}
           elevation={elevation}
-          sx={{ maxWidth: '100%', backgroundColor: (theme) => theme.palette.secondary.main }}
+          sx={{ maxWidth: '100%', backgroundColor: (theme) => getSurfaceColor(theme) }}
         >
           <MessageMarkdownBlock
             text={message.text}

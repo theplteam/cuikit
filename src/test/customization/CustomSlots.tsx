@@ -7,6 +7,7 @@ import {
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
 import SendIcon from '@mui/icons-material/Send';
+import {getSurfaceColor} from "../../../packages/chat-ui/src/views/utils/colors.ts";
 
 const App: React.FC = () => {
   const [threads] = React.useState<Thread[]>(threadsJson);
@@ -28,7 +29,7 @@ const App: React.FC = () => {
           sendMessageButton: {
             size: 'large',
             sx: {
-              color: (theme) => theme.palette.secondary.main,
+              color: (theme) => getSurfaceColor(theme),
             },
           },
         }}

@@ -10,6 +10,7 @@ import Popover from '@mui/material/Popover';
 import { useChatContext } from '../../../../views/core/ChatGlobalContext';
 import { MessageFeedbackTagType, MessageModel } from '../../../../models/MessageModel';
 import { useLocalizationContext } from '../../../../views/core/LocalizationContext';
+import {getSurfaceColor} from "../../../utils/colors";
 
 type Props = {
   message: MessageModel;
@@ -66,7 +67,7 @@ const MessageFeedbackWindow: React.FC<Props> = ({ message, anchorEl, onClose }) 
             borderRadius: 2,
             gap: 2,
             maxWidth: 500,
-            backgroundColor: (theme) => theme.palette.secondary.main,
+            backgroundColor: (theme) => getSurfaceColor(theme),
           }
         }
       }}

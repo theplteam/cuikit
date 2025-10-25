@@ -3,12 +3,17 @@ import Stack from '@mui/material/Stack';
 import useFilePreviewIcon from './useFilePreviewIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import {styled} from "@mui/material/styles";
 
 type Props = {
   name: string;
   type: string;
   error?: string;
 };
+
+const StackStyled = styled(Stack)(({ theme }) => ({
+  color: theme.palette.text.primary,
+}));
 
 const FileItem: React.FC<Props> = ({ name, type, error }) => {
   const Icon = useFilePreviewIcon(error ? 'error' : type);
@@ -22,7 +27,7 @@ const FileItem: React.FC<Props> = ({ name, type, error }) => {
 
   return (
     <Box width='100%' height='100%'>
-      <Stack
+      <StackStyled
         alignItems='start'
         justifyItems='center'
         paddingTop={2}
@@ -51,7 +56,7 @@ const FileItem: React.FC<Props> = ({ name, type, error }) => {
             {error || fileFormat}
           </Typography>
         </Stack>
-      </Stack>
+      </StackStyled>
     </Box>
   );
 };

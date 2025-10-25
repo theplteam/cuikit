@@ -8,6 +8,7 @@ import { useLocalizationContext } from '../../../views/core/LocalizationContext'
 import { useChatContext } from '../../../views/core/ChatGlobalContext';
 import { Prism } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {getSurfaceColor} from "../../utils/colors";
 
 type Props = React.JSX.IntrinsicElements['pre'];
 
@@ -24,7 +25,7 @@ const PrismStyled = styled(Prism)(() => ({
 }))
 
 const MenuBar = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: getSurfaceColor(theme),
   borderRadius: '4px 4px 0 0',
 }))
 

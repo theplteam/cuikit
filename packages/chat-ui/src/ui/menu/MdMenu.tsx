@@ -6,7 +6,7 @@ type Props = {} & MenuProps;
 
 const MenuStyled = styled(Menu)(({ theme }) => ({
   [`& .${menuClasses.paper}`]: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
   },
   [`& .${menuClasses.list}`]: {
