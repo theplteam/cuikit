@@ -33,6 +33,7 @@ import Chip, { ChipProps } from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import { PreviewErrorBox, PreviewItemBox } from '../form/preview/PreviewItemContainer';
 import FileAttachmentButton from '../form/attachments/FileAttachmentButton';
+import ListItemButton, { ListItemButtonProps } from '@mui/material/ListItemButton';
 import MessageEditInput from '../form/MessageEditInput';
 import ThreadInputWrapper from '../form/ThreadInputWrapper';
 import PlayIcon from '../form/preview/PlayIcon';
@@ -45,6 +46,7 @@ export type CoreSlots = {
   listItemText: SlotValue<ListItemTextProps>;
   menuItem: SlotValue<MdMenuItemProps>;
   chip: SlotValue<ChipProps>;
+  listItemButton: SlotValue<ListItemButtonProps>;
 };
 
 export type SlotsType<DM extends Message, DD extends Thread<DM>> = { [key in keyof SlotPropsType<DM, DD>]: SlotValue<SlotPropsType<DM, DD>[key]> }
@@ -119,6 +121,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       // TODO: Props error
       listItemText: coreSlots?.listItemText ?? ListItemText,
       menuItem: coreSlots?.menuItem ?? MdMenuItem,
+      listItemButton: coreSlots?.listItemButton ?? ListItemButton,
     };
 
     const componentSlots: SlotsType<DM, DD> = {
@@ -134,6 +137,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       attachmentPreviewItem: slots?.attachmentPreviewItem ?? PreviewItemBox,
       attachmentPreviewError: slots?.attachmentPreviewError ?? PreviewErrorBox,
       attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
+      aiModelButton: slots?.aiModelButton ?? Button,
       attachmentVideoPlayIcon: slots?.attachmentVideoPlayIcon ?? PlayIcon,
       // MARKDOWN
       ...getMarkdownSlots(slots),

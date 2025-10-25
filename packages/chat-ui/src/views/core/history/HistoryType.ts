@@ -55,6 +55,10 @@ export type HistorySlotPropsType = {
    * listTimeText wrapper
    */
   listTimeTextWrapper: React.HTMLAttributes<HTMLDivElement>;
+  /**
+   * button component in AI model select
+   */
+  aiModelButton: ButtonProps;
 };
 
 export type HistorySlotType = { [key in keyof HistorySlotPropsType]: SlotValue<HistorySlotPropsType[key]> };

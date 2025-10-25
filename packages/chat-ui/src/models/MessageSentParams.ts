@@ -15,6 +15,8 @@ export type MessageSentParams<M extends InternalMessageType = InternalMessageTyp
   history: M[],
   /** Active tool type */
   toolType: string | undefined,
+  /** Thread AI model */
+  aiModel: string | undefined,
   /**
    *  Pass a part of the received text from the chat (suitable if you are receiving the answer in streaming mode).
    *  Will be added to the current message.

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { AddIcon } from '../../icons';
-import Box from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useHistoryContext } from '../core/history/HistoryContext';
 import internalApi from '../core/history/internalApi';
+import Box from '@mui/material/Box';
 
 type Props = {
   openNewThread: () => void;

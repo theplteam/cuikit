@@ -26,6 +26,7 @@ const FileAttachmentProgress = React.lazy(() => import('./fileAttachment/FileAtt
 const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/FileAttachmentRestrictions'));
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
 const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
+const ModelSelect = React.lazy(() => import('./compatibility/ModelSelect'));
 const ThemeSwitch = React.lazy(() => import('./customization/ThemeSwitch'));
 
 const App: React.FC = () => {
@@ -39,6 +40,7 @@ const App: React.FC = () => {
     // npx eslint --fix
     let variant: React.JSXElementConstructor<any> | null = null;
     switch (componentName) {
+      case 'select-ai-model': variant = ModelSelect; break;
       case 'theme': variant = ThemeSwitch; break;
       case 'message-editing': variant = UserMessageEditingExample; break;
       case 'markdown-example': variant = MarkdownExample; break;
