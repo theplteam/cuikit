@@ -24,7 +24,14 @@ const MessageCopyMenuItems: React.FC<Props> = ({ handleClose, text, short }) => 
 
   const handleCopyHTML = () => {
     const html = messageToHtml(text);
-    navigator.clipboard.writeText(html)
+    const blobHtml = new Blob([html], { type: 'text/html' });
+    const blobText = new Blob([html], { type: 'text/plain' });
+    const item = new (window as any).ClipboardItem({
+      'text/html': blobHtml,
+      'text/plain': blobText,
+    });
+
+    navigator.clipboard.write([item])
       .then(() => snackbar.show(locale.messageCopiedToClipboard, 'info'));
     handleClose();
   }
