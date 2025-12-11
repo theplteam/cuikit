@@ -67,6 +67,15 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
     }
   }), [inProgress, slots, slotProps]);
 
+  const spanSettings = React.useMemo(() => ({
+    component: MarkdownParagraphParser,
+    props: {
+      pSlot: slots.markdownSpan,
+      pSlotProps: slotProps.markdownSpan,
+      inProgress: inProgress,
+    }
+  }), [inProgress, slots, slotProps]);
+
   useSmoothManager(text, inProgress, typingSpeed);
 
   const markdownText = React.useMemo(() => {
@@ -190,7 +199,7 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
             props: { inProgress, component: AccentComponent },
           },
           p: paragraphSettings,
-          span: paragraphSettings,
+          span: spanSettings,
           Skeleton: {
             component: Skeleton,
             props: { variant: "rectangular" },
