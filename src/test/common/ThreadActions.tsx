@@ -1,126 +1,114 @@
 import * as React from "react";
 import {
-  ChatPage,
   useAssistantAnswerMock,
   Thread,
+  useChatApiRef,
+  useHistoryContext,
+  ChatPage,
 } from "@plteam/chat-ui";
 import Box from "@mui/material/Box";
-import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import MenuItem from '@mui/material/MenuItem';
+import ShareIcon from '@mui/icons-material/Share';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import SvgIcon from "@mui/material/SvgIcon";
 
-let counter = 0;
+type ActionProps = {
+  thread: Thread;
+  onClose: () => void;
+};
+
+type ItemMenuProps = {
+  label: string;
+  onClick: () => void;
+  Icon: typeof SvgIcon
+};
+
+const ItemMenu: React.FC<ItemMenuProps> = ({ label, Icon, onClick }) => (
+  <MenuItem onClick={onClick}>
+    <ListItemIcon>
+      <Icon fontSize="small" />
+    </ListItemIcon>
+    <ListItemText>
+      {label}
+    </ListItemText>
+  </MenuItem>
+);
+
+const ShareAction = ({ thread, onClose }: ActionProps) => {
+  const handleClick = () => {
+    console.log(thread);
+    // share logic
+    onClose();
+  };
+
+  return <ItemMenu Icon={ShareIcon} label="Share" onClick={handleClick} />;
+};
+
+const DeleteAction = ({ thread, onClose }: ActionProps) => {
+  const { apiRef } = useHistoryContext();
+
+  const handleClick = () => {
+    apiRef.current?.setDeleteItem?.(thread);
+    onClose();
+  };
+
+  return <ItemMenu Icon={DeleteIcon} label="Delete" onClick={handleClick} />;
+};
 
 const App: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
-  const [text, setText] = React.useState('');
-
-  const openSnackbar = (text: string) => {
-    setText(text);
-    setOpen(true);
-  };
-
-  const handleClose = (_event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const [threads] = React.useState<Thread[]>([
-    {
-      id: "test-thread",
-      title: "Second thread",
-      date: (new Date('2025-01-18T12:00:00.000Z')).toISOString(),
-      messages: [
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: "Hello!",
-          },
-        },
-        {
-          role: "assistant",
-          content: "Hello there! How can I assist you today?",
-        },
-      ],
-    },
-    {
-      id: "test-thread2",
-      title: "First thread",
-      date: (new Date('2024-12-12T12:00:00.000Z')).toISOString(),
-      messages: [
-        {
-          role: "user",
-          content: "Hello, how are you today?",
-        },
-        {
-          role: "assistant",
-          content: "Hi there! I'm doing great, thanks for asking. What can I help you with this morning?",
-        },
-      ],
-    },
-  ]);
-
-  const onFirstMessageSent = ({ thread }: { thread: Thread }) => {
-    openSnackbar(`The first message in thread "${thread.title}" has been sent`);
-  }
-
-  const onThreadDeleted = ({ thread }: { thread: Thread }) => {
-    openSnackbar(`Thread deleted: ${thread.title}`);
-  }
-
-  const onChangeCurrentThread = ({ thread }: { thread: Thread }) => {
-    openSnackbar(`Current thread changed: ${thread.title}`);
-  }
-
-  const handleCreateNewThread = (): Thread => {
-    openSnackbar('Opened a new thread with our data');
-    counter++;
-    return ({
-      id: `thread${counter}`,
-      title: `Thread #${counter}`,
-      messages: [],
-      date: new Date().toISOString(),
-    });
-  }
-
-  const snackBarActions = React.useMemo(() => (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  ), [handleClose]);
+  const threads = [{
+    id: "1",
+    title: "History",
+    messages: [
+      {
+        id: "1",
+        content: "Hi! Do you know anything about traveling to Japan?",
+        role: "user",
+      },
+      {
+        id: "2",
+        content: "Hi! Yes, I know a bit. What specifically do you want to know? Transportation, culture, or something else?",
+        role: "assistant",
+      },
+      {
+        id: "3",
+        content: "I'm curious about transportation. How does the train system work?",
+        role: "user",
+      },
+      {
+        id: "4",
+        content: "Japan has an excellent train system. There are high-speed trains called Shinkansen connecting major cities, and regional lines are great for shorter trips.",
+        role: "assistant",
+      },
+    ],
+    date: "2024-11-16 08:07:54"
+  }];
+  const chatApiRef = useChatApiRef();
 
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
+  const threadActions = React.useMemo(() => [ShareAction, DeleteAction], []);
+
   return (
-    <>
-      <Box height="100dvh" width="100dvw">
-        <ChatPage
-          initialThread={threads[0]}
-          threads={threads}
-          handleStopMessageStreaming={handleStopMessageStreaming}
-          handleCreateNewThread={handleCreateNewThread}
-          onUserMessageSent={onUserMessageSent}
-          onFirstMessageSent={onFirstMessageSent}
-          onThreadDeleted={onThreadDeleted}
-          onChangeCurrentThread={onChangeCurrentThread}
-        />
-      </Box>
-      <Snackbar
-        open={open}
-        message={text}
-        action={snackBarActions}
-        onClose={handleClose}
+    <Box
+      width="100%"
+      height='100%'
+      overflow="auto"
+    >
+      <ChatPage
+        apiRef={chatApiRef}
+        initialThread={threads[0]}
+        threads={threads}
+        handleStopMessageStreaming={handleStopMessageStreaming}
+        historyProps={{
+          threadActions: threadActions,
+        }}
+        onUserMessageSent={onUserMessageSent}
       />
-    </>
+    </Box>
   );
 }
 
