@@ -32,6 +32,10 @@ export type HistorySlotPropsType = {
    */
   threadsList: StackProps;
   /**
+   * Thread item component
+   */
+  listItemRoot: React.HTMLAttributes<HTMLDivElement> & { threadId: IdType };
+  /**
    * Drawer component (mobile version)
    */
   listDrawer: DrawerProps;

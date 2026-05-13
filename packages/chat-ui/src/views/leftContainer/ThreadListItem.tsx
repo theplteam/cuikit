@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Thread, ThreadModel } from '../../models/ThreadModel';
+import { Thread, ThreadModel } from '../../models';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { ThreadListCache } from '../../models/ThreadListCache';
 import { MoreVertIcon } from '../../icons';
@@ -13,7 +13,7 @@ type Props = {
   selected: boolean;
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
-  slots: Pick<HistorySlotType, 'baseListItemText' | 'threadListItemMenuButton'>;
+  slots: Pick<HistorySlotType, 'listItemRoot' | 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
 const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, slots }) => {
@@ -42,7 +42,8 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
   }
 
   return (
-    <div
+    <slots.listItemRoot
+      threadId={thread.id}
       className={classes.join(' ')}
       onClick={handleClickListItem}
     >
@@ -67,7 +68,7 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
       >
         <MoreVertIcon />
       </slots.threadListItemMenuButton>
-    </div>
+    </slots.listItemRoot>
   );
 };
 

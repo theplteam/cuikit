@@ -12,9 +12,10 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ContainerSubtitle from '../../../ui/ContainerSubtitle';
-import { useObserverValue } from '../../../views/hooks/useObserverValue';
+import { useObserverValue } from '../../hooks/useObserverValue';
 import internalApi from './internalApi';
 import { useLocalizationInit } from '../useLocalizationInit';
+import ThreadListItemRoot from "../../leftContainer/listMap/ThreadListItemRoot";
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -25,6 +26,7 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
     historyContainer: slots?.historyContainer ?? Box,
     historyWrapper: slots?.historyWrapper ?? Stack,
     threadsList: slots?.threadsList ?? ThreadListMapBlockAllStyled,
+    listItemRoot: slots?.listItemRoot ?? ThreadListItemRoot,
     threadListItemMenuButton: slots?.threadListItemMenuButton ?? IconButton,
     listDrawer: slots?.listDrawer ?? Drawer,
     listSubtitle: slots?.listSubtitle ?? ContainerSubtitle,

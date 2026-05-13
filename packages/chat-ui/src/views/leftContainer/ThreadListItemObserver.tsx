@@ -9,7 +9,7 @@ type Props = {
   thread: ThreadModel;
   setThread: (thread: Thread) => void;
   model: Threads<any, any>;
-  slots: Pick<HistorySlotType, 'baseListItemText' | 'threadListItemMenuButton'>;
+  slots: Pick<HistorySlotType, 'listItemRoot' | 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
 const ThreadListItemObserver: React.FC<Props> = ({ thread, setThread, model, slots }) => {
