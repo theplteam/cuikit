@@ -41,7 +41,7 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
 const Context = React.createContext<HistoryContextType | undefined>(undefined);
 
 export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<HistoryComponentProps>) => {
-  const { apiRef, loading, threadActions, slotProps, enableDialogueRename, enableThreadPin, onPinThread } = props;
+  const { apiRef, loading, threadActions, slotProps, enableDialogueRename, enableThreadPin, onPinThread, threadTypeIcons } = props;
   const userLocale = useLocalizationInit(props.lang);
   const userSlots = useSlots(props?.slots);
   const internal = useObserverValue(internalApi);
@@ -57,6 +57,7 @@ export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<
     enableDialogueRename: !!enableDialogueRename,
     enableThreadPin: !!enableThreadPin,
     onPinThread,
+    threadTypeIcons,
   }), [apiRef, internal, loading, props]);
 
   return (

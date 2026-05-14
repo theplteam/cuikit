@@ -78,6 +78,7 @@ export type HistoryContextType = {
   enableDialogueRename: boolean;
   enableThreadPin: boolean;
   onPinThread?: (threadId: IdType, pinnedAt: number | null) => void;
+  threadTypeIcons?: Record<string, React.ReactElement>;
 };
 
 export type HistoryProps = {
@@ -88,4 +89,9 @@ export type HistoryProps = {
   enableDialogueRename?: boolean;
   enableThreadPin?: boolean;
   onPinThread?: (threadId: IdType, pinnedAt: number | null) => void;
+  /**
+   * Map of thread.type → icon element rendered before the thread title in the list.
+   * If a thread has no `type` or the key is missing in the map, no icon is rendered.
+   */
+  threadTypeIcons?: Record<string, React.ReactElement>;
 };

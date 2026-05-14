@@ -26,6 +26,7 @@ export type Thread<DM extends Message = any> = {
   aiModel?: string;
   messages?: DM[];
   pinnedAt?: number | null;
+  type?: string;
 } & { isNew?: boolean };
 
 export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {

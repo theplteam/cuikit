@@ -5,6 +5,7 @@ import { ThreadListCache } from '../../models/ThreadListCache';
 import { MoreVertIcon } from '../../icons';
 import { historyClassNames } from '../core/history/historyClassNames';
 import { HistorySlotType } from '../core/history/HistoryType';
+import { useHistoryContext } from '../core/history/HistoryContext';
 import { Threads } from '../../models/Threads';
 
 type Props = {
@@ -28,6 +29,9 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
 
   const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.observableTitle);
+  const { threadTypeIcons } = useHistoryContext();
+  const threadType = thread.data.type;
+  const icon = threadType && threadTypeIcons ? threadTypeIcons[threadType] : undefined;
 
   if (isEmpty) return null;
 
@@ -47,6 +51,7 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
       className={classes.join(' ')}
       onClick={handleClickListItem}
     >
+      {icon}
       <slots.baseListItemText
         primary={title ?? 'TITLE'}
         sx={{
