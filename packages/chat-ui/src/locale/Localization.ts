@@ -26,6 +26,7 @@ export type Localization = {
   historyNovember: string;
   historyDecember: string;
   historyLastYear: string;
+  historyPinned: string;
 
   //message
   messageCopy: string;
@@ -44,6 +45,8 @@ export type Localization = {
   threadDeletedSuccess: string;
   threadActionDelete: string;
   threadActionRename: string;
+  threadActionPin: string;
+  threadActionUnpin: string;
   threadRenameTitle: string;
   threadRenameLabel: string;
   save: string;

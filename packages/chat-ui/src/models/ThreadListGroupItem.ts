@@ -13,11 +13,12 @@ export class ThreadListGroupItem {
 
   constructor(readonly data: ListGroupType) {}
 
-  checkList = (threads: ThreadModel[]) => {
+  checkList = (threads: ThreadModel[], comparator?: (a: ThreadModel, b: ThreadModel) => number) => {
     const newIds = arrayPluck(threads, 'id').sort().join('-');
     const currentIds = arrayPluck(this.threads.value, 'id').sort().join('-');
     if (newIds !== currentIds) {
-      this.threads.value = threads.sort((a, b) => b.time - a.time);
+      const compare = comparator ?? ((a, b) => b.time - a.time);
+      this.threads.value = [...threads].sort(compare);
     }
   }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DeleteIcon, EditIcon } from '../../icons';
+import { DeleteIcon, EditIcon, PushPinIcon } from '../../icons';
 import MdMenu from '../../ui/menu/MdMenu';
 import { Threads } from '../../models/Threads';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -10,9 +10,10 @@ type Props = {
 };
 
 const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
-  const { slots, locale, threadActions, internal, enableDialogueRename } = useHistoryContext();
+  const { slots, locale, threadActions, internal, enableDialogueRename, enableThreadPin, onPinThread } = useHistoryContext();
   const menuConfig = model.listGroups.menuConfig;
   const config = useObserverValue(menuConfig);
+  const pinnedAt = useObserverValue(config?.thread?.pinnedAt);
 
   const anchorEl = config?.anchorEl;
   const thread = config?.thread;
@@ -37,6 +38,16 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
     handleClose();
     if (thread && internal) {
       internal.model.renameItem.value = thread.data;
+    }
+  };
+
+  const handlePin = () => {
+    handleClose();
+    if (thread) {
+      const nextPinnedAt = pinnedAt ? null : Date.now();
+      thread.pinnedAt.value = nextPinnedAt;
+      onPinThread?.(thread.id, nextPinnedAt);
+      model.listGroups.audit(locale, model.list.value);
     }
   };
 
@@ -69,6 +80,14 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
                 onClick={handleRename}
               >
                 {locale.threadActionRename}
+              </slots.baseMenuItem>
+            ) : null}
+            {enableThreadPin ? (
+              <slots.baseMenuItem
+                startIcon={PushPinIcon}
+                onClick={handlePin}
+              >
+                {pinnedAt ? locale.threadActionUnpin : locale.threadActionPin}
               </slots.baseMenuItem>
             ) : null}
             <slots.baseMenuItem

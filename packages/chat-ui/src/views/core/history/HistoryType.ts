@@ -76,6 +76,8 @@ export type HistoryContextType = {
   slotProps: Partial<HistorySlotPropsType>;
   threadActions: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
   enableDialogueRename: boolean;
+  enableThreadPin: boolean;
+  onPinThread?: (threadId: IdType, pinnedAt: number | null) => void;
 };
 
 export type HistoryProps = {
@@ -84,4 +86,6 @@ export type HistoryProps = {
   slotProps?: Partial<HistorySlotPropsType>;
   threadActions?: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
   enableDialogueRename?: boolean;
+  enableThreadPin?: boolean;
+  onPinThread?: (threadId: IdType, pinnedAt: number | null) => void;
 };

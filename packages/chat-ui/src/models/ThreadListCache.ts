@@ -18,6 +18,9 @@ export class ThreadListCache {
   audit = (locale: Localization, threads: ThreadModel[]) => {
     const currentMap = this.groupValues.value;
 
+    const pinnedThreads = threads.filter(t => t.pinnedAt.value != null);
+    const unpinnedThreads = threads.filter(t => t.pinnedAt.value == null);
+
     const basicGroups = {
       today: {
         id: 'today',
@@ -48,7 +51,16 @@ export class ThreadListCache {
     const results: Record<string, ListGroupType> = {};
     const threadsAffiliation: Record<string, ThreadModel[]> = {};
 
-    threads.forEach((item) => {
+    if (pinnedThreads.length) {
+      results['__pinned__'] = {
+        id: '__pinned__',
+        label: locale.historyPinned,
+        timestamp: Number.MAX_SAFE_INTEGER,
+      };
+      threadsAffiliation['__pinned__'] = pinnedThreads;
+    }
+
+    unpinnedThreads.forEach((item) => {
       const timestamp = item.timestamp.value;
       let groupKey = 'other';
       if (timestamp) {
@@ -120,7 +132,17 @@ export class ThreadListCache {
         currentMap[key] = groupModel;
       }
 
-      groupModel.checkList(threadsAffiliation[key]);
+      const comparator = key === '__pinned__'
+        ? (a: ThreadModel, b: ThreadModel) => (b.pinnedAt.value ?? 0) - (a.pinnedAt.value ?? 0)
+        : undefined;
+      groupModel.checkList(threadsAffiliation[key] ?? [], comparator);
+    }
+
+    // Empty out groups that are no longer in results (e.g. a thread moved to pinned)
+    for (const key in currentMap) {
+      if (!(key in results)) {
+        currentMap[key].checkList([]);
+      }
     }
 
     if (changed) {

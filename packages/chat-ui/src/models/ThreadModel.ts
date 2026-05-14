@@ -25,6 +25,7 @@ export type Thread<DM extends Message = any> = {
   date?: string;
   aiModel?: string;
   messages?: DM[];
+  pinnedAt?: number | null;
 } & { isNew?: boolean };
 
 export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> {
@@ -70,6 +71,8 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   // Установим этот ID сразу после отправки сообщения
   // private potentialId?: IdType;
 
+  readonly pinnedAt = new ObservableReactValue<number | null>(null);
+
   readonly timestamp: ObservableReactValue<number>;
 
   private _data: DD;
@@ -82,6 +85,7 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
     this.observableTitle.value = data.title;
     this.streamStatus.value = StreamResponseState.FINISH_MESSAGE;
     this.aiModel.value = data.aiModel;
+    this.pinnedAt.value = data.pinnedAt ?? null;
 
     /*if (!_data.messages.find(v => !!v.parentId)) {
       const newMessages: DD['messages'] = [];
