@@ -42,7 +42,11 @@ export type Localization = {
   threadDeleteTitle: string;
   threadDeleteContent: string;
   threadDeletedSuccess: string;
-  threadActionDelete: string
+  threadActionDelete: string;
+  threadActionRename: string;
+  threadRenameTitle: string;
+  threadRenameLabel: string;
+  save: string;
 
   // rating
   messageLikeTooltip: string;

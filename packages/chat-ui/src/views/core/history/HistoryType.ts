@@ -75,11 +75,13 @@ export type HistoryContextType = {
   slots: HistorySlotType;
   slotProps: Partial<HistorySlotPropsType>;
   threadActions: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
+  enableDialogueRename: boolean;
 };
 
 export type HistoryProps = {
   className?: string;
-  slots?: Partial<HistorySlotType> ;
+  slots?: Partial<HistorySlotType>;
   slotProps?: Partial<HistorySlotPropsType>;
   threadActions?: React.JSXElementConstructor<{ thread: Thread, onClose: () => void }>[];
+  enableDialogueRename?: boolean;
 };

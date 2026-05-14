@@ -46,6 +46,10 @@ export const useApiRefInitialization = (
       model.delete(id);
     };
 
+    const handleRenameThread = (id: IdType, title: string) => {
+      model.rename(id, title);
+    };
+
     const getThreadById = (id: IdType) => {
       return model.get(id);
     };
@@ -84,6 +88,9 @@ export const useApiRefInitialization = (
     apiManager.setMethod('getAllThreads', getAllThreads);
     apiManager.setMethod('openNewThread', openNewThread);
     apiManager.setMethod('deleteThread', handleDeleteThread);
+    apiManager.setMethod('renameThread', handleRenameThread);
+    apiManager.setMethod('setRenameItem', (v: any) => { model.renameItem.value = v; });
+    apiManager.setMethod('onThreadRenamed', props.onThreadRenamed);
     apiManager.setMethod('getCurrentThread', getCurrentThread);
     apiManager.setMethod('getThreadById', getThreadById);
     apiManager.setMethod('emitter', model.emitter.getMethods());

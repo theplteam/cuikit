@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Thread } from '../../../models';
 import HistorySkeleton from '../HistorySkeleton';
 import ThreadDeleteConfirm from '../ThreadDeleteConfirm';
+import ThreadRenameDialog from '../ThreadRenameDialog';
 import { useThreadsList } from './useThreadsList';
 import ThreadListMapBlockGroupItem from './ThreadListMapBlockGroupItem';
 import ThreadListItemMenu from '../ThreadListItemMenu';
@@ -43,6 +44,7 @@ const ThreadsListMapBlock: React.FC = () => {
         )}
       </slots.threadsList>
       <ThreadDeleteConfirm />
+      <ThreadRenameDialog />
     </>
   );
 }

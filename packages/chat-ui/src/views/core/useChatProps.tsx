@@ -108,6 +108,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   onThreadDeleted?: ChatEventListeners<{ thread: DD }>;
   /**
+   * Callback fired when thread is renamed
+   */
+  onThreadRenamed?: ChatEventListeners<{ thread: DD; oldTitle: string; newTitle: string }>;
+  /**
    * Prefill textfield
    */
   defaultTextFieldValue?: string;

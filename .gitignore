@@ -29,3 +29,5 @@ package-lock.json
 /src/views/sandbox
 /package-lock.json
 /.npmrc
+/CLAUDE.md
+/.claude/settings.local.json

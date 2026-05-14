@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DeleteIcon } from '../../icons';
+import { DeleteIcon, EditIcon } from '../../icons';
 import MdMenu from '../../ui/menu/MdMenu';
 import { Threads } from '../../models/Threads';
 import { useObserverValue } from '../hooks/useObserverValue';
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
-  const { slots, locale, threadActions, internal } = useHistoryContext();
+  const { slots, locale, threadActions, internal, enableDialogueRename } = useHistoryContext();
   const menuConfig = model.listGroups.menuConfig;
   const config = useObserverValue(menuConfig);
 
@@ -30,6 +30,13 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
     handleClose();
     if (thread && internal) {
       internal.model.deleteItem.value = thread.data;
+    }
+  };
+
+  const handleRename = () => {
+    handleClose();
+    if (thread && internal) {
+      internal.model.renameItem.value = thread.data;
     }
   };
 
@@ -55,12 +62,22 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
             onClose={handleClose}
           />
         )) : (
-          <slots.baseMenuItem
-            startIcon={DeleteIcon}
-            onClick={handleDelete}
-          >
-            {locale.threadActionDelete}
-          </slots.baseMenuItem>
+          <>
+            {enableDialogueRename ? (
+              <slots.baseMenuItem
+                startIcon={EditIcon}
+                onClick={handleRename}
+              >
+                {locale.threadActionRename}
+              </slots.baseMenuItem>
+            ) : null}
+            <slots.baseMenuItem
+              startIcon={DeleteIcon}
+              onClick={handleDelete}
+            >
+              {locale.threadActionDelete}
+            </slots.baseMenuItem>
+          </>
         )}
     </MdMenu>
   );

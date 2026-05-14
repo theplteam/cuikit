@@ -39,6 +39,18 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   deleteThread: (threadId: IdType) => void;
   /**
+   * Rename thread by id
+   */
+  renameThread: (threadId: IdType, title: string) => void;
+  /**
+   * Changes the value of renameItem; if there is a value, a rename dialog opens.
+   */
+  setRenameItem: (v: DD | undefined) => void,
+  /**
+   * Triggered when thread is renamed.
+   */
+  onThreadRenamed?: (v: { thread: DD; oldTitle: string; newTitle: string }) => void,
+  /**
    * Send message to conversation
    */
   sendUserMessage: (content: Message['content']) => Promise<boolean>;
@@ -125,6 +137,8 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     setMenuDrawerOpen: NOOP,
     setActiveTool: NOOP,
     setDeleteItem: NOOP,
+    renameThread: NOOP,
+    setRenameItem: NOOP,
     setMessageText: NOOP,
     emitter: EventsEmitter.getMockMethods(),
   });

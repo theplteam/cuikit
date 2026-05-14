@@ -17,6 +17,8 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
 
   readonly deleteItem = new ObservableReactValue<Thread | undefined>(undefined);
 
+  readonly renameItem = new ObservableReactValue<Thread | undefined>(undefined);
+
   readonly emitter = new EventsEmitter();
 
   constructor(
@@ -40,6 +42,13 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
     const thread = this.get(id);
     if (thread) {
       this.list.value = this.list.value.filter(d => d.id !== id);
+    }
+  }
+
+  rename = (id: DD['id'], title: string) => {
+    const thread = this.get(id);
+    if (thread) {
+      thread.title = title;
     }
   }
 
@@ -71,5 +80,9 @@ export class Threads<DM extends Message, DD extends Thread<DM>> {
 
   setDeleteItem = (v: Thread | undefined) => {
     this.deleteItem.value = v;
+  }
+
+  setRenameItem = (v: Thread | undefined) => {
+    this.renameItem.value = v;
   }
 }
