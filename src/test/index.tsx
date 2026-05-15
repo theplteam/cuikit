@@ -12,6 +12,7 @@ const OpenAI = React.lazy(() => import('./compatibility/OpenAI'));
 const CustomAssistantActions = React.lazy(() => import('./customization/CustomAssistantActions'));
 const ApiRefTest = React.lazy(() => import('./common/ApiRefTest'));
 const ThreadActions = React.lazy(() => import('./common/ThreadActions'));
+const ThreadActionsWithPinRename = React.lazy(() => import('./common/ThreadActionsWithPinRename'));
 const CustomScrollContainer = React.lazy(() => import('./customization/CustomScrollContainer'));
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
@@ -55,6 +56,7 @@ const App: React.FC = () => {
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;
       case 'thread-actions': variant = ThreadActions; break;
+      case 'thread-actions-pin-rename': variant = ThreadActionsWithPinRename; break;
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
       case 'message-finishing': variant = MessagingFinishing; break;

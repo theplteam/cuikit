@@ -65,6 +65,22 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
       }}
       onClose={handleClose}
     >
+      {enableDialogueRename ? (
+        <slots.baseMenuItem
+          startIcon={EditIcon}
+          onClick={handleRename}
+        >
+          {locale.threadActionRename}
+        </slots.baseMenuItem>
+      ) : null}
+      {enableThreadPin ? (
+        <slots.baseMenuItem
+          startIcon={PushPinIcon}
+          onClick={handlePin}
+        >
+          {pinnedAt ? locale.threadActionUnpin : locale.threadActionPin}
+        </slots.baseMenuItem>
+      ) : null}
       {(threadActions?.length && thread)
         ? threadActions.map((ActionComponent, index) => (
           <ActionComponent
@@ -73,30 +89,12 @@ const ThreadListItemMenu: React.FC<Props> = ({ model }) => {
             onClose={handleClose}
           />
         )) : (
-          <>
-            {enableDialogueRename ? (
-              <slots.baseMenuItem
-                startIcon={EditIcon}
-                onClick={handleRename}
-              >
-                {locale.threadActionRename}
-              </slots.baseMenuItem>
-            ) : null}
-            {enableThreadPin ? (
-              <slots.baseMenuItem
-                startIcon={PushPinIcon}
-                onClick={handlePin}
-              >
-                {pinnedAt ? locale.threadActionUnpin : locale.threadActionPin}
-              </slots.baseMenuItem>
-            ) : null}
-            <slots.baseMenuItem
-              startIcon={DeleteIcon}
-              onClick={handleDelete}
-            >
-              {locale.threadActionDelete}
-            </slots.baseMenuItem>
-          </>
+          <slots.baseMenuItem
+            startIcon={DeleteIcon}
+            onClick={handleDelete}
+          >
+            {locale.threadActionDelete}
+          </slots.baseMenuItem>
         )}
     </MdMenu>
   );
