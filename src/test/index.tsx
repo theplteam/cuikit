@@ -1,5 +1,6 @@
 import * as React from 'react';
 const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse'));
+const MessageStatus = React.lazy(() => import('./common/MessageStatus'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
 const MarkdownExample = React.lazy(() => import('./markdown/MarkdownExample'));
 const MarkdownCustomExample = React.lazy(() => import('./markdown/MarkdownCustomExample'));
@@ -28,6 +29,7 @@ const FileAttachmentRestrictions = React.lazy(() => import('./fileAttachment/Fil
 const ExternalSnackbar = React.lazy(() => import('./snackbar/ExternalSnackbar'));
 const ToolsBase = React.lazy(() => import('./tools/ToolsBase'));
 const ModelSelect = React.lazy(() => import('./compatibility/ModelSelect'));
+const GeminiReal = React.lazy(() => import('./compatibility/GeminiReal'));
 const ThemeSwitch = React.lazy(() => import('./customization/ThemeSwitch'));
 
 const App: React.FC = () => {
@@ -42,6 +44,7 @@ const App: React.FC = () => {
     let variant: React.JSXElementConstructor<any> | null = null;
     switch (componentName) {
       case 'select-ai-model': variant = ModelSelect; break;
+      case 'gemini-real': variant = GeminiReal; break;
       case 'theme': variant = ThemeSwitch; break;
       case 'message-editing': variant = UserMessageEditingExample; break;
       case 'markdown-example': variant = MarkdownExample; break;
@@ -52,6 +55,7 @@ const App: React.FC = () => {
       case 'common': variant = BaseExample; break;
       case 'openai-adapter': variant = OpenAI; break;
       case 'awaiting-response': variant = AwaitingResponse; break;
+      case 'message-status': variant = MessageStatus; break;
       case 'thread-structure': variant = ThreadStructure; break;
       case 'assistant-actions': variant = CustomAssistantActions; break;
       case 'api-reference': variant = ApiRefTest; break;

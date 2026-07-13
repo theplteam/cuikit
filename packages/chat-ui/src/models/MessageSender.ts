@@ -1,5 +1,5 @@
-import { InternalMessageType, Message, MessageModel } from './MessageModel';
-import { StreamResponseState, ThreadModel } from './ThreadModel';
+import { ChatMessageOwner, InternalMessageType, Message, MessageModel } from './MessageModel';
+import { ThreadModel } from './ThreadModel';
 import { IdType } from '../types';
 import { MessageSentParams } from './MessageSentParams';
 import { MessageText } from './MessageText';
@@ -23,14 +23,19 @@ export class MessageSender<DM extends Message> {
   }
 
   pushChunk = (chunk: string) => {
-    if (!this.assistantMessage.text && this.thread.streamStatus.value !== StreamResponseState.TYPING_MESSAGE) {
-      this.thread.streamStatus.value = StreamResponseState.TYPING_MESSAGE;
+    if (!this.assistantMessage.text) {
+      // The first text chunk clears any waiting-status (host-set or default "thinking")
+      // and ends the reasoning-streaming phase.
+      if (this.assistantMessage.status.value !== '') {
+        this.assistantMessage.status.value = '';
+      }
+      this.assistantMessage.reasoningManager.isStreaming.value = false;
     }
     this.assistantMessage.text += chunk;
   }
 
   setStatus = (status: string) => {
-    this.thread.streamStatus.value = status;
+    this.assistantMessage.status.value = status;
   }
 
   changeTypingStatus = (status: boolean) => {
@@ -79,7 +84,13 @@ export class MessageSender<DM extends Message> {
         this.changeTypingStatus(false);
         resolver({ message: internalUserMessage });
         message.reasoningManager.updateTimeSec();
+        message.reasoningManager.isStreaming.value = false;
         this.thread.isTyping.value = false;
+        this.setStatus('');
+
+        if (message.data.role === ChatMessageOwner.ASSISTANT) {
+          message.data.initialStatus = undefined;
+        }
 
         message.data.content = message.texts.value.map((v) => ({
           type: 'text',
@@ -88,9 +99,11 @@ export class MessageSender<DM extends Message> {
       },
       reasoning: {
         pushChunk: (chunk) => {
-          if (this.thread.streamStatus.value !== StreamResponseState.THINKING) {
-            this.thread.streamStatus.value = StreamResponseState.THINKING;
+          if (message.reasoningManager.text.value === '' && message.status.value !== '') {
+            // The first reasoning chunk clears any waiting-status too.
+            message.status.value = '';
           }
+          message.reasoningManager.isStreaming.value = true;
           message.reasoningManager.pushChunk(chunk);
         },
         setFull: message.reasoningManager.setText,

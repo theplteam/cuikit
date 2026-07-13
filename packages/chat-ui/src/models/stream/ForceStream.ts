@@ -42,9 +42,11 @@ export class ForceStream {
 
   forceStop = () => {
     this._stop = true;
+    if (this.model) this.model.typing.value = false;
   }
 
   private _addTextPart = (chunks: string[]) => {
+    if (this._stop) return;
     const part = chunks[0];
     const newChunks = chunks.slice(1);
     if (this.model) {

@@ -28,7 +28,6 @@ import {getSurfaceColor} from "../utils/colors";
 type Props = {
   message: MessageModel;
   thread: ThreadModel;
-  isFirst?: boolean;
   elevation?: boolean;
 };
 
@@ -53,7 +52,7 @@ const StackStyled = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) => {
+const MessageUser: React.FC<Props> = ({ message, thread, elevation }) => {
   const { element, setElement } = useElementRefState();
   const isTablet = useTablet();
   const isTyping = useObserverValue(thread?.isTyping);
@@ -148,13 +147,14 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         >
           <MessageMarkdownBlock
             text={message.text}
+            messageId={message.id}
             rootComponent={slots.markdownMessageRoot}
             rootComponentProps={slotProps.markdownMessageRoot}
             inProgress={false}
           />
         </MessageContainer>
       ) : null}
-      {((isFirst || message.parentId) && !!enableBranches) ? (
+      {enableBranches ? (
         <MessageActionsUser
           className={actionsClassName}
           disabled={isTyping}

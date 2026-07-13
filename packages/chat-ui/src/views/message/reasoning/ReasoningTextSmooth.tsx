@@ -18,41 +18,52 @@ const BoxStyled = styled(Box)`
       opacity: 1;
     }
   }
-
-  & > span {
-      opacity: 0;
-  }
 `;
 
-const ReasoningTextSmooth: React.FC<Props> = ({ text }) => {
-  // There's no need to use useMemo here because of memoizing the component, rendering isn't triggered repeatedly
-  const texts = (text ?? '')
-    .replaceAll('*', '')
-    .replaceAll('_', '')
-    .replaceAll('#', '')
-    .split(' ')
-    .map(v => `${v} `);
+const cleanText = (text: string) => text
+  .replaceAll('*', '')
+  .replaceAll('_', '')
+  .replaceAll('#', '');
 
-  const textLength = texts.length;
+const ReasoningTextSmooth: React.FC<Props> = ({ text }) => {
+  const cleaned = cleanText(text ?? '');
+
+  const renderedRef = React.useRef('');
+  const chunksRef = React.useRef<string[]>([]);
+
+  // Idempotent: re-running with the same cleaned value (e.g. StrictMode double-render) is a no-op.
+  if (cleaned !== renderedRef.current) {
+    const prev = renderedRef.current;
+    if (prev && cleaned.startsWith(prev)) {
+      const suffix = cleaned.slice(prev.length);
+      if (suffix) chunksRef.current = [...chunksRef.current, suffix];
+    } else {
+      chunksRef.current = cleaned ? [cleaned] : [];
+    }
+    renderedRef.current = cleaned;
+  }
+
+  const chunks = chunksRef.current;
+  const lastIndex = chunks.length - 1;
 
   return (
     <BoxStyled>
-      {texts.map((v, i) => (
+      {chunks.map((chunk, i) => (
         <Typography
-          // We have to use a truly unique key every time and keep it as simple as possible to maintain performance.
-          // Sometimes, a word and its index coincide with the previous text, which causes a bug in the animation.
-          key={v+''+i+textLength}
+          key={i}
           component="span"
-          style={{
-            animation: `${animationName} 0.7s ease-in-out ${i * 0.04}s 1 normal forwards`
-          }}
           color="grey.700"
+          style={
+            i === lastIndex
+              ? { animation: `${animationName} 0.7s ease-in-out 0s 1 normal forwards`, opacity: 0 }
+              : { opacity: 1 }
+          }
         >
-          {v}
+          {chunk}
         </Typography>
       ))}
     </BoxStyled>
   );
-}
+};
 
-export default React.memo(ReasoningTextSmooth, (prevProps, nextProps) => prevProps.text === nextProps.text);
+export default React.memo(ReasoningTextSmooth, (prev, next) => prev.text === next.text);
