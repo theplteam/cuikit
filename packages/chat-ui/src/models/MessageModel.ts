@@ -44,6 +44,7 @@ export type Message = {
 } | {
   role: ChatMessageOwner.ASSISTANT;
   content: MessageAssistantContent;
+  initialStatus?: string;
 })
 
 export class MessageModel<DM extends Message = Message> {
@@ -63,6 +64,13 @@ export class MessageModel<DM extends Message = Message> {
    */
   typing = new ObservableReactValue(false);
 
+  /**
+   * An observable waiting-status text for this message.
+   * `undefined` — never set (UI shows the default "thinking" indicator while typing);
+   * `''` — cleared (nothing shown); a non-empty string — shown as-is.
+   */
+  readonly status = new ObservableReactValue<string | undefined>(undefined);
+
   photoswipeContainerId = 'photoswipe-container-' + randomInt(100, 100000);
 
   constructor(private _data: DM) {
@@ -74,6 +82,11 @@ export class MessageModel<DM extends Message = Message> {
         (text) => new MessageText(text.text)
       );
       this.attachments.init(content.filter(c => c.type !== 'text') as Attachment[]);
+    }
+
+    if (_data.role === ChatMessageOwner.ASSISTANT && _data.initialStatus) {
+      this.status.value = _data.initialStatus;
+      this.typing.value = true;
     }
 
     if (_data.reasoning) {

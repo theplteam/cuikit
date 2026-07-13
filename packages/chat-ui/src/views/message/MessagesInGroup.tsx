@@ -15,8 +15,6 @@ type Props = {
 const MessagesInGroup: React.FC<Props> = ({ messages, isLatestGroup, thread, gap }) => {
   const { apiRef } = useChatContext();
 
-  const messagesLength = messages.length;
-
   const minHeight = React.useMemo(() => {
     if (isLatestGroup) {
       return apiRef.current?.getConversationBlockHeight();
@@ -33,14 +31,12 @@ const MessagesInGroup: React.FC<Props> = ({ messages, isLatestGroup, thread, gap
       maxWidth="100%"
       width="100%"
     >
-      {messages.map((message, key) => (
+      {messages.map((message) => (
         <ChatMessageComponent
           key={message.viewerUniqueKey}
           enableAssistantActions
           message={message}
           thread={thread}
-          isFirst={!key}
-          isLatest={isLatestGroup ? key === messagesLength - 1 : undefined}
         />
       ))}
     </Stack>

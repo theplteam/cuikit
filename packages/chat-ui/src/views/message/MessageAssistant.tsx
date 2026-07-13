@@ -20,32 +20,19 @@ type Props = {
   message: MessageModel;
   enableAssistantActions?: boolean;
   thread: ThreadModel;
-  isLatest?: boolean;
   elevation?: boolean;
 };
 
 const {
-  latestMessageClassName,
   actionsClassName,
 } = messageActionsClasses;
 
 const MessageContainerStyled = styled(MessageContainer)(() => ({
   width: '100%',
   flexDirection: 'column',
-  /*[`&:not(.${latestMessageClassName})`]: {
-    [`& .${actionsClassName}`]: {
-      opacity: 0,
-      transition: theme.transitions.create('opacity', { duration: motion.duration.short3 }),
-    },
-  },
-  [`&.${hoverMessageClassName}`]: {
-    [`& .${actionsClassName}`]: {
-      opacity: 1,
-    },
-  }*/
 }));
 
-const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, isLatest, elevation }) => {
+const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, thread, elevation }) => {
   // const { element, setElement } = useElementRefState();
 
   // const isHover = useHover(element);
@@ -72,17 +59,13 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       // ref={setElement}
       gap={1}
       className={clsx(
-        { [latestMessageClassName]: isLatest },
         chatClassNames.messageAssistantRoot,
-        // { [hoverMessageClassName]: isHover },
       )}
       elevation={elevation}
     >
       {(enableReasoning) ? (
         <MessageReasoning
           message={message}
-          thread={thread}
-          isLatest={isLatest}
         />
       ) : null}
       <Stack id={containerId} gap={1}>
@@ -90,10 +73,9 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
           <AssistantTextBlock
             key={text.modelId}
             message={message}
-            thread={thread}
             messageText={text}
-            showStatus={!!isLatest && (index === texts.length - 1)}
-            inProgress={!!isLatest && !!typing}
+            showStatus={index === texts.length - 1}
+            inProgress={!!typing}
           />
         ))}
       </Stack>

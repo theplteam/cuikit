@@ -4,7 +4,7 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import { useChatSlots } from '../../core/ChatSlotsContext';
 import { MessageModel } from '../../../models';
 import { styled } from '@mui/material/styles';
-import { StatusBoxStyled } from '../MessageAssistantProgress';
+import { StatusBoxStyled } from '../MessageAssistantStatus';
 import { FnType } from '../../../models/types';
 import { useReasoningTimeText } from './useReasoningTimeText';
 import { useLocalizationContext } from '../../core/LocalizationContext';
@@ -53,12 +53,12 @@ const MessageReasoningTitle: React.FC<Props> = ({ message, isExpanding, handleEx
         } : {}}
       onClick={handleExpandedChange}
     >
-      <slots.messageAssistantProgressText
+      <slots.messageAssistantReasoningTitle
         variant="body1"
-        {...slotProps.messageAssistantProgressText}
+        {...slotProps.messageAssistantReasoningTitle}
       >
         {reasoningTitle}
-      </slots.messageAssistantProgressText>
+      </slots.messageAssistantReasoningTitle>
       <ArrowForwardIosIcon
         className={arrowClassName}
         style={{

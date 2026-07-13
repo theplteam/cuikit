@@ -21,6 +21,12 @@ export class MessageReasoningModel {
 
   readonly viewType = new ObservableReactValue<ReasoningViewType>(ReasoningViewType.HEADERS_STREAM);
 
+  /**
+   * True while reasoning is actively streaming (between the first reasoning chunk
+   * and the first text chunk / finish). Drives the reasoning title shimmer.
+   */
+  readonly isStreaming = new ObservableReactValue(false);
+
   lockedOptions: ManagmentValues[] = [];
 
   setUserHeader = (value: string) => {

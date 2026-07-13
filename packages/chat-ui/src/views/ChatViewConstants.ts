@@ -2,8 +2,6 @@ export class ChatViewConstants {
   static readonly TEXT_BLOCK_HEIGHT = 56;
   static readonly TEXT_BLOCK_BOTTOM_MARGIN = 8;
 
-  static readonly MESSAGE_DATA_SCROLL_ANCHOR = 'data-scroll-anchor';
-
   static readonly SCROLL_ID = 'chatScrollingBlockId';
 
   static readonly DIALOGUE_ROOT_ID = 'chatRootBlockId';

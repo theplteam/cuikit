@@ -3,14 +3,12 @@ import { styled } from '@mui/material/styles';
 import { type BoxProps } from '@mui/material/Box';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { useChatSlots } from '../core/ChatSlotsContext';
-import { MessageModel, StreamResponseState, ThreadModel } from '../../models';
+import { MessageModel } from '../../models';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import Stack from '@mui/material/Stack';
 
 type Props = {
-  thread: ThreadModel;
   message: MessageModel;
-  stopAnimation?: boolean;
 } & BoxProps;
 
 const keyframeName = 'chat-ui-analyze-await';
@@ -44,36 +42,27 @@ export const StatusBoxStyled = styled(Stack)(({ theme }) => ({
   ]
 }));
 
-const MessageAssistantProgress: React.FC<Props> = ({ thread, message }) => {
-  const state = useObserverValue(thread.streamStatus) as StreamResponseState | string | undefined;
-  const reasoningTitle = useObserverValue(message.reasoningManager.text) ?? '';
-  const reasoningTime = useObserverValue(message.reasoningManager.timeSec) ?? '';
+const MessageAssistantStatus: React.FC<Props> = ({ message }) => {
+  const status = useObserverValue(message.status);
+  const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const locale = useLocalizationContext();
-  let text = state;
 
-  if (state === StreamResponseState.START) {
-    text = locale.thinking;
-  }
+  // `undefined` while typing → default "thinking" indicator; `''` or idle → nothing.
+  const text = status === undefined ? (typing ? locale.thinking : undefined) : status;
 
-  if (
-    !text
-    || state === StreamResponseState.TYPING_MESSAGE
-    || state === StreamResponseState.FINISH_MESSAGE
-    || !!reasoningTitle
-    || !!reasoningTime
-  ) return null;
+  if (!text) return null;
 
   return (
     <StatusBoxStyled>
-      <slots.messageAssistantProgressText
+      <slots.messageAssistantStatusText
         variant="body1"
-        {...slotProps.messageAssistantProgressText}
+        {...slotProps.messageAssistantStatusText}
       >
         {text}
-      </slots.messageAssistantProgressText>
+      </slots.messageAssistantStatusText>
     </StatusBoxStyled>
   );
 };
 
-export default MessageAssistantProgress;
+export default MessageAssistantStatus;
