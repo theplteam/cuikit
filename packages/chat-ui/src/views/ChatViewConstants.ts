@@ -25,4 +25,12 @@ export class ChatViewConstants {
   static readonly MAX_ATTACHMENT_SIZE = 2 * 1024 * 1024 * 1024; // 2 GB;
 
   static readonly TEXT_SMOOTH_ANIMATION_DURATION_MS = 500;
+
+  // Delay between consecutive elements in a fade-in batch, so a burst reads as a gentle
+  // top-to-bottom wave instead of everything at once.
+  static readonly TEXT_SMOOTH_STAGGER_STEP_MS = 50;
+
+  // Upper bound on the cumulative stagger, so a large batch starts almost simultaneously
+  // rather than crawling in over a long, glitchy wave.
+  static readonly TEXT_SMOOTH_STAGGER_MAX_MS = 150;
 }

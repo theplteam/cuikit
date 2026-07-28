@@ -34,6 +34,23 @@ type RequiredProps<DD extends Thread<any>> = {
   onUserMessageSent: (params: MessageSentParams) => void | Promise<void>;
 };
 
+/**
+ * Streaming text animation timing.
+ */
+export type ChatSpeed = {
+  /**
+   * Fade-in duration per word/element, in milliseconds.
+   * @default 500
+   */
+  typing?: number;
+  /**
+   * Delay between consecutive elements in a burst, in milliseconds (capped ~150ms so a
+   * large batch starts almost simultaneously).
+   * @default 12
+   */
+  stagger?: number;
+};
+
 // используется внутри библиотеки
 export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
   /**
@@ -220,10 +237,15 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   openNewThreadOnModelChange?: boolean;
   /**
-   * Typing animation speed in milliseconds.
-   * @default 600
+   * @deprecated Use `speed.typing` instead.
+   * Typing animation fade-in duration in milliseconds.
+   * @default 500
    */
   typingSpeed?: number;
+  /**
+   * Streaming text animation speed (fade-in duration and per-word stagger).
+   */
+  speed?: ChatSpeed;
   /**
    * If the value is `true`, default markdown wrapper will be forced into `ltr` mode.
    * @default false

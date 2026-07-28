@@ -9,6 +9,7 @@ import MessageSelectedMobile from '../message/MessageSelectedMobile';
 import ChatScroller, { ChatScrollApiRef } from './ChatScroller';
 import { ThreadProvider } from './ThreadContext';
 import { useChatContext } from '../core/ChatGlobalContext';
+import { useResolvedSpeed } from '../core/useResolvedSpeed';
 import { NOOP } from '../../utils/NOOP';
 import { Thread, Message } from '../../models';
 import { useChatSlots } from '../core/ChatSlotsContext';
@@ -73,8 +74,9 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     model,
     beforeUserMessageSend,
     getConversationBlockHeightMin,
-    typingSpeed,
   } = useChatContext<DM, DD>();
+
+  const { typing: typingSpeed } = useResolvedSpeed();
 
   const thread = useObserverValue(model.currentThread);
 

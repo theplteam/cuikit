@@ -7,6 +7,7 @@ import { SlotValue } from '../../core/usePropsSlots';
 import clsx from 'clsx';
 import { chatClassNames } from '../../core/chatClassNames';
 import { useChatContext } from '../../core/ChatGlobalContext';
+import { useResolvedSpeed } from '../../core/useResolvedSpeed';
 import { IdType } from '../../../types';
 
 type Props = {
@@ -38,7 +39,8 @@ export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
 }));
 
 const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ...otherProps }) => {
-  const { processAssistantText, customMarkdownComponents, typingSpeed } = useChatContext();
+  const { processAssistantText, customMarkdownComponents } = useChatContext();
+  const { typing: typingSpeed, stagger } = useResolvedSpeed();
 
   // Prefix with `md-` so the DOM id never starts with a digit (invalid for CSS selectors).
   // Empty deps: keep the id stable for the component's lifetime — the message id can
@@ -56,6 +58,7 @@ const MessageMarkdownBlock: React.FC<Props> = ({ text, messageId, inProgress, ..
         text={text}
         processAssistantText={processAssistantText}
         customMarkdownComponents={customMarkdownComponents}
+        stagger={stagger}
         typingSpeed={typingSpeed}
       />
     </otherProps.rootComponent>

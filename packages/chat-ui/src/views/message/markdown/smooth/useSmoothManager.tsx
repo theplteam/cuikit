@@ -5,16 +5,21 @@ import { chatClassNames } from '../../../core/chatClassNames';
 type AnimatedElementsType = HTMLSpanElement | HTMLDivElement | HTMLLIElement;
 
 class SmoothManager {
-  ran = false;
+  private running = false;
+
+  // Set when check() is called while a run is in flight (e.g. the action buttons just
+  // mounted). Ensures the request is honored after the current run instead of being
+  // silently dropped.
+  private rerunRequested = false;
 
   private animatedElements = new WeakSet<AnimatedElementsType>();
 
-  // Delay between elements so a batch fades in as a top-to-bottom wave instead of all at once.
-  private delayStepMs = 40;
-
-  check = async (typingSpeed: number) => {
-    if (this.ran) return;
-    this.ran = true;
+  check = async (typingSpeed: number, staggerStep: number) => {
+    if (this.running) {
+      this.rerunRequested = true;
+      return;
+    }
+    this.running = true;
 
     const allMarkdownElements = document.getElementsByClassName(chatClassNames.messageAssistantRoot);
     const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
@@ -45,16 +50,18 @@ class SmoothManager {
     });
 
     // New leaf/block elements: fade in sequentially. `querySelectorAll` returns document
-    // order, so the stagger always runs top-to-bottom.
+    // order, so the stagger always runs top-to-bottom. The cumulative delay is capped so a
+    // big batch starts almost simultaneously instead of crawling in a long wave.
     toAnimate.forEach((el, i) => {
       el.classList.remove(chatClassNames.markdownSmoothedPending);
       el.classList.add(chatClassNames.markdownSmoothedAnimating);
-      el.style.animationDelay = `${i * this.delayStepMs}ms`;
+      el.style.animationDelay = `${Math.min(i * staggerStep, ChatViewConstants.TEXT_SMOOTH_STAGGER_MAX_MS)}ms`;
     });
 
     if (toAnimate.length > 0) {
-      // Wait until the last element's delayed animation has finished before cleanup.
-      const totalMs = (toAnimate.length - 1) * this.delayStepMs + typingSpeed;
+      // Wait until the last (capped) delayed animation has finished before cleanup.
+      const maxDelay = Math.min((toAnimate.length - 1) * staggerStep, ChatViewConstants.TEXT_SMOOTH_STAGGER_MAX_MS);
+      const totalMs = maxDelay + typingSpeed;
       await new Promise<void>((resolve) => setTimeout(resolve, totalMs));
 
       toAnimate.forEach(el => {
@@ -66,16 +73,30 @@ class SmoothManager {
       });
     }
 
-    this.ran = false;
+    this.running = false;
 
-    if (batch.length > 0) this.check(typingSpeed);
+    // Re-scan if new pending elements appeared during this run, or another check() was
+    // requested while we were busy (e.g. the action buttons mounted after the last chunk).
+    if (batch.length > 0 || this.rerunRequested) {
+      this.rerunRequested = false;
+      this.check(typingSpeed, staggerStep);
+    }
   };
 }
 
 const smoothManager = new SmoothManager();
 
-export const useSmoothManager = (text: string, inProgress: boolean, typingSpeed?: number) => {
+// Imperative entry point for elements that mount outside the streaming text flow (the
+// message action buttons + footer), which otherwise never trigger a check().
+export const triggerSmoothCheck = (typingSpeed?: number, staggerStep?: number) => {
+  smoothManager.check(
+    typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS,
+    staggerStep ?? ChatViewConstants.TEXT_SMOOTH_STAGGER_STEP_MS,
+  );
+};
+
+export const useSmoothManager = (text: string, inProgress: boolean, typingSpeed?: number, staggerStep?: number) => {
   React.useEffect(() => {
-    if (inProgress) smoothManager.check(typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS);
+    if (inProgress) triggerSmoothCheck(typingSpeed, staggerStep);
   }, [text, inProgress]);
 };

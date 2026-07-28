@@ -15,6 +15,8 @@ import Stack from '@mui/material/Stack';
 import AssistantTextBlock from './AssistantTextBlock';
 import { chatClassNames } from '../core/chatClassNames';
 import { usePhotoswipeInitialization } from './hooks/usePhotoswipeInitialization';
+import { useResolvedSpeed } from '../core/useResolvedSpeed';
+import { triggerSmoothCheck } from './markdown/smooth/useSmoothManager';
 
 type Props = {
   message: MessageModel;
@@ -40,6 +42,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
+  const { typing: typingSpeed, stagger } = useResolvedSpeed();
   const [isTypedOnce, setIsTypedOnce] = React.useState(false);
 
   React.useEffect(() => {
@@ -47,6 +50,16 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
       setIsTypedOnce(true);
     };
   }, [typing]);
+
+  // The action buttons + footer mount only once typing finishes, outside the streaming
+  // text flow, so nothing else triggers the smoother for them. Kick a check here so their
+  // pending -> animating fade actually runs. The manager's rerun guard makes this safe even
+  // if the final text batch is still animating.
+  React.useEffect(() => {
+    if (!typing && enableAssistantActions && isTypedOnce) {
+      triggerSmoothCheck(typingSpeed, stagger);
+    }
+  }, [typing, enableAssistantActions, isTypedOnce]);
 
   const getInternalMessage = useInternalMessageTransformer();
 
