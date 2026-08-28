@@ -30,7 +30,8 @@ export class ChatViewConstants {
   // top-to-bottom wave instead of everything at once.
   static readonly TEXT_SMOOTH_STAGGER_STEP_MS = 50;
 
-  // Upper bound on the cumulative stagger, so a large batch starts almost simultaneously
-  // rather than crawling in over a long, glitchy wave.
-  static readonly TEXT_SMOOTH_STAGGER_MAX_MS = 150;
+  // Upper bound on a batch's cumulative stagger, as a fraction of the fade duration, so the
+  // wave stays proportional to the fade rather than to how many elements happened to arrive
+  // together. At the default 500ms fade this is the 150ms ceiling the stagger always had.
+  static readonly TEXT_SMOOTH_STAGGER_MAX_FRACTION = 0.3;
 }

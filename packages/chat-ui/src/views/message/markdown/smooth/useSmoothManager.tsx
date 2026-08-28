@@ -5,22 +5,28 @@ import { chatClassNames } from '../../../core/chatClassNames';
 type AnimatedElementsType = HTMLSpanElement | HTMLDivElement | HTMLLIElement;
 
 class SmoothManager {
-  private running = false;
-
-  // Set when check() is called while a run is in flight (e.g. the action buttons just
-  // mounted). Ensures the request is honored after the current run instead of being
-  // silently dropped.
-  private rerunRequested = false;
+  // Scans are coalesced so a burst of chunks in one tick costs a single DOM query, but they
+  // stay independent of how long a fade lasts: the two used to share one lock, so a large
+  // `typingSpeed` also made newly arrived text wait that long before it was even looked at.
+  //
+  // Deliberately a timer and not requestAnimationFrame — rAF does not run at all while the
+  // tab is hidden, which would leave a whole streamed message stuck at opacity 0 for anyone
+  // who switches tabs mid-answer. Background timers are throttled but still fire.
+  private scanScheduled = false;
 
   private animatedElements = new WeakSet<AnimatedElementsType>();
 
-  check = async (typingSpeed: number, staggerStep: number) => {
-    if (this.running) {
-      this.rerunRequested = true;
-      return;
-    }
-    this.running = true;
+  check = (typingSpeed: number, staggerStep: number) => {
+    if (this.scanScheduled) return;
+    this.scanScheduled = true;
 
+    setTimeout(() => {
+      this.scanScheduled = false;
+      this.scan(typingSpeed, staggerStep);
+    }, 0);
+  };
+
+  private scan = (typingSpeed: number, staggerStep: number) => {
     const allMarkdownElements = document.getElementsByClassName(chatClassNames.messageAssistantRoot);
     const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
     const pending = Array.from(
@@ -28,6 +34,9 @@ class SmoothManager {
     );
 
     const batch = pending.filter(el => !this.animatedElements.has(el));
+
+    if (batch.length === 0) return;
+
     const batchSet = new Set(batch);
 
     const toAnimate: AnimatedElementsType[] = [];
@@ -40,7 +49,8 @@ class SmoothManager {
       (hasChildInBatch ? toSkip : toAnimate).push(el);
     });
 
-    // Mark the whole batch immediately to prevent reprocessing in the recursive call.
+    // Mark the whole batch immediately: overlapping scans must never pick these up again,
+    // and React re-applies the pending class on later renders.
     batch.forEach(el => this.animatedElements.add(el));
 
     // Parent containers that have children animating: make visible without a separate animation.
@@ -49,21 +59,31 @@ class SmoothManager {
       el.style.opacity = '1';
     });
 
-    // New leaf/block elements: fade in sequentially. `querySelectorAll` returns document
-    // order, so the stagger always runs top-to-bottom. The cumulative delay is capped so a
-    // big batch starts almost simultaneously instead of crawling in a long wave.
+    if (toAnimate.length === 0) return;
+
+    // How long the whole batch takes to come in. It is the natural span at the requested step,
+    // bounded relative to the fade so a big batch never crawls in over a long wave.
+    const maxDelay = Math.min(
+      (toAnimate.length - 1) * staggerStep,
+      typingSpeed * ChatViewConstants.TEXT_SMOOTH_STAGGER_MAX_FRACTION,
+    );
+
+    // New leaf/block elements: fade in sequentially. `querySelectorAll` returns document order,
+    // so the stagger always runs top-to-bottom. The delay is spread evenly across the whole
+    // span rather than stepping until a ceiling and pinning everything after it to that value —
+    // that used to stagger only the first few elements and start the rest as one jump.
     toAnimate.forEach((el, i) => {
+      const delay = toAnimate.length > 1 ? (i / (toAnimate.length - 1)) * maxDelay : 0;
+
       el.classList.remove(chatClassNames.markdownSmoothedPending);
       el.classList.add(chatClassNames.markdownSmoothedAnimating);
-      el.style.animationDelay = `${Math.min(i * staggerStep, ChatViewConstants.TEXT_SMOOTH_STAGGER_MAX_MS)}ms`;
+      el.style.animationDelay = `${Math.round(delay)}ms`;
     });
 
-    if (toAnimate.length > 0) {
-      // Wait until the last (capped) delayed animation has finished before cleanup.
-      const maxDelay = Math.min((toAnimate.length - 1) * staggerStep, ChatViewConstants.TEXT_SMOOTH_STAGGER_MAX_MS);
-      const totalMs = maxDelay + typingSpeed;
-      await new Promise<void>((resolve) => setTimeout(resolve, totalMs));
-
+    // Each batch cleans up on its own timer instead of the scan awaiting it. A fade that is
+    // still running therefore never holds back the next batch — fades overlap, and text keeps
+    // entering at the rate it arrives whatever `typingSpeed` is set to.
+    setTimeout(() => {
       toAnimate.forEach(el => {
         el.classList.remove(chatClassNames.markdownSmoothedAnimating);
         el.style.animationDelay = '0s';
@@ -71,16 +91,12 @@ class SmoothManager {
         // when React re-applies the pending class on the next render cycle.
         el.style.opacity = '1';
       });
-    }
 
-    this.running = false;
-
-    // Re-scan if new pending elements appeared during this run, or another check() was
-    // requested while we were busy (e.g. the action buttons mounted after the last chunk).
-    if (batch.length > 0 || this.rerunRequested) {
-      this.rerunRequested = false;
+      // Late sweep for elements that appeared without a text change (e.g. the action buttons
+      // mounting after the last chunk). Discovery no longer depends on this — scan() returns
+      // immediately when there is nothing new, so the chain ends on its own.
       this.check(typingSpeed, staggerStep);
-    }
+    }, maxDelay + typingSpeed);
   };
 }
 

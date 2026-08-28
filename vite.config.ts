@@ -3,6 +3,7 @@ import path from 'path';
 import react from '@vitejs/plugin-react'
 import checker from 'vite-plugin-checker';
 import md5 from 'md5';
+import { smoothRecorderPlugin } from './tools/vite-plugin-smooth-recorder';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -44,6 +45,7 @@ export default defineConfig(({ mode }) => {
       checker({
         typescript: true,
       }),
+      smoothRecorderPlugin(),
     ],
     resolve: {
       alias: {
