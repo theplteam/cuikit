@@ -13,17 +13,18 @@ import { chatClassNames } from '../../core/chatClassNames';
 import { useInProgressStateCache } from './useInProgressStateCache';
 import Skeleton from '@mui/material/Skeleton';
 import { ChatUsersProps } from '../../core/useChatProps';
+import { maskIncompleteMarkdownTail } from '../../../utils/stringUtils/maskIncompleteMarkdownTail';
+import { ResolvedSpeed } from '../../core/useResolvedSpeed';
 
 type Props = {
   text: string;
   inProgress: boolean;
   processAssistantText?: (text: string) => string;
   customMarkdownComponents?: ChatUsersProps<any, any>['customMarkdownComponents'];
-  typingSpeed?: number;
-  stagger?: number;
+  speed?: ResolvedSpeed;
 };
 
-const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents, typingSpeed, stagger }) => {
+const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, processAssistantText, customMarkdownComponents, speed }) => {
   const { slots, slotProps } = useChatSlots();
   const inProgress = useInProgressStateCache(inProgressProp);
 
@@ -77,11 +78,13 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
     }
   }), [inProgress, slots, slotProps]);
 
-  useSmoothManager(text, inProgress, typingSpeed, stagger);
-
   const markdownText = React.useMemo(() => {
-    if (!customMarkdownComponents?.length) return text;
-    const replacedText = inProgressProp ? text.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
+    // Only while chunks keep arriving: once the stream ends the text is final, and a
+    // trailing `[` is something the author meant to write rather than a torn-off link.
+    const streamedText = inProgressProp ? maskIncompleteMarkdownTail(text) : text;
+
+    if (!customMarkdownComponents?.length) return streamedText;
+    const replacedText = inProgressProp ? streamedText.replace(/<([A-Z][A-Za-z0-9]*)([^>]*)>?/g, (match) => {
       const isSelfClosing = match.trim().endsWith('/>');
       if (!isSelfClosing) {
         const userHeight = customMarkdownComponents.find(({ name }) => match.startsWith(`<${name} `))?.skeletonHeight;
@@ -89,9 +92,16 @@ const MessageMarkdown: React.FC<Props> = ({ text, inProgress: inProgressProp, pr
         return `<Skeleton height={${height}} />`;
       }
       return match;
-    }) : text;
+    }) : streamedText;
     return replacedText;
   }, [inProgressProp, customMarkdownComponents, text]);
+
+  // Keyed on what is actually rendered, not on the raw `text`. When the stream ends, the mask
+  // (and the custom-component skeletons) lift on a render where `text` has not changed, so the
+  // revealed nodes mount with the pending class — and `inProgress` cannot wake the smoother
+  // either, since `useInProgressStateCache` latches it true for good. Watching the rendered
+  // string is the only signal that new elements just appeared.
+  useSmoothManager(markdownText, inProgress, speed);
 
   return (
     <MarkdownToJsx

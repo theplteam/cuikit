@@ -39,16 +39,24 @@ type RequiredProps<DD extends Thread<any>> = {
  */
 export type ChatSpeed = {
   /**
-   * Fade-in duration per word/element, in milliseconds.
+   * How long a burst of newly arrived text takes to come in fully, in milliseconds — the
+   * window the batch's elements are spread across, not the duration of a single fade.
    * @default 500
    */
   typing?: number;
   /**
-   * Delay between consecutive elements in a burst, in milliseconds (capped ~150ms so a
-   * large batch starts almost simultaneously).
-   * @default 12
+   * Delay between consecutive elements in a burst, in milliseconds. The batch is spread
+   * evenly over at most `typing` ms, so this is the step until that window is filled.
+   * @default 50
    */
   stagger?: number;
+  /**
+   * Fade-in duration of a single word/element, in milliseconds. Kept separate from
+   * `typing`: raising `typing` should make text arrive over a longer wave, not make every
+   * word crawl out of transparency for that whole time.
+   * @default min(typing, 500)
+   */
+  fade?: number;
 };
 
 // используется внутри библиотеки
@@ -237,13 +245,14 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   openNewThreadOnModelChange?: boolean;
   /**
-   * @deprecated Use `speed.typing` instead.
-   * Typing animation fade-in duration in milliseconds.
+   * @deprecated Use `speed.fade` for the fade-in duration, or `speed.typing` for the window
+   * a burst of new text arrives over. This prop used to mean the fade-in duration and is now
+   * read as `speed.typing`, so a value above 500 no longer lengthens the fade on its own.
    * @default 500
    */
   typingSpeed?: number;
   /**
-   * Streaming text animation speed (fade-in duration and per-word stagger).
+   * Streaming text animation speed (arrival window, per-word stagger and fade duration).
    */
   speed?: ChatSpeed;
   /**

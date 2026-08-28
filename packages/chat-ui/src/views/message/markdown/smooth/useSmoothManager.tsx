@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { ChatViewConstants } from '../../../ChatViewConstants';
 import { chatClassNames } from '../../../core/chatClassNames';
+import { ResolvedSpeed } from '../../../core/useResolvedSpeed';
 
 type AnimatedElementsType = HTMLSpanElement | HTMLDivElement | HTMLLIElement;
 
 class SmoothManager {
   // Scans are coalesced so a burst of chunks in one tick costs a single DOM query, but they
   // stay independent of how long a fade lasts: the two used to share one lock, so a large
-  // `typingSpeed` also made newly arrived text wait that long before it was even looked at.
+  // `typing` also made newly arrived text wait that long before it was even looked at.
   //
   // Deliberately a timer and not requestAnimationFrame — rAF does not run at all while the
   // tab is hidden, which would leave a whole streamed message stuck at opacity 0 for anyone
@@ -16,17 +17,17 @@ class SmoothManager {
 
   private animatedElements = new WeakSet<AnimatedElementsType>();
 
-  check = (typingSpeed: number, staggerStep: number) => {
+  check = (speed: ResolvedSpeed) => {
     if (this.scanScheduled) return;
     this.scanScheduled = true;
 
     setTimeout(() => {
       this.scanScheduled = false;
-      this.scan(typingSpeed, staggerStep);
+      this.scan(speed);
     }, 0);
   };
 
-  private scan = (typingSpeed: number, staggerStep: number) => {
+  private scan = (speed: ResolvedSpeed) => {
     const allMarkdownElements = document.getElementsByClassName(chatClassNames.messageAssistantRoot);
     const parent = allMarkdownElements.item(allMarkdownElements.length - 1);
     const pending = Array.from(
@@ -61,12 +62,9 @@ class SmoothManager {
 
     if (toAnimate.length === 0) return;
 
-    // How long the whole batch takes to come in. It is the natural span at the requested step,
-    // bounded relative to the fade so a big batch never crawls in over a long wave.
-    const maxDelay = Math.min(
-      (toAnimate.length - 1) * staggerStep,
-      typingSpeed * ChatViewConstants.TEXT_SMOOTH_STAGGER_MAX_FRACTION,
-    );
+    // The window the batch comes in over: the natural span at the requested step, capped at
+    // `typing`, which is exactly what that option means.
+    const maxDelay = Math.min((toAnimate.length - 1) * speed.stagger, speed.typing);
 
     // New leaf/block elements: fade in sequentially. `querySelectorAll` returns document order,
     // so the stagger always runs top-to-bottom. The delay is spread evenly across the whole
@@ -82,7 +80,7 @@ class SmoothManager {
 
     // Each batch cleans up on its own timer instead of the scan awaiting it. A fade that is
     // still running therefore never holds back the next batch — fades overlap, and text keeps
-    // entering at the rate it arrives whatever `typingSpeed` is set to.
+    // entering at the rate it arrives whatever the speed is set to.
     setTimeout(() => {
       toAnimate.forEach(el => {
         el.classList.remove(chatClassNames.markdownSmoothedAnimating);
@@ -95,24 +93,27 @@ class SmoothManager {
       // Late sweep for elements that appeared without a text change (e.g. the action buttons
       // mounting after the last chunk). Discovery no longer depends on this — scan() returns
       // immediately when there is nothing new, so the chain ends on its own.
-      this.check(typingSpeed, staggerStep);
-    }, maxDelay + typingSpeed);
+      this.check(speed);
+    }, maxDelay + speed.fade);
   };
 }
 
 const smoothManager = new SmoothManager();
 
-// Imperative entry point for elements that mount outside the streaming text flow (the
-// message action buttons + footer), which otherwise never trigger a check().
-export const triggerSmoothCheck = (typingSpeed?: number, staggerStep?: number) => {
-  smoothManager.check(
-    typingSpeed || ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS,
-    staggerStep ?? ChatViewConstants.TEXT_SMOOTH_STAGGER_STEP_MS,
-  );
+const defaultSpeed: ResolvedSpeed = {
+  typing: ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS,
+  stagger: ChatViewConstants.TEXT_SMOOTH_STAGGER_STEP_MS,
+  fade: Math.min(ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS, ChatViewConstants.TEXT_SMOOTH_FADE_MAX_MS),
 };
 
-export const useSmoothManager = (text: string, inProgress: boolean, typingSpeed?: number, staggerStep?: number) => {
+// Imperative entry point for elements that mount outside the streaming text flow (the
+// message action buttons + footer), which otherwise never trigger a check().
+export const triggerSmoothCheck = (speed?: ResolvedSpeed) => {
+  smoothManager.check(speed ?? defaultSpeed);
+};
+
+export const useSmoothManager = (text: string, inProgress: boolean, speed?: ResolvedSpeed) => {
   React.useEffect(() => {
-    if (inProgress) triggerSmoothCheck(typingSpeed, staggerStep);
+    if (inProgress) triggerSmoothCheck(speed);
   }, [text, inProgress]);
 };

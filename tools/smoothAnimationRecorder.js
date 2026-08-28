@@ -69,6 +69,8 @@
       pendingSince: null,
       animateCount: 0,
       cleanedAt: null,
+      textAtCleanup: null,
+      textSwaps: 0,
       anomalies: [],
     };
     state.tracks.set(el, track);
@@ -140,8 +142,39 @@
 
     if (hadAnimating && !hasAnimating) {
       track.cleanedAt = state.now();
+      track.textAtCleanup = el.textContent;
       if (!state.options.quiet) push('cleanup', track, { opacity: el.style.opacity });
     }
+  };
+
+  // The word spans are keyed by their position inside the block, so when a late chunk closes
+  // a `**` or a link the inline nodes are rebuilt and the positions shift. React then hands
+  // an already-faded-in span a different word: the node keeps its inline opacity:1, so the
+  // new word is on screen instantly with no fade at all, while its neighbours that did get
+  // fresh nodes fade in normally. That is the interleaving of solid and pale text.
+  var onTextChange = function (el) {
+    if (!el || el.nodeType !== 1 || !inChat(el)) return;
+    if (!state.tracks.has(el)) return;
+
+    var track = state.tracks.get(el);
+
+    if (track.cleanedAt === null) return;
+
+    var next = el.textContent;
+
+    if (next === track.textAtCleanup) return;
+
+    track.textSwaps += 1;
+    if (!state.options.quiet) {
+      push('textswap', track, { from: track.textAtCleanup, to: next, n: track.textSwaps });
+    }
+    anomaly(
+      track,
+      'text-swapped-after-fade',
+      'node reused for new text ' + JSON.stringify(track.textAtCleanup) + ' -> ' + JSON.stringify(next)
+        + ' after it had already faded in, so the new text never animates'
+    );
+    track.textAtCleanup = next;
   };
 
   var onMutation = function (records) {
@@ -168,7 +201,15 @@
         return;
       }
 
+      if (record.type === 'characterData') {
+        onTextChange(record.target.parentElement);
+        return;
+      }
+
       if (record.type !== 'childList') return;
+
+      // A text node swapped wholesale rather than edited in place lands here.
+      onTextChange(record.target);
 
       Array.prototype.forEach.call(record.addedNodes, function (node) {
         if (node.nodeType !== 1 || !inChat(node)) return;
@@ -269,6 +310,7 @@
         attributes: true,
         attributeOldValue: true,
         attributeFilter: ['class', 'style'],
+        characterData: true,
       });
       state.timer = setInterval(watchdog, 250);
 
@@ -336,6 +378,9 @@
             label: entry.track.label,
             path: entry.track.path,
             animateCount: entry.track.animateCount,
+            // How many times this node was recycled for different text after it had already
+            // faded in — every one of those is a word that appeared without any animation.
+            textSwaps: entry.track.textSwaps,
             connected: connected,
             finalOpacity: opacity,
             discarded: !connected && entry.track.animateCount === 0,

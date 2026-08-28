@@ -42,7 +42,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
   const typing = useObserverValue(message.typing);
   const { slots, slotProps } = useChatSlots();
   const { enableReasoning } = useChatContext();
-  const { typing: typingSpeed, stagger } = useResolvedSpeed();
+  const speed = useResolvedSpeed();
   const [isTypedOnce, setIsTypedOnce] = React.useState(false);
 
   React.useEffect(() => {
@@ -57,7 +57,7 @@ const MessageAssistant: React.FC<Props> = ({ message, enableAssistantActions, th
   // if the final text batch is still animating.
   React.useEffect(() => {
     if (!typing && enableAssistantActions && isTypedOnce) {
-      triggerSmoothCheck(typingSpeed, stagger);
+      triggerSmoothCheck(speed);
     }
   }, [typing, enableAssistantActions, isTypedOnce]);
 

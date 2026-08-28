@@ -37,8 +37,8 @@ const fadeIn = keyframes`
 `;
 
 const MessagesRowStyled = styled(Stack, {
-  shouldForwardProp: (prop) => prop !== 'animationSpeed',
-})<StackProps & { animationSpeed?: number }>(({ animationSpeed }) => ({
+  shouldForwardProp: (prop) => prop !== 'fadeSpeed',
+})<StackProps & { fadeSpeed?: number }>(({ fadeSpeed }) => ({
   width: '100%',
   alignItems: 'center',
   flex: 1,
@@ -51,7 +51,7 @@ const MessagesRowStyled = styled(Stack, {
   [`.${chatClassNames.markdownSmoothedAnimating}`]: {
     opacity: 0,
     // here `delay` has no meaning, since it is overwritten in style for each element
-    animation: `${fadeIn} ${animationSpeed ?? ChatViewConstants.TEXT_SMOOTH_ANIMATION_DURATION_MS}ms ease-in-out 0ms 1 normal forwards`,
+    animation: `${fadeIn} ${fadeSpeed ?? ChatViewConstants.TEXT_SMOOTH_FADE_MAX_MS}ms ease-in-out 0ms 1 normal forwards`,
   },
 }));
 
@@ -76,7 +76,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     getConversationBlockHeightMin,
   } = useChatContext<DM, DD>();
 
-  const { typing: typingSpeed } = useResolvedSpeed();
+  const { fade: fadeSpeed } = useResolvedSpeed();
 
   const thread = useObserverValue(model.currentThread);
 
@@ -107,7 +107,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
       <slots.thread id={ChatViewConstants.DIALOGUE_ROOT_ID} {...slotProps.thread} className={className}>
         <MessagesRowStyled
           justifyContent={thread?.messages.length ? 'stretch' : 'center'}
-          animationSpeed={typingSpeed}
+          fadeSpeed={fadeSpeed}
         >
           {!!thread && (
             <>
