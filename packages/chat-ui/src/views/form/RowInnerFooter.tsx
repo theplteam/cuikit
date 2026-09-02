@@ -5,6 +5,7 @@ import { ThreadModel } from '../../models/ThreadModel';
 import SendMessageButton from './SendMessageButton';
 import FileAttachmentBlock from './attachments/FileAttachmentBlock';
 import { FileAttachmentConfig } from './attachments/useFileAttachment';
+import { useChatSlots } from '../core/ChatSlotsContext';
 
 type Props = {
   thread?: ThreadModel;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const RowInnerFooter: React.FC<Props> = ({ attachmentConfig, onSendMessage, thread, isTyping, disabledSendMessage }) => {
+  const { slots } = useChatSlots();
 
   return (
     <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -26,6 +28,7 @@ const RowInnerFooter: React.FC<Props> = ({ attachmentConfig, onSendMessage, thre
           isTyping={isTyping}
         />
         <ToolsSelect thread={thread} isTyping={isTyping} />
+        <slots.formActions isTyping={isTyping} thread={thread} />
       </Stack>
       <SendMessageButton
         disabled={disabledSendMessage}

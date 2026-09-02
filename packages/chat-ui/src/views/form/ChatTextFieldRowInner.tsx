@@ -9,6 +9,8 @@ import attachmentsStore from '../../models/AttachmentsStore';
 import RowInnerFooter from './RowInnerFooter';
 import SendMessageButton from './SendMessageButton';
 import useFileAttachment from './attachments/useFileAttachment';
+import { useChatSlots } from '../core/ChatSlotsContext';
+import { MockComponent } from '../utils/MockComponent';
 
 type Props = {
   thread?: ThreadModel;
@@ -16,6 +18,7 @@ type Props = {
 
 const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
   const { defaultTextFieldValue, apiRef, enableFileAttachments, toolsList } = useChatContext();
+  const { slots } = useChatSlots();
 
   const isTyping = useObserverValue(thread?.isTyping);
   const isLoadingAttachments = useObserverValue(thread?.isLoadingAttachments);
@@ -48,7 +51,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
     setAttachments([]);
   };
 
-  const controlsInFooter = enableFileAttachments || !!toolsList?.length;
+  const controlsInFooter = enableFileAttachments || !!toolsList?.length || slots.formActions !== MockComponent;
   const disabledTextField = !thread || isTyping || isLoadingFullData;
   const disabledButton = (!isTyping && !text && !attachments.length) || !!isLoadingAttachments?.length || isLoadingFullData;
 

@@ -18,6 +18,22 @@ import { AvatarProps } from '@mui/material/Avatar';
 
 type ChildrenProps = React.PropsWithChildren;
 
+/**
+ * Props passed to the `formActions` slot — your own buttons/components placed in the
+ * message form footer, right after the tools button.
+ */
+export type ChatFormActionsProps<DM extends Message = any, DD extends Thread<DM> = any> = {
+  /**
+   * Currently opened thread. Undefined while the chat has no active thread.
+   */
+  thread?: ThreadModel<DM, DD>;
+  /**
+   * The assistant is streaming an answer — disable the actions that must not run meanwhile.
+   */
+  isTyping?: boolean;
+  className?: string;
+};
+
 export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   /**
    * Override the full thread component
@@ -54,6 +70,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * 
    */
   attachmentVideoPlayIcon: AvatarProps;
+  /**
+   * Custom buttons or components rendered in the message form footer, next to the tools button.
+   */
+  formActions: ChatFormActionsProps<DM, DD>;
 
   // MESSAGE
   /**

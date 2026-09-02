@@ -12,6 +12,7 @@ import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
 import { ToolType } from './types/ToolType';
+import type { ChatFormActionsProps } from './views/core/SlotPropsType';
 import { AIModelType } from './types/AIModelType';
 import { parseReasoningText } from './views/message/reasoning/useReasoningParse';
 
@@ -39,6 +40,7 @@ export {
   type onShowAlertType,
   ChatUsersProps as ChatProps,
   type ToolType,
+  type ChatFormActionsProps,
   type AIModelType,
   parseReasoningText,
 };

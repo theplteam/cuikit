@@ -139,6 +139,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       attachmentFormButton: slots?.attachmentFormButton ?? FileAttachmentButton,
       aiModelButton: slots?.aiModelButton ?? Button,
       attachmentVideoPlayIcon: slots?.attachmentVideoPlayIcon ?? PlayIcon,
+      formActions: slots?.formActions ?? MockComponent,
       // MARKDOWN
       ...getMarkdownSlots(slots),
       messagePagination: slots?.messagePagination ?? MessagePagination,
