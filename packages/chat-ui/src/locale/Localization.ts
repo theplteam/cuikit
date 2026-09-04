@@ -70,5 +70,9 @@ export type Localization = {
   attachmentImageGallery: string;
   innerRowExpand: string;
 
+  // message navigation
+  messageNavTitle: string;
+  messageNavItem: string;
+
   reasonedFor: string;
 };

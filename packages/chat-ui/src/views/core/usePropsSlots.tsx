@@ -25,6 +25,7 @@ import MessageMarkdownBlockquote from '../message/markdown/MessageMarkdownBlockq
 import MessageMarkdownCodeWrapper from '../message/markdown/MessageMarkdownCodeWrapper';
 import { chatIconSlots, ChatIconSlotsType } from './ChatIconSlots';
 import ThreadRootContainer from '../thread/ThreadRootContainer';
+import MessageNavRail from '../thread/MessageNavRail';
 import ChatTextFieldRowInner from '../form/ChatTextFieldRowInner';
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
@@ -128,6 +129,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
       ...chatIconSlots,
       ...slots,
       firstMessage: slots?.firstMessage ?? InitialThreadMessage,
+      messageNavRail: slots?.messageNavRail ?? MessageNavRail,
       thread: slots?.thread ?? ThreadRootContainer,
       sendMessageButton: slots?.sendMessageButton ?? core.iconButton,
 

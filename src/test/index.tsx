@@ -2,6 +2,7 @@ import * as React from 'react';
 const AwaitingResponse = React.lazy(() => import('./common/AwaitingResponse'));
 const MessageStatus = React.lazy(() => import('./common/MessageStatus'));
 const UserMessageEditingExample = React.lazy(() => import('./branches/UserMessageEditingExample'));
+const MessageNavLongThread = React.lazy(() => import('./messageNav/MessageNavLongThread'));
 const MarkdownExample = React.lazy(() => import('./markdown/MarkdownExample'));
 const MarkdownCustomExample = React.lazy(() => import('./markdown/MarkdownCustomExample'));
 const MarkdownCustomComponents = React.lazy(() => import('./markdown/MarkdownCustomComponents'));
@@ -47,6 +48,7 @@ const App: React.FC = () => {
       case 'gemini-real': variant = GeminiReal; break;
       case 'theme': variant = ThemeSwitch; break;
       case 'message-editing': variant = UserMessageEditingExample; break;
+      case 'message-nav': variant = MessageNavLongThread; break;
       case 'markdown-example': variant = MarkdownExample; break;
       case 'markdown-custom': variant = MarkdownCustomExample; break;
       case 'markdown-custom-components': variant = MarkdownCustomComponents; break;

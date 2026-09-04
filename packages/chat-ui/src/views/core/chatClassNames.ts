@@ -6,6 +6,7 @@ export const chatClassNames = {
   messageAssistantRoot: 'chat-ui-message-assistant-root',
   messageUserRoot: 'chat-ui-message-user-root',
   messageUser: 'chat-ui-message-user',
+  messageNavRail: 'chat-ui-message-nav-rail',
   markdownParentRoot: 'chat-ui-markdown-parent-root',
   markdownImage: 'chat-ui-markdown-image',
   markdownSmoothedPending: 'chat-ui-markdown-smooth-pending',

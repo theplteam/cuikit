@@ -56,6 +56,8 @@ export const CHAT_LOCALE: Localization = {
   messageFeedbackSubmitButton: 'Submit',
   messageFeedbackLink: 'Learn more',
   messageFeedbackText: 'Opens in a new window about how your feedback is used to improve Chat UI.',
+  messageNavTitle: 'Message navigation',
+  messageNavItem: 'Message {{number}}',
   reasonedFor: 'Reasoned for {{time}}',
   innerRowExpand: 'Fullscreen'
 };

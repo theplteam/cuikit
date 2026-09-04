@@ -16,6 +16,8 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { chatClassNames } from '../core/chatClassNames';
+import { useMessageNavController } from './useMessageNavController';
+import MessageNavContainer from './MessageNavContainer';
 import {getSurfaceColor} from "../utils/colors";
 
 type Props = {
@@ -74,6 +76,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     model,
     beforeUserMessageSend,
     getConversationBlockHeightMin,
+    enableMessageNav,
   } = useChatContext<DM, DD>();
 
   const { fade: fadeSpeed } = useResolvedSpeed();
@@ -81,6 +84,8 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
   const thread = useObserverValue(model.currentThread);
 
   const { slots, slotProps } = useChatSlots();
+
+  const messageNav = useMessageNavController(thread, contentRef, apiManager, !!enableMessageNav);
 
   React.useEffect(() => {
     if (!initialThread && !loading) {
@@ -116,6 +121,12 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
             </>
           )}
         </MessagesRowStyled>
+        {!!enableMessageNav && (
+          <MessageNavContainer
+            controller={messageNav}
+            contentRef={contentRef}
+          />
+        )}
         {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
         {/*<Watermark/>*/}
         <Stack position="sticky" bottom={0} zIndex={1}>

@@ -147,6 +147,11 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableBranches?: boolean;
   /**
+   * Shows the message navigation rail next to the thread and enables the
+   * `Shift + ArrowUp` / `Shift + ArrowDown` shortcuts for jumping between user messages.
+   */
+  enableMessageNav?: boolean;
+  /**
    * If callback is set, rating buttons appear. Callback fired when message rating sent
    */
   onChangeMessageRating?: ChatEventListeners<{ message: DM, rating: RatingType | undefined }>;

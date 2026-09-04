@@ -56,6 +56,8 @@ export const jaJP: Localization = {
   messageFeedbackSubmitButton: '送信',
   messageFeedbackLink: '詳しく見る',
   messageFeedbackText: '新しいウィンドウで開き、フィードバックが Chat UI の改善にどのように使用されるかを説明します。',
+  messageNavTitle: 'メッセージナビゲーション',
+  messageNavItem: 'メッセージ {{number}}',
   reasonedFor: '{{time}} 考えました',
   innerRowExpand: '全画面'
 };
