@@ -6,7 +6,7 @@ import { MessageNavJumpOptions } from './useMessageNavController';
 import { chatClassNames } from '../core/chatClassNames';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import { langReplace } from '../../locale/langReplace';
-import { useTablet } from '../../ui/Responsive';
+import { getMessageNavPreview } from './messageNavPreview';
 
 export type MessageNavRailProps = {
   /**
@@ -115,20 +115,11 @@ const PreviewStyled = styled(Box)(({ theme }) => ({
   wordBreak: 'break-word',
 }));
 
-const getPreviewText = (message: MessageModel | undefined) => {
-  const text = message?.text.trim() ?? '';
-
-  return text.length > PREVIEW_MAX_LENGTH ? `${text.slice(0, PREVIEW_MAX_LENGTH)}…` : text;
-}
-
 const MessageNavRail: React.FC<MessageNavRailProps> = ({ userMessages, activeIndex, contentRef, onJump }) => {
   const [layout, setLayout] = React.useState<LayoutType>();
   const [focusedIndex, setFocusedIndex] = React.useState<number>();
 
   const locale = useLocalizationContext();
-  // Hover magnification and a 28px grab strip are pointer affordances; on touch the
-  // same strip would only fight the user's scrolling.
-  const isTablet = useTablet();
 
   const railRef = React.useRef<HTMLDivElement | null>(null);
   const hitAreaRef = React.useRef<HTMLDivElement | null>(null);
@@ -345,10 +336,10 @@ const MessageNavRail: React.FC<MessageNavRailProps> = ({ userMessages, activeInd
     focusRib(nextIndex);
   };
 
-  if (!layout || !count || isTablet) return null;
+  if (!layout || !count) return null;
 
   const previewIndex = focusedIndex ?? -1;
-  const previewText = getPreviewText(userMessages[previewIndex]);
+  const previewText = getMessageNavPreview(userMessages[previewIndex], PREVIEW_MAX_LENGTH);
 
   return (
     <RailStyled
@@ -382,7 +373,7 @@ const MessageNavRail: React.FC<MessageNavRailProps> = ({ userMessages, activeInd
           data-active={index === activeIndex}
           style={{ top: RAIL_VERTICAL_PADDING + (offsets[index] ?? 0) }}
           tabIndex={index === activeIndex ? 0 : -1}
-          aria-label={getPreviewText(message) || langReplace(locale.messageNavItem, { number: index + 1 })}
+          aria-label={getMessageNavPreview(message, PREVIEW_MAX_LENGTH) || langReplace(locale.messageNavItem, { number: index + 1 })}
           aria-current={index === activeIndex || undefined}
           onFocus={() => setFocusedIndex(index)}
           onBlur={handlePointerLeave}

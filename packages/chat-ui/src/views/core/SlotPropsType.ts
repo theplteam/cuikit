@@ -54,6 +54,16 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
     onJump: (index: number, options?: { immediate?: boolean }) => void;
   };
 
+  /**
+   * Compact list of the user messages, shown instead of the rail on touch-sized
+   * screens. Rendered only when `enableMessageNav` is set.
+   */
+  messageNavList: {
+    userMessages: MessageModel<DM>[];
+    activeIndex: number;
+    onJump: (index: number, options?: { immediate?: boolean }) => void;
+  };
+
   sendMessageButton: IconButtonProps;
 
   /**

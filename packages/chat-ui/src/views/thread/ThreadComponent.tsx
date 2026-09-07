@@ -121,15 +121,15 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
             </>
           )}
         </MessagesRowStyled>
-        {!!enableMessageNav && (
-          <MessageNavContainer
-            controller={messageNav}
-            contentRef={contentRef}
-          />
-        )}
         {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
         {/*<Watermark/>*/}
         <Stack position="sticky" bottom={0} zIndex={1}>
+          {!!enableMessageNav && (
+            <MessageNavContainer
+              controller={messageNav}
+              contentRef={contentRef}
+            />
+          )}
           <TextRowBlock>
             <ChatScroller
               thread={thread}

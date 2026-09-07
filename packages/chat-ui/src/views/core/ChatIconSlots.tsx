@@ -6,6 +6,7 @@ import {
   ThumbUpAltIcon,
   ThumbDownOutlinedIcon,
   ThumbDownIcon,
+  FormatListBulletedIcon,
 } from '../../icons';
 
 type IconSlotValue = React.JSXElementConstructor<any>;
@@ -17,6 +18,7 @@ export type ChatIconSlotsType = {
   messageLikeFilledIcon: IconSlotValue;
   messageDislikeOutlinedIcon: IconSlotValue;
   messageDislikeFilledIcon: IconSlotValue;
+  messageNavIcon: IconSlotValue;
 };
 
 export const chatIconSlots: ChatIconSlotsType = {
@@ -26,4 +28,5 @@ export const chatIconSlots: ChatIconSlotsType = {
   messageLikeFilledIcon: ThumbUpAltIcon,
   messageDislikeOutlinedIcon: ThumbDownOutlinedIcon,
   messageDislikeFilledIcon: ThumbDownIcon,
+  messageNavIcon: FormatListBulletedIcon,
 };
