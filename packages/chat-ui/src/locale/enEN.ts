@@ -5,6 +5,7 @@ export const CHAT_LOCALE: Localization = {
   no: 'No',
   send: 'Send',
   cancel: 'Cancel',
+  close: 'Close',
   newChat: "New chat",
   thinking: 'Thinking',
   historyTitle: "History",

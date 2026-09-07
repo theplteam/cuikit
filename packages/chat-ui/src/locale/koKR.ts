@@ -5,6 +5,7 @@ export const koKR: Localization = {
   no: '아니요',
   send: '보내기',
   cancel: '취소',
+  close: '닫기',
   newChat: '새 채팅',
   thinking: '생각 중',
   historyTitle: '기록',

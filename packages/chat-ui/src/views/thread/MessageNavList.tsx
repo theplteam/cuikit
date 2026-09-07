@@ -66,23 +66,33 @@ const RowStyled = styled('button')(({ theme }) => ({
   },
 }));
 
-const NumberStyled = styled(Typography)(({ theme }) => ({
+// Spans, not Typography: a button may only contain phrasing content, and Typography
+// renders a paragraph by default.
+const NumberStyled = styled('span')(({ theme }) => ({
+  ...theme.typography.body2,
   flexShrink: 0,
   minWidth: 20,
   color: theme.palette.text.secondary,
   fontVariantNumeric: 'tabular-nums',
 }));
 
-const TextStyled = styled(Typography)({
+const TextStyled = styled('span')(({ theme }) => ({
+  ...theme.typography.body2,
   display: '-webkit-box',
   WebkitLineClamp: 2,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
   wordBreak: 'break-word',
-});
+}));
 
 const MessageNavList: React.FC<MessageNavListProps> = ({ userMessages, activeIndex, onJump }) => {
   const [open, setOpen] = React.useState(false);
+  /**
+   * Stays true until the sheet has finished sliding away. The rows are built behind it,
+   * so that scrolling the thread — which re-renders this component on every active
+   * message change — does not build a list nobody is looking at.
+   */
+  const [rendered, setRendered] = React.useState(false);
 
   const { slots } = useChatSlots();
   const coreSlots = useChatCoreSlots();
@@ -97,20 +107,34 @@ const MessageNavList: React.FC<MessageNavListProps> = ({ userMessages, activeInd
     element?.scrollIntoView({ block: 'center' });
   }, []);
 
-  const handleOpen = React.useCallback(() => setOpen(true), []);
+  const handleOpen = React.useCallback(() => {
+    setRendered(true);
+    setOpen(true);
+  }, []);
+
   const handleClose = React.useCallback(() => setOpen(false), []);
+
+  const handleExited = React.useCallback(() => setRendered(false), []);
 
   const handleSelect = React.useCallback((index: number) => {
     setOpen(false);
     onJump(index);
   }, [onJump]);
 
+  // The messages of a branch do not change while it is being read, unlike the active one
+  const previews = React.useMemo(
+    () => userMessages.map((message) => getMessageNavPreview(message, PREVIEW_MAX_LENGTH)),
+    [userMessages],
+  );
+
   if (userMessages.length < MIN_MESSAGES) return null;
 
   return (
     <>
-      <TriggerStyled className={chatClassNames.messageNavList}>
+      <TriggerStyled className={chatClassNames.messageNavListButton}>
         <coreSlots.iconButton
+          aria-expanded={open}
+          aria-haspopup="dialog"
           aria-label={locale.messageNavTitle}
           sx={{
             background: (theme) => getSurfaceColor(theme),
@@ -128,6 +152,13 @@ const MessageNavList: React.FC<MessageNavListProps> = ({ userMessages, activeInd
       <Drawer
         anchor="bottom"
         open={open}
+        PaperProps={{
+          'aria-label': locale.messageNavTitle,
+          'aria-modal': true,
+          className: chatClassNames.messageNavList,
+          role: 'dialog',
+        }}
+        SlideProps={{ onExited: handleExited }}
         sx={{
           [`.${drawerClasses.paper}`]: {
             borderTopLeftRadius: 16,
@@ -139,7 +170,7 @@ const MessageNavList: React.FC<MessageNavListProps> = ({ userMessages, activeInd
         <Stack pt={0.5} pb={1}>
           <Stack px={0.5} direction="row" alignItems="center">
             <coreSlots.iconButton
-              aria-label={locale.cancel}
+              aria-label={locale.close}
               onClick={handleClose}
             >
               <CloseIcon />
@@ -150,28 +181,23 @@ const MessageNavList: React.FC<MessageNavListProps> = ({ userMessages, activeInd
           </Stack>
           <SimpleScrollbar style={{ maxHeight: LIST_MAX_HEIGHT }}>
             <Stack component="nav" aria-label={locale.messageNavTitle}>
-              {userMessages.map((message, index) => {
-                const preview = getMessageNavPreview(message, PREVIEW_MAX_LENGTH);
-                const fallback = langReplace(locale.messageNavItem, { number: index + 1 });
-
-                return (
-                  <RowStyled
-                    key={message.id}
-                    ref={index === activeIndex ? activeRowRef : undefined}
-                    aria-current={index === activeIndex || undefined}
-                    data-active={index === activeIndex}
-                    type="button"
-                    onClick={() => handleSelect(index)}
-                  >
-                    <NumberStyled variant="body2">
-                      {index + 1}
-                    </NumberStyled>
-                    <TextStyled variant="body2">
-                      {preview || fallback}
-                    </TextStyled>
-                  </RowStyled>
-                );
-              })}
+              {!!rendered && userMessages.map((message, index) => (
+                <RowStyled
+                  key={message.id}
+                  ref={index === activeIndex ? activeRowRef : undefined}
+                  aria-current={index === activeIndex || undefined}
+                  data-active={index === activeIndex}
+                  type="button"
+                  onClick={() => handleSelect(index)}
+                >
+                  <NumberStyled>
+                    {index + 1}
+                  </NumberStyled>
+                  <TextStyled>
+                    {previews[index] || langReplace(locale.messageNavItem, { number: index + 1 })}
+                  </TextStyled>
+                </RowStyled>
+              ))}
             </Stack>
           </SimpleScrollbar>
         </Stack>

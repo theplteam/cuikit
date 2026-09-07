@@ -5,6 +5,7 @@ export const zhCN: Localization = {
   no: '否',
   send: '发送',
   cancel: '取消',
+  close: '关闭',
   newChat: "新聊天",
   thinking: '思考中',
   historyTitle: "历史",

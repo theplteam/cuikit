@@ -4,6 +4,7 @@ export const ruRU: Localization = {
   no: 'Нет',
   send: 'Отправить',
   cancel: 'Отмена',
+  close: 'Закрыть',
   newChat: "Новый чат",
   thinking: 'Думаю',
   historyTitle: "История",

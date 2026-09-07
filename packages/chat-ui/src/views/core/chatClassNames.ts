@@ -9,6 +9,7 @@ export const chatClassNames = {
   messageUser: 'chat-ui-message-user',
   messageNavRail: 'chat-ui-message-nav-rail',
   messageNavList: 'chat-ui-message-nav-list',
+  messageNavListButton: 'chat-ui-message-nav-list-button',
   markdownParentRoot: 'chat-ui-markdown-parent-root',
   markdownImage: 'chat-ui-markdown-image',
   markdownSmoothedPending: 'chat-ui-markdown-smooth-pending',

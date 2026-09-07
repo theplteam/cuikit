@@ -5,6 +5,7 @@ export const jaJP: Localization = {
   no: 'いいえ',
   send: '送信',
   cancel: 'キャンセル',
+  close: '閉じる',
   newChat: '新しいチャット',
   thinking: '考え中',
   historyTitle: '履歴',
