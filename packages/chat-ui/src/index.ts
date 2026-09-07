@@ -13,6 +13,7 @@ import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
 import { ToolType } from './types/ToolType';
 import type { ChatFormActionsProps } from './views/core/SlotPropsType';
+import type { MessageNavOptions, MessageNavProp } from './views/thread/messageNavOptions';
 import { AIModelType } from './types/AIModelType';
 import { parseReasoningText } from './views/message/reasoning/useReasoningParse';
 
@@ -42,6 +43,8 @@ export {
   ChatUsersProps as ChatProps,
   type ToolType,
   type ChatFormActionsProps,
+  type MessageNavOptions,
+  type MessageNavProp,
   type AIModelType,
   parseReasoningText,
 };
