@@ -7,7 +7,7 @@ import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
 import { useChatApiRef } from './views/hooks/useChatApiRef';
 import type { ApiRefType } from './views/core/useApiRef';
 import type { ChatUsersProps } from './views/core/useChatProps';
-import { chatClassNames } from './views/core/chatClassNames';
+import { chatClassNames, chatCssVariables } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
@@ -36,6 +36,7 @@ export {
   useChatApiRef,
   type ChatApiRef,
   chatClassNames,
+  chatCssVariables,
   historyClassNames,
   type onShowAlertType,
   ChatUsersProps as ChatProps,
