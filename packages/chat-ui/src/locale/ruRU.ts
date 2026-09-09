@@ -4,6 +4,7 @@ export const ruRU: Localization = {
   no: 'Нет',
   send: 'Отправить',
   cancel: 'Отмена',
+  close: 'Закрыть',
   newChat: "Новый чат",
   thinking: 'Думаю',
   historyTitle: "История",
@@ -55,6 +56,8 @@ export const ruRU: Localization = {
   messageFeedbackSubmitButton: 'Отправить',
   messageFeedbackLink: 'Узнать больше',
   messageFeedbackText: 'Открывается в новом окне о том, как ваш отзыв используется для улучшения Chat UI.',
+  messageNavTitle: 'Навигация по сообщениям',
+  messageNavItem: 'Сообщение {{number}}',
   reasonedFor: 'Думал {{time}}',
   innerRowExpand: 'Полный экран'
 };

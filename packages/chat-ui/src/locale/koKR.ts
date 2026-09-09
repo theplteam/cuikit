@@ -5,6 +5,7 @@ export const koKR: Localization = {
   no: '아니요',
   send: '보내기',
   cancel: '취소',
+  close: '닫기',
   newChat: '새 채팅',
   thinking: '생각 중',
   historyTitle: '기록',
@@ -56,6 +57,8 @@ export const koKR: Localization = {
   messageFeedbackSubmitButton: '보내기',
   messageFeedbackLink: '자세히 알아보기',
   messageFeedbackText: '새 창에서 열리며, 귀하의 피드백이 Chat UI 개선에 어떻게 사용되는지 설명합니다.',
+  messageNavTitle: '메시지 탐색',
+  messageNavItem: '메시지 {{number}}',
   reasonedFor: '{{time}} 동안 생각함',
   innerRowExpand: '전체 화면'
 };

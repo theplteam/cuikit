@@ -18,6 +18,7 @@ import { GetCurrentBranchFnType } from '../../models/ThreadMessages';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
 import { ToolType } from '../../types/ToolType';
+import { MessageNavProp } from '../thread/messageNavOptions';
 import { LangKeys } from '../../locale/Localization';
 import { AIModelType } from '../../types/AIModelType';
 
@@ -146,6 +147,15 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Unlocks the "change model" or "reply again" function for the assistant.
    */
   enableBranches?: boolean;
+  /**
+   * Adds navigation between the user messages of a thread: a fisheye rail next to the
+   * thread on pointer-sized screens, a list opened from a button above the composer on
+   * touch-sized ones, and the `Shift + ArrowUp` / `Shift + ArrowDown` shortcuts.
+   *
+   * `true` enables both sides; pass `{ desktop: true }` or `{ mobile: true }` to enable
+   * only one of them.
+   */
+  enableMessageNav?: MessageNavProp;
   /**
    * If callback is set, rating buttons appear. Callback fired when message rating sent
    */

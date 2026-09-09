@@ -5,6 +5,7 @@ export const zhCN: Localization = {
   no: '否',
   send: '发送',
   cancel: '取消',
+  close: '关闭',
   newChat: "新聊天",
   thinking: '思考中',
   historyTitle: "历史",
@@ -56,6 +57,8 @@ export const zhCN: Localization = {
   messageFeedbackSubmitButton: '发送',
   messageFeedbackLink: '了解更多',
   messageFeedbackText: '将在新窗口打开，说明您的反馈如何用于改进 Chat UI。',
+  messageNavTitle: '消息导航',
+  messageNavItem: '消息 {{number}}',
   reasonedFor: '思考了 {{time}}',
   innerRowExpand: '全屏'
 };

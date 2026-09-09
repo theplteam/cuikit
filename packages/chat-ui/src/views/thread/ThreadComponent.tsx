@@ -16,6 +16,10 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { ApiManager } from '../core/useApiManager';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { chatClassNames } from '../core/chatClassNames';
+import { useMessageNavController } from './useMessageNavController';
+import MessageNavContainer from './MessageNavContainer';
+import { resolveMessageNav } from './messageNavOptions';
+import { useTablet } from '../../ui/Responsive';
 import {getSurfaceColor} from "../utils/colors";
 
 type Props = {
@@ -74,6 +78,7 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
     model,
     beforeUserMessageSend,
     getConversationBlockHeightMin,
+    enableMessageNav,
   } = useChatContext<DM, DD>();
 
   const { fade: fadeSpeed } = useResolvedSpeed();
@@ -81,6 +86,14 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
   const thread = useObserverValue(model.currentThread);
 
   const { slots, slotProps } = useChatSlots();
+
+  const isTablet = useTablet();
+
+  // Only the side that is actually rendered subscribes — the other one costs nothing
+  const messageNavOptions = resolveMessageNav(enableMessageNav);
+  const messageNavEnabled = isTablet ? messageNavOptions.mobile : messageNavOptions.desktop;
+
+  const messageNav = useMessageNavController(thread, contentRef, apiManager, messageNavEnabled);
 
   React.useEffect(() => {
     if (!initialThread && !loading) {
@@ -119,6 +132,13 @@ const ThreadComponent = <DM extends Message, DD extends Thread<DM>>({ contentRef
         {/*(!thread && !chat.currentThreadInit) && <ChatNoThread chat={chat} />*/}
         {/*<Watermark/>*/}
         <Stack position="sticky" bottom={0} zIndex={1}>
+          {!!messageNavEnabled && (
+            <MessageNavContainer
+              controller={messageNav}
+              isTablet={isTablet}
+              contentRef={contentRef}
+            />
+          )}
           <TextRowBlock>
             <ChatScroller
               thread={thread}
