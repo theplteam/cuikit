@@ -18,6 +18,7 @@ const CustomScrollContainer = React.lazy(() => import('./customization/CustomScr
 const MessagingPushChunk = React.lazy(() => import('./messaging/MessagingPushChunk'));
 const MessagingPushAll = React.lazy(() => import('./messaging/MessagingPushAll'));
 const MessagingFinishing = React.lazy(() => import('./messaging/MessagingFinishing'));
+const MessagingSendShortcut = React.lazy(() => import('./messaging/MessagingSendShortcut'));
 const ReasoningWithHeadings = React.lazy(() => import('./reasoning/ReasoningWithHeadings'));
 const ReasoningStream = React.lazy(() => import('./reasoning/ReasoningStream'));
 const ReasoningHistory = React.lazy(() => import('./reasoning/ReasoningHistory'));
@@ -64,6 +65,7 @@ const App: React.FC = () => {
       case 'message-push-chunk': variant = MessagingPushChunk; break;
       case 'message-push-all': variant = MessagingPushAll; break;
       case 'message-finishing': variant = MessagingFinishing; break;
+      case 'message-send-shortcut': variant = MessagingSendShortcut; break;
       case 'custom-scroll-container': variant = CustomScrollContainer; break;
       case 'reasoning-with-headings': variant = ReasoningWithHeadings; break;
       case 'reasoning-stream': variant = ReasoningStream; break;

@@ -2,15 +2,15 @@ import * as React from 'react';
 import InputBase, { InputBaseProps, inputBaseClasses } from '@mui/material/InputBase';
 import { useElementRef } from '../hooks/useElementRef';
 import { useTablet } from '../../ui/Responsive';
-import useEnterPress, { handleIgnoreEnterPress } from '../hooks/useEnterPress';
+import { useSendShortcutKeyDown } from '../hooks/useSendShortcut';
 import SimpleScrollbar, { simpleBarClasses } from '../../ui/SimpleScrollbar';
 import { useLocalizationContext } from '../core/LocalizationContext';
 import TextFieldExpandButton from './TextFieldExpandButton';
 import { motion } from '../../utils/materialDesign/motion';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { ChatViewConstants } from '../../views/ChatViewConstants';
-import { useChatContext } from '../../views/core/ChatGlobalContext';
+import { ChatViewConstants } from '../ChatViewConstants';
+import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
   text: string;
@@ -37,7 +37,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, handleFi
   const { enableFileAttachments } = useChatContext();
 
   const isTablet = useTablet();
-  const onEnterPress = useEnterPress(onSendMessage);
+  const onSendShortcutKeyDown = useSendShortcutKeyDown(onSendMessage);
 
   let inputProps: InputBaseProps = {};
   if (!isTablet) {
@@ -116,10 +116,7 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, handleFi
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setText(event.target.value);
           }}
-          onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
-          onKeyUp={isTablet
-            ? undefined
-            : onEnterPress}
+          onKeyDown={!isTablet ? onSendShortcutKeyDown : undefined}
           {...inputProps}
         />
       </SimpleScrollbar>

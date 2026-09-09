@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useEnterPress, { handleIgnoreEnterPress } from '../../hooks/useEnterPress';
+import { useSendShortcutKeyDown } from '../../hooks/useSendShortcut';
 import { useTablet } from '../../../ui/Responsive';
 import { useChatSlots } from '../../../views/core/ChatSlotsContext';
 
@@ -12,7 +12,7 @@ type Props = {
 const MessageUserEditorTextfield: React.FC<Props> = ({ newText, setNewText, onEnterPress: onEnterPressCallback }) => {
   const { slots, slotProps } = useChatSlots();
   const isTablet = useTablet();
-  const onEnterPress = useEnterPress(onEnterPressCallback);
+  const onSendShortcutKeyDown = useSendShortcutKeyDown(onEnterPressCallback);
 
   return (
     <slots.messageEditInput
@@ -20,10 +20,7 @@ const MessageUserEditorTextfield: React.FC<Props> = ({ newText, setNewText, onEn
       value={newText}
       maxRows={7}
       onChange={(event) => setNewText(event.target.value)}
-      onKeyUp={isTablet
-        ? undefined
-        : onEnterPress}
-      onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
+      onKeyDown={!isTablet ? onSendShortcutKeyDown : undefined}
       {...slotProps.messageEditInput}
     />
   );

@@ -14,6 +14,7 @@ import MobileHistory from './views/leftContainer/MobileHistory';
 import { ToolType } from './types/ToolType';
 import type { ChatFormActionsProps } from './views/core/SlotPropsType';
 import { AIModelType } from './types/AIModelType';
+import type { SendMessageShortcut } from './types/SendMessageShortcut';
 import { parseReasoningText } from './views/message/reasoning/useReasoningParse';
 
 export * from './models';
@@ -42,5 +43,6 @@ export {
   type ToolType,
   type ChatFormActionsProps,
   type AIModelType,
+  type SendMessageShortcut,
   parseReasoningText,
 };

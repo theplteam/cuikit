@@ -20,6 +20,7 @@ import { IdType } from '../../types';
 import { ToolType } from '../../types/ToolType';
 import { LangKeys } from '../../locale/Localization';
 import { AIModelType } from '../../types/AIModelType';
+import { SendMessageShortcut } from '../../types/SendMessageShortcut';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -140,6 +141,17 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    * Prefill textfield
    */
   defaultTextFieldValue?: string;
+  /**
+   * Keyboard shortcut that sends the message from the text field (and confirms message editing).
+   * - `enter` — Enter sends, Shift+Enter inserts a new line.
+   * - `ctrlEnter` — Ctrl+Enter (Cmd+Enter on macOS) sends, Enter inserts a new line.
+   *
+   * Applies to desktop layouts only: below the `md` breakpoint Enter always inserts a new line
+   * and messages are sent with the button. The value is read when the chat mounts; remount
+   * the chat (e.g. via `key`) to change it at runtime.
+   * @default 'enter'
+   */
+  sendMessageShortcut?: SendMessageShortcut;
   /**
    * Branching of the conversation after editing the user's message or updating the assistant's answer.
    * Unlocks the "edit message" function for the user.
