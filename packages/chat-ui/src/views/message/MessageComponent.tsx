@@ -14,8 +14,13 @@ type Props = {
 };
 
 const MessageComponent: React.FC<Props> = ({style, elevation, message, enableAssistantActions, thread}) => {
+  const setElementRef = React.useCallback((el: HTMLDivElement | null) => {
+    thread.elements.register(message.id, el);
+  }, [thread, message.id]);
+
   return (
     <MessageComponentBox
+      ref={setElementRef}
       isUser={message.isUser}
       style={style}
     >

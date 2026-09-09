@@ -43,6 +43,26 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Welcome message from the assistant for a new thread or the initial message from the assistant in an existing thread.
    */
   firstMessage: { thread: ThreadModel<DM, DD>, text?: string };
+  /**
+   * Navigation rail listing the user messages of the current branch.
+   * Rendered only when `enableMessageNav` is set.
+   */
+  messageNavRail: {
+    userMessages: MessageModel<DM>[];
+    activeIndex: number;
+    contentRef?: React.RefObject<HTMLDivElement | null>;
+    onJump: (index: number, options?: { immediate?: boolean }) => void;
+  };
+
+  /**
+   * Compact list of the user messages, shown instead of the rail on touch-sized
+   * screens. Rendered only when `enableMessageNav` is set.
+   */
+  messageNavList: {
+    userMessages: MessageModel<DM>[];
+    activeIndex: number;
+    onJump: (index: number, options?: { immediate?: boolean }) => void;
+  };
 
   sendMessageButton: IconButtonProps;
 

@@ -55,6 +55,10 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
    */
   sendUserMessage: (content: Message['content']) => Promise<boolean>;
   /**
+   * Scroll the thread to the message with the given id.
+   */
+  scrollToMessage: (id: IdType) => void;
+  /**
    * Triggered when another thread is opened.
    */
   onChangeThread: (threadId: IdType) => void;
@@ -118,6 +122,7 @@ export const useApiRef = <DM extends Message, DD extends Thread<DM>>(userApiRef:
     onChangeThread: NOOP,
     openNewThread: NOOP,
     updateScrollButtonState: NOOP,
+    scrollToMessage: NOOP,
     deleteThread: NOOP,
     sendUserMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),
     onEditMessage: () => new Promise((resolve) => setTimeout(resolve, 100)),

@@ -6,6 +6,7 @@ import { ObservableReactValue } from '../utils/observers/ObservableReactValue';
 import { randomId } from '../utils/numberUtils/randomInt';
 import { MessageSentParams } from './MessageSentParams';
 import { IdType } from '../types';
+import { MessageElementsRegistry } from './MessageElementsRegistry';
 
 export type NewMessageResponse = {
   user: Message,
@@ -64,6 +65,8 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
   // private potentialId?: IdType;
 
   readonly pinnedAt = new ObservableReactValue<number | null>(null);
+
+  readonly elements = new MessageElementsRegistry();
 
   readonly timestamp: ObservableReactValue<number>;
 

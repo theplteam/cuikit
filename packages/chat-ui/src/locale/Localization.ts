@@ -6,6 +6,7 @@ export type Localization = {
   newChat: string;
   send: string
   cancel: string;
+  close: string;
   thinking: string;
 
   // history
@@ -69,6 +70,10 @@ export type Localization = {
   attachmentImageShot: string;
   attachmentImageGallery: string;
   innerRowExpand: string;
+
+  // message navigation
+  messageNavTitle: string;
+  messageNavItem: string;
 
   reasonedFor: string;
 };

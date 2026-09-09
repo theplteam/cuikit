@@ -5,6 +5,7 @@ export const jaJP: Localization = {
   no: 'いいえ',
   send: '送信',
   cancel: 'キャンセル',
+  close: '閉じる',
   newChat: '新しいチャット',
   thinking: '考え中',
   historyTitle: '履歴',
@@ -56,6 +57,8 @@ export const jaJP: Localization = {
   messageFeedbackSubmitButton: '送信',
   messageFeedbackLink: '詳しく見る',
   messageFeedbackText: '新しいウィンドウで開き、フィードバックが Chat UI の改善にどのように使用されるかを説明します。',
+  messageNavTitle: 'メッセージナビゲーション',
+  messageNavItem: 'メッセージ {{number}}',
   reasonedFor: '{{time}} 考えました',
   innerRowExpand: '全画面'
 };

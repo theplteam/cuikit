@@ -7,12 +7,13 @@ import { useAssistantAnswerMock } from './views/core/useAssistantAnswerMock';
 import { useChatApiRef } from './views/hooks/useChatApiRef';
 import type { ApiRefType } from './views/core/useApiRef';
 import type { ChatUsersProps } from './views/core/useChatProps';
-import { chatClassNames } from './views/core/chatClassNames';
+import { chatClassNames, chatCssVariables } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
 import { ToolType } from './types/ToolType';
 import type { ChatFormActionsProps } from './views/core/SlotPropsType';
+import type { MessageNavOptions, MessageNavProp } from './views/thread/messageNavOptions';
 import { AIModelType } from './types/AIModelType';
 import type { SendMessageShortcut } from './types/SendMessageShortcut';
 import { parseReasoningText } from './views/message/reasoning/useReasoningParse';
@@ -37,11 +38,14 @@ export {
   useChatApiRef,
   type ChatApiRef,
   chatClassNames,
+  chatCssVariables,
   historyClassNames,
   type onShowAlertType,
   ChatUsersProps as ChatProps,
   type ToolType,
   type ChatFormActionsProps,
+  type MessageNavOptions,
+  type MessageNavProp,
   type AIModelType,
   type SendMessageShortcut,
   parseReasoningText,
