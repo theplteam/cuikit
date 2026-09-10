@@ -2,24 +2,62 @@ import moment from 'moment/moment';
 import { langReplace } from '../locale/langReplace';
 import { capitalizeFirstLetter } from '../utils/stringUtils/capitalizeFirstLetter';
 import { Localization } from '../locale/Localization';
-import { ListGroupType } from '../views/leftContainer/useThreadsGroupedList';
 import { ThreadModel } from './ThreadModel';
 import { ObservableReactValue } from '../utils/observers';
-import { ThreadListGroupItem } from './ThreadListGroupItem';
+import {
+  EMPTY_PROJECTION,
+  headerKey,
+  ListGroupType,
+  rowKey,
+  ThreadListFlatItem,
+  ThreadListGroupItem,
+  ThreadListProjection,
+} from './ThreadListGroupItem';
+
+export const PINNED_GROUP_KEY = '__pinned__';
 
 export class ThreadListCache {
   groupValues = new ObservableReactValue<Record<string, ThreadListGroupItem>>({});
+
+  /**
+   * Flat render list derived from groupValues. This is the single source of
+   * truth for the list body: it collapses the nested group structure into one
+   * index space so the list can be windowed, and it is the only place the
+   * isEmpty filter is applied.
+   */
+  readonly projection = new ObservableReactValue<ThreadListProjection>(EMPTY_PROJECTION);
 
   readonly menuConfig = new ObservableReactValue<{
     anchorEl: null | HTMLElement;
     thread: ThreadModel;
   } | undefined>(undefined);
 
+  private lastLocale?: Localization;
+  private lastThreads: ThreadModel[] = [];
+
+  /**
+   * Re-runs the last audit. Needed by call sites that change something the
+   * audit reads without replacing Threads.list — notably clearing a thread's
+   * isEmpty flag, which makes an already-listed thread become visible.
+   */
+  requestAudit = () => {
+    if (this.lastLocale) {
+      this.audit(this.lastLocale, this.lastThreads);
+    }
+  }
+
   audit = (locale: Localization, threads: ThreadModel[]) => {
+    this.lastLocale = locale;
+    this.lastThreads = threads;
+
     const currentMap = this.groupValues.value;
 
-    const pinnedThreads = threads.filter(t => t.pinnedAt.value != null);
-    const unpinnedThreads = threads.filter(t => t.pinnedAt.value == null);
+    // Empty (unsent) threads render to nothing, so they must never occupy a slot
+    // in the index space the virtualizer builds on.
+    const visibleThreads = threads.filter(t => !t.isEmpty.value);
+
+    const pinnedThreads = visibleThreads.filter(t => t.pinnedAt.value != null);
+    const unpinnedThreads = visibleThreads.filter(t => t.pinnedAt.value == null);
 
     const basicGroups = {
       today: {
@@ -52,12 +90,12 @@ export class ThreadListCache {
     const threadsAffiliation: Record<string, ThreadModel[]> = {};
 
     if (pinnedThreads.length) {
-      results['__pinned__'] = {
-        id: '__pinned__',
+      results[PINNED_GROUP_KEY] = {
+        id: PINNED_GROUP_KEY,
         label: locale.historyPinned,
         timestamp: Number.MAX_SAFE_INTEGER,
       };
-      threadsAffiliation['__pinned__'] = pinnedThreads;
+      threadsAffiliation[PINNED_GROUP_KEY] = pinnedThreads;
     }
 
     unpinnedThreads.forEach((item) => {
@@ -91,10 +129,10 @@ export class ThreadListCache {
           groupKey = yearKey;
         }
       } else {
-        results['other'] = {
+        results.other = {
           label: 'Other',
           timestamp: 0,
-          id: 'Other',
+          id: 'other',
         };
       }
 
@@ -105,48 +143,82 @@ export class ThreadListCache {
       threadsAffiliation[groupKey].push(item);
     });
 
-    // Check the group for deleted threads in it
-    const gValues = Object.values(this.groupValues.value);
-    for (const gValue of gValues) {
-      const newThreads = [...gValue.threads.value];
-      let changed = false;
-      for (const thread of newThreads) {
-        const index = threads.findIndex(v => v.id === thread.id);
-        if (index === -1) {
-          changed = true;
-          newThreads.splice(index, 1);
-        }
-      }
+    // Build a fresh map rather than mutating the one the observable still holds:
+    // an in-place write is invisible to subscribers (the observable compares by
+    // identity) yet already visible to anyone reading the value.
+    const nextMap: Record<string, ThreadListGroupItem> = {};
 
-      if (changed) {
-        gValue.threads.value = newThreads;
-      }
-    }
-
-    let changed = false;
     for (const key in results) {
-      let groupModel = currentMap[key];
-      if (!groupModel) {
-        changed = true;
-        groupModel = new ThreadListGroupItem(results[key]);
-        currentMap[key] = groupModel;
-      }
+      const groupModel = currentMap[key] ?? new ThreadListGroupItem(results[key]);
+      // Reused instances must take the freshly built data, otherwise the label
+      // stays in the old language and the timestamp goes stale past midnight.
+      groupModel.data = results[key];
 
-      const comparator = key === '__pinned__'
+      const comparator = key === PINNED_GROUP_KEY
         ? (a: ThreadModel, b: ThreadModel) => (b.pinnedAt.value ?? 0) - (a.pinnedAt.value ?? 0)
         : undefined;
       groupModel.checkList(threadsAffiliation[key] ?? [], comparator);
+
+      nextMap[key] = groupModel;
     }
 
-    // Empty out groups that are no longer in results (e.g. a thread moved to pinned)
-    for (const key in currentMap) {
-      if (!(key in results)) {
-        currentMap[key].checkList([]);
+    this.groupValues.value = nextMap;
+
+    const ordered = Object.values(nextMap).sort((a, b) => b.data.timestamp - a.data.timestamp);
+    const nextProjection = ThreadListCache.buildProjection(ordered);
+
+    if (!ThreadListCache.sameProjection(this.projection.value, nextProjection)) {
+      this.projection.value = nextProjection;
+    }
+  }
+
+  private static buildProjection = (groups: ThreadListGroupItem[]): ThreadListProjection => {
+    const items: ThreadListFlatItem[] = [];
+    const headerIndexes: number[] = [];
+
+    for (const group of groups) {
+      const threads = group.threads.value;
+      if (!threads.length) continue;
+
+      headerIndexes.push(items.length);
+      items.push({
+        kind: 'header',
+        key: headerKey(group.data.id),
+        groupId: group.data.id,
+        group: group.data,
+      });
+
+      for (const thread of threads) {
+        items.push({
+          kind: 'row',
+          key: rowKey(thread),
+          groupId: group.data.id,
+          thread,
+        });
       }
     }
 
-    if (changed) {
-      this.groupValues.value = { ...currentMap };
+    return { items, headerIndexes };
+  }
+
+  /**
+   * Compares keys in order and header labels. Keys alone are not enough: group
+   * keys are locale-independent (today, January, year2024), so a language switch
+   * would produce an identical key sequence and the relabelled projection would
+   * be discarded.
+   */
+  private static sameProjection = (a: ThreadListProjection, b: ThreadListProjection) => {
+    if (a.items.length !== b.items.length) return false;
+
+    for (let i = 0; i < a.items.length; i++) {
+      const left = a.items[i];
+      const right = b.items[i];
+      if (left.key !== right.key) return false;
+      if (left.kind === 'header' && right.kind === 'header' && left.group.label !== right.group.label) {
+        return false;
+      }
     }
+
+    return true;
   }
 }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import SimpleBar, { Props as SimpleBarProps } from 'simplebar-react';
+import type SimpleBarCore from 'simplebar-core';
 import 'simplebar-react/dist/simplebar.min.css';
 import { styled } from '@mui/material/styles';
 
@@ -45,17 +46,32 @@ const SimpleBarStyled = styled(SimpleBar, {
   },
 }));
 
-const SimpleScrollbar: React.FC<Props> = ({ style, children, maxContent }) => {
+/**
+ * The ref receives the SimpleBarCore instance, so callers can reach the real
+ * scroll node via `instance.getScrollElement()`.
+ *
+ * `...rest` must stay forwarded: `styled(SimpleScrollbar)` delivers its
+ * generated class through `className`, and dropping it silently discards
+ * every style a caller wraps this component with.
+ */
+const SimpleScrollbar = React.forwardRef<SimpleBarCore, Props>((
+  { style, children, maxContent, ...rest },
+  ref,
+) => {
   return (
     <SimpleBarStyled
+      ref={ref}
       forceVisible
-      style={style}
       autoHide={false}
       maxContent={maxContent}
+      style={style}
+      {...rest}
     >
       {children}
     </SimpleBarStyled>
   );
-}
+});
+
+SimpleScrollbar.displayName = 'SimpleScrollbar';
 
 export default SimpleScrollbar;

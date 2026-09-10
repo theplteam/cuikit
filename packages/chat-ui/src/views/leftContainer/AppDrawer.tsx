@@ -18,6 +18,7 @@ const AppDrawer: React.FC<Props> = ({ children, className }) => {
   return (
     <MdBottomDrawer
       keepMounted
+      disableCustomScrollbar
       open={!!open}
       title={locale.historyTitle}
       className={className}

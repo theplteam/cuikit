@@ -5,7 +5,6 @@ import { ThreadListCache } from '../../models/ThreadListCache';
 import { MoreVertIcon } from '../../icons';
 import { historyClassNames } from '../core/history/historyClassNames';
 import { HistorySlotType } from '../core/history/HistoryType';
-import { useHistoryContext } from '../core/history/HistoryContext';
 import { Threads } from '../../models/Threads';
 
 type Props = {
@@ -14,10 +13,20 @@ type Props = {
   selected: boolean;
   setThread: (thread: Thread) => void;
   listModel: ThreadListCache;
+  /**
+   * Resolved once by the list body instead of per row: reading it from the
+   * history context here made every row a context consumer.
+   *
+   * Deliberately absent from the memo comparator below — consumers usually pass
+   * an inline `threadTypeIcons` object, and comparing it would defeat the memo
+   * entirely. The tradeoff is that swapping icons at runtime does not repaint
+   * already-mounted rows, which is already true of `slots`.
+   */
+  icon?: React.ReactElement;
   slots: Pick<HistorySlotType, 'listItemRoot' | 'baseListItemText' | 'threadListItemMenuButton'>;
 };
 
-const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, slots }) => {
+const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, listModel, icon, slots }) => {
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     listModel.menuConfig.value = {
       anchorEl: event.currentTarget,
@@ -27,13 +36,7 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
     event.stopPropagation();
   }, [listModel]);
 
-  const isEmpty = useObserverValue(thread.isEmpty);
   const title = useObserverValue(thread.observableTitle);
-  const { threadTypeIcons } = useHistoryContext();
-  const threadType = thread.data.type;
-  const icon = threadType && threadTypeIcons ? threadTypeIcons[threadType] : undefined;
-
-  if (isEmpty) return null;
 
   const handleClickListItem = () => {
     model.menuDrawerOpen.value = false;
@@ -53,21 +56,12 @@ const ThreadListItem: React.FC<Props> = ({ model, thread, selected, setThread, l
     >
       {icon}
       <slots.baseListItemText
+        className={historyClassNames.listItemText}
         primary={title ?? 'TITLE'}
-        sx={{
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-        }}
       />
       <slots.threadListItemMenuButton
+        className={historyClassNames.listItemMenuButton}
         size="small"
-        sx={{
-          position: 'absolute',
-          right: (theme) => theme.spacing(1.5),
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
         threadId={thread.id}
         onClick={handleClick}
       >

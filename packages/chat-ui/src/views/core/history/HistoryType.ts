@@ -79,6 +79,9 @@ export type HistoryContextType = {
   enableThreadPin: boolean;
   onPinThread?: (threadId: IdType, pinnedAt: number | null) => void;
   threadTypeIcons?: Record<string, React.ReactElement>;
+  enableVirtualization: boolean;
+  itemHeight: number;
+  groupHeaderHeight: number;
 };
 
 export type HistoryProps = {
@@ -94,4 +97,33 @@ export type HistoryProps = {
    * If a thread has no `type` or the key is missing in the map, no icon is rendered.
    */
   threadTypeIcons?: Record<string, React.ReactElement>;
+  /**
+   * Renders only the visible window of threads instead of the whole list.
+   * Recommended for histories with hundreds of threads or more.
+   *
+   * Opt-in, because it changes the DOM inside the `threadsList` slot: rows gain
+   * a positioning wrapper, off-screen rows are absent from the DOM, and rows are
+   * absolutely positioned. CSS that targets the list structurally (child
+   * combinators, `:nth-child`) and end-to-end tests that click a thread without
+   * scrolling to it first will need updating.
+   * @default false
+   */
+  enableVirtualization?: boolean;
+  /**
+   * Row height in px, used to position rows without measuring them. Must match
+   * the CSS height of `.chat-ui-history-list-item`. Only set this when you
+   * override the `threadsList` slot with different row metrics.
+   *
+   * Ignored unless `enableVirtualization` is set.
+   * @default 56
+   */
+  itemHeight?: number;
+  /**
+   * Time-group header height in px. Must match the CSS height of
+   * `.chat-ui-history-list-item-time-text-wrapper`.
+   *
+   * Ignored unless `enableVirtualization` is set.
+   * @default 40
+   */
+  groupHeaderHeight?: number;
 };

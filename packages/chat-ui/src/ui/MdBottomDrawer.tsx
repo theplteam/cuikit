@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import SimpleScrollbar from './SimpleScrollbar';
 import { useHistoryContext } from '../views/core/history/HistoryContext';
 import { drawerClasses } from '@mui/material/Drawer';
+import { HISTORY_DRAWER_HEIGHT } from '../views/leftContainer/listMap/historyListMetrics';
 
 type Props = React.PropsWithChildren<{
   open: boolean;
@@ -19,7 +20,7 @@ const MdBottomDrawer: React.FC<Props> = ({ open, onClose, title, children, disab
   const container = React.useRef<HTMLDivElement | null>(null);
   const { slots, slotProps } = useHistoryContext();
 
-  const height = 500;
+  const height = HISTORY_DRAWER_HEIGHT;
   return (
     <>
       <slots.listDrawer
