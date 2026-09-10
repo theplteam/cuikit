@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Skeleton from '@mui/material/Skeleton';
-import { ListGroupType } from './useThreadsGroupedList';
+import { ListGroupType } from '../../models/ThreadListGroupItem';
 import { historyClassNames } from '../core/history/historyClassNames';
 import { HistorySlotPropsType, HistorySlotType } from '../core/history/HistoryType';
 

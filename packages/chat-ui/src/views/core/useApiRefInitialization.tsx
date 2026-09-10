@@ -76,7 +76,13 @@ export const useApiRefInitialization = (
       props.onToolChanged?.(v);
     };
 
-    internalApi.value = { model };
+    // Guarded: this effect re-runs on every render (its `props` dep is a fresh
+    // object), and an unguarded write published a new object each time, waking
+    // every subscriber — including the history context, whose value then churned
+    // for all of its consumers.
+    if (internalApi.value?.model !== model) {
+      internalApi.value = { model };
+    }
 
     apiManager.setMethod('setActiveTool', setActiveTool);
     apiManager.setMethod('setMenuDrawerOpen', setMenuDrawerOpen);

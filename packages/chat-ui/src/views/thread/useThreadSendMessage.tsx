@@ -185,6 +185,12 @@ export const useThreadSendMessage = (
             }
 
             thread.isEmpty.value = false;
+
+            // The list audit filters empty threads out, and it is triggered by
+            // Threads.list identity. A thread supplied with isNew already sits
+            // in the list, so the branch above does not run and nothing would
+            // re-audit — leaving the row permanently missing from the sidebar.
+            model.listGroups.requestAudit();
           }
 
           const pair = await onCreatePair(content, 'newMessage');

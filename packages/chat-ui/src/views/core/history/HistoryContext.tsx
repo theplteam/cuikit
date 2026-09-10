@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { HistoryContextType, HistorySlotType } from './HistoryType';
+import { HistoryContextType, HistorySlotPropsType, HistorySlotType } from './HistoryType';
 import { HistoryComponentProps } from '../../leftContainer/History';
 import ThreadListMapBlockAllStyled from '../../leftContainer/listMap/ThreadListMapBlockAllStyled';
 import TimeTextWrapper from '../../leftContainer/TimeTextWrapper';
@@ -16,6 +16,7 @@ import { useObserverValue } from '../../hooks/useObserverValue';
 import internalApi from './internalApi';
 import { useLocalizationInit } from '../useLocalizationInit';
 import ThreadListItemRoot from "../../leftContainer/listMap/ThreadListItemRoot";
+import { HISTORY_GROUP_HEADER_HEIGHT, HISTORY_ITEM_HEIGHT } from '../../leftContainer/listMap/historyListMetrics';
 
 const useSlots = (slots?: Partial<HistorySlotType>) => {
   const componentSlots = React.useMemo(() => ({
@@ -40,25 +41,63 @@ const useSlots = (slots?: Partial<HistorySlotType>) => {
 
 const Context = React.createContext<HistoryContextType | undefined>(undefined);
 
+const EMPTY_THREAD_ACTIONS: HistoryContextType['threadActions'] = [];
+const EMPTY_SLOT_PROPS: Partial<HistorySlotPropsType> = {};
+
 export const HistoryProvider = ({ children, ...props }: React.PropsWithChildren<HistoryComponentProps>) => {
-  const { apiRef, loading, threadActions, slotProps, enableDialogueRename, enableThreadPin, onPinThread, threadTypeIcons } = props;
+  const {
+    apiRef,
+    loading,
+    threadActions,
+    slotProps,
+    enableDialogueRename,
+    enableThreadPin,
+    onPinThread,
+    threadTypeIcons,
+    enableVirtualization,
+    itemHeight,
+    groupHeaderHeight,
+  } = props;
   const userLocale = useLocalizationInit(props.lang);
   const userSlots = useSlots(props?.slots);
   const internal = useObserverValue(internalApi);
 
+  // Dependencies are listed by name on purpose. The previous `props` entry was
+  // the rest object from the signature above — a fresh identity on every render,
+  // so this memo never hit and every consumer re-rendered with it. The `|| []`
+  // and `|| {}` literals were defeating it for the same reason and are hoisted
+  // to module scope.
   const value: HistoryContextType = React.useMemo(() => ({
     internal,
     apiRef,
     loading: !!loading,
-    threadActions: threadActions || [],
+    threadActions: threadActions || EMPTY_THREAD_ACTIONS,
     slots: userSlots,
     locale: userLocale,
-    slotProps: slotProps || {},
+    slotProps: slotProps || EMPTY_SLOT_PROPS,
     enableDialogueRename: !!enableDialogueRename,
     enableThreadPin: !!enableThreadPin,
     onPinThread,
     threadTypeIcons,
-  }), [apiRef, internal, loading, props]);
+    enableVirtualization: !!enableVirtualization,
+    itemHeight: itemHeight ?? HISTORY_ITEM_HEIGHT,
+    groupHeaderHeight: groupHeaderHeight ?? HISTORY_GROUP_HEADER_HEIGHT,
+  }), [
+    internal,
+    apiRef,
+    loading,
+    threadActions,
+    userSlots,
+    userLocale,
+    slotProps,
+    enableDialogueRename,
+    enableThreadPin,
+    onPinThread,
+    threadTypeIcons,
+    enableVirtualization,
+    itemHeight,
+    groupHeaderHeight,
+  ]);
 
   return (
     <Context.Provider value={value}>
